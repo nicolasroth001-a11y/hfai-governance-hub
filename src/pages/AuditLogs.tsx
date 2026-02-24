@@ -1,9 +1,39 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { SectionHeader } from "@/components/SectionHeader";
+import { DataTable, type DataTableColumn } from "@/components/DataTable";
 import { mockAuditLogs } from "@/lib/mock-data";
 import { format } from "date-fns";
+
+type AuditLog = (typeof mockAuditLogs)[number];
+
+const columns: DataTableColumn<AuditLog>[] = [
+  {
+    key: "timestamp",
+    header: "Timestamp",
+    render: (log) => (
+      <span className="text-card-foreground/70 font-mono text-xs">
+        {format(new Date(log.timestamp), "MMM d, HH:mm:ss")}
+      </span>
+    ),
+  },
+  {
+    key: "action",
+    header: "Action",
+    render: (log) => <span className="text-card-foreground text-sm capitalize">{log.action.replace(/_/g, " ")}</span>,
+  },
+  { key: "actor", header: "Actor", render: (log) => <span className="text-card-foreground/70 text-sm">{log.actor}</span> },
+  {
+    key: "entity",
+    header: "Entity",
+    render: (log) => <span className="text-card-foreground/70 text-sm">{log.entity_type} / {log.entity_id}</span>,
+  },
+  {
+    key: "details",
+    header: "Details",
+    render: (log) => <span className="text-card-foreground/60 text-sm max-w-xs truncate block">{log.details}</span>,
+  },
+];
 
 export default function AuditLogs() {
   const [actionFilter, setActionFilter] = useState("all");
@@ -20,10 +50,7 @@ export default function AuditLogs() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Audit Logs</h1>
-        <p className="text-muted-foreground text-sm mt-1">Complete activity log</p>
-      </div>
+      <SectionHeader title="Audit Logs" description="Complete activity log" />
 
       <div className="flex gap-3">
         <Select value={actionFilter} onValueChange={setActionFilter}>
@@ -51,36 +78,7 @@ export default function AuditLogs() {
         </Select>
       </div>
 
-      <Card className="overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-card-foreground/10">
-              <TableHead className="text-card-foreground/60">Timestamp</TableHead>
-              <TableHead className="text-card-foreground/60">Action</TableHead>
-              <TableHead className="text-card-foreground/60">Actor</TableHead>
-              <TableHead className="text-card-foreground/60">Entity</TableHead>
-              <TableHead className="text-card-foreground/60">Details</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((log) => (
-              <TableRow key={log.id} className="border-card-foreground/10">
-                <TableCell className="text-card-foreground/70 text-sm font-mono text-xs">
-                  {format(new Date(log.timestamp), "MMM d, HH:mm:ss")}
-                </TableCell>
-                <TableCell className="text-card-foreground text-sm capitalize">
-                  {log.action.replace(/_/g, " ")}
-                </TableCell>
-                <TableCell className="text-card-foreground/70 text-sm">{log.actor}</TableCell>
-                <TableCell className="text-card-foreground/70 text-sm">
-                  {log.entity_type} / {log.entity_id}
-                </TableCell>
-                <TableCell className="text-card-foreground/60 text-sm max-w-xs truncate">{log.details}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+      <DataTable columns={columns} data={filtered} rowKey={(log) => log.id} />
     </div>
   );
 }
