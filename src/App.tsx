@@ -3,7 +3,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AppLayout } from "./components/AppLayout";
 import Index from "./pages/Index";
+import ViolationsList from "./pages/ViolationsList";
+import ViolationDetail from "./pages/ViolationDetail";
+import RulesList from "./pages/RulesList";
+import RuleDetail from "./pages/RuleDetail";
+import AuditLogs from "./pages/AuditLogs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,8 +21,14 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/violations" element={<ViolationsList />} />
+            <Route path="/violations/:id" element={<ViolationDetail />} />
+            <Route path="/rules" element={<RulesList />} />
+            <Route path="/rules/:id" element={<RuleDetail />} />
+            <Route path="/audit-logs" element={<AuditLogs />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
