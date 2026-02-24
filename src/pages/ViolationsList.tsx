@@ -1,12 +1,45 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { SectionHeader } from "@/components/SectionHeader";
+import { DataTable, type DataTableColumn } from "@/components/DataTable";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { mockViolations } from "@/lib/mock-data";
 import { formatDistanceToNow } from "date-fns";
+
+type Violation = (typeof mockViolations)[number];
+
+const columns: DataTableColumn<Violation>[] = [
+  {
+    key: "id",
+    header: "ID",
+    render: (v) => (
+      <Link to={`/violations/${v.id}`} className="font-medium text-primary hover:underline">{v.id}</Link>
+    ),
+  },
+  {
+    key: "description",
+    header: "Description",
+    render: (v) => <span className="text-card-foreground text-sm max-w-xs truncate block">{v.description}</span>,
+  },
+  { key: "severity", header: "Severity", render: (v) => <SeverityBadge severity={v.severity} /> },
+  {
+    key: "rule_id",
+    header: "Rule",
+    render: (v) => <span className="text-card-foreground/70 text-sm">{v.rule_id}</span>,
+  },
+  {
+    key: "detected_at",
+    header: "Detected",
+    render: (v) => (
+      <span className="text-card-foreground/70 text-sm">
+        {formatDistanceToNow(new Date(v.detected_at), { addSuffix: true })}
+      </span>
+    ),
+  },
+  { key: "status", header: "Status", render: (v) => <StatusBadge status={v.status} /> },
+];
 
 export default function ViolationsList() {
   const [severityFilter, setSeverityFilter] = useState("all");
@@ -20,10 +53,7 @@ export default function ViolationsList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Violations</h1>
-        <p className="text-muted-foreground text-sm mt-1">Monitor and review AI governance violations</p>
-      </div>
+      <SectionHeader title="Violations" description="Monitor and review AI governance violations" />
 
       <div className="flex gap-3">
         <Select value={severityFilter} onValueChange={setSeverityFilter}>
@@ -52,45 +82,12 @@ export default function ViolationsList() {
         </Select>
       </div>
 
-      <Card className="overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-card-foreground/10">
-              <TableHead className="text-card-foreground/60">ID</TableHead>
-              <TableHead className="text-card-foreground/60">Description</TableHead>
-              <TableHead className="text-card-foreground/60">Severity</TableHead>
-              <TableHead className="text-card-foreground/60">Rule</TableHead>
-              <TableHead className="text-card-foreground/60">Detected</TableHead>
-              <TableHead className="text-card-foreground/60">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((v) => (
-              <TableRow key={v.id} className="border-card-foreground/10 hover:bg-card-foreground/5 transition-colors">
-                <TableCell>
-                  <Link to={`/violations/${v.id}`} className="font-medium text-primary hover:underline">
-                    {v.id}
-                  </Link>
-                </TableCell>
-                <TableCell className="text-card-foreground text-sm max-w-xs truncate">{v.description}</TableCell>
-                <TableCell><SeverityBadge severity={v.severity} /></TableCell>
-                <TableCell className="text-card-foreground/70 text-sm">{v.rule_id}</TableCell>
-                <TableCell className="text-card-foreground/70 text-sm">
-                  {formatDistanceToNow(new Date(v.detected_at), { addSuffix: true })}
-                </TableCell>
-                <TableCell><StatusBadge status={v.status} /></TableCell>
-              </TableRow>
-            ))}
-            {filtered.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center text-card-foreground/50 py-12">
-                  No violations match filters
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </Card>
+      <DataTable
+        columns={columns}
+        data={filtered}
+        rowKey={(v) => v.id}
+        emptyMessage="No violations match filters"
+      />
     </div>
   );
 }

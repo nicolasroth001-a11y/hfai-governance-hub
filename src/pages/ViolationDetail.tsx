@@ -1,17 +1,17 @@
 import { useParams, Link } from "react-router-dom";
-import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
+import { ContentCard } from "@/components/ContentCard";
 import { ConversationViewer } from "@/components/ConversationViewer";
+import { Timeline } from "@/components/Timeline";
 import { ReviewActions } from "@/components/ReviewActions";
 import { mockViolationDetail } from "@/lib/mock-data";
-import { ArrowLeft, Clock, Cpu, MessageSquare, ScrollText, Shield } from "lucide-react";
-import { format } from "date-fns";
+import { ArrowLeft, Cpu, MessageSquare, ScrollText, Shield } from "lucide-react";
 
 export default function ViolationDetail() {
   const { id } = useParams();
-  const v = mockViolationDetail; // In production, fetch by id
+  const v = mockViolationDetail;
 
   return (
     <div className="space-y-6">
@@ -28,12 +28,7 @@ export default function ViolationDetail() {
       <p className="text-muted-foreground">{v.description}</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Rule Details */}
-        <Card className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Shield className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold text-card-foreground">Rule Details</h2>
-          </div>
+        <ContentCard icon={Shield} title="Rule Details">
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-card-foreground/60">Rule ID</span>
@@ -50,14 +45,9 @@ export default function ViolationDetail() {
             <Separator className="bg-card-foreground/10" />
             <p className="text-card-foreground/80">{v.rule.description}</p>
           </div>
-        </Card>
+        </ContentCard>
 
-        {/* AI Event */}
-        <Card className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Cpu className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold text-card-foreground">AI Event</h2>
-          </div>
+        <ContentCard icon={Cpu} title="AI Event">
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-card-foreground/60">Model</span>
@@ -80,48 +70,19 @@ export default function ViolationDetail() {
               <span className="text-card-foreground">{v.ai_event.context}</span>
             </div>
           </div>
-        </Card>
+        </ContentCard>
 
-        {/* Conversation */}
-        <Card className="p-6 lg:col-span-2">
-          <div className="flex items-center gap-2 mb-4">
-            <MessageSquare className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold text-card-foreground">Conversation</h2>
-          </div>
+        <ContentCard icon={MessageSquare} title="Conversation" fullWidth>
           <ConversationViewer messages={v.conversation} />
-        </Card>
+        </ContentCard>
 
-        {/* Audit Logs */}
-        <Card className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <ScrollText className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold text-card-foreground">Audit Trail</h2>
-          </div>
-          <div className="space-y-4">
-            {v.audit_logs.map((log) => (
-              <div key={log.id} className="flex gap-3">
-                <div className="mt-1.5 h-2 w-2 rounded-full bg-primary shrink-0" />
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-card-foreground">{log.action.replace(/_/g, " ")}</span>
-                    <span className="text-xs text-card-foreground/40">by {log.actor}</span>
-                  </div>
-                  <p className="text-xs text-card-foreground/60 mt-0.5">{log.details}</p>
-                  <p className="text-xs text-card-foreground/40 mt-0.5 flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    {format(new Date(log.timestamp), "MMM d, yyyy HH:mm")}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+        <ContentCard icon={ScrollText} title="Audit Trail">
+          <Timeline events={v.audit_logs} />
+        </ContentCard>
 
-        {/* Review Actions */}
-        <Card className="p-6">
-          <h2 className="text-sm font-semibold text-card-foreground mb-4">Review Actions</h2>
+        <ContentCard title="Review Actions">
           <ReviewActions violationId={v.id} />
-        </Card>
+        </ContentCard>
       </div>
     </div>
   );
