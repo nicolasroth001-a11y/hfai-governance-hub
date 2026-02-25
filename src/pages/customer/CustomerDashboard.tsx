@@ -1,12 +1,16 @@
-import { AlertTriangle, BookOpen, CheckCircle, ShieldAlert } from "lucide-react";
+import { useState } from "react";
+import { AlertTriangle, BookOpen, CheckCircle, Send, ShieldAlert } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
+import { Button } from "@/components/ui/button";
+import { TestEventModal } from "@/components/TestEventModal";
 import { mockDashboardStats, mockRecentActivity } from "@/lib/mock-data";
 import { formatDistanceToNow } from "date-fns";
 
 export default function CustomerDashboard() {
   const stats = mockDashboardStats;
+  const [testOpen, setTestOpen] = useState(false);
 
   return (
     <div className="space-y-section">
@@ -18,6 +22,11 @@ export default function CustomerDashboard() {
         <StatCard title="Active Rules" value={stats.totalRules} icon={BookOpen} />
         <StatCard title="Resolved Today" value={stats.resolvedToday} icon={CheckCircle} />
       </div>
+
+      <div className="flex justify-end">
+        <Button onClick={() => setTestOpen(true)} className="gap-2"><Send className="h-4 w-4" /> Send Test Event</Button>
+      </div>
+      <TestEventModal open={testOpen} onOpenChange={setTestOpen} />
 
       <ContentCard title="Recent Activity">
         <div className="space-y-4">
