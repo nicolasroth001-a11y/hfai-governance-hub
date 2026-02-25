@@ -11,10 +11,10 @@ export default function Dashboard() {
   const activity = mockRecentActivity;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-section">
       <SectionHeader title="Dashboard" description="AI governance overview" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-base">
         <StatCard title="Total Violations" value={stats.totalViolations} icon={ShieldAlert} />
         <StatCard title="Open Violations" value={stats.openViolations} icon={AlertTriangle} subtitle="Requires attention" />
         <StatCard title="Active Rules" value={stats.totalRules} icon={BookOpen} />

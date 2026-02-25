@@ -10,7 +10,7 @@ interface StatCardProps {
 
 export function StatCard({ title, value, icon: Icon, subtitle }: StatCardProps) {
   return (
-    <Card className="p-6 animate-fade-in">
+    <Card className="p-card animate-fade-in">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-card-foreground/60">{title}</p>

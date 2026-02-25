@@ -8,13 +8,13 @@ export function AppLayout() {
       <div className="min-h-screen flex w-full">
         <AppSidebar />
         <main className="flex-1 overflow-auto">
-          <header className="h-14 flex items-center border-b px-6">
+          <header className="h-14 flex items-center border-b border-border/50 px-section">
             <SidebarTrigger />
             <span className="ml-4 text-sm font-medium text-muted-foreground tracking-wide uppercase">
               HFAI Governance
             </span>
           </header>
-          <div className="p-6 lg:p-10 max-w-7xl mx-auto">
+          <div className="p-section lg:p-10 max-w-7xl mx-auto">
             <Outlet />
           </div>
         </main>
