@@ -9,10 +9,11 @@ import CustomerLayout from "./layouts/CustomerLayout";
 import ReviewerLayout from "./layouts/ReviewerLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
-// Login
+// Login & Signup
 import CustomerLogin from "./pages/login/CustomerLogin";
 import ReviewerLogin from "./pages/login/ReviewerLogin";
 import AdminLogin from "./pages/login/AdminLogin";
+import CustomerSignup from "./pages/signup/CustomerSignup";
 import LandingPage from "./pages/LandingPage";
 
 // Customer pages
@@ -22,6 +23,8 @@ import CustomerViolationDetail from "./pages/customer/CustomerViolationDetail";
 import CustomerRules from "./pages/customer/CustomerRules";
 import CustomerRuleDetail from "./pages/customer/CustomerRuleDetail";
 import CustomerLogs from "./pages/customer/CustomerLogs";
+import CustomerOnboarding from "./pages/customer/CustomerOnboarding";
+import CustomerAISystems from "./pages/customer/CustomerAISystems";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -36,9 +39,12 @@ import AdminRules from "./pages/admin/AdminRules";
 import AdminRuleDetail from "./pages/admin/AdminRuleDetail";
 import AdminReviewers from "./pages/admin/AdminReviewers";
 import AdminReviewerDetail from "./pages/admin/AdminReviewerDetail";
+import AdminCreateReviewer from "./pages/admin/AdminCreateReviewer";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminCustomerDetail from "./pages/admin/AdminCustomerDetail";
+import AdminCreateCustomer from "./pages/admin/AdminCreateCustomer";
 import AdminLogs from "./pages/admin/AdminLogs";
+import AdminAPIKeys from "./pages/admin/AdminAPIKeys";
 
 import NotFound from "./pages/NotFound";
 
@@ -54,10 +60,11 @@ const App = () => (
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
 
-          {/* Login pages */}
+          {/* Login & Signup */}
           <Route path="/login/customer" element={<CustomerLogin />} />
           <Route path="/login/reviewer" element={<ReviewerLogin />} />
           <Route path="/login/admin" element={<AdminLogin />} />
+          <Route path="/signup/customer" element={<CustomerSignup />} />
 
           {/* Customer routes */}
           <Route path="/customer" element={<CustomerLayout />}>
@@ -68,6 +75,8 @@ const App = () => (
             <Route path="rules" element={<CustomerRules />} />
             <Route path="rules/:id" element={<CustomerRuleDetail />} />
             <Route path="logs" element={<CustomerLogs />} />
+            <Route path="onboarding" element={<CustomerOnboarding />} />
+            <Route path="ai-systems" element={<CustomerAISystems />} />
           </Route>
 
           {/* Reviewer routes */}
@@ -87,10 +96,13 @@ const App = () => (
             <Route path="rules" element={<AdminRules />} />
             <Route path="rules/:id" element={<AdminRuleDetail />} />
             <Route path="reviewers" element={<AdminReviewers />} />
+            <Route path="reviewers/create" element={<AdminCreateReviewer />} />
             <Route path="reviewers/:id" element={<AdminReviewerDetail />} />
             <Route path="customers" element={<AdminCustomers />} />
+            <Route path="customers/create" element={<AdminCreateCustomer />} />
             <Route path="customers/:id" element={<AdminCustomerDetail />} />
             <Route path="logs" element={<AdminLogs />} />
+            <Route path="api-keys" element={<AdminAPIKeys />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
