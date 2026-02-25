@@ -15,6 +15,7 @@ import ReviewerLogin from "./pages/login/ReviewerLogin";
 import AdminLogin from "./pages/login/AdminLogin";
 import CustomerSignup from "./pages/signup/CustomerSignup";
 import LandingPage from "./pages/LandingPage";
+import PricingContact from "./pages/PricingContact";
 
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
@@ -60,6 +61,7 @@ const App = () => (
         <Routes>
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/pricing/contact" element={<PricingContact />} />
 
           {/* Login & Signup */}
           <Route path="/login/customer" element={<CustomerLogin />} />

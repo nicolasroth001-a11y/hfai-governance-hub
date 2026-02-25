@@ -35,9 +35,14 @@ export default function LandingPage() {
         ))}
       </div>
 
-      <p className="mt-8 text-sm text-muted-foreground">
-        New customer? <Link to="/signup/customer" className="text-primary hover:underline font-medium">Create an account</Link>
-      </p>
+      <div className="mt-8 flex flex-col items-center gap-2 text-sm text-muted-foreground">
+        <p>
+          New customer? <Link to="/signup/customer" className="text-primary hover:underline font-medium">Create an account</Link>
+        </p>
+        <p>
+          <Link to="/pricing/contact" className="text-primary hover:underline font-medium">Contact for Pricing</Link>
+        </p>
+      </div>
     </div>
   );
 }
