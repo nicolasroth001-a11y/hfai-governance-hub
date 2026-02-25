@@ -16,6 +16,21 @@ export default {
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'system-ui', 'sans-serif'],
       },
+      spacing: {
+        "base": "var(--space-base)",       /* 16px */
+        "section": "var(--space-section)", /* 24px */
+        "card": "var(--space-card)",       /* 12px */
+      },
+      borderRadius: {
+        lg: "var(--radius)",               /* 20px */
+        md: "calc(var(--radius) - 4px)",   /* 16px */
+        sm: "calc(var(--radius) - 8px)",   /* 12px */
+      },
+      boxShadow: {
+        "card": "var(--shadow-card)",
+        "card-hover": "var(--shadow-card-hover)",
+        "elevated": "var(--shadow-elevated)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -72,11 +87,6 @@ export default {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {

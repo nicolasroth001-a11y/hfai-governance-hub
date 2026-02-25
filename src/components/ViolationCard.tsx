@@ -16,7 +16,7 @@ interface ViolationCardProps {
 export function ViolationCard({ id, description, severity, rule_id, detected_at, status }: ViolationCardProps) {
   return (
     <Link to={`/violations/${id}`}>
-      <ShadcnCard className="p-5 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 cursor-pointer">
+      <ShadcnCard className="p-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5 cursor-pointer">
         <div className="flex items-start justify-between mb-2">
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-primary font-medium">{id}</span>
@@ -25,7 +25,7 @@ export function ViolationCard({ id, description, severity, rule_id, detected_at,
           <StatusBadge status={status} />
         </div>
         <p className="text-sm text-card-foreground mb-3 line-clamp-2">{description}</p>
-        <div className="flex items-center justify-between text-xs text-card-foreground/50">
+        <div className="flex items-center justify-between text-xs text-card-foreground/50 pt-3 border-t border-primary/10">
           <span>Rule: {rule_id}</span>
           <span>{formatDistanceToNow(new Date(detected_at), { addSuffix: true })}</span>
         </div>
