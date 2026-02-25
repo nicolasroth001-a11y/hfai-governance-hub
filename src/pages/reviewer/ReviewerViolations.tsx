@@ -20,14 +20,26 @@ const columns: DataTableColumn<Violation>[] = [
 
 export default function ReviewerViolations() {
   const [severityFilter, setSeverityFilter] = useState("all");
+  const [customerFilter, setCustomerFilter] = useState("all");
+  const [ruleFilter, setRuleFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+
   const assigned = mockViolations.filter((v) => v.assigned_reviewer === "reviewer@hfai.com");
-  const filtered = assigned.filter((v) => severityFilter === "all" || v.severity === severityFilter);
+  const filtered = assigned.filter((v) => {
+    if (severityFilter !== "all" && v.severity !== severityFilter) return false;
+    if (statusFilter !== "all" && v.status !== statusFilter) return false;
+    if (ruleFilter !== "all" && v.rule_id !== ruleFilter) return false;
+    return true;
+  });
 
   return (
     <div className="space-y-section">
       <SectionHeader title="Assigned Violations" description="Violations assigned to you for review" />
       <FilterBar filters={[
         { key: "severity", label: "Severity", value: severityFilter, onChange: setSeverityFilter, options: [{ label: "Critical", value: "critical" }, { label: "High", value: "high" }, { label: "Medium", value: "medium" }, { label: "Low", value: "low" }] },
+        { key: "customer", label: "Customer", value: customerFilter, onChange: setCustomerFilter, options: [{ label: "Acme Corp", value: "acme" }, { label: "TechStart Inc", value: "techstart" }, { label: "DataFlow AI", value: "dataflow" }] },
+        { key: "rule", label: "Rule", value: ruleFilter, onChange: setRuleFilter, options: [{ label: "RULE-001", value: "RULE-001" }, { label: "RULE-002", value: "RULE-002" }, { label: "RULE-003", value: "RULE-003" }] },
+        { key: "status", label: "Status", value: statusFilter, onChange: setStatusFilter, options: [{ label: "Open", value: "open" }, { label: "Approved", value: "approved" }, { label: "Rejected", value: "rejected" }] },
       ]} />
       <DataTable columns={columns} data={filtered} rowKey={(v) => v.id} emptyMessage="No violations assigned" />
     </div>

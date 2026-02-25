@@ -4,6 +4,7 @@ import { ContentCard } from "@/components/ContentCard";
 import { APIKeyDisplay } from "@/components/APIKeyDisplay";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
 import { Button } from "@/components/ui/button";
+import { TestEventModal } from "@/components/TestEventModal";
 import { BookOpen, Send, Terminal } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
@@ -67,11 +68,7 @@ const payloadExample = `{
 
 export default function CustomerOnboarding() {
   const [apiKey] = useState(PLACEHOLDER_KEY);
-
-  const handleTestEvent = () => {
-    fetch("http://localhost:4000/events/test", { method: "POST" }).catch(() => {});
-    toast({ title: "Test event sent", description: "Check your violations page for results." });
-  };
+  const [testOpen, setTestOpen] = useState(false);
 
   const handleRegenerate = () => {
     fetch("http://localhost:4000/api-keys/regenerate", { method: "POST" }).catch(() => {});
@@ -93,12 +90,14 @@ export default function CustomerOnboarding() {
         <ContentCard icon={Send} title="Quick Test">
           <div className="space-y-4">
             <p className="text-sm text-card-foreground/70">Send a test event to verify your integration is working correctly.</p>
-            <Button onClick={handleTestEvent} className="w-full gap-2">
+            <Button onClick={() => setTestOpen(true)} className="w-full gap-2">
               <Send className="h-4 w-4" /> Send Test Event
             </Button>
           </div>
         </ContentCard>
       </div>
+
+      <TestEventModal open={testOpen} onOpenChange={setTestOpen} />
 
       <ContentCard icon={BookOpen} title="Integration Guide" fullWidth>
         <div className="space-y-6">

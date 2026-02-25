@@ -25,6 +25,7 @@ import CustomerRuleDetail from "./pages/customer/CustomerRuleDetail";
 import CustomerLogs from "./pages/customer/CustomerLogs";
 import CustomerOnboarding from "./pages/customer/CustomerOnboarding";
 import CustomerAISystems from "./pages/customer/CustomerAISystems";
+import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -77,6 +78,7 @@ const App = () => (
             <Route path="logs" element={<CustomerLogs />} />
             <Route path="onboarding" element={<CustomerOnboarding />} />
             <Route path="ai-systems" element={<CustomerAISystems />} />
+            <Route path="rule-templates" element={<CustomerRuleTemplates />} />
           </Route>
 
           {/* Reviewer routes */}
