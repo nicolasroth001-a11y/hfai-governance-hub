@@ -6,14 +6,14 @@ export const mockDashboardStats = {
 };
 
 export const mockViolations = [
-  { id: "VIO-001", description: "AI generated response without human approval in sensitive context", severity: "critical", rule_id: "RULE-003", detected_at: "2026-02-24T10:23:00Z", status: "open" },
-  { id: "VIO-002", description: "Model output exceeded confidence threshold without flagging", severity: "high", rule_id: "RULE-007", detected_at: "2026-02-24T09:15:00Z", status: "open" },
-  { id: "VIO-003", description: "PII detected in AI response payload", severity: "critical", rule_id: "RULE-001", detected_at: "2026-02-23T16:42:00Z", status: "resolved" },
-  { id: "VIO-004", description: "Bias indicator triggered in hiring recommendation", severity: "high", rule_id: "RULE-012", detected_at: "2026-02-23T14:30:00Z", status: "open" },
-  { id: "VIO-005", description: "Automated decision made without required human review", severity: "medium", rule_id: "RULE-003", detected_at: "2026-02-23T11:20:00Z", status: "resolved" },
-  { id: "VIO-006", description: "Model hallucination detected in financial advice context", severity: "critical", rule_id: "RULE-015", detected_at: "2026-02-22T18:05:00Z", status: "under_review" },
-  { id: "VIO-007", description: "Consent not obtained before data processing", severity: "medium", rule_id: "RULE-002", detected_at: "2026-02-22T09:33:00Z", status: "resolved" },
-  { id: "VIO-008", description: "Explainability score below minimum threshold", severity: "low", rule_id: "RULE-009", detected_at: "2026-02-21T15:12:00Z", status: "open" },
+  { id: "VIO-001", description: "AI generated response without human approval in sensitive context", severity: "critical", rule_id: "RULE-003", detected_at: "2026-02-24T10:23:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-002", description: "Model output exceeded confidence threshold without flagging", severity: "high", rule_id: "RULE-007", detected_at: "2026-02-24T09:15:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-003", description: "PII detected in AI response payload", severity: "critical", rule_id: "RULE-001", detected_at: "2026-02-23T16:42:00Z", status: "resolved", assigned_reviewer: "reviewer2@hfai.com" },
+  { id: "VIO-004", description: "Bias indicator triggered in hiring recommendation", severity: "high", rule_id: "RULE-012", detected_at: "2026-02-23T14:30:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-005", description: "Automated decision made without required human review", severity: "medium", rule_id: "RULE-003", detected_at: "2026-02-23T11:20:00Z", status: "resolved", assigned_reviewer: "reviewer2@hfai.com" },
+  { id: "VIO-006", description: "Model hallucination detected in financial advice context", severity: "critical", rule_id: "RULE-015", detected_at: "2026-02-22T18:05:00Z", status: "under_review", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-007", description: "Consent not obtained before data processing", severity: "medium", rule_id: "RULE-002", detected_at: "2026-02-22T09:33:00Z", status: "resolved", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-008", description: "Explainability score below minimum threshold", severity: "low", rule_id: "RULE-009", detected_at: "2026-02-21T15:12:00Z", status: "open", assigned_reviewer: "reviewer2@hfai.com" },
 ];
 
 export const mockViolationDetail = {
@@ -23,6 +23,7 @@ export const mockViolationDetail = {
   rule_id: "RULE-003",
   detected_at: "2026-02-24T10:23:00Z",
   status: "open",
+  assigned_reviewer: "reviewer@hfai.com",
   rule: {
     id: "RULE-003",
     name: "Human-in-the-Loop Required",
@@ -79,3 +80,36 @@ export const mockRecentActivity = [
   { id: "4", type: "rule", message: "Rule RULE-003 severity updated", timestamp: "2026-02-23T12:00:00Z" },
   { id: "5", type: "rule", message: "New rule RULE-015 created", timestamp: "2026-02-22T09:00:00Z" },
 ];
+
+// Reviewer mock data
+export const mockReviewers = [
+  { id: "REV-001", name: "Sarah Chen", email: "reviewer@hfai.com", role: "Senior Reviewer", assigned_violations: 4, reviewed_total: 87, status: "active" },
+  { id: "REV-002", name: "Marcus Johnson", email: "reviewer2@hfai.com", role: "Reviewer", assigned_violations: 2, reviewed_total: 34, status: "active" },
+  { id: "REV-003", name: "Emily Park", email: "reviewer3@hfai.com", role: "Lead Reviewer", assigned_violations: 0, reviewed_total: 142, status: "active" },
+  { id: "REV-004", name: "David Kim", email: "reviewer4@hfai.com", role: "Reviewer", assigned_violations: 1, reviewed_total: 19, status: "inactive" },
+];
+
+// Customer mock data
+export const mockCustomers = [
+  { id: "CUST-001", name: "Acme Corp", email: "admin@acme.com", plan: "Enterprise", ai_models: 12, violations_total: 45, status: "active", joined_at: "2025-06-15T00:00:00Z" },
+  { id: "CUST-002", name: "TechFlow Inc", email: "ops@techflow.io", plan: "Business", ai_models: 5, violations_total: 18, status: "active", joined_at: "2025-08-22T00:00:00Z" },
+  { id: "CUST-003", name: "DataBridge LLC", email: "hello@databridge.com", plan: "Enterprise", ai_models: 8, violations_total: 32, status: "active", joined_at: "2025-09-10T00:00:00Z" },
+  { id: "CUST-004", name: "NovaMind AI", email: "contact@novamind.ai", plan: "Starter", ai_models: 2, violations_total: 7, status: "suspended", joined_at: "2025-11-01T00:00:00Z" },
+];
+
+// Admin stats
+export const mockAdminStats = {
+  totalViolations: 142,
+  awaitingReview: 23,
+  totalCustomers: 4,
+  totalReviewers: 4,
+  totalRules: 48,
+};
+
+// Reviewer stats
+export const mockReviewerStats = {
+  assignedViolations: 4,
+  reviewedThisWeek: 12,
+  pendingReview: 3,
+  avgReviewTime: "14 min",
+};
