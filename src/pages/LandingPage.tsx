@@ -34,6 +34,10 @@ export default function LandingPage() {
           </Link>
         ))}
       </div>
+
+      <p className="mt-8 text-sm text-muted-foreground">
+        New customer? <Link to="/signup/customer" className="text-primary hover:underline font-medium">Create an account</Link>
+      </p>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,10 @@ export default function CustomerLogin() {
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-card border-card-foreground/10" />
             </div>
             <Button type="submit" className="w-full">Log In</Button>
+            <p className="text-center text-xs text-card-foreground/50">
+              Don't have an account?{" "}
+              <Link to="/signup/customer" className="text-primary hover:underline">Sign up</Link>
+            </p>
           </form>
         </CardContent>
       </Card>
