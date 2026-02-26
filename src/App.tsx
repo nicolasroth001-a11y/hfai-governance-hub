@@ -47,6 +47,7 @@ import AdminCustomerDetail from "./pages/admin/AdminCustomerDetail";
 import AdminCreateCustomer from "./pages/admin/AdminCreateCustomer";
 import AdminLogs from "./pages/admin/AdminLogs";
 import AdminAPIKeys from "./pages/admin/AdminAPIKeys";
+import AdminHumanFirstFramework from "./pages/admin/AdminHumanFirstFramework";
 
 import NotFound from "./pages/NotFound";
 
@@ -107,6 +108,7 @@ const App = () => (
             <Route path="customers/:id" element={<AdminCustomerDetail />} />
             <Route path="logs" element={<AdminLogs />} />
             <Route path="api-keys" element={<AdminAPIKeys />} />
+            <Route path="docs/human-first-framework" element={<AdminHumanFirstFramework />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

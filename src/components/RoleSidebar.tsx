@@ -5,6 +5,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -16,13 +17,19 @@ export interface NavItem {
   icon: LucideIcon;
 }
 
+interface ExtraSection {
+  label: string;
+  items: NavItem[];
+}
+
 interface RoleSidebarProps {
   items: NavItem[];
   roleLabel: string;
   roleDescription: string;
+  extraSections?: ExtraSection[];
 }
 
-export function RoleSidebar({ items, roleLabel, roleDescription }: RoleSidebarProps) {
+export function RoleSidebar({ items, roleLabel, roleDescription, extraSections }: RoleSidebarProps) {
   return (
     <Sidebar>
       <SidebarContent className="scrollbar-thin">
@@ -57,6 +64,33 @@ export function RoleSidebar({ items, roleLabel, roleDescription }: RoleSidebarPr
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {extraSections?.map((section) => (
+          <SidebarGroup key={section.label}>
+            <SidebarGroupLabel className="px-5 text-[11px] uppercase tracking-wider text-sidebar-foreground/50 font-medium">
+              {section.label}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu className="px-2 space-y-0.5">
+                {section.items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <NavLink
+                        to={item.url}
+                        end={item.url.split("/").length <= 4}
+                        className="rounded-md px-3 py-2 text-[13px] text-sidebar-foreground hover:bg-sidebar-accent/40 transition-colors"
+                        activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                      >
+                        <item.icon className="mr-3 h-4 w-4 opacity-60" />
+                        <span>{item.title}</span>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
     </Sidebar>
   );
