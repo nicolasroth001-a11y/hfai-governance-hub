@@ -590,6 +590,137 @@ export default function AdminHumanFirstFramework() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem
+          value="enforcement"
+          className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
+        >
+          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+            SECTION 6 — Enforcement &amp; Consequences
+          </AccordionTrigger>
+          <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <p>
+              This section defines the professional, balanced, and enforceable system used to ensure accountability while protecting both workers and companies. Enforcement is not about punishment; it is about correction, fairness, and preventing harm. The system uses a tiered, human‑controlled model that ensures violations are addressed proportionally and transparently.
+            </p>
+
+            <div className="space-y-6 pt-2">
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">A. Enforcement Principles</h4>
+                <p>These principles guide every enforcement action:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. Human‑Led Enforcement</strong><br />AI never punishes, suspends, or restricts anything. Humans make all enforcement decisions.</div>
+                  <div><strong>2. Proportionality</strong><br />Consequences match the severity and frequency of the violation.</div>
+                  <div><strong>3. Good Faith Protection</strong><br />Companies acting responsibly and transparently receive leniency.</div>
+                  <div><strong>4. No Retaliation</strong><br />Workers cannot be punished for disputing. Companies cannot be punished for self‑reporting issues.</div>
+                  <div><strong>5. Transparency</strong><br />All enforcement actions must be documented and visible to both sides.</div>
+                  <div><strong>6. Corrective First, Punitive Last</strong><br />The goal is to fix problems, not punish honest mistakes.</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">B. The Enforcement Ladder</h4>
+                <p>This is the structured, predictable consequence model. It has four levels, escalating only when necessary.</p>
+
+                <div className="space-y-4 pl-2">
+                  <div className="space-y-2">
+                    <strong>LEVEL 1 — Corrective Notice (First Violation)</strong>
+                    <p>Used for minor violations, unintentional errors, misunderstandings, missing documentation, or transparency lapses.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>notification to the company</li>
+                      <li>explanation of the issue</li>
+                      <li>corrective steps</li>
+                      <li>no penalty</li>
+                      <li>no public record</li>
+                      <li>no strike</li>
+                    </ul>
+                  </div>
+
+                  <div className="space-y-2">
+                    <strong>LEVEL 2 — Formal Warning (Second Violation)</strong>
+                    <p>Used when the same issue repeats, corrective steps were ignored, or transparency was intentionally bypassed.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>formal written warning</li>
+                      <li>required training</li>
+                      <li>required policy update</li>
+                      <li>scheduled follow‑up audit</li>
+                    </ul>
+                  </div>
+
+                  <div className="space-y-2">
+                    <strong>LEVEL 3 — Restricted AI Use (Third Violation)</strong>
+                    <p>Used when violations become a pattern, workers are harmed, AI is repeatedly misused, or transparency is intentionally avoided.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>temporary disabling of specific AI features</li>
+                      <li>human‑only mode for affected areas</li>
+                      <li>mandatory deep audit</li>
+                      <li>corrective action plan</li>
+                    </ul>
+                  </div>
+
+                  <div className="space-y-2">
+                    <strong>LEVEL 4 — Full Human‑Only Mode (Severe or Repeated Violations)</strong>
+                    <p>Used when violations are severe, repeated, harmful, or involve refusal to comply, deepfake misuse, or AI‑driven disciplinary actions without human review.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>disabling all AI systems</li>
+                      <li>full human‑only operation</li>
+                      <li>comprehensive oversight review</li>
+                      <li>reinstatement or compensation for affected workers</li>
+                      <li>public compliance report</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">C. Worker Remedies</h4>
+                <p>If a worker is harmed by AI misuse, they receive:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>reinstatement</li>
+                  <li>restored hours</li>
+                  <li>restored pay</li>
+                  <li>corrected records</li>
+                  <li>priority review for future opportunities</li>
+                  <li>written apology (optional but encouraged)</li>
+                </ul>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">D. Company Protections</h4>
+                <p>Companies are protected from:</p>
+                <div className="space-y-2 pl-2">
+                  <div><strong>1. False Claims</strong> — all disputes require evidence and logs.</div>
+                  <div><strong>2. Vendor Misconduct</strong> — penalties reduced or waived if the company acted responsibly.</div>
+                  <div><strong>3. Punishment for Self‑Reporting</strong> — voluntary reporting receives leniency.</div>
+                  <div><strong>4. Over‑Enforcement</strong> — consequences must be proportional and justified.</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">E. Enforcement Transparency</h4>
+                <p>Every enforcement action must include:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>what happened</li>
+                  <li>which rule was violated</li>
+                  <li>evidence from logs</li>
+                  <li>human reviewer reasoning</li>
+                  <li>corrective steps</li>
+                  <li>compliance timeline</li>
+                </ul>
+                <p>This ensures fairness and prevents bias.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">F. Appeals Process</h4>
+                <p>Companies may appeal any enforcement action. Appeals must be:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>reviewed by a separate human panel</li>
+                  <li>based on evidence</li>
+                  <li>resolved within a defined timeframe</li>
+                  <li>documented transparently</li>
+                </ul>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
