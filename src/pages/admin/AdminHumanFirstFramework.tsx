@@ -839,6 +839,148 @@ export default function AdminHumanFirstFramework() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem
+          value="finalization"
+          className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
+        >
+          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+            SECTION 8 — Finalization &amp; Constitutional Freeze
+          </AccordionTrigger>
+          <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <p>
+              This section establishes the rules that lock the governance framework, protect it from dilution or misuse, and ensure long‑term stability. A governance system is only as strong as its ability to remain consistent over time. This freeze layer ensures no one can quietly weaken the protections within this framework.
+            </p>
+
+            <div className="space-y-6 pt-2">
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">A. Constitutional Freeze</h4>
+                <p>Once Phase 1 is completed and approved:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. No section may be altered without formal review.</strong><br />This prevents unauthorized edits or weakening of protections.</div>
+                  <div><strong>2. All laws, rights, audits, and oversight rules become binding.</strong><br />They apply to all AI systems under this governance model.</div>
+                  <div><strong>3. All companies and vendors must comply with the frozen version.</strong><br />No exceptions or opt‑outs.</div>
+                  <div><strong>4. Any attempt to bypass or weaken the framework is treated as a violation.</strong><br />This protects the integrity of the system.</div>
+                </div>
+                <p>The freeze ensures the foundation remains strong and stable.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">B. Amendment Protocol</h4>
+                <p>Updates are allowed, but only through a strict, transparent process:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. Proposed amendments must be written and submitted formally.</strong><br />No verbal or informal changes.</div>
+                  <div><strong>2. Amendments must be reviewed by a human oversight panel.</strong><br />AI cannot propose or approve amendments.</div>
+                  <div>
+                    <strong>3. Amendments must be evaluated for:</strong>
+                    <ul className="list-disc pl-5 space-y-1 mt-1">
+                      <li>human impact</li>
+                      <li>worker protection</li>
+                      <li>company fairness</li>
+                      <li>ethical alignment</li>
+                      <li>long‑term consequences</li>
+                    </ul>
+                  </div>
+                  <div><strong>4. Amendments require supermajority approval.</strong><br />This prevents rushed or biased changes.</div>
+                  <div><strong>5. All amendments must be publicly documented.</strong><br />Transparency protects all parties.</div>
+                </div>
+                <p>This ensures the framework evolves responsibly and deliberately.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">C. Non‑Regression Clause</h4>
+                <p>No amendment may weaken or remove protections for:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>human rights</li>
+                  <li>worker rights</li>
+                  <li>identity protections</li>
+                  <li>transparency</li>
+                  <li>oversight</li>
+                  <li>accountability</li>
+                  <li>human authority</li>
+                </ul>
+                <p>This prevents future leaders or organizations from eroding the protections built into the system. The framework must always remain human‑first.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">D. AI Non‑Authority Clause</h4>
+                <p>This clause permanently establishes the hierarchy:</p>
+                <p>AI may never:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>approve amendments</li>
+                  <li>vote on changes</li>
+                  <li>override human decisions</li>
+                  <li>alter the constitution</li>
+                  <li>modify logs</li>
+                  <li>modify oversight rules</li>
+                  <li>modify enforcement rules</li>
+                </ul>
+                <p>AI is permanently excluded from governance authority.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">E. Public Access &amp; Transparency Requirements</h4>
+                <p>To maintain trust:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. The full governance framework must be publicly accessible.</strong><br />No hidden rules.</div>
+                  <div><strong>2. All amendments must be published.</strong><br />No secret changes.</div>
+                  <div><strong>3. All enforcement actions must be documented.</strong><br />No silent penalties or favoritism.</div>
+                  <div><strong>4. Workers and companies must be able to view the current version at any time.</strong><br />Everyone knows the rules.</div>
+                </div>
+                <p>This ensures openness, honesty, and accountability.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">F. Long‑Term Stewardship</h4>
+                <p>This section defines who protects the constitution over time:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. A Human Governance Council oversees the framework.</strong><br />Independent, trained, and accountable.</div>
+                  <div>
+                    <strong>2. The council must include:</strong>
+                    <ul className="list-disc pl-5 space-y-1 mt-1">
+                      <li>worker representatives</li>
+                      <li>company representatives</li>
+                      <li>ethics experts</li>
+                      <li>legal experts</li>
+                      <li>technologists</li>
+                      <li>community advocates</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <strong>3. The council meets at defined intervals to review:</strong>
+                    <ul className="list-disc pl-5 space-y-1 mt-1">
+                      <li>audit trends</li>
+                      <li>dispute patterns</li>
+                      <li>new AI risks</li>
+                      <li>amendment proposals</li>
+                    </ul>
+                  </div>
+                  <div><strong>4. The council cannot weaken protections — only strengthen them.</strong><br />This ensures the mission remains intact.</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">G. Mission Preservation Clause</h4>
+                <p>The purpose of this framework may never be altered.</p>
+                <p>AI must always remain:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>a tool</li>
+                  <li>supervised</li>
+                  <li>transparent</li>
+                  <li>accountable</li>
+                  <li>human‑controlled</li>
+                </ul>
+                <p>Humans must always remain:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>the decision‑makers</li>
+                  <li>the authority</li>
+                  <li>the protected party</li>
+                  <li>the center of the system</li>
+                </ul>
+                <p>This clause ensures the founding vision cannot be corrupted.</p>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
