@@ -21,9 +21,9 @@ export function DataTable<T>({ columns, data, rowKey, emptyMessage = "No results
     <ShadcnCard className="overflow-hidden animate-fade-in">
       <Table>
         <TableHeader>
-          <TableRow className="border-card-foreground/10">
+          <TableRow className="border-card-foreground/6 hover:bg-transparent">
             {columns.map((col) => (
-              <TableHead key={col.key} className="text-card-foreground/60">
+              <TableHead key={col.key} className="text-caption font-medium text-card-foreground/40 tracking-wide uppercase h-11">
                 {col.header}
               </TableHead>
             ))}
@@ -31,9 +31,9 @@ export function DataTable<T>({ columns, data, rowKey, emptyMessage = "No results
         </TableHeader>
         <TableBody>
           {data.map((row) => (
-            <TableRow key={rowKey(row)} className="border-card-foreground/10 hover:bg-card-foreground/5 transition-colors">
+            <TableRow key={rowKey(row)} className="border-card-foreground/6 hover:bg-card-foreground/[0.02] transition-colors">
               {columns.map((col) => (
-                <TableCell key={col.key} className={col.className}>
+                <TableCell key={col.key} className={cn("py-3.5", col.className)}>
                   {col.render(row)}
                 </TableCell>
               ))}
@@ -41,7 +41,7 @@ export function DataTable<T>({ columns, data, rowKey, emptyMessage = "No results
           ))}
           {data.length === 0 && (
             <TableRow>
-              <TableCell colSpan={columns.length} className="text-center text-card-foreground/50 py-12">
+              <TableCell colSpan={columns.length} className="text-center text-card-foreground/40 py-16 text-body">
                 {emptyMessage}
               </TableCell>
             </TableRow>
@@ -50,4 +50,8 @@ export function DataTable<T>({ columns, data, rowKey, emptyMessage = "No results
       </Table>
     </ShadcnCard>
   );
+}
+
+function cn(...classes: (string | undefined)[]) {
+  return classes.filter(Boolean).join(" ");
 }

@@ -8,17 +8,16 @@ interface ContentCardProps {
   className?: string;
   icon?: LucideIcon;
   title?: string;
-  /** Span full width in a grid */
   fullWidth?: boolean;
 }
 
 export function ContentCard({ children, className, icon: Icon, title, fullWidth }: ContentCardProps) {
   return (
-    <ShadcnCard className={cn("p-card animate-fade-in", fullWidth && "lg:col-span-2", className)}>
+    <ShadcnCard className={cn("p-6 animate-fade-in", fullWidth && "lg:col-span-2", className)}>
       {(Icon || title) && (
-        <div className="flex items-center gap-2 mb-3 pb-3 border-b border-primary/15">
-          {Icon && <Icon className="h-4 w-4 text-primary" />}
-          {title && <h2 className="text-sm font-semibold text-card-foreground">{title}</h2>}
+        <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-card-foreground/6">
+          {Icon && <Icon className="h-4 w-4 text-primary/80" />}
+          {title && <h2 className="text-section text-card-foreground">{title}</h2>}
         </div>
       )}
       {children}

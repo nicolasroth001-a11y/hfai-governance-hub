@@ -6,18 +6,18 @@
 
 @layer base {
   :root {
-    /* Core palette — HSL from user hex values */
-    --background: 30 10% 10%;          /* #1C1A17 */
-    --foreground: 36 43% 92%;          /* light cream text on dark bg */
+    /* Core palette */
+    --background: 30 10% 10%;
+    --foreground: 36 43% 92%;
 
-    --card: 33 30% 93%;                /* #F3EDE4 */
-    --card-foreground: 0 0% 16%;       /* #2A2A2A */
+    --card: 33 30% 93%;
+    --card-foreground: 0 0% 16%;
 
     --popover: 30 14% 12%;
     --popover-foreground: 36 43% 92%;
 
-    --primary: 38 46% 61%;             /* #C8A96E accent */
-    --primary-foreground: 0 0% 16%;    /* #2A2A2A */
+    --primary: 38 46% 61%;
+    --primary-foreground: 0 0% 16%;
 
     --secondary: 30 12% 16%;
     --secondary-foreground: 36 30% 80%;
@@ -25,20 +25,20 @@
     --muted: 30 8% 20%;
     --muted-foreground: 36 15% 55%;
 
-    --accent: 38 46% 61%;              /* #C8A96E */
+    --accent: 38 46% 61%;
     --accent-foreground: 0 0% 16%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 30 8% 18%;
-    --input: 30 8% 18%;
+    --input: 30 8% 22%;
     --ring: 38 46% 61%;
 
-    --radius: 1.25rem;                 /* 20px card radius */
+    --radius: 1rem;
 
     --sidebar-background: 30 12% 7%;
-    --sidebar-foreground: 36 30% 65%;
+    --sidebar-foreground: 36 20% 55%;
     --sidebar-primary: 38 46% 61%;
     --sidebar-primary-foreground: 0 0% 16%;
     --sidebar-accent: 30 10% 13%;
@@ -53,15 +53,18 @@
     --info: 210 60% 55%;
     --info-foreground: 0 0% 100%;
 
-    /* Spacing tokens */
-    --space-base: 1rem;                /* 16px */
-    --space-section: 1.5rem;           /* 24px */
-    --space-card: 0.75rem;             /* 12px */
+    /* Spacing – 8px system */
+    --space-xs: 0.25rem;   /* 4px */
+    --space-sm: 0.5rem;    /* 8px */
+    --space-md: 1rem;      /* 16px */
+    --space-lg: 1.5rem;    /* 24px */
+    --space-xl: 2rem;      /* 32px */
+    --space-2xl: 3rem;     /* 48px */
 
-    /* Apple-style soft shadows */
-    --shadow-card: 0 2px 8px -2px rgba(0,0,0,0.08), 0 4px 20px -4px rgba(0,0,0,0.06);
-    --shadow-card-hover: 0 8px 30px -6px rgba(0,0,0,0.15), 0 2px 8px -2px rgba(0,0,0,0.06);
-    --shadow-elevated: 0 12px 40px -8px rgba(0,0,0,0.2);
+    /* Shadows – ultra subtle */
+    --shadow-card: 0 1px 3px 0 rgba(0,0,0,0.04), 0 1px 2px -1px rgba(0,0,0,0.03);
+    --shadow-card-hover: 0 4px 12px -2px rgba(0,0,0,0.08), 0 1px 3px 0 rgba(0,0,0,0.04);
+    --shadow-elevated: 0 8px 24px -4px rgba(0,0,0,0.12);
   }
 }
 
@@ -71,8 +74,39 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.011em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Smooth page transitions */
+  main {
+    animation: page-enter 0.3s ease-out;
+  }
+
+  @keyframes page-enter {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Scrollbar styling */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted));
+    border-radius: 3px;
   }
 }

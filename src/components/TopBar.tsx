@@ -1,5 +1,4 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +9,9 @@ interface TopBarProps {
 }
 
 const roleLabels = {
-  customer: "Customer Portal",
-  reviewer: "Reviewer Portal",
-  admin: "Admin Portal",
+  customer: "Customer",
+  reviewer: "Reviewer",
+  admin: "Admin",
 };
 
 const loginRoutes = {
@@ -25,20 +24,15 @@ export function TopBar({ role, userName = "user@hfai.com" }: TopBarProps) {
   const navigate = useNavigate();
 
   return (
-    <header className="h-14 flex items-center border-b border-border/50 px-section">
+    <header className="h-14 flex items-center border-b border-border/40 px-6">
       <SidebarTrigger />
-      <span className="ml-4 text-sm font-medium text-muted-foreground tracking-wide uppercase">
-        HFAI Governance
-      </span>
-      <div className="ml-auto flex items-center gap-3">
-        <Badge variant="secondary" className="text-xs font-medium">
-          {roleLabels[role]}
-        </Badge>
-        <span className="text-xs text-muted-foreground">{userName}</span>
+      <div className="ml-auto flex items-center gap-4">
+        <span className="text-caption text-muted-foreground">{userName}</span>
+        <div className="h-4 w-px bg-border/60" />
         <Button
           variant="ghost"
           size="sm"
-          className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+          className="gap-1.5 text-caption text-muted-foreground hover:text-foreground h-8 px-2.5"
           onClick={() => navigate(loginRoutes[role])}
         >
           <LogOut className="h-3.5 w-3.5" />

@@ -12,27 +12,27 @@ export default function ReviewerDashboard() {
   const pending = mockViolations.filter((v) => v.status === "open" || v.status === "under_review").slice(0, 5);
 
   return (
-    <div className="space-y-section">
-      <SectionHeader title="Reviewer Dashboard" description="Your violation review queue" />
+    <div className="space-y-8">
+      <SectionHeader title="Review Queue" description="Speed and decision-making for pending violations" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-base">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Assigned" value={stats.assignedViolations} icon={AlertTriangle} />
         <StatCard title="Reviewed This Week" value={stats.reviewedThisWeek} icon={CheckCircle} />
         <StatCard title="Pending Review" value={stats.pendingReview} icon={Clock} />
         <StatCard title="Avg Review Time" value={stats.avgReviewTime} icon={Timer} />
       </div>
 
-      <ContentCard title="Violations Awaiting Review">
-        <div className="space-y-3">
+      <ContentCard title="Awaiting Your Review">
+        <div className="space-y-1">
           {pending.map((v) => (
-            <Link key={v.id} to={`/reviewer/violations/${v.id}`} className="flex items-center justify-between p-3 rounded-lg hover:bg-card-foreground/5 transition-colors">
+            <Link key={v.id} to={`/reviewer/violations/${v.id}`} className="flex items-center justify-between px-3 py-3 rounded-md hover:bg-card-foreground/[0.03] transition-colors">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-mono text-primary font-medium">{v.id}</span>
-                <span className="text-sm text-card-foreground line-clamp-1">{v.description}</span>
+                <span className="text-caption font-mono text-primary font-medium">{v.id}</span>
+                <span className="text-body text-card-foreground line-clamp-1">{v.description}</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 shrink-0">
                 <SeverityBadge severity={v.severity} />
-                <span className="text-xs text-card-foreground/50">{formatDistanceToNow(new Date(v.detected_at), { addSuffix: true })}</span>
+                <span className="text-[11px] text-card-foreground/35">{formatDistanceToNow(new Date(v.detected_at), { addSuffix: true })}</span>
               </div>
             </Link>
           ))}

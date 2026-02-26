@@ -33,7 +33,7 @@ export default function ReviewerViolations() {
   });
 
   return (
-    <div className="space-y-section">
+    <div className="space-y-8">
       <SectionHeader title="Assigned Violations" description="Violations assigned to you for review" />
       <FilterBar filters={[
         { key: "severity", label: "Severity", value: severityFilter, onChange: setSeverityFilter, options: [{ label: "Critical", value: "critical" }, { label: "High", value: "high" }, { label: "Medium", value: "medium" }, { label: "Low", value: "low" }] },

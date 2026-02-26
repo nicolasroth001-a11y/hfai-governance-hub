@@ -24,11 +24,11 @@ export function ReviewerNotesInput({ violationId, onSubmit }: ReviewerNotesInput
         placeholder="Add reviewer notes..."
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
-        className="bg-secondary border-border text-foreground placeholder:text-muted-foreground resize-none"
+        className="bg-secondary/60 border-border/50 text-foreground placeholder:text-muted-foreground/60 resize-none rounded-md text-body"
         rows={4}
       />
-      <Button onClick={handleSubmit} className="bg-primary text-primary-foreground hover:bg-primary/90">
-        <Send className="mr-2 h-4 w-4" />
+      <Button onClick={handleSubmit} size="sm" className="h-9 px-4">
+        <Send className="mr-1.5 h-3.5 w-3.5" />
         Add Note
       </Button>
     </div>

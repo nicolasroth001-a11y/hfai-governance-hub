@@ -29,7 +29,7 @@ export default function CustomerViolations() {
   );
 
   return (
-    <div className="space-y-section">
+    <div className="space-y-8">
       <SectionHeader title="Violations" description="AI governance violations detected in your systems" />
       <FilterBar filters={[
         { key: "severity", label: "Severity", value: severityFilter, onChange: setSeverityFilter, options: [{ label: "Critical", value: "critical" }, { label: "High", value: "high" }, { label: "Medium", value: "medium" }, { label: "Low", value: "low" }] },
