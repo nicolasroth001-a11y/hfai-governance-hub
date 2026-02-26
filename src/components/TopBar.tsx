@@ -1,5 +1,8 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface TopBarProps {
   role: "customer" | "reviewer" | "admin";
@@ -12,7 +15,15 @@ const roleLabels = {
   admin: "Admin Portal",
 };
 
+const loginRoutes = {
+  customer: "/login/customer",
+  reviewer: "/login/reviewer",
+  admin: "/login/admin",
+};
+
 export function TopBar({ role, userName = "user@hfai.com" }: TopBarProps) {
+  const navigate = useNavigate();
+
   return (
     <header className="h-14 flex items-center border-b border-border/50 px-section">
       <SidebarTrigger />
@@ -24,6 +35,15 @@ export function TopBar({ role, userName = "user@hfai.com" }: TopBarProps) {
           {roleLabels[role]}
         </Badge>
         <span className="text-xs text-muted-foreground">{userName}</span>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+          onClick={() => navigate(loginRoutes[role])}
+        >
+          <LogOut className="h-3.5 w-3.5" />
+          Log out
+        </Button>
       </div>
     </header>
   );
