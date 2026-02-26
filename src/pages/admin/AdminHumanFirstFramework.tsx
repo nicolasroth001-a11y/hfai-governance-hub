@@ -52,7 +52,7 @@ export default function AdminHumanFirstFramework() {
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
           <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
-            SECTION 2 — The Human‑First Laws (Loophole‑Proof Version)
+            SECTION 2 — The Human‑First Laws
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
             <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 2 — The Human‑First Laws</h2>
