@@ -304,6 +304,185 @@ export default function AdminHumanFirstFramework() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem
+          value="audits"
+          className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
+        >
+          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+            SECTION 4 — AI Audit Requirements (Strict, Fair, and Enforceable)
+          </AccordionTrigger>
+          <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <p>
+              AI audits are the backbone of accountability. They ensure that companies follow the rules, workers are protected, and AI stays within its boundaries. But they must also be fair, transparent, and non‑punitive when companies act in good faith.
+            </p>
+
+            <div className="space-y-6 pt-2">
+              <h2 className="text-foreground font-bold text-base tracking-tight">A. Purpose of AI Audits</h2>
+              <p>AI audits exist to:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>verify compliance with the Human‑First Laws</li>
+                <li>protect workers from harm</li>
+                <li>protect companies from false claims</li>
+                <li>ensure transparency</li>
+                <li>detect misuse early</li>
+                <li>maintain trust in AI systems</li>
+              </ul>
+              <p>Audits are not designed to punish companies — they are designed to prevent harm and correct issues before they escalate.</p>
+            </div>
+
+            <div className="space-y-6 pt-4">
+              <h2 className="text-foreground font-bold text-base tracking-tight">B. Mandatory AI Audit Types</h2>
+              <p>Your system will require three categories of audits:</p>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">1. Routine Compliance Audits (Scheduled)</h3>
+                <p>Performed at regular intervals (e.g., quarterly or biannually). These audits check:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>AI logs</li>
+                  <li>human review records</li>
+                  <li>dispute outcomes</li>
+                  <li>transparency notifications</li>
+                  <li>data sources</li>
+                  <li>model behavior</li>
+                  <li>adherence to the Human‑First Laws</li>
+                </ul>
+                <p>These are predictable and fair — companies know when they're coming.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">2. Triggered Audits (Event‑Based)</h3>
+                <p>Activated when:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>a worker disputes an AI‑influenced action</li>
+                  <li>the supervisory AI flags a violation</li>
+                  <li>a company reports an internal issue</li>
+                  <li>unusual patterns appear in logs</li>
+                </ul>
+                <p>Triggered audits are focused, not broad. They investigate the specific event or pattern.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">3. Deep Audits (High‑Impact)</h3>
+                <p>Reserved for:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>repeated violations</li>
+                  <li>evidence of systemic misuse</li>
+                  <li>major harm to workers</li>
+                  <li>large‑scale automation attempts</li>
+                  <li>AI impersonation or deepfake misuse</li>
+                </ul>
+                <p>Deep audits are comprehensive and involve:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>full system review</li>
+                  <li>vendor review</li>
+                  <li>policy review</li>
+                  <li>human reviewer interviews</li>
+                  <li>data integrity checks</li>
+                </ul>
+                <p>These are rare and only used when necessary.</p>
+              </div>
+            </div>
+
+            <div className="space-y-6 pt-4">
+              <h2 className="text-foreground font-bold text-base tracking-tight">C. Audit Fairness Principles (Protecting Companies)</h2>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">1. Presumption of Good Faith</h3>
+                <p>Audits begin with the assumption that the company intended to comply.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">2. Right to Respond</h3>
+                <p>Companies may provide:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>context</li>
+                  <li>explanations</li>
+                  <li>evidence</li>
+                  <li>logs</li>
+                  <li>corrective actions</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">3. No Penalty for Honest Mistakes</h3>
+                <p>If a violation was unintentional and corrected promptly, no penalty is applied.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">4. Vendor Accountability Protection</h3>
+                <p>If a third‑party AI tool caused the issue, and the company acted responsibly, penalties are reduced or waived.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">5. Transparent Audit Criteria</h3>
+                <p>Companies know exactly what auditors look for — no surprises.</p>
+              </div>
+            </div>
+
+            <div className="space-y-6 pt-4">
+              <h2 className="text-foreground font-bold text-base tracking-tight">D. Audit Requirements (Strict and Clear)</h2>
+              <p>Every audit must include:</p>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>review of all AI logs</li>
+                <li>review of human reviewer decisions</li>
+                <li>verification of worker notifications</li>
+                <li>verification of dispute handling</li>
+                <li>checks for hidden automation</li>
+                <li>checks for unauthorized AI tools</li>
+                <li>checks for deepfake or impersonation misuse</li>
+                <li>checks for compliance with the Human‑First Laws</li>
+              </ul>
+              <p>This ensures audits are consistent, fair, and thorough.</p>
+            </div>
+
+            <div className="space-y-6 pt-4">
+              <h2 className="text-foreground font-bold text-base tracking-tight">E. Audit Outcomes (Balanced and Proportionate)</h2>
+              <p>Audit results fall into four categories:</p>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">1. Compliant</h3>
+                <p>No issues. Company receives certification.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">2. Correctable Issues</h3>
+                <p>Minor violations fixed with:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>training</li>
+                  <li>policy updates</li>
+                  <li>system adjustments</li>
+                </ul>
+                <p>No penalties.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">3. Significant Violations</h3>
+                <p>Requires:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>corrective action plan</li>
+                  <li>follow‑up audit</li>
+                  <li>temporary suspension of certain AI features</li>
+                </ul>
+                <p>Still fair, still human‑controlled.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">4. Severe or Repeated Violations</h3>
+                <p>May trigger:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>deep audit</li>
+                  <li>human‑only mode</li>
+                  <li>formal consequences</li>
+                </ul>
+                <p>Always decided by humans, never by AI.</p>
+              </div>
+            </div>
+
+            <p className="pt-4 italic">
+              This audit system protects workers, protects companies, prevents harm, ensures fairness, builds trust, and keeps AI in its proper place — without being punitive or anti‑innovation.
+            </p>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
