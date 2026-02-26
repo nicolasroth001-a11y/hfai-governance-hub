@@ -23,6 +23,7 @@ export default function AdminHumanFirstFramework() {
             The Purpose (Foundational Statement)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-4 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">The Purpose (Foundational Statement)</h2>
             <p>
               Humanity stands at a turning point. Artificial Intelligence is advancing at a pace
               that outstrips our ability to regulate, understand, or contain it. While AI offers
@@ -54,6 +55,7 @@ export default function AdminHumanFirstFramework() {
             SECTION 2 — The Human‑First Laws (Loophole‑Proof Version)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 2 — The Human‑First Laws</h2>
             <p>
               This is the fully reinforced, airtight version. These laws define the mandatory
               boundaries for all AI systems operating within human environments. They are written
@@ -170,6 +172,7 @@ export default function AdminHumanFirstFramework() {
             SECTION 3 — Worker Rights &amp; Company Rights (Fairness for Both Sides)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 3 — Worker Rights &amp; Company Rights</h2>
             <p>
               This section defines the protections for workers and the protections for companies so the system is balanced, enforceable, and realistic. The goal is not to punish companies unfairly, but to prevent harm, resolve disputes, and keep AI in its proper role.
             </p>
@@ -312,6 +315,7 @@ export default function AdminHumanFirstFramework() {
             SECTION 4 — AI Audit Requirements (Strict, Fair, and Enforceable)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 4 — AI Audit Requirements</h2>
             <p>
               AI audits are the backbone of accountability. They ensure that companies follow the rules, workers are protected, and AI stays within its boundaries. But they must also be fair, transparent, and non‑punitive when companies act in good faith.
             </p>
@@ -491,6 +495,7 @@ export default function AdminHumanFirstFramework() {
             SECTION 5 — Oversight &amp; Accountability
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 5 — Oversight &amp; Accountability</h2>
             <p>
               This section defines the dual‑layer oversight model that ensures AI systems remain accountable, transparent, and subordinate to human judgment. The model consists of two layers:
             </p>
@@ -598,6 +603,7 @@ export default function AdminHumanFirstFramework() {
             SECTION 6 — Enforcement &amp; Consequences
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 6 — Enforcement &amp; Consequences</h2>
             <p>
               This section defines the professional, balanced, and enforceable system used to ensure accountability while protecting both workers and companies. Enforcement is not about punishment; it is about correction, fairness, and preventing harm. The system uses a tiered, human‑controlled model that ensures violations are addressed proportionally and transparently.
             </p>
@@ -729,6 +735,7 @@ export default function AdminHumanFirstFramework() {
             SECTION 7 — Anti‑Deepfake &amp; Identity Protection Standards
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 7 — Anti‑Deepfake &amp; Identity Protection Standards</h2>
             <p>
               This section establishes strict, fair, and enforceable rules that protect human identity, reputation, and reality. AI has made it possible to fabricate images, videos, audio, and written content that convincingly depict real people doing or saying things they never did. These protections apply to workers, private citizens, public figures, companies, creators, minors, and vulnerable individuals.
             </p>
@@ -847,6 +854,7 @@ export default function AdminHumanFirstFramework() {
             SECTION 8 — Finalization &amp; Constitutional Freeze
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <h2 className="text-xl font-semibold text-[#C8A96E] mb-4 mt-2 tracking-tight">SECTION 8 — Finalization &amp; Constitutional Freeze</h2>
             <p>
               This section establishes the rules that lock the governance framework, protect it from dilution or misuse, and ensure long‑term stability. A governance system is only as strong as its ability to remain consistent over time. This freeze layer ensures no one can quietly weaken the protections within this framework.
             </p>
