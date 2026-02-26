@@ -19,7 +19,7 @@ export default function AdminHumanFirstFramework() {
           value="purpose"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             The Purpose (Foundational Statement)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-4 pr-4">
@@ -51,7 +51,7 @@ export default function AdminHumanFirstFramework() {
           value="laws"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             SECTION 2 — The Human‑First Laws (Loophole‑Proof Version)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
@@ -168,7 +168,7 @@ export default function AdminHumanFirstFramework() {
           value="rights"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             SECTION 3 — Worker Rights &amp; Company Rights (Fairness for Both Sides)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
@@ -311,7 +311,7 @@ export default function AdminHumanFirstFramework() {
           value="audits"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             SECTION 4 — AI Audit Requirements (Strict, Fair, and Enforceable)
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
@@ -491,7 +491,7 @@ export default function AdminHumanFirstFramework() {
           value="oversight"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             SECTION 5 — Oversight &amp; Accountability
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
@@ -599,7 +599,7 @@ export default function AdminHumanFirstFramework() {
           value="enforcement"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             SECTION 6 — Enforcement &amp; Consequences
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
@@ -731,7 +731,7 @@ export default function AdminHumanFirstFramework() {
           value="deepfake"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             SECTION 7 — Anti‑Deepfake &amp; Identity Protection Standards
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
@@ -850,7 +850,7 @@ export default function AdminHumanFirstFramework() {
           value="finalization"
           className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
         >
-          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+          <AccordionTrigger className="text-lg font-bold tracking-tight hover:no-underline text-[#1C1A17]">
             SECTION 8 — Finalization &amp; Constitutional Freeze
           </AccordionTrigger>
           <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
