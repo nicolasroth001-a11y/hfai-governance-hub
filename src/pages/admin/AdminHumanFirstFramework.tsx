@@ -162,6 +162,148 @@ export default function AdminHumanFirstFramework() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem
+          value="rights"
+          className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
+        >
+          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+            SECTION 3 — Worker Rights &amp; Company Rights (Fairness for Both Sides)
+          </AccordionTrigger>
+          <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <p>
+              This section defines the protections for workers and the protections for companies so the system is balanced, enforceable, and realistic. The goal is not to punish companies unfairly, but to prevent harm, resolve disputes, and keep AI in its proper role.
+            </p>
+            <p>This section has two halves:</p>
+            <ol className="list-decimal pl-6 space-y-1">
+              <li>Worker Rights — protections for individuals</li>
+              <li>Company Rights — protections for organizations</li>
+            </ol>
+            <p>Both are necessary, clear, and enforceable.</p>
+
+            <div className="space-y-6 pt-2">
+              <h2 className="text-foreground font-bold text-base tracking-tight">A. Worker Rights (Strict, Clear, Non‑Negotiable)</h2>
+              <p>These rights ensure that workers are protected from AI misuse, unfair treatment, and hidden automation.</p>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 1 — The Right to Know</h3>
+                <p>Workers must be informed whenever AI is used to evaluate, analyze, or influence decisions about them.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 2 — The Right to Access Logs</h3>
+                <p>Workers may view all AI‑related records involving them, including reasoning, data sources, and human reviewer notes.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 3 — The Right to Dispute</h3>
+                <p>Workers may challenge any AI‑influenced action and request human review.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 4 — The Right to Human Review</h3>
+                <p>A trained human must investigate disputes and issue a final decision with documented reasoning.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 5 — The Right to Fair Treatment</h3>
+                <p>Workers may not be penalized, retaliated against, or disadvantaged for disputing an AI‑influenced action.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 6 — The Right to Correction</h3>
+                <p>If an AI‑influenced action is found to be harmful or inaccurate, workers have the right to:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>reinstatement</li>
+                  <li>restored hours</li>
+                  <li>restored pay</li>
+                  <li>corrected records</li>
+                  <li>priority consideration for future opportunities</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 7 — The Right to Authenticity</h3>
+                <p>Workers have the right to protection from:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>AI‑generated impersonation</li>
+                  <li>AI‑generated slander</li>
+                  <li>AI‑generated fake media</li>
+                  <li>AI‑generated harassment</li>
+                </ul>
+                <p>This protects identity and reputation.</p>
+              </div>
+            </div>
+
+            <div className="space-y-6 pt-4">
+              <h2 className="text-foreground font-bold text-base tracking-tight">B. Company Rights (Fair, Balanced, Realistic)</h2>
+              <p>Companies need protection too — from false claims, misunderstandings, and being punished for honest mistakes.</p>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 1 — The Right to Clear Standards</h3>
+                <p>Companies must receive clear, unambiguous rules about what is allowed and what is prohibited.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 2 — The Right to Due Process</h3>
+                <p>If a violation is flagged, companies have the right to:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>review the logs</li>
+                  <li>provide context</li>
+                  <li>submit evidence</li>
+                  <li>explain their actions</li>
+                </ul>
+                <p>No automatic punishment.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 3 — The Right to Correct Mistakes</h3>
+                <p>If a violation was unintentional, companies may correct the issue without penalty on the first offense.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 4 — The Right to Appeal</h3>
+                <p>Companies may appeal decisions made by human reviewers or oversight bodies.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 5 — The Right to Use AI Responsibly</h3>
+                <p>Companies may use AI for:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>efficiency</li>
+                  <li>analysis</li>
+                  <li>forecasting</li>
+                  <li>support</li>
+                  <li>safety</li>
+                  <li>quality control</li>
+                </ul>
+                <p>As long as it does not replace, harm, or unfairly evaluate humans.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 6 — The Right to Vendor Accountability</h3>
+                <p>Companies are not punished for vendor misconduct if:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>they were unaware</li>
+                  <li>they acted in good faith</li>
+                  <li>they correct the issue immediately</li>
+                </ul>
+                <p>This protects companies from third‑party failures.</p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-foreground font-semibold">RIGHT 7 — The Right to Innovation</h3>
+                <p>Companies may innovate with AI as long as:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>humans remain in control</li>
+                  <li>workers are protected</li>
+                  <li>transparency is maintained</li>
+                  <li>decisions remain human‑made</li>
+                </ul>
+                <p>This keeps the system pro‑innovation, not anti‑technology.</p>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
