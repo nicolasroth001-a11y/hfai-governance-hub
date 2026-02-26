@@ -483,6 +483,113 @@ export default function AdminHumanFirstFramework() {
             </p>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem
+          value="oversight"
+          className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
+        >
+          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+            SECTION 5 — Oversight &amp; Accountability
+          </AccordionTrigger>
+          <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <p>
+              This section defines the dual‑layer oversight model that ensures AI systems remain accountable, transparent, and subordinate to human judgment. The model consists of two layers:
+            </p>
+            <ol className="list-decimal pl-5 space-y-1">
+              <li>AI Alert System (Automated Monitoring)</li>
+              <li>Human Oversight Board (Human Judgment &amp; Authority)</li>
+            </ol>
+            <p>
+              Together, they create a balanced system where AI provides speed and detection, while humans provide fairness, context, and final authority.
+            </p>
+
+            <div className="space-y-6 pt-2">
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">A. AI Alert System (Automated Violation Detection)</h4>
+                <p>
+                  This system continuously monitors AI activity across the organization. It does not make decisions, issue punishments, or override humans. Its role is to detect, log, and alert.
+                </p>
+                <p>The AI Alert System automatically flags:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>attempts to fire, suspend, or discipline a worker</li>
+                  <li>hidden automation</li>
+                  <li>unauthorized AI tools</li>
+                  <li>missing human review</li>
+                  <li>unusual patterns in decisions</li>
+                  <li>potential discrimination</li>
+                  <li>deepfake or impersonation attempts</li>
+                  <li>violations of the Human‑First Laws</li>
+                  <li>repeated disputes involving the same system</li>
+                  <li>attempts to bypass transparency requirements</li>
+                </ul>
+                <p>AI excels at identifying:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>patterns</li>
+                  <li>anomalies</li>
+                  <li>repeated behaviors</li>
+                  <li>statistical irregularities</li>
+                  <li>attempts to conceal actions</li>
+                </ul>
+                <p>
+                  Humans cannot manually monitor millions of data points. The AI Alert System fills this gap, but it only alerts — it never acts.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">B. Human Oversight Board (Final Authority)</h4>
+                <p>
+                  This is the human layer responsible for reviewing alerts, investigating disputes, examining logs, interviewing individuals, making final decisions, issuing corrective actions, and ensuring fairness for both workers and companies.
+                </p>
+                <p>The Human Oversight Board handles:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>all disputes</li>
+                  <li>all flagged violations</li>
+                  <li>all appeals</li>
+                  <li>all audit results</li>
+                  <li>all corrective actions</li>
+                  <li>all enforcement decisions</li>
+                </ul>
+                <p>
+                  Humans understand nuance, context, intent, fairness, ethics, and lived experience. AI cannot replicate these qualities, which is why humans remain the final authority.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">C. The Dual‑Layer Oversight Model</h4>
+                <p>This model can be summarized as:</p>
+                <p className="italic pl-4">
+                  AI monitors. Humans decide.<br />
+                  AI detects. Humans interpret.<br />
+                  AI alerts. Humans enforce.
+                </p>
+                <p>This structure protects:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>workers</li>
+                  <li>companies</li>
+                  <li>communities</li>
+                  <li>reputations</li>
+                  <li>fairness</li>
+                  <li>truth</li>
+                </ul>
+                <p>It ensures AI remains a tool, not a decision‑maker.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">D. Why This Works</h4>
+                <p>
+                  AI alone is too fast and too literal, often missing context and fairness. Humans alone are too slow and limited to monitor large‑scale systems. Together, they create a governance model that is:
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>fast</li>
+                  <li>fair</li>
+                  <li>transparent</li>
+                  <li>accountable</li>
+                  <li>enforceable</li>
+                  <li>balanced</li>
+                </ul>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
