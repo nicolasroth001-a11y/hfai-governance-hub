@@ -16,7 +16,7 @@ const columns: DataTableColumn<Rule>[] = [
 
 export default function CustomerRules() {
   return (
-    <div className="space-y-section">
+    <div className="space-y-8">
       <SectionHeader title="Rules" description="AI governance rules applied to your systems" />
       <DataTable columns={columns} data={mockRules} rowKey={(r) => r.id} />
     </div>

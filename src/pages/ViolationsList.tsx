@@ -52,12 +52,12 @@ export default function ViolationsList() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader title="Violations" description="Monitor and review AI governance violations" />
 
-      <div className="flex gap-3">
+      <div className="flex gap-2">
         <Select value={severityFilter} onValueChange={setSeverityFilter}>
-          <SelectTrigger className="w-[160px] bg-secondary border-border text-secondary-foreground">
+          <SelectTrigger className="w-[150px] h-9 bg-secondary/60 border-border/50 text-foreground text-caption rounded-md">
             <SelectValue placeholder="Severity" />
           </SelectTrigger>
           <SelectContent>
@@ -70,7 +70,7 @@ export default function ViolationsList() {
         </Select>
 
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[160px] bg-secondary border-border text-secondary-foreground">
+          <SelectTrigger className="w-[150px] h-9 bg-secondary/60 border-border/50 text-foreground text-caption rounded-md">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>

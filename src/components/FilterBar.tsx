@@ -17,10 +17,10 @@ interface FilterBarProps {
 
 export function FilterBar({ filters }: FilterBarProps) {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap gap-2">
       {filters.map((filter) => (
         <Select key={filter.key} value={filter.value} onValueChange={filter.onChange}>
-          <SelectTrigger className="w-[160px] bg-secondary border-border text-foreground">
+          <SelectTrigger className="w-[150px] h-9 bg-secondary/60 border-border/50 text-foreground text-caption rounded-md">
             <SelectValue placeholder={filter.label} />
           </SelectTrigger>
           <SelectContent>

@@ -16,15 +16,28 @@ export default {
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'system-ui', 'sans-serif'],
       },
+      fontSize: {
+        "page": ["1.875rem", { lineHeight: "2.25rem", fontWeight: "600", letterSpacing: "-0.025em" }],
+        "section": ["1.25rem", { lineHeight: "1.75rem", fontWeight: "500", letterSpacing: "-0.015em" }],
+        "body": ["0.9375rem", { lineHeight: "1.5rem" }],
+        "caption": ["0.8125rem", { lineHeight: "1.25rem" }],
+      },
       spacing: {
-        "base": "var(--space-base)",       /* 16px */
-        "section": "var(--space-section)", /* 24px */
-        "card": "var(--space-card)",       /* 12px */
+        "xs": "var(--space-xs)",
+        "sm": "var(--space-sm)",
+        "md": "var(--space-md)",
+        "lg": "var(--space-lg)",
+        "xl": "var(--space-xl)",
+        "2xl": "var(--space-2xl)",
+        /* Legacy aliases */
+        "base": "var(--space-md)",
+        "section": "var(--space-xl)",
+        "card": "var(--space-lg)",
       },
       borderRadius: {
-        lg: "var(--radius)",               /* 20px */
-        md: "calc(var(--radius) - 4px)",   /* 16px */
-        sm: "calc(var(--radius) - 8px)",   /* 12px */
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 8px)",
       },
       boxShadow: {
         "card": "var(--shadow-card)",
@@ -98,14 +111,14 @@ export default {
           to: { height: "0" },
         },
         "fade-in": {
-          from: { opacity: "0", transform: "translateY(8px)" },
+          from: { opacity: "0", transform: "translateY(6px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.4s ease-out forwards",
+        "fade-in": "fade-in 0.35s ease-out forwards",
       },
     },
   },
