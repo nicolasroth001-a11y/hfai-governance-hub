@@ -721,6 +721,124 @@ export default function AdminHumanFirstFramework() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem
+          value="deepfake"
+          className="bg-card rounded-2xl border border-border/40 shadow-sm px-8 py-2 data-[state=open]:shadow-md transition-shadow"
+        >
+          <AccordionTrigger className="text-lg font-semibold tracking-tight hover:no-underline">
+            SECTION 7 — Anti‑Deepfake &amp; Identity Protection Standards
+          </AccordionTrigger>
+          <AccordionContent className="text-body leading-relaxed text-muted-foreground space-y-6 pr-4">
+            <p>
+              This section establishes strict, fair, and enforceable rules that protect human identity, reputation, and reality. AI has made it possible to fabricate images, videos, audio, and written content that convincingly depict real people doing or saying things they never did. These protections apply to workers, private citizens, public figures, companies, creators, minors, and vulnerable individuals.
+            </p>
+
+            <div className="space-y-6 pt-2">
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">A. Identity Protection Principles</h4>
+                <p>These principles guide all rules in this section:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. Consent Is Mandatory</strong><br />No AI system may generate or alter media depicting a real person without their explicit consent.</div>
+                  <div><strong>2. Authenticity Is Required</strong><br />All AI‑generated or AI‑altered media must be clearly labeled and traceable.</div>
+                  <div><strong>3. No Deception</strong><br />AI may not be used to mislead, impersonate, or fabricate events involving real people.</div>
+                  <div><strong>4. No Harm</strong><br />AI may not be used to damage a person's reputation, dignity, or safety.</div>
+                  <div><strong>5. Human Oversight</strong><br />All identity‑related violations must be reviewed and judged by humans.</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">B. Prohibited AI Actions</h4>
+                <p>The following uses of AI are strictly prohibited:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. Deepfake Videos of Real People</strong><br />No AI‑generated or AI‑altered video may depict a real person without consent.</div>
+                  <div><strong>2. AI‑Generated Photos of Real People</strong><br />No synthetic images may place a real person in false events, locations, actions, or contexts.</div>
+                  <div><strong>3. AI Voice Cloning Without Consent</strong><br />No AI may replicate a person's voice for impersonation, deception, harassment, fraud, or slander.</div>
+                  <div><strong>4. AI‑Generated Slander or Fabricated Statements</strong><br />AI may not generate fake quotes, confessions, accusations, messages, or interviews.</div>
+                  <div><strong>5. AI Impersonation in Text or Digital Identity</strong><br />AI may not imitate a person's writing style, communication patterns, digital identity, or social media presence without explicit permission.</div>
+                  <div><strong>6. AI‑Generated Harassment or Targeted Abuse</strong><br />AI may not create content intended to shame, threaten, humiliate, intimidate, or defame any individual.</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">C. Allowed AI Uses</h4>
+                <p>To maintain fairness and support innovation, the following uses are allowed:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. AI‑Generated Fictional Characters</strong><br />AI may create fictional people not based on real individuals.</div>
+                  <div><strong>2. AI‑Generated Media With Consent</strong><br />Creators, companies, and individuals may generate media of themselves or others with documented consent.</div>
+                  <div><strong>3. AI‑Assisted Editing With Transparency</strong><br />AI may enhance or edit real media if edits are disclosed, do not misrepresent reality, and the person depicted approves.</div>
+                  <div><strong>4. AI for Education, Art, and Research</strong><br />AI may generate synthetic media for training, education, artistic expression, or research, as long as no real person is depicted without consent.</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">D. Authenticity &amp; Watermarking Requirements</h4>
+                <p>All AI‑generated or AI‑altered media must include:</p>
+                <div className="space-y-3 pl-2">
+                  <div><strong>1. Invisible Watermarking</strong><br />Embedded metadata identifying the AI system, model, timestamp, creator, and purpose.</div>
+                  <div><strong>2. Visible Labeling</strong><br />A clear label such as "AI‑Generated," "AI‑Altered," or "Synthetic Media."</div>
+                  <div><strong>3. Traceable Logs</strong><br />Every piece of synthetic media must be traceable back to the creator, system, source files, and consent record.</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">E. Violation Detection</h4>
+                <p>The dual‑layer oversight model applies here:</p>
+                <p><strong>AI Alert System Flags:</strong></p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>deepfake patterns</li>
+                  <li>voice cloning attempts</li>
+                  <li>synthetic face swaps</li>
+                  <li>impersonation attempts</li>
+                  <li>metadata tampering</li>
+                  <li>unlabeled AI media</li>
+                </ul>
+                <p><strong>Human Oversight Board Reviews:</strong></p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>context</li>
+                  <li>intent</li>
+                  <li>harm</li>
+                  <li>consent</li>
+                  <li>evidence</li>
+                </ul>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">F. Consequences for Identity Violations</h4>
+                <p>Consequences follow the proportional enforcement ladder defined in Section 6, with additional protections for victims.</p>
+                <p><strong>For Individuals Harmed:</strong></p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>immediate removal of harmful content</li>
+                  <li>public correction if necessary</li>
+                  <li>restored reputation records</li>
+                  <li>legal support (optional)</li>
+                  <li>compensation if harm is proven</li>
+                </ul>
+                <p><strong>For Companies:</strong></p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>corrective action</li>
+                  <li>training</li>
+                  <li>restricted AI use</li>
+                  <li>human‑only mode for media tools</li>
+                  <li>deep audit for repeated violations</li>
+                </ul>
+                <p><strong>For Severe Misuse:</strong></p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>full suspension of AI media tools</li>
+                  <li>mandatory human‑only mode</li>
+                  <li>public compliance report</li>
+                </ul>
+                <p>All decisions are human‑made and evidence‑based.</p>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">G. Appeals &amp; Fairness Protections</h4>
+                <p>
+                  Companies and individuals may appeal identity‑related rulings. Appeals must be reviewed by a separate human panel, based on evidence, resolved promptly, and documented transparently.
+                </p>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
     </div>
   );
