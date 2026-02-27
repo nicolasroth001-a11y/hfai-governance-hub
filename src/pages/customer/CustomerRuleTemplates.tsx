@@ -1,8 +1,8 @@
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { SeverityBadge } from "@/components/SeverityBadge";
+import { DemoDisabled } from "@/components/DemoDisabled";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
 import { ShieldCheck } from "lucide-react";
 
 const templates = [
@@ -14,11 +14,6 @@ const templates = [
 ];
 
 export default function CustomerRuleTemplates() {
-  const handleEnable = (name: string) => {
-    // No backend route for rule templates yet
-    toast({ title: "Not available", description: "Rule template activation is not yet supported by the backend.", variant: "destructive" });
-  };
-
   return (
     <div className="space-y-section">
       <SectionHeader title="Rule Templates" description="Enable prebuilt governance rules for your AI systems" />
@@ -30,7 +25,9 @@ export default function CustomerRuleTemplates() {
                 <p className="text-sm text-card-foreground/70">{t.description}</p>
                 <SeverityBadge severity={t.severity} />
               </div>
-              <Button size="sm" onClick={() => handleEnable(t.name)}>Enable Rule</Button>
+              <DemoDisabled>
+                <Button size="sm">Enable Rule</Button>
+              </DemoDisabled>
             </div>
           </ContentCard>
         ))}

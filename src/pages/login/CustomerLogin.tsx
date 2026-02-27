@@ -1,26 +1,13 @@
-import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Shield, Play } from "lucide-react";
+import { DemoDisabled } from "@/components/DemoDisabled";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 
 export default function CustomerLogin() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    // No /auth/login route exists in backend — navigate directly
-    toast({ title: "Auth not implemented", description: "No authentication route exists in the backend yet. Navigating to dashboard.", variant: "destructive" });
-    setTimeout(() => navigate("/customer/dashboard"), 500);
-    setLoading(false);
-  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-section">
@@ -32,22 +19,32 @@ export default function CustomerLogin() {
           <CardTitle className="text-xl">Customer Portal</CardTitle>
           <CardDescription>Sign in to your HFAI governance dashboard</CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-card-foreground">Email</Label>
-              <Input id="email" type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-card border-card-foreground/10" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-card-foreground">Password</Label>
-              <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-card border-card-foreground/10" />
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>{loading ? "Signing in…" : "Log In"}</Button>
-            <p className="text-center text-xs text-card-foreground/50">
-              Don't have an account?{" "}
-              <Link to="/signup/customer" className="text-primary hover:underline">Sign up</Link>
-            </p>
-          </form>
+        <CardContent className="space-y-6">
+          <Button className="w-full gap-2" size="lg" onClick={() => navigate("/customer/dashboard")}>
+            <Play className="h-4 w-4" />
+            Enter Demo as Customer
+          </Button>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border/40" /></div>
+            <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-2 text-muted-foreground">or sign in</span></div>
+          </div>
+          <DemoDisabled>
+            <form className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-card-foreground">Email</Label>
+                <Input id="email" type="email" disabled placeholder="you@company.com" className="bg-card border-card-foreground/10" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-card-foreground">Password</Label>
+                <Input id="password" type="password" disabled placeholder="••••••••" className="bg-card border-card-foreground/10" />
+              </div>
+              <Button type="button" disabled className="w-full">Log In</Button>
+            </form>
+          </DemoDisabled>
+          <p className="text-center text-xs text-card-foreground/50">
+            Don't have an account?{" "}
+            <Link to="/signup/customer" className="text-primary hover:underline">Sign up</Link>
+          </p>
         </CardContent>
       </Card>
     </div>

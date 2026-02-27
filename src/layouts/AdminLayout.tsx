@@ -24,7 +24,7 @@ export default function AdminLayout() {
       <div className="min-h-screen flex w-full">
         <RoleSidebar items={navItems} roleLabel="HFAI" roleDescription="Admin Portal" extraSections={[{ label: "Governance Doctrine", items: docItems }]} />
         <main className="flex-1 overflow-auto scrollbar-thin">
-          <TopBar role="admin" userName="admin@hfai.com" />
+          <TopBar role="admin" />
           <div className="px-8 py-8 max-w-6xl mx-auto">
             <Outlet />
           </div>
