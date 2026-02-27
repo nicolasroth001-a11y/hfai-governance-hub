@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AlertTriangle, BookOpen, CheckCircle, Send, ShieldAlert } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -14,30 +14,29 @@ export default function CustomerDashboard() {
   const [testOpen, setTestOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const [violations, logs] = await Promise.all([fetchViolations(), fetchAuditLogs()]);
-        setStats({
-          totalViolations: violations.length,
-          openViolations: violations.filter((v: any) => v.status === "open").length,
-          totalRules: 0,
-          resolvedToday: violations.filter((v: any) => v.status === "resolved").length,
-        });
-        setActivity(logs.slice(0, 10).map((l: any) => ({
-          id: l.id?.toString(),
-          type: l.action?.includes("violation") ? "violation" : l.action?.includes("resolve") ? "resolution" : "review",
-          message: l.details || l.action,
-          timestamp: l.created_at || new Date().toISOString(),
-        })));
-      } catch (err) {
-        console.error("Dashboard load error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+  const loadData = useCallback(async () => {
+    try {
+      const [violations, logs] = await Promise.all([fetchViolations(), fetchAuditLogs()]);
+      setStats({
+        totalViolations: violations.length,
+        openViolations: violations.filter((v: any) => v.status === "open").length,
+        totalRules: 0,
+        resolvedToday: violations.filter((v: any) => v.status === "resolved").length,
+      });
+      setActivity(logs.slice(0, 10).map((l: any) => ({
+        id: l.id?.toString(),
+        type: l.action?.includes("violation") ? "violation" : l.action?.includes("resolve") ? "resolution" : "review",
+        message: l.details || l.action,
+        timestamp: l.created_at || new Date().toISOString(),
+      })));
+    } catch (err) {
+      console.error("Dashboard load error:", err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => { loadData(); }, [loadData]);
 
   return (
     <div className="space-y-8">
@@ -55,7 +54,7 @@ export default function CustomerDashboard() {
         <StatCard title="Resolved Today" value={stats.resolvedToday} icon={CheckCircle} />
       </div>
 
-      <TestEventModal open={testOpen} onOpenChange={setTestOpen} />
+      <TestEventModal open={testOpen} onOpenChange={setTestOpen} onEventSent={loadData} />
 
       <ContentCard title="Recent Activity">
         {loading ? (
