@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
@@ -52,6 +53,7 @@ const payloadExample = `{
 
 export default function CustomerOnboarding() {
   const [testOpen, setTestOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-section">
@@ -77,7 +79,11 @@ export default function CustomerOnboarding() {
         </ContentCard>
       </div>
 
-      <TestEventModal open={testOpen} onOpenChange={setTestOpen} />
+      <TestEventModal
+        open={testOpen}
+        onOpenChange={setTestOpen}
+        onEventSent={() => navigate("/customer/violations")}
+      />
 
       <ContentCard icon={BookOpen} title="Integration Guide" fullWidth>
         <div className="space-y-6">
@@ -104,3 +110,4 @@ export default function CustomerOnboarding() {
     </div>
   );
 }
+
