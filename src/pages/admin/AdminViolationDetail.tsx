@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ContentCard } from "@/components/ContentCard";
 import { fetchViolation } from "@/lib/api";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
@@ -10,7 +10,7 @@ import { ReviewActions } from "@/components/ReviewActions";
 import { ReviewerNotesInput } from "@/components/ReviewerNotesInput";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, StickyNote, Settings } from "lucide-react";
+import { ArrowLeft, StickyNote, Settings, Gavel } from "lucide-react";
 
 export default function AdminViolationDetail() {
   const { id } = useParams();
@@ -18,18 +18,23 @@ export default function AdminViolationDetail() {
   const [status, setStatus] = useState("open");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [auditKey, setAuditKey] = useState(0);
 
   useEffect(() => {
     if (id) {
       fetchViolation(id)
-        .then((data) => {
-          setV(data);
-          if (data.status) setStatus(data.status);
-        })
+        .then((data) => { setV(data); if (data.status) setStatus(data.status); })
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
     }
   }, [id]);
+
+  const refreshAudit = useCallback(() => setAuditKey((k) => k + 1), []);
+
+  const handleDecision = useCallback((decision: "approve" | "reject") => {
+    setStatus(decision === "approve" ? "resolved" : "resolved");
+    refreshAudit();
+  }, [refreshAudit]);
 
   if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
   if (error || !v) return (
@@ -50,12 +55,8 @@ export default function AdminViolationDetail() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
         <ViolationSummaryCard
-          id={v.id}
-          description={v.description}
-          severity={v.severity}
-          rule_id={v.rule_id}
-          detected_at={v.detected_at}
-          status={status}
+          id={v.id} description={v.description} severity={v.severity}
+          rule_id={v.rule_id} detected_at={v.detected_at} status={status}
         />
         <AISystemInfoCard aiSystemId={v.ai_system_id} />
       </div>
@@ -80,16 +81,16 @@ export default function AdminViolationDetail() {
               </Select>
             </div>
           </ContentCard>
-          <ContentCard title="Review Actions">
-            <ReviewActions violationId={String(v.id)} />
+          <ContentCard icon={Gavel} title="Review Actions">
+            <ReviewActions violationId={String(v.id)} onDecision={handleDecision} />
           </ContentCard>
           <ContentCard icon={StickyNote} title="Reviewer Notes">
-            <ReviewerNotesInput violationId={String(v.id)} />
+            <ReviewerNotesInput violationId={String(v.id)} onSubmit={refreshAudit} />
           </ContentCard>
         </div>
       </div>
 
-      <AuditTrailCard violationId={v.id} />
+      <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
   );
 }

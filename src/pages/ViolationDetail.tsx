@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ContentCard } from "@/components/ContentCard";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
 import { AISystemInfoCard } from "@/components/AISystemInfoCard";
@@ -8,22 +8,29 @@ import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { ReviewActions } from "@/components/ReviewActions";
 import { SectionHeader } from "@/components/SectionHeader";
 import { fetchViolation } from "@/lib/api";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Gavel } from "lucide-react";
 
 export default function ViolationDetail() {
   const { id } = useParams();
   const [v, setV] = useState<any>(null);
+  const [status, setStatus] = useState("open");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [auditKey, setAuditKey] = useState(0);
 
   useEffect(() => {
     if (id) {
       fetchViolation(id)
-        .then(setV)
+        .then((data) => { setV(data); setStatus(data.status || "open"); })
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
     }
   }, [id]);
+
+  const handleDecision = useCallback((decision: "approve" | "reject") => {
+    setStatus("resolved");
+    setAuditKey((k) => k + 1);
+  }, []);
 
   if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
   if (error || !v) return (
@@ -44,12 +51,8 @@ export default function ViolationDetail() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
         <ViolationSummaryCard
-          id={v.id}
-          description={v.description}
-          severity={v.severity}
-          rule_id={v.rule_id}
-          detected_at={v.detected_at}
-          status={v.status || "open"}
+          id={v.id} description={v.description} severity={v.severity}
+          rule_id={v.rule_id} detected_at={v.detected_at} status={status}
         />
         <AISystemInfoCard aiSystemId={v.ai_system_id} />
       </div>
@@ -59,13 +62,13 @@ export default function ViolationDetail() {
           <EventPayloadCard data={v} />
         </div>
         <div className="lg:col-span-2">
-          <ContentCard title="Review Actions">
-            <ReviewActions violationId={String(v.id)} />
+          <ContentCard icon={Gavel} title="Review Actions">
+            <ReviewActions violationId={String(v.id)} onDecision={handleDecision} />
           </ContentCard>
         </div>
       </div>
 
-      <AuditTrailCard violationId={v.id} />
+      <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
   );
 }
