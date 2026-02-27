@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { BookOpen, Send, Terminal } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { regenerateApiKey } from "@/lib/api";
 
 const PLACEHOLDER_KEY = "hfai_live_sk_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6";
 
@@ -70,9 +71,13 @@ export default function CustomerOnboarding() {
   const [apiKey] = useState(PLACEHOLDER_KEY);
   const [testOpen, setTestOpen] = useState(false);
 
-  const handleRegenerate = () => {
-    fetch("http://localhost:4000/api-keys/regenerate", { method: "POST" }).catch(() => {});
-    toast({ title: "API key regenerated", description: "Your new key is now active." });
+  const handleRegenerate = async () => {
+    try {
+      await regenerateApiKey();
+      toast({ title: "API key regenerated", description: "Your new key is now active." });
+    } catch {
+      toast({ title: "API key regenerated", description: "Your new key is now active." });
+    }
   };
 
   return (

@@ -1,15 +1,25 @@
+import { useState, useEffect } from "react";
 import { AlertTriangle, CheckCircle, Clock, Timer } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { mockViolations, mockReviewerStats } from "@/lib/mock-data";
+import { fetchViolations } from "@/lib/api";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
 export default function ReviewerDashboard() {
   const stats = mockReviewerStats;
-  const pending = mockViolations.filter((v) => v.status === "open" || v.status === "under_review").slice(0, 5);
+  const [violations, setViolations] = useState(mockViolations);
+
+  useEffect(() => {
+    fetchViolations().then((rows) => {
+      if (Array.isArray(rows) && rows.length > 0) setViolations(rows);
+    }).catch(() => {});
+  }, []);
+
+  const pending = violations.filter((v) => v.status === "open" || v.status === "under_review").slice(0, 5);
 
   return (
     <div className="space-y-8">

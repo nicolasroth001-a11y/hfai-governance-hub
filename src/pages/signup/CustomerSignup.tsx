@@ -5,20 +5,30 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { signup } from "@/lib/api";
+import { toast } from "@/hooks/use-toast";
 
 export default function CustomerSignup() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ company_name: "", email: "", password: "", confirm_password: "" });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder: POST /auth/signup/customer
-    fetch("http://localhost:4000/auth/signup/customer", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    }).catch(() => {});
-    navigate("/login/customer");
+    if (form.password !== form.confirm_password) {
+      toast({ title: "Passwords don't match", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    try {
+      await signup({ company_name: form.company_name, email: form.email, password: form.password });
+      toast({ title: "Account created", description: "You can now log in." });
+      navigate("/login/customer");
+    } catch (err: any) {
+      toast({ title: "Signup failed", description: err.message, variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,7 +59,7 @@ export default function CustomerSignup() {
               <Label>Confirm Password</Label>
               <Input type="password" placeholder="••••••••" value={form.confirm_password} onChange={(e) => setForm({ ...form, confirm_password: e.target.value })} required />
             </div>
-            <Button type="submit" className="w-full">Create Account</Button>
+            <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating…" : "Create Account"}</Button>
             <p className="text-center text-xs text-card-foreground/50">
               Already have an account?{" "}
               <Link to="/login/customer" className="text-primary hover:underline">Log in</Link>

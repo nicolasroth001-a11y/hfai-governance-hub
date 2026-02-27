@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ContentCard } from "@/components/ContentCard";
+import { fetchViolation } from "@/lib/api";
 import { ViolationDetailCard } from "@/components/ViolationDetailCard";
 import { RuleCard } from "@/components/RuleCard";
 import { AIEventViewer } from "@/components/AIEventViewer";
@@ -15,9 +16,21 @@ import { ArrowLeft, MessageSquare, ScrollText, StickyNote, UserCog, Settings } f
 
 export default function AdminViolationDetail() {
   const { id } = useParams();
-  const v = mockViolationDetail;
-  const [assignedReviewer, setAssignedReviewer] = useState(v.assigned_reviewer || "");
-  const [status, setStatus] = useState(v.status);
+  const [v, setV] = useState(mockViolationDetail);
+  const [assignedReviewer, setAssignedReviewer] = useState(mockViolationDetail.assigned_reviewer || "");
+  const [status, setStatus] = useState(mockViolationDetail.status);
+
+  useEffect(() => {
+    if (id) {
+      fetchViolation(id).then((data: any) => {
+        if (data && data.id) {
+          setV({ ...mockViolationDetail, ...data });
+          if (data.status) setStatus(data.status);
+        }
+      }).catch(() => {});
+    }
+  }, [id]);
+
   const userMessage = v.conversation.find((m) => m.role === "user")?.content || "";
   const aiResponse = v.conversation.find((m) => m.role === "assistant")?.content || "";
 

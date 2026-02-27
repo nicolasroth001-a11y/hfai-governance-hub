@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
@@ -6,6 +6,7 @@ import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FilterBar } from "@/components/FilterBar";
 import { mockViolations } from "@/lib/mock-data";
+import { fetchViolations } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
 type Violation = (typeof mockViolations)[number];
@@ -22,8 +23,15 @@ const columns: DataTableColumn<Violation>[] = [
 export default function CustomerViolations() {
   const [severityFilter, setSeverityFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [data, setData] = useState<any[]>(mockViolations);
 
-  const filtered = mockViolations.filter((v) =>
+  useEffect(() => {
+    fetchViolations().then((rows) => {
+      if (Array.isArray(rows) && rows.length > 0) setData(rows);
+    }).catch(() => {});
+  }, []);
+
+  const filtered = data.filter((v) =>
     (severityFilter === "all" || v.severity === severityFilter) &&
     (statusFilter === "all" || v.status === statusFilter)
   );
