@@ -2,7 +2,10 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchViolation } from "@/lib/api";
 import { ContentCard } from "@/components/ContentCard";
-import { ViolationDetailCard } from "@/components/ViolationDetailCard";
+import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
+import { AISystemInfoCard } from "@/components/AISystemInfoCard";
+import { EventPayloadCard } from "@/components/EventPayloadCard";
+import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { ReviewActions } from "@/components/ReviewActions";
 import { ReviewerNotesInput } from "@/components/ReviewerNotesInput";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -37,11 +40,26 @@ export default function ReviewerViolationDetail() {
         <Link to="/reviewer/violations" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Violations
         </Link>
-        <SectionHeader title={`Violation ${v.id}`} description="Review and take action" />
+        <SectionHeader title={`Violation #${v.id}`} description="Review and take action" />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-section items-start">
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
+        <ViolationSummaryCard
+          id={v.id}
+          description={v.description}
+          severity={v.severity}
+          rule_id={v.rule_id}
+          detected_at={v.detected_at}
+          status={v.status || "open"}
+        />
+        <AISystemInfoCard aiSystemId={v.ai_system_id} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-base items-start">
+        <div className="lg:col-span-3">
+          <EventPayloadCard data={v} />
+        </div>
         <div className="lg:col-span-2 space-y-base">
-          <ViolationDetailCard id={v.id} description={v.description} severity={v.severity} rule_id={v.rule_id} detected_at={v.detected_at} status={v.status || "open"} />
           <ContentCard title="Review Actions">
             <ReviewActions violationId={String(v.id)} />
           </ContentCard>
@@ -49,12 +67,9 @@ export default function ReviewerViolationDetail() {
             <ReviewerNotesInput violationId={String(v.id)} />
           </ContentCard>
         </div>
-        <div className="lg:col-span-3 space-y-base">
-          <ContentCard title="Violation Data">
-            <pre className="text-xs text-card-foreground/70 font-mono whitespace-pre-wrap">{JSON.stringify(v, null, 2)}</pre>
-          </ContentCard>
-        </div>
       </div>
+
+      <AuditTrailCard violationId={v.id} />
     </div>
   );
 }
