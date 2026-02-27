@@ -20,7 +20,7 @@ export default function CustomerLayout() {
       <div className="min-h-screen flex w-full">
         <RoleSidebar items={navItems} roleLabel="HFAI" roleDescription="Customer Portal" />
         <main className="flex-1 overflow-auto scrollbar-thin">
-          <TopBar role="customer" userName="admin@acme.com" />
+          <TopBar role="customer" />
           <div className="px-8 py-8 max-w-6xl mx-auto">
             <Outlet />
           </div>
