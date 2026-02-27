@@ -1,8 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ViolationDetailCard } from "@/components/ViolationDetailCard";
-import { SectionHeader } from "@/components/SectionHeader";
 import { fetchViolation } from "@/lib/api";
+import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
+import { AISystemInfoCard } from "@/components/AISystemInfoCard";
+import { EventPayloadCard } from "@/components/EventPayloadCard";
+import { AuditTrailCard } from "@/components/AuditTrailCard";
+import { SectionHeader } from "@/components/SectionHeader";
 import { ArrowLeft } from "lucide-react";
 
 export default function CustomerViolationDetail() {
@@ -34,16 +37,23 @@ export default function CustomerViolationDetail() {
         <Link to="/customer/violations" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Violations
         </Link>
-        <SectionHeader title={`Violation ${v.id}`} description="Review violation details" />
+        <SectionHeader title={`Violation #${v.id}`} description="Review violation details" />
       </div>
-      <ViolationDetailCard
-        id={v.id}
-        description={v.description}
-        severity={v.severity}
-        rule_id={v.rule_id}
-        detected_at={v.detected_at}
-        status={v.status || "open"}
-      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
+        <ViolationSummaryCard
+          id={v.id}
+          description={v.description}
+          severity={v.severity}
+          rule_id={v.rule_id}
+          detected_at={v.detected_at}
+          status={v.status || "open"}
+        />
+        <AISystemInfoCard aiSystemId={v.ai_system_id} />
+      </div>
+
+      <EventPayloadCard data={v} />
+      <AuditTrailCard violationId={v.id} />
     </div>
   );
 }
