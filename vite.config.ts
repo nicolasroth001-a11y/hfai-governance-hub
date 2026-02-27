@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: process.env.GITHUB_ACTIONS ? "/Hfai-governance-hub/" : "/",
+  base: '/hfai-governance-hub/',
   server: {
     host: "::",
     port: 8080,
