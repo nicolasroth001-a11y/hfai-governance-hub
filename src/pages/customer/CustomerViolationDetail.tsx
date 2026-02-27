@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ContentCard } from "@/components/ContentCard";
 import { ViolationDetailCard } from "@/components/ViolationDetailCard";
 import { RuleCard } from "@/components/RuleCard";
@@ -7,11 +8,21 @@ import { ConversationViewer } from "@/components/ConversationViewer";
 import { Timeline } from "@/components/Timeline";
 import { SectionHeader } from "@/components/SectionHeader";
 import { mockViolationDetail } from "@/lib/mock-data";
+import { fetchViolation } from "@/lib/api";
 import { ArrowLeft, MessageSquare, ScrollText } from "lucide-react";
 
 export default function CustomerViolationDetail() {
   const { id } = useParams();
-  const v = mockViolationDetail;
+  const [v, setV] = useState(mockViolationDetail);
+
+  useEffect(() => {
+    if (id) {
+      fetchViolation(id).then((data: any) => {
+        if (data && data.id) setV({ ...mockViolationDetail, ...data });
+      }).catch(() => {});
+    }
+  }, [id]);
+
   const userMessage = v.conversation.find((m) => m.role === "user")?.content || "";
   const aiResponse = v.conversation.find((m) => m.role === "assistant")?.content || "";
 

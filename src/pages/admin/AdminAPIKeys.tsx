@@ -5,6 +5,7 @@ import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { Key } from "lucide-react";
 import { mockCustomers } from "@/lib/mock-data";
 import { toast } from "@/hooks/use-toast";
+import { regenerateApiKey } from "@/lib/api";
 
 interface APIKeyRow {
   customer_id: string;
@@ -24,8 +25,8 @@ const columns: DataTableColumn<APIKeyRow>[] = [
   { key: "api_key", header: "API Key", render: (r) => (
     <APIKeyDisplay
       apiKey={r.api_key}
-      onRegenerate={() => {
-        fetch(`http://localhost:4000/api-keys/${r.customer_id}/regenerate`, { method: "POST" }).catch(() => {});
+      onRegenerate={async () => {
+        try { await regenerateApiKey(r.customer_id); } catch {}
         toast({ title: "Key regenerated", description: `New key issued for ${r.customer_name}.` });
       }}
     />

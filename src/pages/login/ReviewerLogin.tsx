@@ -5,15 +5,26 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Shield } from "lucide-react";
+import { login } from "@/lib/api";
+import { toast } from "@/hooks/use-toast";
 
 export default function ReviewerLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/reviewer/dashboard");
+    setLoading(true);
+    try {
+      await login(email, password, "reviewer");
+      navigate("/reviewer/dashboard");
+    } catch (err: any) {
+      toast({ title: "Login failed", description: err.message, variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,7 +47,7 @@ export default function ReviewerLogin() {
               <Label htmlFor="password" className="text-card-foreground">Password</Label>
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-card border-card-foreground/10" />
             </div>
-            <Button type="submit" className="w-full">Log In</Button>
+            <Button type="submit" className="w-full" disabled={loading}>{loading ? "Signing in…" : "Log In"}</Button>
           </form>
         </CardContent>
       </Card>

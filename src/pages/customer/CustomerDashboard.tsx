@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AlertTriangle, BookOpen, CheckCircle, Send, ShieldAlert } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -6,11 +6,27 @@ import { ContentCard } from "@/components/ContentCard";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { mockDashboardStats, mockRecentActivity } from "@/lib/mock-data";
+import { fetchDashboardStats, fetchRecentActivity } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
 export default function CustomerDashboard() {
-  const stats = mockDashboardStats;
+  const [stats, setStats] = useState(mockDashboardStats);
+  const [activity, setActivity] = useState(mockRecentActivity);
   const [testOpen, setTestOpen] = useState(false);
+
+  useEffect(() => {
+    fetchDashboardStats().then(setStats).catch(() => {});
+    fetchRecentActivity().then((logs) => {
+      if (Array.isArray(logs) && logs.length > 0) {
+        setActivity(logs.slice(0, 10).map((l: any) => ({
+          id: l.id?.toString() || l.entity_id,
+          type: l.action?.includes("violation") ? "violation" : l.action?.includes("resolve") ? "resolution" : "review",
+          message: l.details || l.action,
+          timestamp: l.created_at || l.timestamp || new Date().toISOString(),
+        })));
+      }
+    }).catch(() => {});
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -32,7 +48,7 @@ export default function CustomerDashboard() {
 
       <ContentCard title="Recent Activity">
         <div className="space-y-4">
-          {mockRecentActivity.map((item) => (
+          {activity.map((item) => (
             <div key={item.id} className="flex items-start gap-3">
               <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
                 item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"

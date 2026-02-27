@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
@@ -6,6 +6,7 @@ import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FilterBar } from "@/components/FilterBar";
 import { mockViolations } from "@/lib/mock-data";
+import { fetchViolations } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
 type Violation = (typeof mockViolations)[number];
@@ -23,8 +24,15 @@ export default function ReviewerViolations() {
   const [customerFilter, setCustomerFilter] = useState("all");
   const [ruleFilter, setRuleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [data, setData] = useState<any[]>(mockViolations);
 
-  const assigned = mockViolations.filter((v) => v.assigned_reviewer === "reviewer@hfai.com");
+  useEffect(() => {
+    fetchViolations().then((rows) => {
+      if (Array.isArray(rows) && rows.length > 0) setData(rows);
+    }).catch(() => {});
+  }, []);
+
+  const assigned = data.filter((v) => v.assigned_reviewer === "reviewer@hfai.com");
   const filtered = assigned.filter((v) => {
     if (severityFilter !== "all" && v.severity !== severityFilter) return false;
     if (statusFilter !== "all" && v.status !== statusFilter) return false;

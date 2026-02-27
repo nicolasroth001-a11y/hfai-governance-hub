@@ -7,20 +7,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Building2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { createCustomer } from "@/lib/api";
 
 export default function AdminCreateCustomer() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ company_name: "", admin_email: "", password: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    fetch("http://localhost:4000/customers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    }).catch(() => {});
-    toast({ title: "Customer created", description: `${form.company_name} has been added.` });
-    navigate("/admin/customers");
+    try {
+      await createCustomer(form);
+      toast({ title: "Customer created", description: `${form.company_name} has been added.` });
+      navigate("/admin/customers");
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    }
   };
 
   return (

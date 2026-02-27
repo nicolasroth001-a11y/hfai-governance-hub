@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Cpu, Plus, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { fetchAISystems, createAISystem } from "@/lib/api";
 
 interface AISystem {
   id: string;
@@ -20,7 +21,7 @@ interface AISystem {
   created_at: string;
 }
 
-const mockAISystems: AISystem[] = [
+const fallbackSystems: AISystem[] = [
   { id: "AIS-001", name: "Customer Support Bot", model: "gpt-4-turbo", environment: "production", status: "active", created_at: "2025-12-01T00:00:00Z" },
   { id: "AIS-002", name: "Hiring Recommender", model: "gpt-4", environment: "production", status: "active", created_at: "2026-01-15T00:00:00Z" },
   { id: "AIS-003", name: "Content Moderator", model: "claude-3-opus", environment: "development", status: "active", created_at: "2026-02-10T00:00:00Z" },
@@ -29,29 +30,44 @@ const mockAISystems: AISystem[] = [
 const columns: DataTableColumn<AISystem>[] = [
   { key: "id", header: "ID", render: (s) => <span className="text-primary font-medium">{s.id}</span> },
   { key: "name", header: "Name", render: (s) => <span className="text-sm font-medium text-card-foreground">{s.name}</span> },
-  { key: "model", header: "Model", render: (s) => <span className="text-xs text-card-foreground/60 font-mono">{s.model}</span> },
+  { key: "model", header: "Model", render: (s) => <span className="text-xs text-card-foreground/60 font-mono">{s.model || (s as any).model_type}</span> },
   { key: "environment", header: "Environment", render: (s) => (
     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${s.environment === "production" ? "bg-primary/15 text-primary" : "bg-info/15 text-info"}`}>
       {s.environment}
     </span>
   )},
-  { key: "status", header: "Status", render: (s) => <StatusBadge status={s.status} /> },
+  { key: "status", header: "Status", render: (s) => <StatusBadge status={s.status || "active"} /> },
 ];
 
 export default function CustomerAISystems() {
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ name: "", description: "", model: "", environment: "" });
+  const [systems, setSystems] = useState<any[]>(fallbackSystems);
 
-  const handleCreate = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetch("http://localhost:4000/ai-systems", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+  useEffect(() => {
+    fetchAISystems().then((rows) => {
+      if (Array.isArray(rows) && rows.length > 0) setSystems(rows);
     }).catch(() => {});
-    toast({ title: "AI System created", description: `${form.name} has been registered.` });
-    setShowCreate(false);
-    setForm({ name: "", description: "", model: "", environment: "" });
+  }, []);
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const result = await createAISystem({
+        name: form.name,
+        description: form.description,
+        model_type: form.model,
+        provider: "",
+        version: "",
+        risk_level: form.environment,
+      });
+      toast({ title: "AI System created", description: `${form.name} has been registered.` });
+      setSystems((prev) => [result, ...prev]);
+      setShowCreate(false);
+      setForm({ name: "", description: "", model: "", environment: "" });
+    } catch (err: any) {
+      toast({ title: "Error creating system", description: err.message, variant: "destructive" });
+    }
   };
 
   return (
@@ -96,7 +112,7 @@ export default function CustomerAISystems() {
         </ContentCard>
       )}
 
-      <DataTable columns={columns} data={mockAISystems} rowKey={(s) => s.id} />
+      <DataTable columns={columns} data={systems} rowKey={(s) => s.id} />
     </div>
   );
 }
