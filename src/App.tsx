@@ -73,7 +73,7 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter basename="/Hfai-governance-hub">
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
