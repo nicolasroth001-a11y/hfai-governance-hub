@@ -1,37 +1,28 @@
 import { useState } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
-import { APIKeyDisplay } from "@/components/APIKeyDisplay";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { BookOpen, Send, Terminal } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
-import { regenerateApiKey } from "@/lib/api";
 
-const PLACEHOLDER_KEY = "hfai_live_sk_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6";
-
-const curlExample = `curl -X POST http://localhost:4000/events \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
+const curlExample = `curl -X POST http://localhost:4000/ai-events \\
+  -H "x-api-key: YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "gpt-4",
-    "user_message": "Help me close my account",
-    "ai_response": "I will process that immediately.",
-    "metadata": { "context": "customer_support" }
+    "event_type": "user_message",
+    "payload": "Help me close my account"
   }'`;
 
-const nodeExample = `const response = await fetch("http://localhost:4000/events", {
+const nodeExample = `const response = await fetch("http://localhost:4000/ai-events", {
   method: "POST",
   headers: {
-    "Authorization": "Bearer YOUR_API_KEY",
+    "x-api-key": "YOUR_API_KEY",
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    model: "gpt-4",
-    user_message: "Help me close my account",
-    ai_response: "I will process that immediately.",
-    metadata: { context: "customer_support" },
+    event_type: "user_message",
+    payload: "Help me close my account",
   }),
 });
 
@@ -41,54 +32,38 @@ console.log(data);`;
 const pythonExample = `import requests
 
 response = requests.post(
-    "http://localhost:4000/events",
+    "http://localhost:4000/ai-events",
     headers={
-        "Authorization": "Bearer YOUR_API_KEY",
+        "x-api-key": "YOUR_API_KEY",
         "Content-Type": "application/json",
     },
     json={
-        "model": "gpt-4",
-        "user_message": "Help me close my account",
-        "ai_response": "I will process that immediately.",
-        "metadata": {"context": "customer_support"},
+        "event_type": "user_message",
+        "payload": "Help me close my account",
     },
 )
 
 print(response.json())`;
 
 const payloadExample = `{
-  "model": "gpt-4",
-  "user_message": "Help me close my account",
-  "ai_response": "I will process that immediately.",
-  "metadata": {
-    "context": "customer_support",
-    "session_id": "sess_abc123",
-    "environment": "production"
-  }
+  "event_type": "user_message",
+  "payload": "Help me close my account"
 }`;
 
 export default function CustomerOnboarding() {
-  const [apiKey] = useState(PLACEHOLDER_KEY);
   const [testOpen, setTestOpen] = useState(false);
-
-  const handleRegenerate = async () => {
-    try {
-      await regenerateApiKey();
-      toast({ title: "API key regenerated", description: "Your new key is now active." });
-    } catch {
-      toast({ title: "API key regenerated", description: "Your new key is now active." });
-    }
-  };
 
   return (
     <div className="space-y-section">
       <SectionHeader title="Onboarding" description="Set up your HFAI integration in minutes" />
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <ContentCard icon={Terminal} title="Your API Key">
+        <ContentCard icon={Terminal} title="API Key">
           <div className="space-y-4">
-            <APIKeyDisplay apiKey={apiKey} onRegenerate={handleRegenerate} />
-            <p className="text-xs text-card-foreground/50">Use this key to authenticate all API requests. Keep it secret.</p>
+            <p className="text-sm text-card-foreground/70">
+              Create an AI System via the <strong>AI Systems</strong> page to receive your API key.
+              The key is shown once on creation — store it securely.
+            </p>
           </div>
         </ContentCard>
 
@@ -107,8 +82,8 @@ export default function CustomerOnboarding() {
       <ContentCard icon={BookOpen} title="Integration Guide" fullWidth>
         <div className="space-y-6">
           <div>
-            <h3 className="text-sm font-semibold text-card-foreground mb-1">1. Get your API key</h3>
-            <p className="text-sm text-card-foreground/60">Copy the API key above and store it securely in your environment variables.</p>
+            <h3 className="text-sm font-semibold text-card-foreground mb-1">1. Register an AI System</h3>
+            <p className="text-sm text-card-foreground/60">Go to AI Systems → Register System. You'll receive an API key (x-api-key) on creation.</p>
           </div>
 
           <div>
@@ -122,7 +97,7 @@ export default function CustomerOnboarding() {
 
           <div>
             <h3 className="text-sm font-semibold text-card-foreground mb-3">3. Example JSON Payload</h3>
-            <CodeSnippetBlock language="json" title="JSON Payload" code={payloadExample} />
+            <CodeSnippetBlock language="json" title="POST /ai-events" code={payloadExample} />
           </div>
         </div>
       </ContentCard>

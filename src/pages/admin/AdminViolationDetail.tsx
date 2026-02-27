@@ -3,36 +3,38 @@ import { useState, useEffect } from "react";
 import { ContentCard } from "@/components/ContentCard";
 import { fetchViolation } from "@/lib/api";
 import { ViolationDetailCard } from "@/components/ViolationDetailCard";
-import { RuleCard } from "@/components/RuleCard";
-import { AIEventViewer } from "@/components/AIEventViewer";
-import { ConversationViewer } from "@/components/ConversationViewer";
-import { Timeline } from "@/components/Timeline";
 import { ReviewActions } from "@/components/ReviewActions";
 import { ReviewerNotesInput } from "@/components/ReviewerNotesInput";
 import { SectionHeader } from "@/components/SectionHeader";
-import { mockViolationDetail, mockReviewers } from "@/lib/mock-data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, MessageSquare, ScrollText, StickyNote, UserCog, Settings } from "lucide-react";
+import { ArrowLeft, StickyNote, Settings } from "lucide-react";
 
 export default function AdminViolationDetail() {
   const { id } = useParams();
-  const [v, setV] = useState(mockViolationDetail);
-  const [assignedReviewer, setAssignedReviewer] = useState(mockViolationDetail.assigned_reviewer || "");
-  const [status, setStatus] = useState(mockViolationDetail.status);
+  const [v, setV] = useState<any>(null);
+  const [status, setStatus] = useState("open");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (id) {
-      fetchViolation(id).then((data: any) => {
-        if (data && data.id) {
-          setV({ ...mockViolationDetail, ...data });
+      fetchViolation(id)
+        .then((data) => {
+          setV(data);
           if (data.status) setStatus(data.status);
-        }
-      }).catch(() => {});
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
     }
   }, [id]);
 
-  const userMessage = v.conversation.find((m) => m.role === "user")?.content || "";
-  const aiResponse = v.conversation.find((m) => m.role === "assistant")?.content || "";
+  if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
+  if (error || !v) return (
+    <div className="text-center py-20 text-muted-foreground">
+      {error || "Violation not found."}{" "}
+      <Link to="/admin/violations" className="text-primary hover:underline">Back to violations</Link>
+    </div>
+  );
 
   return (
     <div className="space-y-section">
@@ -48,19 +50,6 @@ export default function AdminViolationDetail() {
 
           <ContentCard icon={Settings} title="Admin Controls">
             <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs font-medium text-card-foreground/60">Assign Reviewer</label>
-                <Select value={assignedReviewer} onValueChange={setAssignedReviewer}>
-                  <SelectTrigger className="bg-card border-card-foreground/10">
-                    <SelectValue placeholder="Select reviewer" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mockReviewers.map((r) => (
-                      <SelectItem key={r.id} value={r.email}>{r.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
               <div className="space-y-2">
                 <label className="text-xs font-medium text-card-foreground/60">Change Status</label>
                 <Select value={status} onValueChange={setStatus}>
@@ -78,20 +67,15 @@ export default function AdminViolationDetail() {
           </ContentCard>
 
           <ContentCard title="Review Actions">
-            <ReviewActions violationId={v.id} />
+            <ReviewActions violationId={String(v.id)} />
           </ContentCard>
           <ContentCard icon={StickyNote} title="Reviewer Notes">
-            <ReviewerNotesInput violationId={v.id} />
+            <ReviewerNotesInput violationId={String(v.id)} />
           </ContentCard>
         </div>
         <div className="lg:col-span-3 space-y-base">
-          <RuleCard id={v.rule.id} name={v.rule.name} description={v.rule.description} category={v.rule.category} severity_default={v.rule.severity_default} violations_count={18} />
-          <AIEventViewer model={v.ai_event.model} user_message={userMessage} ai_response={aiResponse} prompt_tokens={v.ai_event.prompt_tokens} completion_tokens={v.ai_event.completion_tokens} latency_ms={v.ai_event.latency_ms} confidence_score={v.ai_event.confidence_score} context={v.ai_event.context} />
-          <ContentCard icon={MessageSquare} title="Conversation">
-            <ConversationViewer messages={v.conversation} />
-          </ContentCard>
-          <ContentCard icon={ScrollText} title="Audit Log Timeline">
-            <Timeline events={v.audit_logs} />
+          <ContentCard title="Violation Data">
+            <pre className="text-xs text-card-foreground/70 font-mono whitespace-pre-wrap">{JSON.stringify(v, null, 2)}</pre>
           </ContentCard>
         </div>
       </div>

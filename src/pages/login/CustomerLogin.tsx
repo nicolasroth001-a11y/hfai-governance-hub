@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Shield } from "lucide-react";
-import { login } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 
 export default function CustomerLogin() {
@@ -17,14 +16,10 @@ export default function CustomerLogin() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await login(email, password, "customer");
-      navigate("/customer/dashboard");
-    } catch (err: any) {
-      toast({ title: "Login failed", description: err.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
+    // No /auth/login route exists in backend — navigate directly
+    toast({ title: "Auth not implemented", description: "No authentication route exists in the backend yet. Navigating to dashboard.", variant: "destructive" });
+    setTimeout(() => navigate("/customer/dashboard"), 500);
+    setLoading(false);
   };
 
   return (

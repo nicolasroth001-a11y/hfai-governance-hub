@@ -3,7 +3,6 @@ import { ContentCard } from "@/components/ContentCard";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { enableRuleTemplate } from "@/lib/api";
 import { ShieldCheck } from "lucide-react";
 
 const templates = [
@@ -15,11 +14,9 @@ const templates = [
 ];
 
 export default function CustomerRuleTemplates() {
-  const handleEnable = async (name: string) => {
-    try {
-      await enableRuleTemplate(name);
-    } catch {}
-    toast({ title: "Rule enabled", description: `"${name}" has been enabled for your organization.` });
+  const handleEnable = (name: string) => {
+    // No backend route for rule templates yet
+    toast({ title: "Not available", description: "Rule template activation is not yet supported by the backend.", variant: "destructive" });
   };
 
   return (
