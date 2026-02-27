@@ -3,26 +3,38 @@ import { AlertTriangle, BookOpen, Users, Building2, ShieldAlert, Clock } from "l
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
-import { mockAdminStats, mockRecentActivity } from "@/lib/mock-data";
-import { fetchAdminStats, fetchRecentActivity } from "@/lib/api";
+import { fetchViolations, fetchAuditLogs } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState(mockAdminStats);
-  const [activity, setActivity] = useState(mockRecentActivity);
+  const [stats, setStats] = useState({ totalViolations: 0, awaitingReview: 0, totalCustomers: 0, totalReviewers: 0, totalRules: 0 });
+  const [activity, setActivity] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAdminStats().then(setStats).catch(() => {});
-    fetchRecentActivity().then((logs) => {
-      if (Array.isArray(logs) && logs.length > 0) {
+    const load = async () => {
+      try {
+        const [violations, logs] = await Promise.all([fetchViolations(), fetchAuditLogs()]);
+        setStats({
+          totalViolations: violations.length,
+          awaitingReview: violations.filter((v: any) => v.status === "open" || v.status === "under_review").length,
+          totalCustomers: 0,
+          totalReviewers: 0,
+          totalRules: 0,
+        });
         setActivity(logs.slice(0, 10).map((l: any) => ({
-          id: l.id?.toString() || l.entity_id,
+          id: l.id?.toString(),
           type: l.action?.includes("violation") ? "violation" : l.action?.includes("resolve") ? "resolution" : "review",
           message: l.details || l.action,
-          timestamp: l.created_at || l.timestamp || new Date().toISOString(),
+          timestamp: l.created_at || new Date().toISOString(),
         })));
+      } catch (err) {
+        console.error("Admin dashboard load error:", err);
+      } finally {
+        setLoading(false);
       }
-    }).catch(() => {});
+    };
+    load();
   }, []);
 
   return (
@@ -38,21 +50,27 @@ export default function AdminDashboard() {
       </div>
 
       <ContentCard title="Recent System Activity">
-        <div className="space-y-4">
-          {activity.map((item) => (
-            <div key={item.id} className="flex items-start gap-3">
-              <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
-                item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"
-              }`} />
-              <div className="flex-1 min-w-0">
-                <p className="text-body text-card-foreground">{item.message}</p>
-                <p className="text-[11px] text-card-foreground/35 mt-0.5">
-                  {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
-                </p>
+        {loading ? (
+          <p className="text-sm text-card-foreground/50">Loading…</p>
+        ) : activity.length === 0 ? (
+          <p className="text-sm text-card-foreground/50">No recent activity.</p>
+        ) : (
+          <div className="space-y-4">
+            {activity.map((item) => (
+              <div key={item.id} className="flex items-start gap-3">
+                <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
+                  item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"
+                }`} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-body text-card-foreground">{item.message}</p>
+                  <p className="text-[11px] text-card-foreground/35 mt-0.5">
+                    {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </ContentCard>
     </div>
   );

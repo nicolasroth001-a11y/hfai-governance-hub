@@ -5,27 +5,38 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
-import { mockDashboardStats, mockRecentActivity } from "@/lib/mock-data";
-import { fetchDashboardStats, fetchRecentActivity } from "@/lib/api";
+import { fetchViolations, fetchAuditLogs } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
 export default function CustomerDashboard() {
-  const [stats, setStats] = useState(mockDashboardStats);
-  const [activity, setActivity] = useState(mockRecentActivity);
+  const [stats, setStats] = useState({ totalViolations: 0, openViolations: 0, totalRules: 0, resolvedToday: 0 });
+  const [activity, setActivity] = useState<any[]>([]);
   const [testOpen, setTestOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchDashboardStats().then(setStats).catch(() => {});
-    fetchRecentActivity().then((logs) => {
-      if (Array.isArray(logs) && logs.length > 0) {
+    const load = async () => {
+      try {
+        const [violations, logs] = await Promise.all([fetchViolations(), fetchAuditLogs()]);
+        setStats({
+          totalViolations: violations.length,
+          openViolations: violations.filter((v: any) => v.status === "open").length,
+          totalRules: 0,
+          resolvedToday: violations.filter((v: any) => v.status === "resolved").length,
+        });
         setActivity(logs.slice(0, 10).map((l: any) => ({
-          id: l.id?.toString() || l.entity_id,
+          id: l.id?.toString(),
           type: l.action?.includes("violation") ? "violation" : l.action?.includes("resolve") ? "resolution" : "review",
           message: l.details || l.action,
-          timestamp: l.created_at || l.timestamp || new Date().toISOString(),
+          timestamp: l.created_at || new Date().toISOString(),
         })));
+      } catch (err) {
+        console.error("Dashboard load error:", err);
+      } finally {
+        setLoading(false);
       }
-    }).catch(() => {});
+    };
+    load();
   }, []);
 
   return (
@@ -47,21 +58,27 @@ export default function CustomerDashboard() {
       <TestEventModal open={testOpen} onOpenChange={setTestOpen} />
 
       <ContentCard title="Recent Activity">
-        <div className="space-y-4">
-          {activity.map((item) => (
-            <div key={item.id} className="flex items-start gap-3">
-              <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
-                item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"
-              }`} />
-              <div className="flex-1 min-w-0">
-                <p className="text-body text-card-foreground">{item.message}</p>
-                <p className="text-[11px] text-card-foreground/35 mt-0.5">
-                  {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
-                </p>
+        {loading ? (
+          <p className="text-sm text-card-foreground/50">Loading…</p>
+        ) : activity.length === 0 ? (
+          <p className="text-sm text-card-foreground/50">No recent activity.</p>
+        ) : (
+          <div className="space-y-4">
+            {activity.map((item) => (
+              <div key={item.id} className="flex items-start gap-3">
+                <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
+                  item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"
+                }`} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-body text-card-foreground">{item.message}</p>
+                  <p className="text-[11px] text-card-foreground/35 mt-0.5">
+                    {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </ContentCard>
     </div>
   );

@@ -1,22 +1,17 @@
-const API_BASE = "http://localhost:3000";
-
-function getAuthHeaders(): Record<string, string> {
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
-  const token = localStorage.getItem("hfai_token");
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-  return headers;
-}
+// Backend runs on port 4000 — see hfai-backend/index.js
+const API_BASE = "http://localhost:4000";
 
 async function apiRequest<T = unknown>(path: string, options?: RequestInit): Promise<T> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...((options?.headers as Record<string, string>) || {}),
+  };
+
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
-    headers: {
-      ...getAuthHeaders(),
-      ...options?.headers,
-    },
+    headers,
   });
+
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(body.error || `Request failed: ${res.status}`);
@@ -24,116 +19,19 @@ async function apiRequest<T = unknown>(path: string, options?: RequestInit): Pro
   return res.json();
 }
 
-// ─── Auth ────────────────────────────────────────────
-export async function login(email: string, password: string, role: "customer" | "reviewer" | "admin") {
-  const data = await apiRequest<{ token: string; user: unknown }>("/auth/login", {
-    method: "POST",
-    body: JSON.stringify({ email, password, role }),
-  });
-  localStorage.setItem("hfai_token", data.token);
-  return data;
-}
-
-export async function signup(payload: { company_name: string; email: string; password: string }) {
-  return apiRequest("/auth/signup", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export function logout() {
-  localStorage.removeItem("hfai_token");
-}
-
-// ─── Dashboard ───────────────────────────────────────
-export async function fetchDashboardStats() {
-  return apiRequest("/violations").then((violations: any) => {
-    const arr = Array.isArray(violations) ? violations : [];
-    return {
-      totalViolations: arr.length,
-      openViolations: arr.filter((v: any) => v.status === "open").length,
-      totalRules: 0,
-      resolvedToday: arr.filter((v: any) => v.status === "resolved").length,
-    };
-  });
-}
-
-export async function fetchAdminStats() {
-  return apiRequest("/violations").then((violations: any) => {
-    const arr = Array.isArray(violations) ? violations : [];
-    return {
-      totalViolations: arr.length,
-      awaitingReview: arr.filter((v: any) => v.status === "open" || v.status === "under_review").length,
-      totalCustomers: 0,
-      totalReviewers: 0,
-      totalRules: 0,
-    };
-  });
-}
-
-export async function fetchRecentActivity() {
-  return apiRequest<any[]>("/audit-logs");
-}
-
-// ─── Violations ──────────────────────────────────────
-export async function fetchViolations(params?: { severity?: string; status?: string }) {
-  const query = new URLSearchParams();
-  if (params?.severity) query.set("severity", params.severity);
-  if (params?.status) query.set("status", params.status);
-  const qs = query.toString();
-  return apiRequest<any[]>(`/violations${qs ? `?${qs}` : ""}`);
-}
-
-export async function fetchViolation(id: string) {
-  return apiRequest(`/violations/${id}`);
-}
-
-export async function updateViolation(id: string, payload: Record<string, unknown>) {
-  return apiRequest(`/violations/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  });
-}
-
-// ─── Human Reviews (approve / reject / notes) ───────
-export async function submitReview(payload: {
-  violation_id: string;
-  reviewer_name: string;
-  decision: "approve" | "reject";
-  comments?: string;
-}) {
-  return apiRequest("/human-reviews", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function fetchReviews() {
-  return apiRequest<any[]>("/human-reviews");
-}
-
-// ─── Rules ───────────────────────────────────────────
-export async function fetchRules() {
-  // No dedicated rules route in backend yet — return empty
-  return apiRequest<any[]>("/violations").then(() => []).catch(() => []);
-}
-
-export async function fetchRule(id: string) {
-  return {} as any;
-}
-
-export async function enableRuleTemplate(name: string) {
-  return apiRequest("/customer/rule-templates", {
-    method: "POST",
-    body: JSON.stringify({ name }),
-  });
-}
-
-// ─── AI Systems ──────────────────────────────────────
+// ─── AI Systems (/ai-systems) ────────────────────────
+// GET /ai-systems → returns array of { id, name, description, model_type, provider, version, risk_level, api_key_hash, created_at }
 export async function fetchAISystems() {
   return apiRequest<any[]>("/ai-systems");
 }
 
+// GET /ai-systems/:id
+export async function fetchAISystem(id: string) {
+  return apiRequest<any>(`/ai-systems/${id}`);
+}
+
+// POST /ai-systems → body: { name, description, model_type, provider, version, risk_level }
+// returns: { id, name, ..., api_key } (api_key shown once)
 export async function createAISystem(payload: {
   name: string;
   description?: string;
@@ -142,51 +40,126 @@ export async function createAISystem(payload: {
   version?: string;
   risk_level?: string;
 }) {
-  return apiRequest("/ai-systems", {
+  return apiRequest<any>("/ai-systems", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
-// ─── AI Events ───────────────────────────────────────
+// PUT /ai-systems/:id
+export async function updateAISystem(id: string, payload: Record<string, unknown>) {
+  return apiRequest<any>(`/ai-systems/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+// DELETE /ai-systems/:id
+export async function deleteAISystem(id: string) {
+  return apiRequest<any>(`/ai-systems/${id}`, { method: "DELETE" });
+}
+
+// ─── Violations (/violations) ────────────────────────
+// GET /violations → returns array of { id, ai_system_id, rule_id, description, severity, ai_event_id, detected_at, status, ... }
+export async function fetchViolations() {
+  return apiRequest<any[]>("/violations");
+}
+
+// GET /violations/:id
+export async function fetchViolation(id: string) {
+  return apiRequest<any>(`/violations/${id}`);
+}
+
+// POST /violations → body: { ai_system_id, rule_id, description, severity, ai_event_id }
+export async function createViolation(payload: {
+  ai_system_id: string;
+  rule_id: string;
+  description: string;
+  severity: string;
+  ai_event_id?: string;
+}) {
+  return apiRequest<any>("/violations", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// PUT /violations/:id → body: { ai_system_id, rule_id, description, severity, ai_event_id }
+export async function updateViolation(id: string, payload: Record<string, unknown>) {
+  return apiRequest<any>(`/violations/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+// DELETE /violations/:id
+export async function deleteViolation(id: string) {
+  return apiRequest<any>(`/violations/${id}`, { method: "DELETE" });
+}
+
+// ─── Human Reviews (/human-reviews) ─────────────────
+// GET /human-reviews → returns array of { id, violation_id, reviewer_name, decision, comments, reviewed_at, ... }
+export async function fetchReviews() {
+  return apiRequest<any[]>("/human-reviews");
+}
+
+// GET /human-reviews/:id
+export async function fetchReview(id: string) {
+  return apiRequest<any>(`/human-reviews/${id}`);
+}
+
+// POST /human-reviews → body: { violation_id, reviewer_name, decision, comments }
+export async function submitReview(payload: {
+  violation_id: string;
+  reviewer_name: string;
+  decision: string;
+  comments?: string;
+}) {
+  return apiRequest<any>("/human-reviews", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// PUT /human-reviews/:id
+export async function updateReview(id: string, payload: Record<string, unknown>) {
+  return apiRequest<any>(`/human-reviews/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+// ─── Audit Logs (/audit-logs) ───────────────────────
+// GET /audit-logs → returns array of { id, action, entity_type, entity_id, details, created_at }
+export async function fetchAuditLogs() {
+  return apiRequest<any[]>("/audit-logs");
+}
+
+// POST /audit-logs → body: { action, entity_type, entity_id, details }
+export async function createAuditLog(payload: {
+  action: string;
+  entity_type: string;
+  entity_id: string;
+  details: string;
+}) {
+  return apiRequest<any>("/audit-logs", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// ─── AI Events (/ai-events) ─────────────────────────
+// GET /ai-events → returns array of { id, ai_system_id, event_type, payload, created_at }
 export async function fetchAIEvents() {
   return apiRequest<any[]>("/ai-events");
 }
 
+// POST /ai-events → requires x-api-key header; body: { event_type, payload }
+// returns: { userEvent, assistantEvent }
 export async function sendAIEvent(payload: { event_type: string; payload: string }, apiKey: string) {
-  return apiRequest("/ai-events", {
+  return apiRequest<any>("/ai-events", {
     method: "POST",
     headers: { "x-api-key": apiKey },
-    body: JSON.stringify(payload),
-  });
-}
-
-// ─── Audit Logs ──────────────────────────────────────
-export async function fetchAuditLogs(params?: { action?: string; entity_type?: string }) {
-  const query = new URLSearchParams();
-  if (params?.action) query.set("action", params.action);
-  if (params?.entity_type) query.set("entity_type", params.entity_type);
-  const qs = query.toString();
-  return apiRequest<any[]>(`/audit-logs${qs ? `?${qs}` : ""}`);
-}
-
-// ─── API Keys ────────────────────────────────────────
-export async function regenerateApiKey(customerId?: string) {
-  const path = customerId ? `/customer/api-key/${customerId}/regenerate` : "/customer/api-key/regenerate";
-  return apiRequest(path, { method: "POST" });
-}
-
-// ─── Admin: Customers & Reviewers ────────────────────
-export async function createCustomer(payload: { company_name: string; admin_email: string; password: string }) {
-  return apiRequest("/admin/create-customer", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function createReviewer(payload: { name: string; email: string; password: string }) {
-  return apiRequest("/admin/create-reviewer", {
-    method: "POST",
     body: JSON.stringify(payload),
   });
 }

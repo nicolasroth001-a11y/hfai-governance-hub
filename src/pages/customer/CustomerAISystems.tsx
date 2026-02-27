@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
-import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,59 +11,35 @@ import { Cpu, Plus, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { fetchAISystems, createAISystem } from "@/lib/api";
 
-interface AISystem {
-  id: string;
-  name: string;
-  model: string;
-  environment: string;
-  status: string;
-  created_at: string;
-}
-
-const fallbackSystems: AISystem[] = [
-  { id: "AIS-001", name: "Customer Support Bot", model: "gpt-4-turbo", environment: "production", status: "active", created_at: "2025-12-01T00:00:00Z" },
-  { id: "AIS-002", name: "Hiring Recommender", model: "gpt-4", environment: "production", status: "active", created_at: "2026-01-15T00:00:00Z" },
-  { id: "AIS-003", name: "Content Moderator", model: "claude-3-opus", environment: "development", status: "active", created_at: "2026-02-10T00:00:00Z" },
-];
-
-const columns: DataTableColumn<AISystem>[] = [
+const columns: DataTableColumn<any>[] = [
   { key: "id", header: "ID", render: (s) => <span className="text-primary font-medium">{s.id}</span> },
   { key: "name", header: "Name", render: (s) => <span className="text-sm font-medium text-card-foreground">{s.name}</span> },
-  { key: "model", header: "Model", render: (s) => <span className="text-xs text-card-foreground/60 font-mono">{s.model || (s as any).model_type}</span> },
-  { key: "environment", header: "Environment", render: (s) => (
-    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${s.environment === "production" ? "bg-primary/15 text-primary" : "bg-info/15 text-info"}`}>
-      {s.environment}
-    </span>
-  )},
-  { key: "status", header: "Status", render: (s) => <StatusBadge status={s.status || "active"} /> },
+  { key: "model_type", header: "Model", render: (s) => <span className="text-xs text-card-foreground/60 font-mono">{s.model_type || "—"}</span> },
+  { key: "risk_level", header: "Risk Level", render: (s) => <span className="text-xs text-card-foreground/60">{s.risk_level || "—"}</span> },
+  { key: "provider", header: "Provider", render: (s) => <span className="text-xs text-card-foreground/60">{s.provider || "—"}</span> },
 ];
 
 export default function CustomerAISystems() {
   const [showCreate, setShowCreate] = useState(false);
-  const [form, setForm] = useState({ name: "", description: "", model: "", environment: "" });
-  const [systems, setSystems] = useState<any[]>(fallbackSystems);
+  const [form, setForm] = useState({ name: "", description: "", model_type: "", provider: "", version: "", risk_level: "" });
+  const [systems, setSystems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAISystems().then((rows) => {
-      if (Array.isArray(rows) && rows.length > 0) setSystems(rows);
-    }).catch(() => {});
+    fetchAISystems()
+      .then(setSystems)
+      .catch((err) => console.error("Fetch AI systems error:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await createAISystem({
-        name: form.name,
-        description: form.description,
-        model_type: form.model,
-        provider: "",
-        version: "",
-        risk_level: form.environment,
-      });
-      toast({ title: "AI System created", description: `${form.name} has been registered.` });
+      const result = await createAISystem(form);
+      toast({ title: "AI System created", description: `API key: ${result.api_key}` });
       setSystems((prev) => [result, ...prev]);
       setShowCreate(false);
-      setForm({ name: "", description: "", model: "", environment: "" });
+      setForm({ name: "", description: "", model_type: "", provider: "", version: "", risk_level: "" });
     } catch (err: any) {
       toast({ title: "Error creating system", description: err.message, variant: "destructive" });
     }
@@ -88,16 +63,22 @@ export default function CustomerAISystems() {
               <Input placeholder="e.g. Customer Support Bot" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
             </div>
             <div className="space-y-2">
-              <Label>Model</Label>
-              <Input placeholder="e.g. gpt-4-turbo" value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} required />
+              <Label>Model Type</Label>
+              <Input placeholder="e.g. gpt-4-turbo" value={form.model_type} onChange={(e) => setForm({ ...form, model_type: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Environment</Label>
-              <Select value={form.environment} onValueChange={(v) => setForm({ ...form, environment: v })}>
-                <SelectTrigger><SelectValue placeholder="Select environment" /></SelectTrigger>
+              <Label>Provider</Label>
+              <Input placeholder="e.g. OpenAI" value={form.provider} onChange={(e) => setForm({ ...form, provider: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label>Risk Level</Label>
+              <Select value={form.risk_level} onValueChange={(v) => setForm({ ...form, risk_level: v })}>
+                <SelectTrigger><SelectValue placeholder="Select risk level" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="production">Production</SelectItem>
-                  <SelectItem value="development">Development</SelectItem>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="critical">Critical</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -112,7 +93,11 @@ export default function CustomerAISystems() {
         </ContentCard>
       )}
 
-      <DataTable columns={columns} data={systems} rowKey={(s) => s.id} />
+      {loading ? (
+        <p className="text-sm text-card-foreground/50">Loading…</p>
+      ) : (
+        <DataTable columns={columns} data={systems} rowKey={(s) => s.id} emptyMessage="No AI systems registered" />
+      )}
     </div>
   );
 }

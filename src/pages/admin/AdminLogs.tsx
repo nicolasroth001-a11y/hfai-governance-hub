@@ -2,16 +2,12 @@ import { useState, useEffect } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { FilterBar } from "@/components/FilterBar";
-import { mockAuditLogs } from "@/lib/mock-data";
 import { fetchAuditLogs } from "@/lib/api";
 import { format } from "date-fns";
 
-type AuditLog = (typeof mockAuditLogs)[number];
-
-const columns: DataTableColumn<AuditLog>[] = [
-  { key: "timestamp", header: "Time", render: (l) => <span className="text-xs text-card-foreground/60 font-mono">{format(new Date(l.timestamp || (l as any).created_at), "MMM d, HH:mm:ss")}</span> },
+const columns: DataTableColumn<any>[] = [
+  { key: "created_at", header: "Time", render: (l) => <span className="text-xs text-card-foreground/60 font-mono">{format(new Date(l.created_at), "MMM d, HH:mm:ss")}</span> },
   { key: "action", header: "Action", render: (l) => <span className="text-sm text-card-foreground font-medium">{l.action.replace(/_/g, " ")}</span> },
-  { key: "actor", header: "Actor", render: (l) => <span className="text-xs text-card-foreground/60">{l.actor || "system"}</span> },
   { key: "entity", header: "Entity", render: (l) => <span className="text-xs font-mono text-card-foreground/50">{l.entity_type}/{l.entity_id}</span> },
   { key: "details", header: "Details", render: (l) => <span className="text-xs text-card-foreground/50 line-clamp-1">{l.details}</span> },
 ];
@@ -19,12 +15,14 @@ const columns: DataTableColumn<AuditLog>[] = [
 export default function AdminLogs() {
   const [actionFilter, setActionFilter] = useState("all");
   const [entityFilter, setEntityFilter] = useState("all");
-  const [data, setData] = useState<any[]>(mockAuditLogs);
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAuditLogs().then((rows) => {
-      if (Array.isArray(rows) && rows.length > 0) setData(rows);
-    }).catch(() => {});
+    fetchAuditLogs()
+      .then(setData)
+      .catch((err) => console.error("Fetch logs error:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   const actions = [...new Set(data.map((l) => l.action))];
@@ -42,7 +40,11 @@ export default function AdminLogs() {
         { key: "action", label: "Action", value: actionFilter, onChange: setActionFilter, options: actions.map((a) => ({ label: a.replace(/_/g, " "), value: a })) },
         { key: "entity", label: "Entity", value: entityFilter, onChange: setEntityFilter, options: entities.map((e) => ({ label: e, value: e })) },
       ]} />
-      <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} />
+      {loading ? (
+        <p className="text-sm text-card-foreground/50">Loading…</p>
+      ) : (
+        <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} />
+      )}
     </div>
   );
 }

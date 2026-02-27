@@ -1,44 +1,36 @@
+import { useState, useEffect } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
-import { APIKeyDisplay } from "@/components/APIKeyDisplay";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { Key } from "lucide-react";
-import { mockCustomers } from "@/lib/mock-data";
-import { toast } from "@/hooks/use-toast";
-import { regenerateApiKey } from "@/lib/api";
+import { fetchAISystems } from "@/lib/api";
 
-interface APIKeyRow {
-  customer_id: string;
-  customer_name: string;
-  api_key: string;
-}
-
-const mockAPIKeys: APIKeyRow[] = mockCustomers.map((c) => ({
-  customer_id: c.id,
-  customer_name: c.name,
-  api_key: `hfai_live_sk_${c.id.toLowerCase().replace("-", "")}_${"abcdefghijklmnop".slice(0, 16)}`,
-}));
-
-const columns: DataTableColumn<APIKeyRow>[] = [
-  { key: "customer_id", header: "Customer ID", render: (r) => <span className="text-primary font-medium">{r.customer_id}</span> },
-  { key: "customer_name", header: "Organization", render: (r) => <span className="text-sm font-medium text-card-foreground">{r.customer_name}</span> },
-  { key: "api_key", header: "API Key", render: (r) => (
-    <APIKeyDisplay
-      apiKey={r.api_key}
-      onRegenerate={async () => {
-        try { await regenerateApiKey(r.customer_id); } catch {}
-        toast({ title: "Key regenerated", description: `New key issued for ${r.customer_name}.` });
-      }}
-    />
-  )},
+const columns: DataTableColumn<any>[] = [
+  { key: "id", header: "System ID", render: (r) => <span className="text-primary font-medium">{r.id}</span> },
+  { key: "name", header: "Name", render: (r) => <span className="text-sm font-medium text-card-foreground">{r.name}</span> },
+  { key: "api_key_hash", header: "API Key Hash", render: (r) => <span className="text-xs font-mono text-card-foreground/50 truncate max-w-[200px] block">{r.api_key_hash || "—"}</span> },
 ];
 
 export default function AdminAPIKeys() {
+  const [systems, setSystems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAISystems()
+      .then(setSystems)
+      .catch((err) => console.error("Fetch systems error:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="space-y-section">
-      <SectionHeader title="API Key Management" description="View and manage customer API keys" />
-      <ContentCard icon={Key} title="Customer API Keys" fullWidth>
-        <DataTable columns={columns} data={mockAPIKeys} rowKey={(r) => r.customer_id} />
+      <SectionHeader title="API Key Management" description="API keys are generated when AI systems are created. Keys are shown once and stored as hashes." />
+      <ContentCard icon={Key} title="AI System Keys" fullWidth>
+        {loading ? (
+          <p className="text-sm text-card-foreground/50">Loading…</p>
+        ) : (
+          <DataTable columns={columns} data={systems} rowKey={(r) => r.id} emptyMessage="No AI systems found" />
+        )}
       </ContentCard>
     </div>
   );

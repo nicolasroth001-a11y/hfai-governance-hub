@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { signup } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 
 export default function CustomerSignup() {
@@ -20,15 +19,9 @@ export default function CustomerSignup() {
       return;
     }
     setLoading(true);
-    try {
-      await signup({ company_name: form.company_name, email: form.email, password: form.password });
-      toast({ title: "Account created", description: "You can now log in." });
-      navigate("/login/customer");
-    } catch (err: any) {
-      toast({ title: "Signup failed", description: err.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
+    toast({ title: "Auth not implemented", description: "No signup route exists in the backend yet.", variant: "destructive" });
+    setTimeout(() => navigate("/login/customer"), 500);
+    setLoading(false);
   };
 
   return (
