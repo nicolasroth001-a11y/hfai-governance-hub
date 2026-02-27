@@ -1,48 +1,88 @@
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Shield, Building2, UserCheck, Settings } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Shield, Activity, AlertTriangle, UserCheck, ChevronRight, Cpu, Zap, Eye } from "lucide-react";
 
-const portals = [
-  { title: "Customer Portal", description: "View violations, rules, and AI governance data", icon: Building2, url: "/login/customer" },
-  { title: "Reviewer Portal", description: "Review and approve AI governance violations", icon: UserCheck, url: "/login/reviewer" },
-  { title: "Admin Portal", description: "Full system management and configuration", icon: Settings, url: "/login/admin" },
+const values = [
+  { icon: Activity, title: "Monitor your AI systems", description: "Track every interaction across all your AI models in real time with structured event logging." },
+  { icon: AlertTriangle, title: "Detect risky behavior instantly", description: "Automated rule evaluation flags policy violations the moment they occur — no delays." },
+  { icon: UserCheck, title: "Human review for every critical decision", description: "Trained reviewers approve or reject flagged events, keeping humans in control." },
+];
+
+const steps = [
+  { icon: Cpu, label: "AI System" },
+  { icon: Zap, label: "Event" },
+  { icon: AlertTriangle, label: "Violation" },
+  { icon: Eye, label: "Human Review" },
 ];
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-16">
-      <div className="text-center mb-12">
-        <div className="mx-auto h-14 w-14 rounded-2xl bg-primary/90 flex items-center justify-center mb-5">
-          <Shield className="h-7 w-7 text-primary-foreground" />
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* ── Hero ── */}
+      <section className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-24 pb-16">
+        <div className="mx-auto h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-8">
+          <Shield className="h-8 w-8 text-primary" />
         </div>
-        <h1 className="text-page text-foreground">HFAI</h1>
-        <p className="text-body text-muted-foreground mt-2">Human‑First AI Governance Platform</p>
-      </div>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground max-w-2xl leading-tight">
+          Human‑First AI Governance
+        </h1>
+        <p className="mt-4 text-lg text-muted-foreground max-w-xl leading-relaxed">
+          HFAI monitors your AI systems, catches risky behavior, and keeps humans in control.
+        </p>
+        <Button size="lg" className="mt-10 text-base px-8 h-12 gap-2" onClick={() => navigate("/customer/onboarding")}>
+          Enter Demo
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl w-full">
-        {portals.map((portal) => (
-          <Link key={portal.url} to={portal.url} className="group">
-            <Card className="h-full hover:shadow-card-hover transition-all duration-200 group-hover:-translate-y-0.5">
-              <CardHeader className="text-center pb-4">
-                <div className="mx-auto h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                  <portal.icon className="h-5 w-5 text-primary" />
+      {/* ── Value Points ── */}
+      <section className="px-6 pb-20">
+        <div className="mx-auto max-w-4xl grid gap-5 sm:grid-cols-3">
+          {values.map((v) => (
+            <Card key={v.title} className="border-0">
+              <CardContent className="p-6 flex flex-col gap-3">
+                <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <v.icon className="h-5 w-5 text-primary" />
                 </div>
-                <CardTitle className="text-body font-semibold">{portal.title}</CardTitle>
-                <CardDescription>{portal.description}</CardDescription>
-              </CardHeader>
+                <h3 className="text-base font-semibold text-foreground">{v.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{v.description}</p>
+              </CardContent>
             </Card>
-          </Link>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
 
-      <div className="mt-10 flex flex-col items-center gap-2 text-caption text-muted-foreground">
-        <p>
-          New customer? <Link to="/signup/customer" className="text-primary hover:underline font-medium">Create an account</Link>
-        </p>
-        <p>
-          <Link to="/pricing/contact" className="text-primary hover:underline font-medium">Contact for Pricing</Link>
-        </p>
-      </div>
+      {/* ── How It Works ── */}
+      <section className="px-6 pb-24">
+        <div className="mx-auto max-w-3xl text-center mb-10">
+          <h2 className="text-2xl font-semibold text-foreground">How It Works</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Four steps from AI output to human accountability.</p>
+        </div>
+        <div className="mx-auto max-w-2xl flex items-center justify-center gap-2 sm:gap-4">
+          {steps.map((step, i) => (
+            <div key={step.label} className="flex items-center gap-2 sm:gap-4">
+              <div className="flex flex-col items-center gap-2">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <step.icon className="h-5 w-5 text-primary" />
+                </div>
+                <span className="text-xs font-medium text-foreground">{step.label}</span>
+              </div>
+              {i < steps.length - 1 && (
+                <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0 mt-[-1rem]" />
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground space-y-1">
+        <p>© HFAI</p>
+        <p>Demo Mode — Not for production use</p>
+      </footer>
     </div>
   );
 }
