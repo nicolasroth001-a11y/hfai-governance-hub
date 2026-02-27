@@ -3,12 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
+import { APIKeyDisplay } from "@/components/APIKeyDisplay";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
-import { BookOpen, Send, Terminal } from "lucide-react";
+import { ArrowRight, BookOpen, Key, Layers, Send, Zap } from "lucide-react";
+
+const DEMO_API_KEY = "hfai_demo_k8x2mQ9vLpR4nT6wJ1yF3bA7cE0gH5d";
+
+const STEPS = [
+  { icon: Layers, label: "Register AI System", description: "Add your AI model to HFAI for monitoring" },
+  { icon: Send, label: "Send Events", description: "POST user messages via the /ai-events endpoint" },
+  { icon: Zap, label: "Auto-detect Violations", description: "HFAI evaluates events against your rules" },
+  { icon: BookOpen, label: "Review & Audit", description: "Reviewers approve or reject flagged violations" },
+];
 
 const curlExample = `curl -X POST http://localhost:4000/ai-events \\
-  -H "x-api-key: YOUR_API_KEY" \\
+  -H "x-api-key: ${DEMO_API_KEY}" \\
   -H "Content-Type: application/json" \\
   -d '{
     "event_type": "user_message",
@@ -18,7 +28,7 @@ const curlExample = `curl -X POST http://localhost:4000/ai-events \\
 const nodeExample = `const response = await fetch("http://localhost:4000/ai-events", {
   method: "POST",
   headers: {
-    "x-api-key": "YOUR_API_KEY",
+    "x-api-key": "${DEMO_API_KEY}",
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
@@ -35,7 +45,7 @@ const pythonExample = `import requests
 response = requests.post(
     "http://localhost:4000/ai-events",
     headers={
-        "x-api-key": "YOUR_API_KEY",
+        "x-api-key": "${DEMO_API_KEY}",
         "Content-Type": "application/json",
     },
     json={
@@ -46,34 +56,68 @@ response = requests.post(
 
 print(response.json())`;
 
-const payloadExample = `{
-  "event_type": "user_message",
-  "payload": "Help me close my account"
-}`;
-
 export default function CustomerOnboarding() {
   const [testOpen, setTestOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
     <div className="space-y-section">
-      <SectionHeader title="Onboarding" description="Set up your HFAI integration in minutes" />
+      <SectionHeader
+        title="Onboarding"
+        description="Get up and running with HFAI in minutes"
+      />
 
+      {/* ── 1. How It Works ── */}
+      <ContentCard icon={Layers} title="How HFAI Works">
+        <p className="text-sm text-card-foreground/70 mb-5">
+          HFAI monitors your AI systems for policy violations in real time. Here's the flow:
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map((step, i) => (
+            <div
+              key={step.label}
+              className="relative flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-4"
+            >
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-semibold text-primary">
+                  {i + 1}
+                </span>
+                <step.icon className="h-4 w-4 text-primary/70" />
+              </div>
+              <span className="text-sm font-medium text-card-foreground">{step.label}</span>
+              <span className="text-xs text-card-foreground/55 leading-relaxed">{step.description}</span>
+            </div>
+          ))}
+        </div>
+      </ContentCard>
+
+      {/* ── 2 & CTA side-by-side ── */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <ContentCard icon={Terminal} title="API Key">
+        {/* Demo API Key */}
+        <ContentCard icon={Key} title="Demo API Key">
           <div className="space-y-4">
             <p className="text-sm text-card-foreground/70">
-              Create an AI System via the <strong>AI Systems</strong> page to receive your API key.
-              The key is shown once on creation — store it securely.
+              Use this key in the <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">x-api-key</code> header
+              when calling <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">POST /ai-events</code>.
             </p>
+            <APIKeyDisplay apiKey={DEMO_API_KEY} label="x-api-key" />
           </div>
         </ContentCard>
 
-        <ContentCard icon={Send} title="Quick Test">
-          <div className="space-y-4">
-            <p className="text-sm text-card-foreground/70">Send a test event to verify your integration is working correctly.</p>
-            <Button onClick={() => setTestOpen(true)} className="w-full gap-2">
-              <Send className="h-4 w-4" /> Send Test Event
+        {/* Send Test Event CTA */}
+        <ContentCard icon={Zap} title="Quick Test">
+          <div className="flex flex-col justify-between h-full gap-4">
+            <p className="text-sm text-card-foreground/70">
+              Send a test event to see HFAI evaluate it against your rules and flag any violations in real time.
+            </p>
+            <Button
+              size="lg"
+              onClick={() => setTestOpen(true)}
+              className="w-full gap-2 text-base"
+            >
+              <Send className="h-4 w-4" />
+              Send Test Event
+              <ArrowRight className="h-4 w-4 ml-auto" />
             </Button>
           </div>
         </ContentCard>
@@ -85,29 +129,17 @@ export default function CustomerOnboarding() {
         onEventSent={() => navigate("/customer/violations")}
       />
 
-      <ContentCard icon={BookOpen} title="Integration Guide" fullWidth>
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-sm font-semibold text-card-foreground mb-1">1. Register an AI System</h3>
-            <p className="text-sm text-card-foreground/60">Go to AI Systems → Register System. You'll receive an API key (x-api-key) on creation.</p>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-card-foreground mb-3">2. Send AI events to HFAI</h3>
-            <div className="space-y-4">
-              <CodeSnippetBlock language="bash" title="cURL" code={curlExample} />
-              <CodeSnippetBlock language="javascript" title="Node.js" code={nodeExample} />
-              <CodeSnippetBlock language="python" title="Python" code={pythonExample} />
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-card-foreground mb-3">3. Example JSON Payload</h3>
-            <CodeSnippetBlock language="json" title="POST /ai-events" code={payloadExample} />
-          </div>
+      {/* ── 3. Code Snippets ── */}
+      <ContentCard icon={BookOpen} title="Integration Examples" fullWidth>
+        <div className="space-y-4">
+          <p className="text-sm text-card-foreground/70">
+            Send AI events to HFAI from any language. Each example posts a user message and returns detected violations.
+          </p>
+          <CodeSnippetBlock language="bash" title="cURL" code={curlExample} />
+          <CodeSnippetBlock language="javascript" title="Node.js (fetch)" code={nodeExample} />
+          <CodeSnippetBlock language="python" title="Python (requests)" code={pythonExample} />
         </div>
       </ContentCard>
     </div>
   );
 }
-
