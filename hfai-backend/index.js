@@ -64,7 +64,10 @@ app.use('/human-reviews', humanReviewsRouter);
 app.use('/audit-logs', auditLogsRouter);
 app.use('/ai-events', aiEventsRouter);
 
-// START SERVER
+// SEED + START SERVER
+const seed = require('./seed');
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`API running on port ${PORT}`));
+seed().then(() => {
+  app.listen(PORT, () => console.log(`API running on port ${PORT}`));
+});
 
