@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DemoModeProvider } from "@/contexts/DemoModeContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 // Layouts
 import CustomerLayout from "./layouts/CustomerLayout";
@@ -54,7 +56,18 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useEffect(() => {
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      console.error("Unhandled rejection:", event.reason);
+      event.preventDefault();
+    };
+    window.addEventListener("unhandledrejection", handleRejection);
+    return () => window.removeEventListener("unhandledrejection", handleRejection);
+  }, []);
+
+  return (
+  <ErrorBoundary>
   <DemoModeProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -119,6 +132,8 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
   </DemoModeProvider>
-);
+  </ErrorBoundary>
+  );
+};
 
 export default App;
