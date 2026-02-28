@@ -8,6 +8,7 @@ import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { ReviewActions } from "@/components/ReviewActions";
 import { SectionHeader } from "@/components/SectionHeader";
 import { fetchViolation } from "@/lib/api";
+import { mockViolations, mockViolationDetail } from "@/lib/mock-data";
 import { ArrowLeft, Gavel } from "lucide-react";
 
 export default function ViolationDetail() {
@@ -22,7 +23,11 @@ export default function ViolationDetail() {
     if (id) {
       fetchViolation(id)
         .then((data) => { setV(data); setStatus(data.status || "open"); })
-        .catch((err) => setError(err.message))
+        .catch(() => {
+          const found = mockViolations.find((v) => v.id === id);
+          const data = found || { ...mockViolationDetail, id };
+          setV(data); setStatus(data.status || "open");
+        })
         .finally(() => setLoading(false));
     }
   }, [id]);

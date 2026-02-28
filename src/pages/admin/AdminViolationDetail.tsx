@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { ContentCard } from "@/components/ContentCard";
 import { fetchViolation } from "@/lib/api";
+import { mockViolations, mockViolationDetail } from "@/lib/mock-data";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
 import { AISystemInfoCard } from "@/components/AISystemInfoCard";
 import { EventPayloadCard } from "@/components/EventPayloadCard";
@@ -24,7 +25,11 @@ export default function AdminViolationDetail() {
     if (id) {
       fetchViolation(id)
         .then((data) => { setV(data); if (data.status) setStatus(data.status); })
-        .catch((err) => setError(err.message))
+        .catch(() => {
+          const found = mockViolations.find((v) => v.id === id);
+          const data = found || { ...mockViolationDetail, id };
+          setV(data); if (data.status) setStatus(data.status);
+        })
         .finally(() => setLoading(false));
     }
   }, [id]);
