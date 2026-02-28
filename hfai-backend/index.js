@@ -44,6 +44,10 @@ console.log("Loading aiEventsRouter...");
 const aiEventsRouter = require('./routes/aiEvents');
 console.log("Loaded aiEventsRouter");
 
+console.log("Loading rulesRouter...");
+const rulesRouter = require('./routes/rules');
+console.log("Loaded aiEventsRouter");
+
 console.log("Groq key loaded:", !!process.env.GROQ_API_KEY);
 
 // DB POOL
@@ -67,6 +71,7 @@ app.use('/violations', violationsRouter);
 app.use('/human-reviews', humanReviewsRouter);
 app.use('/audit-logs', auditLogsRouter);
 app.use('/ai-events', aiEventsRouter);
+app.use('/rules', rulesRouter);
 app.use('/contact', contactRouter);
 
 // SEED + START SERVER

@@ -10,9 +10,29 @@ async function seed() {
 
   const client = await pool.connect();
   try {
+    // Ensure rules table exists
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS rules (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        category VARCHAR(100) DEFAULT 'general',
+        severity VARCHAR(50) DEFAULT 'medium',
+        condition JSONB DEFAULT '{}',
+        enabled BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
+
     // Check if data already exists
     const existing = await client.query('SELECT count(*)::int AS c FROM ai_systems');
     if (existing.rows[0].c > 0) {
+      // Still seed rules if they don't exist yet
+      const rulesExist = await client.query('SELECT count(*)::int AS c FROM rules');
+      if (rulesExist.rows[0].c === 0) {
+        await seedRules(client);
+      }
       console.log('SEED: Data already exists, skipping');
       return;
     }
@@ -108,14 +128,33 @@ async function seed() {
       auditEntries.flat()
     );
 
+    // 5. Rules
+    await seedRules(client);
+
     await client.query('COMMIT');
-    console.log(`SEED: Done — ${systems.rows.length} systems, ${vIds.length} violations, ${reviewResult.rows.length} reviews, ${auditEntries.length} audit logs`);
+    console.log(`SEED: Done — ${systems.rows.length} systems, ${vIds.length} violations, ${reviewResult.rows.length} reviews, ${auditEntries.length} audit logs + rules`);
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('SEED ERROR:', err);
   } finally {
     client.release();
   }
+}
+
+async function seedRules(client) {
+  await client.query(`
+    INSERT INTO rules (name, description, category, severity, condition, enabled) VALUES
+      ('No Harmful Content',       'AI must not generate harmful, violent, or illegal content.',                    'safety',      'critical', '{"check": "toxicity_score > 0.7"}',        true),
+      ('No Hallucinations',        'AI must not fabricate facts, citations, or data that cannot be verified.',       'accuracy',     'critical', '{"check": "hallucination_score > 0.5"}',   true),
+      ('No Personal Data Leakage', 'AI must not expose PII such as emails, phone numbers, or addresses.',          'privacy',      'critical', '{"check": "pii_detected = true"}',         true),
+      ('Explainability Required',  'AI responses must include reasoning or disclaimers when confidence is low.',    'transparency', 'medium',   '{"check": "explainability_score < 0.6"}',  true),
+      ('Bias Detection',           'AI must not use features correlated with protected attributes above threshold.','fairness',     'high',     '{"check": "bias_weight > 0.15"}',          true),
+      ('Latency SLA Compliance',   'AI responses must meet the defined latency SLA for the service tier.',         'performance',  'medium',   '{"check": "latency_ms > sla_max_ms"}',     true),
+      ('Data Retention Limits',    'AI must not retain user data beyond the allowed session window.',               'privacy',      'medium',   '{"check": "retention_hours > max_hours"}',  true),
+      ('Consistency Check',        'AI must produce consistent outputs given identical inputs.',                     'reliability',  'high',     '{"check": "output_delta > 5"}',            true)
+    ON CONFLICT DO NOTHING
+  `);
+  console.log('SEED: Rules inserted');
 }
 
 module.exports = seed;
