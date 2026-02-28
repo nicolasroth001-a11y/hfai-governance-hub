@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card as ShadcnCard } from "@/components/ui/card";
 import { fetchReviews, fetchAuditLogs } from "@/lib/api";
+import { mockAuditTrailByViolation, mockAuditLogs } from "@/lib/mock-data";
 import { format, formatDistanceToNow } from "date-fns";
 import { History, CheckCircle, XCircle, Clock, MessageSquare, Activity } from "lucide-react";
 
@@ -26,7 +27,7 @@ export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
 
     Promise.all([
       fetchReviews().catch(() => []),
-      fetchAuditLogs().catch(() => []),
+      fetchAuditLogs().catch(() => mockAuditLogs),
     ]).then(([reviews, logs]) => {
       const reviewEntries: TrailEntry[] = (reviews as any[])
         .filter((r) => String(r.violation_id) === vId)
@@ -50,9 +51,21 @@ export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
           details: l.details || "",
         }));
 
-      const all = [...reviewEntries, ...auditEntries].sort(
-        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-      );
+      let all = [...reviewEntries, ...auditEntries];
+
+      // If no entries found from API/mockAuditLogs, use per-violation mock trail
+      if (all.length === 0 && mockAuditTrailByViolation[vId]) {
+        all = mockAuditTrailByViolation[vId].map((l) => ({
+          id: `audit-${l.id}`,
+          timestamp: l.created_at,
+          type: "audit" as const,
+          action: l.action,
+          actor: "System",
+          details: l.details,
+        }));
+      }
+
+      all.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
       setEntries(all);
       setLoading(false);
     });

@@ -113,3 +113,32 @@ export const mockReviewerStats = {
   pendingReview: 3,
   avgReviewTime: "14 min",
 };
+
+// Mock AI System for demo fallback
+export const mockAISystem = {
+  id: "SYS-001",
+  name: "Demo AI Assistant",
+  description: "A sample AI system used for demonstration purposes. Monitored by HFAI for policy compliance.",
+  model_type: "LLM",
+  provider: "OpenAI",
+  version: "v4.0",
+  risk_level: "High",
+};
+
+// Mock audit trail entries per violation for demo fallback
+export const mockAuditTrailByViolation: Record<string, Array<{ id: string; created_at: string; action: string; entity_type: string; entity_id: string; details: string }>> = {
+  "VIO-001": [
+    { id: "AUD-001", created_at: "2026-02-24T10:23:00Z", action: "violation_detected", entity_type: "violation", entity_id: "VIO-001", details: "Automated detection triggered by rule RULE-003" },
+    { id: "AUD-002", created_at: "2026-02-24T10:23:01Z", action: "notification_sent", entity_type: "violation", entity_id: "VIO-001", details: "Alert sent to governance team" },
+    { id: "AUD-003", created_at: "2026-02-24T10:45:00Z", action: "violation_viewed", entity_type: "violation", entity_id: "VIO-001", details: "Violation opened for review by admin@hfai.com" },
+  ],
+  "VIO-002": [
+    { id: "AUD-004", created_at: "2026-02-24T09:15:00Z", action: "violation_detected", entity_type: "violation", entity_id: "VIO-002", details: "Confidence threshold breach detected" },
+    { id: "AUD-005", created_at: "2026-02-24T09:20:00Z", action: "notification_sent", entity_type: "violation", entity_id: "VIO-002", details: "Alert sent to assigned reviewer" },
+  ],
+  "VIO-003": [
+    { id: "AUD-006", created_at: "2026-02-23T16:42:00Z", action: "violation_detected", entity_type: "violation", entity_id: "VIO-003", details: "PII detected in AI response payload" },
+    { id: "AUD-007", created_at: "2026-02-23T16:50:00Z", action: "violation_reviewed", entity_type: "violation", entity_id: "VIO-003", details: "Reviewed by Sarah Chen" },
+    { id: "AUD-008", created_at: "2026-02-23T17:00:00Z", action: "violation_resolved", entity_type: "violation", entity_id: "VIO-003", details: "Marked as resolved after review" },
+  ],
+};
