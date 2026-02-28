@@ -21,15 +21,23 @@ export default function PricingContact() {
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
-    // Simulate sending to nicolasroth001@gmail.com
-    setTimeout(() => {
-      setSending(false);
+    try {
+      const res = await fetch("http://localhost:4000/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Failed to send");
       setForm({ name: "", company: "", email: "", message: "" });
       toast({ title: "Message sent", description: "We'll get back to you shortly." });
-    }, 800);
+    } catch {
+      toast({ title: "Error", description: "Could not send message. Please try again.", variant: "destructive" });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
