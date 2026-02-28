@@ -22,7 +22,7 @@ const EXAMPLE_PAYLOADS = [
 ];
 
 export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventModalProps) {
-  const [apiKey, setApiKey] = useState("");
+  const [apiKey, setApiKey] = useState("hfai_demo_k8x2mQ9vLpR4nT6wJ1yF3bA7cE0gH5d");
   const [payload, setPayload] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<{ eventId: string; violations: number } | null>(null);
@@ -109,6 +109,7 @@ export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventMod
                 placeholder="Paste your AI system API key"
                 className="bg-background/50 border-border font-mono text-xs h-9"
               />
+              <p className="text-[10px] text-muted-foreground">Pre-filled with demo key. Ready to send.</p>
             </div>
 
             {/* Example Payloads */}
