@@ -163,7 +163,6 @@ export async function sendAIEvent(payload: { event_type: string; payload: string
       body: JSON.stringify(payload),
     });
   } catch {
-    // Mock fallback for demo mode
     const eventId = `EVT-DEMO-${Math.floor(Math.random() * 9999)}`;
     const violationId = `VIO-DEMO-${Math.floor(Math.random() * 9999)}`;
     return {
@@ -171,5 +170,61 @@ export async function sendAIEvent(payload: { event_type: string; payload: string
       assistantEvent: null,
       violations: [{ id: violationId, ai_system_id: "SYS-001", rule_id: "RULE-003", description: `Demo violation from: "${payload.payload.substring(0, 50)}"`, severity: "high" }],
     };
+  }
+}
+
+// ─── Rules (/rules) ─────────────────────────────────
+export async function fetchRules() {
+  try {
+    return await apiRequest<any[]>("/rules");
+  } catch {
+    const { mockRules } = await import("./mock-data");
+    return mockRules;
+  }
+}
+
+export async function fetchRule(id: string) {
+  try {
+    return await apiRequest<any>(`/rules/${id}`);
+  } catch {
+    const { mockRules } = await import("./mock-data");
+    return mockRules.find((r) => r.id === id) || mockRules[0];
+  }
+}
+
+export async function createRule(payload: {
+  name: string;
+  description?: string;
+  category?: string;
+  severity?: string;
+  condition?: string;
+  enabled?: boolean;
+}) {
+  try {
+    return await apiRequest<any>("/rules", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    return { id: `RULE-DEMO-${Date.now()}`, ...payload, created_at: new Date().toISOString(), success: true };
+  }
+}
+
+export async function updateRule(id: string, payload: Record<string, unknown>) {
+  try {
+    return await apiRequest<any>(`/rules/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    return { id, ...payload, updated_at: new Date().toISOString(), success: true };
+  }
+}
+
+export async function deleteRule(id: string) {
+  try {
+    return await apiRequest<any>(`/rules/${id}`, { method: "DELETE" });
+  } catch {
+    return { message: "Rule deleted (demo)" };
   }
 }
