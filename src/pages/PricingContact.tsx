@@ -24,7 +24,7 @@ export default function PricingContact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
-    // Simulate sending to hfai.governance@gmail.com
+    // Simulate sending to nicolasroth001@gmail.com
     setTimeout(() => {
       setSending(false);
       setForm({ name: "", company: "", email: "", message: "" });
