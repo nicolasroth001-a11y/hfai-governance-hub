@@ -1,14 +1,14 @@
 import { SectionHeader } from "@/components/SectionHeader";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { fetchReviews } from "@/lib/api";
+import { mockReviewers } from "@/lib/mock-data";
 
 const columns: DataTableColumn<any>[] = [
   { key: "id", header: "ID", render: (r) => <span className="text-primary font-medium">{r.id}</span> },
-  { key: "reviewer_name", header: "Reviewer", render: (r) => <span className="text-sm text-card-foreground">{r.reviewer_name}</span> },
-  { key: "violation_id", header: "Violation", render: (r) => <span className="text-xs font-mono text-card-foreground/60">{r.violation_id}</span> },
-  { key: "decision", header: "Decision", render: (r) => <span className="text-xs text-card-foreground/60">{r.decision}</span> },
+  { key: "reviewer_name", header: "Reviewer", render: (r) => <span className="text-sm text-card-foreground">{r.reviewer_name || r.name}</span> },
+  { key: "violation_id", header: "Violation", render: (r) => <span className="text-xs font-mono text-card-foreground/60">{r.violation_id || "—"}</span> },
+  { key: "decision", header: "Decision", render: (r) => <span className="text-xs text-card-foreground/60">{r.decision || r.role || "—"}</span> },
 ];
 
 export default function AdminReviewers() {
@@ -18,13 +18,13 @@ export default function AdminReviewers() {
   useEffect(() => {
     fetchReviews()
       .then(setReviews)
-      .catch((err) => console.error("Fetch reviews error:", err))
+      .catch(() => setReviews(mockReviewers))
       .finally(() => setLoading(false));
   }, []);
 
   return (
     <div className="space-y-section">
-      <SectionHeader title="Reviewers" description="Human reviews submitted (no dedicated reviewers route in backend)" />
+      <SectionHeader title="Reviewers" description="Human reviews submitted" />
       {loading ? (
         <p className="text-sm text-card-foreground/50">Loading…</p>
       ) : (

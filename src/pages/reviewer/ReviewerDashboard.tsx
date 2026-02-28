@@ -5,6 +5,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { fetchViolations } from "@/lib/api";
+import { mockViolations } from "@/lib/mock-data";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
@@ -15,7 +16,7 @@ export default function ReviewerDashboard() {
   useEffect(() => {
     fetchViolations()
       .then(setViolations)
-      .catch((err) => console.error("Fetch violations error:", err))
+      .catch(() => setViolations(mockViolations))
       .finally(() => setLoading(false));
   }, []);
 

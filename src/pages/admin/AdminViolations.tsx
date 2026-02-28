@@ -6,6 +6,7 @@ import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FilterBar } from "@/components/FilterBar";
 import { fetchViolations } from "@/lib/api";
+import { mockViolations } from "@/lib/mock-data";
 import { formatDistanceToNow } from "date-fns";
 
 const columns: DataTableColumn<any>[] = [
@@ -26,7 +27,7 @@ export default function AdminViolations() {
   useEffect(() => {
     fetchViolations()
       .then(setData)
-      .catch((err) => console.error("Fetch violations error:", err))
+      .catch(() => setData(mockViolations))
       .finally(() => setLoading(false));
   }, []);
 

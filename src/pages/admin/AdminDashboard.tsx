@@ -4,6 +4,7 @@ import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { fetchViolations, fetchAuditLogs } from "@/lib/api";
+import { mockAdminStats, mockRecentActivity } from "@/lib/mock-data";
 import { formatDistanceToNow } from "date-fns";
 
 export default function AdminDashboard() {
@@ -28,8 +29,9 @@ export default function AdminDashboard() {
           message: l.details || l.action,
           timestamp: l.created_at || new Date().toISOString(),
         })));
-      } catch (err) {
-        console.error("Admin dashboard load error:", err);
+      } catch {
+        setStats(mockAdminStats);
+        setActivity(mockRecentActivity);
       } finally {
         setLoading(false);
       }

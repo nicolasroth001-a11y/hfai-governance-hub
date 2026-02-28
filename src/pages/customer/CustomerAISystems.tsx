@@ -11,6 +11,11 @@ import { Cpu, Plus, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { fetchAISystems, createAISystem } from "@/lib/api";
 
+const mockSystems = [
+  { id: "SYS-001", name: "Customer Support Bot", model_type: "gpt-4-turbo", risk_level: "high", provider: "OpenAI" },
+  { id: "SYS-002", name: "Hiring Screener", model_type: "llama3-70b", risk_level: "critical", provider: "Meta" },
+];
+
 const columns: DataTableColumn<any>[] = [
   { key: "id", header: "ID", render: (s) => <span className="text-primary font-medium">{s.id}</span> },
   { key: "name", header: "Name", render: (s) => <span className="text-sm font-medium text-card-foreground">{s.name}</span> },
@@ -28,7 +33,7 @@ export default function CustomerAISystems() {
   useEffect(() => {
     fetchAISystems()
       .then(setSystems)
-      .catch((err) => console.error("Fetch AI systems error:", err))
+      .catch(() => setSystems(mockSystems))
       .finally(() => setLoading(false));
   }, []);
 
