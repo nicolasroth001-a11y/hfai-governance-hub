@@ -4,7 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? "/hfai-governance-hub/" : "/",
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: {
