@@ -5,7 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DemoModeProvider } from "@/contexts/DemoModeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 // Layouts
 import CustomerLayout from "./layouts/CustomerLayout";
@@ -68,6 +70,7 @@ const App = () => {
 
   return (
   <ErrorBoundary>
+  <AuthProvider>
   <DemoModeProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -85,8 +88,8 @@ const App = () => {
           <Route path="/login/admin" element={<AdminLogin />} />
           <Route path="/signup/customer" element={<CustomerSignup />} />
 
-          {/* Customer routes */}
-          <Route path="/customer" element={<CustomerLayout />}>
+          {/* Customer routes (protected) */}
+          <Route path="/customer" element={<ProtectedRoute requiredRole="customer"><CustomerLayout /></ProtectedRoute>}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<CustomerDashboard />} />
             <Route path="violations" element={<CustomerViolations />} />
@@ -99,16 +102,16 @@ const App = () => {
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
           </Route>
 
-          {/* Reviewer routes */}
-          <Route path="/reviewer" element={<ReviewerLayout />}>
+          {/* Reviewer routes (protected) */}
+          <Route path="/reviewer" element={<ProtectedRoute requiredRole="reviewer"><ReviewerLayout /></ProtectedRoute>}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<ReviewerDashboard />} />
             <Route path="violations" element={<ReviewerViolations />} />
             <Route path="violations/:id" element={<ReviewerViolationDetail />} />
           </Route>
 
-          {/* Admin routes */}
-          <Route path="/admin" element={<AdminLayout />}>
+          {/* Admin routes (protected) */}
+          <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminLayout /></ProtectedRoute>}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="violations" element={<AdminViolations />} />
@@ -132,6 +135,7 @@ const App = () => {
     </TooltipProvider>
   </QueryClientProvider>
   </DemoModeProvider>
+  </AuthProvider>
   </ErrorBoundary>
   );
 };
