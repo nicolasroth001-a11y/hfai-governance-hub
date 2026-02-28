@@ -57,12 +57,17 @@ const pool = new Pool({
 });
 
 console.log("Connected to DB:", process.env.PGDATABASE);
+console.log("Loading contactRouter...");
+const contactRouter = require('./routes/contact');
+console.log("Loaded contactRouter");
+
 // ROUTES
 app.use('/ai-systems', aiSystemsRouter);
 app.use('/violations', violationsRouter);
 app.use('/human-reviews', humanReviewsRouter);
 app.use('/audit-logs', auditLogsRouter);
 app.use('/ai-events', aiEventsRouter);
+app.use('/contact', contactRouter);
 
 // SEED + START SERVER
 const seed = require('./seed');
