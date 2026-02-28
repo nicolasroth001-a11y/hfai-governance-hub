@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { DemoTutorial } from "@/components/DemoTutorial";
 import { fetchViolations, fetchAuditLogs } from "@/lib/api";
+import { mockViolations, mockAuditLogs, mockDashboardStats, mockRecentActivity } from "@/lib/mock-data";
 import { formatDistanceToNow } from "date-fns";
 
 export default function CustomerDashboard() {
@@ -33,8 +34,10 @@ export default function CustomerDashboard() {
         message: l.details || l.action,
         timestamp: l.created_at || new Date().toISOString(),
       })));
-    } catch (err) {
-      console.error("Dashboard load error:", err);
+    } catch {
+      // Fallback to mock data when backend is unreachable
+      setStats(mockDashboardStats);
+      setActivity(mockRecentActivity);
     } finally {
       setLoading(false);
     }
