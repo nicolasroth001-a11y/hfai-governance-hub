@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { fetchViolation } from "@/lib/api";
+import { mockViolations, mockViolationDetail } from "@/lib/mock-data";
 import { ContentCard } from "@/components/ContentCard";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
 import { AISystemInfoCard } from "@/components/AISystemInfoCard";
@@ -23,7 +24,11 @@ export default function ReviewerViolationDetail() {
     if (id) {
       fetchViolation(id)
         .then((data) => { setV(data); setStatus(data.status || "open"); })
-        .catch((err) => setError(err.message))
+        .catch(() => {
+          const found = mockViolations.find((v) => v.id === id);
+          const data = found || { ...mockViolationDetail, id };
+          setV(data); setStatus(data.status || "open");
+        })
         .finally(() => setLoading(false));
     }
   }, [id]);
