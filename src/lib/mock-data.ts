@@ -6,14 +6,14 @@ export const mockDashboardStats = {
 };
 
 export const mockViolations = [
-  { id: "VIO-001", description: "AI generated response without human approval in sensitive context", severity: "critical", rule_id: "RULE-003", detected_at: "2026-02-24T10:23:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
-  { id: "VIO-002", description: "Model output exceeded confidence threshold without flagging", severity: "high", rule_id: "RULE-007", detected_at: "2026-02-24T09:15:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
-  { id: "VIO-003", description: "PII detected in AI response payload", severity: "critical", rule_id: "RULE-001", detected_at: "2026-02-23T16:42:00Z", status: "resolved", assigned_reviewer: "reviewer2@hfai.com" },
-  { id: "VIO-004", description: "Bias indicator triggered in hiring recommendation", severity: "high", rule_id: "RULE-012", detected_at: "2026-02-23T14:30:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
-  { id: "VIO-005", description: "Automated decision made without required human review", severity: "medium", rule_id: "RULE-003", detected_at: "2026-02-23T11:20:00Z", status: "resolved", assigned_reviewer: "reviewer2@hfai.com" },
-  { id: "VIO-006", description: "Model hallucination detected in financial advice context", severity: "critical", rule_id: "RULE-015", detected_at: "2026-02-22T18:05:00Z", status: "under_review", assigned_reviewer: "reviewer@hfai.com" },
-  { id: "VIO-007", description: "Consent not obtained before data processing", severity: "medium", rule_id: "RULE-002", detected_at: "2026-02-22T09:33:00Z", status: "resolved", assigned_reviewer: "reviewer@hfai.com" },
-  { id: "VIO-008", description: "Explainability score below minimum threshold", severity: "low", rule_id: "RULE-009", detected_at: "2026-02-21T15:12:00Z", status: "open", assigned_reviewer: "reviewer2@hfai.com" },
+  { id: "VIO-001", description: "AI generated response without human approval in sensitive context", severity: "critical", rule_id: "RULE-003", ai_system_id: "SYS-001", detected_at: "2026-02-24T10:23:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-002", description: "Model output exceeded confidence threshold without flagging", severity: "high", rule_id: "RULE-007", ai_system_id: "SYS-001", detected_at: "2026-02-24T09:15:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-003", description: "PII detected in AI response payload", severity: "critical", rule_id: "RULE-001", ai_system_id: "SYS-001", detected_at: "2026-02-23T16:42:00Z", status: "resolved", assigned_reviewer: "reviewer2@hfai.com" },
+  { id: "VIO-004", description: "Bias indicator triggered in hiring recommendation", severity: "high", rule_id: "RULE-012", ai_system_id: "SYS-001", detected_at: "2026-02-23T14:30:00Z", status: "open", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-005", description: "Automated decision made without required human review", severity: "medium", rule_id: "RULE-003", ai_system_id: "SYS-001", detected_at: "2026-02-23T11:20:00Z", status: "resolved", assigned_reviewer: "reviewer2@hfai.com" },
+  { id: "VIO-006", description: "Model hallucination detected in financial advice context", severity: "critical", rule_id: "RULE-015", ai_system_id: "SYS-001", detected_at: "2026-02-22T18:05:00Z", status: "under_review", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-007", description: "Consent not obtained before data processing", severity: "medium", rule_id: "RULE-002", ai_system_id: "SYS-001", detected_at: "2026-02-22T09:33:00Z", status: "resolved", assigned_reviewer: "reviewer@hfai.com" },
+  { id: "VIO-008", description: "Explainability score below minimum threshold", severity: "low", rule_id: "RULE-009", ai_system_id: "SYS-001", detected_at: "2026-02-21T15:12:00Z", status: "open", assigned_reviewer: "reviewer2@hfai.com" },
 ];
 
 export const mockViolationDetail = {
@@ -21,6 +21,7 @@ export const mockViolationDetail = {
   description: "AI generated response without human approval in sensitive context",
   severity: "critical",
   rule_id: "RULE-003",
+  ai_system_id: "SYS-001",
   detected_at: "2026-02-24T10:23:00Z",
   status: "open",
   assigned_reviewer: "reviewer@hfai.com",

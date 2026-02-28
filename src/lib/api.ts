@@ -169,7 +169,7 @@ export async function sendAIEvent(payload: { event_type: string; payload: string
     return {
       userEvent: { id: eventId, event_type: payload.event_type, payload: payload.payload, created_at: new Date().toISOString() },
       assistantEvent: null,
-      violations: [{ id: violationId, description: `Demo violation from: "${payload.payload.substring(0, 50)}"`, severity: "high" }],
+      violations: [{ id: violationId, ai_system_id: "SYS-001", rule_id: "RULE-003", description: `Demo violation from: "${payload.payload.substring(0, 50)}"`, severity: "high" }],
     };
   }
 }
