@@ -2,14 +2,23 @@
 const API_BASE = "http://localhost:4000";
 const TIMEOUT_MS = 3000;
 
+// Get auth token from localStorage
+function getAuthToken(): string | null {
+  return localStorage.getItem("hfai_token");
+}
+
 async function apiRequest<T = unknown>(path: string, options?: RequestInit): Promise<T> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
+  const token = getAuthToken();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...((options?.headers as Record<string, string>) || {}),
   };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
 
   try {
     const res = await fetch(`${API_BASE}${path}`, {
@@ -30,11 +39,20 @@ async function apiRequest<T = unknown>(path: string, options?: RequestInit): Pro
 
 // ─── AI Systems (/ai-systems) ────────────────────────
 export async function fetchAISystems() {
-  return apiRequest<any[]>("/ai-systems");
+  try {
+    return await apiRequest<any[]>("/ai-systems");
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchAISystem(id: string) {
-  return apiRequest<any>(`/ai-systems/${id}`);
+  try {
+    return await apiRequest<any>(`/ai-systems/${id}`);
+  } catch {
+    const { mockAISystem } = await import("./mock-data");
+    return mockAISystem;
+  }
 }
 
 export async function createAISystem(payload: {
@@ -64,11 +82,21 @@ export async function deleteAISystem(id: string) {
 
 // ─── Violations (/violations) ────────────────────────
 export async function fetchViolations() {
-  return apiRequest<any[]>("/violations");
+  try {
+    return await apiRequest<any[]>("/violations");
+  } catch {
+    const { mockViolations } = await import("./mock-data");
+    return mockViolations;
+  }
 }
 
 export async function fetchViolation(id: string) {
-  return apiRequest<any>(`/violations/${id}`);
+  try {
+    return await apiRequest<any>(`/violations/${id}`);
+  } catch {
+    const { mockViolations } = await import("./mock-data");
+    return mockViolations.find((v) => v.id === id) || mockViolations[0];
+  }
 }
 
 export async function createViolation(payload: {
@@ -97,7 +125,11 @@ export async function deleteViolation(id: string) {
 
 // ─── Human Reviews (/human-reviews) ─────────────────
 export async function fetchReviews() {
-  return apiRequest<any[]>("/human-reviews");
+  try {
+    return await apiRequest<any[]>("/human-reviews");
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchReview(id: string) {
@@ -116,7 +148,6 @@ export async function submitReview(payload: {
       body: JSON.stringify(payload),
     });
   } catch {
-    // Mock fallback for demo mode
     return {
       id: `REV-DEMO-${Date.now()}`,
       ...payload,
@@ -135,7 +166,12 @@ export async function updateReview(id: string, payload: Record<string, unknown>)
 
 // ─── Audit Logs (/audit-logs) ───────────────────────
 export async function fetchAuditLogs() {
-  return apiRequest<any[]>("/audit-logs");
+  try {
+    return await apiRequest<any[]>("/audit-logs");
+  } catch {
+    const { mockAuditLogs } = await import("./mock-data");
+    return mockAuditLogs;
+  }
 }
 
 export async function createAuditLog(payload: {
@@ -227,4 +263,43 @@ export async function deleteRule(id: string) {
   } catch {
     return { message: "Rule deleted (demo)" };
   }
+}
+
+// ─── Admin API (/admin) ─────────────────────────────
+export async function fetchAdminStats() {
+  return apiRequest<any>("/admin/stats");
+}
+
+export async function fetchAdminReviewers() {
+  return apiRequest<any[]>("/admin/reviewers");
+}
+
+export async function createReviewer(payload: { email: string; name: string; password: string }) {
+  return apiRequest<any>("/admin/reviewers", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteReviewer(id: string) {
+  return apiRequest<any>(`/admin/reviewers/${id}`, { method: "DELETE" });
+}
+
+export async function fetchAdminOrganizations() {
+  return apiRequest<any[]>("/admin/organizations");
+}
+
+export async function createOrganization(payload: { name: string; contact_email?: string }) {
+  return apiRequest<any>("/admin/organizations", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteOrganization(id: string) {
+  return apiRequest<any>(`/admin/organizations/${id}`, { method: "DELETE" });
+}
+
+export async function fetchAdminUsers() {
+  return apiRequest<any[]>("/admin/users");
 }

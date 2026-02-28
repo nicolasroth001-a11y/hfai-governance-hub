@@ -1,29 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { authenticateToken, requireRole } = require('../middleware/auth');
 
-// CREATE HUMAN REVIEW
-router.post('/', async (req, res) => {
+// CREATE HUMAN REVIEW (reviewer or admin only)
+router.post('/', authenticateToken, requireRole('reviewer', 'admin'), async (req, res) => {
   try {
-    const { violation_id, reviewer_name, decision, comments } = req.body;
+    const { violation_id, decision, comments } = req.body;
+    const reviewer_name = req.user.name;
 
     const result = await pool.query(
       `INSERT INTO human_reviews (violation_id, reviewer_name, decision, comments)
-       VALUES ($1, $2, $3, $4)
-       RETURNING *`,
+       VALUES ($1, $2, $3, $4) RETURNING *`,
       [violation_id, reviewer_name, decision, comments]
     );
 
-    // AUTO‑CREATE AUDIT LOG
     await pool.query(
-      `INSERT INTO audit_logs (action, entity_type, entity_id, details)
-       VALUES ($1, $2, $3, $4)`,
-      [
-        'review_submitted',
-        'human_review',
-        result.rows[0].id,
-        `Review decision: ${decision}`
-      ]
+      `INSERT INTO audit_logs (action, entity_type, entity_id, details) VALUES ($1, $2, $3, $4)`,
+      ['review_submitted', 'human_review', result.rows[0].id, `${decision} by ${reviewer_name}`]
     );
 
     res.status(201).json(result.rows[0]);
@@ -33,89 +27,59 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET ALL REVIEWS
-router.get('/', async (req, res) => {
+// GET ALL REVIEWS (admin sees all, reviewer sees own)
+router.get('/', authenticateToken, requireRole('reviewer', 'admin'), async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT * FROM human_reviews ORDER BY reviewed_at DESC'
-    );
+    let result;
+    if (req.user.role === 'admin') {
+      result = await pool.query('SELECT * FROM human_reviews ORDER BY reviewed_at DESC');
+    } else {
+      result = await pool.query(
+        'SELECT * FROM human_reviews WHERE reviewer_name = $1 ORDER BY reviewed_at DESC',
+        [req.user.name]
+      );
+    }
     res.json(result.rows);
   } catch (err) {
-    console.error('Error fetching reviews:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // GET ONE REVIEW
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const result = await pool.query(
-      'SELECT * FROM human_reviews WHERE id = $1',
-      [id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Review not found' });
-    }
-
+    const result = await pool.query('SELECT * FROM human_reviews WHERE id = $1', [req.params.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Review not found' });
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error fetching review:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // UPDATE REVIEW
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateToken, requireRole('reviewer', 'admin'), async (req, res) => {
   try {
-    const { id } = req.params;
-    const { violation_id, reviewer_name, decision, comments } = req.body;
-
+    const { decision, comments } = req.body;
     const result = await pool.query(
-      `UPDATE human_reviews
-       SET violation_id = $1,
-           reviewer_name = $2,
-           decision = $3,
-           comments = $4,
-           updated_at = NOW()
-       WHERE id = $5
-       RETURNING *`,
-      [violation_id, reviewer_name, decision, comments, id]
+      `UPDATE human_reviews SET decision=$1, comments=$2, updated_at=NOW() WHERE id=$3 RETURNING *`,
+      [decision, comments, req.params.id]
     );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Review not found' });
-    }
-
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Review not found' });
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error updating review:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // DELETE REVIEW
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, requireRole('admin'), async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const result = await pool.query(
-      'DELETE FROM human_reviews WHERE id = $1 RETURNING id',
-      [id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Review not found' });
-    }
-
+    const result = await pool.query('DELETE FROM human_reviews WHERE id = $1 RETURNING id', [req.params.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Review not found' });
     res.json({ message: 'Review deleted' });
   } catch (err) {
-    console.error('Error deleting review:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 module.exports = router;
-

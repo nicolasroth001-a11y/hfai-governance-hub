@@ -5,11 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 
 export default function CustomerSignup() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ company_name: "", email: "", password: "", confirm_password: "" });
+  const { signup } = useAuth();
+  const [form, setForm] = useState({ company_name: "", name: "", email: "", password: "", confirm_password: "" });
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,9 +21,22 @@ export default function CustomerSignup() {
       return;
     }
     setLoading(true);
-    toast({ title: "Auth not implemented", description: "No signup route exists in the backend yet.", variant: "destructive" });
-    setTimeout(() => navigate("/login/customer"), 500);
+    const result = await signup({
+      email: form.email,
+      password: form.password,
+      name: form.name || form.company_name,
+      company_name: form.company_name,
+    });
     setLoading(false);
+    if (result.success) {
+      toast({
+        title: "Account created!",
+        description: result.api_key ? `Your API key: ${result.api_key.substring(0, 12)}... (save it now!)` : "Welcome to HFAI",
+      });
+      navigate("/customer/dashboard");
+    } else {
+      toast({ title: "Signup failed", description: result.error, variant: "destructive" });
+    }
   };
 
   return (
@@ -39,6 +54,10 @@ export default function CustomerSignup() {
             <div className="space-y-2">
               <Label>Company Name</Label>
               <Input placeholder="Acme Corp" value={form.company_name} onChange={(e) => setForm({ ...form, company_name: e.target.value })} required />
+            </div>
+            <div className="space-y-2">
+              <Label>Your Name</Label>
+              <Input placeholder="John Doe" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
             <div className="space-y-2">
               <Label>Email</Label>

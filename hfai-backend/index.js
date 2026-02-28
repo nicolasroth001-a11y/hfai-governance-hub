@@ -3,17 +3,14 @@ console.log("Groq key loaded:", !!process.env.GROQ_API_KEY);
 
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg');
 
-
-// INIT APP (only once!)
 const app = express();
 
-// MIDDLEWARE - Must be before routes!
+// MIDDLEWARE
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'x-api-key'],
+  allowedHeaders: ['Content-Type', 'x-api-key', 'Authorization'],
   credentials: true
 }));
 app.use(express.json());
@@ -23,49 +20,20 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// DEBUG LOADING ROUTERS
-console.log("Loading aiSystemsRouter...");
+// LOAD ROUTERS
+const authRouter = require('./routes/auth');
+const adminRouter = require('./routes/admin');
 const aiSystemsRouter = require('./routes/aiSystems');
-console.log("Loaded aiSystemsRouter");
-
-console.log("Loading violationsRouter...");
 const violationsRouter = require('./routes/violations');
-console.log("Loaded violationsRouter");
-
-console.log("Loading humanReviewsRouter...");
 const humanReviewsRouter = require('./routes/humanReviews');
-console.log("Loaded humanReviewsRouter");
-
-console.log("Loading auditLogsRouter...");
 const auditLogsRouter = require('./routes/auditLogs');
-console.log("Loaded auditLogsRouter");
-
-console.log("Loading aiEventsRouter...");
 const aiEventsRouter = require('./routes/aiEvents');
-console.log("Loaded aiEventsRouter");
-
-console.log("Loading rulesRouter...");
 const rulesRouter = require('./routes/rules');
-console.log("Loaded aiEventsRouter");
-
-console.log("Groq key loaded:", !!process.env.GROQ_API_KEY);
-
-// DB POOL
-const pool = new Pool({
-  host: process.env.PGHOST,
-  port: process.env.PGPORT,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  database: process.env.PGDATABASE,
-  ssl: process.env.PGSSLMODE === "disable" ? false : true
-});
-
-console.log("Connected to DB:", process.env.PGDATABASE);
-console.log("Loading contactRouter...");
 const contactRouter = require('./routes/contact');
-console.log("Loaded contactRouter");
 
 // ROUTES
+app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
 app.use('/ai-systems', aiSystemsRouter);
 app.use('/violations', violationsRouter);
 app.use('/human-reviews', humanReviewsRouter);
@@ -80,4 +48,3 @@ const PORT = process.env.PORT || 4000;
 seed().then(() => {
   app.listen(PORT, () => console.log(`API running on port ${PORT}`));
 });
-
