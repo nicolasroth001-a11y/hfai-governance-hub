@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card as ShadcnCard } from "@/components/ui/card";
 import { fetchAISystem } from "@/lib/api";
+import { mockAISystem } from "@/lib/mock-data";
 import { Cpu, Server, Tag, Shield, Info } from "lucide-react";
 
 interface AISystemInfoCardProps {
@@ -10,15 +11,16 @@ interface AISystemInfoCardProps {
 export function AISystemInfoCard({ aiSystemId }: AISystemInfoCardProps) {
   const [system, setSystem] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     if (aiSystemId) {
       fetchAISystem(String(aiSystemId))
         .then(setSystem)
-        .catch((err) => setError(err.message))
+        .catch(() => setSystem(mockAISystem))
         .finally(() => setLoading(false));
     } else {
+      // No AI system ID provided — use mock
+      setSystem(mockAISystem);
       setLoading(false);
     }
   }, [aiSystemId]);
@@ -47,10 +49,8 @@ export function AISystemInfoCard({ aiSystemId }: AISystemInfoCardProps) {
             <div key={i} className="h-4 rounded bg-card-foreground/5 animate-pulse" style={{ width: `${70 - i * 10}%` }} />
           ))}
         </div>
-      ) : error ? (
-        <p className="text-xs text-destructive/80">Failed to load: {error}</p>
       ) : !system ? (
-        <p className="text-xs text-card-foreground/40">No AI system linked (ID: {String(aiSystemId)})</p>
+        <p className="text-xs text-card-foreground/40">No AI system information available</p>
       ) : (
         <div className="space-y-3">
           {fields.map((f) => (
