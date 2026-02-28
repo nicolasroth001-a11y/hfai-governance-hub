@@ -5,6 +5,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
+import { DemoTutorial } from "@/components/DemoTutorial";
 import { fetchViolations, fetchAuditLogs } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
@@ -13,6 +14,9 @@ export default function CustomerDashboard() {
   const [activity, setActivity] = useState<any[]>([]);
   const [testOpen, setTestOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showTutorial, setShowTutorial] = useState(() => {
+    return !sessionStorage.getItem("hfai_tutorial_done");
+  });
 
   const loadData = useCallback(async () => {
     try {
@@ -38,8 +42,14 @@ export default function CustomerDashboard() {
 
   useEffect(() => { loadData(); }, [loadData]);
 
+  const dismissTutorial = () => {
+    sessionStorage.setItem("hfai_tutorial_done", "1");
+    setShowTutorial(false);
+  };
+
   return (
     <div className="space-y-8">
+      {showTutorial && <DemoTutorial onComplete={dismissTutorial} />}
       <div className="flex items-end justify-between">
         <SectionHeader title="Your AI Systems" description="Clarity and control over your AI governance" />
         <Button onClick={() => setTestOpen(true)} size="sm" className="gap-2 h-9">
