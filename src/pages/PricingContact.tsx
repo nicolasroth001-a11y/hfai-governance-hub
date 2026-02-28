@@ -59,10 +59,10 @@ export default function PricingContact() {
         {/* Hero */}
         <section className="text-center space-y-4 max-w-2xl mx-auto">
           <h1 className="text-4xl font-bold tracking-tight leading-tight">
-            Human‑First AI Governance for Modern Teams
+            Pricing & Full Release Date
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Real‑time oversight, rule enforcement, and human‑in‑the‑loop review for your AI systems.
+            Human‑First AI Governance for Modern Teams — get in touch to learn about pricing and our full release timeline.
           </p>
         </section>
 

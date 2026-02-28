@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Activity, AlertTriangle, UserCheck, ChevronRight, Cpu, Zap, Eye } from "lucide-react";
@@ -32,10 +32,15 @@ export default function LandingPage() {
         <p className="mt-4 text-lg text-muted-foreground max-w-xl leading-relaxed">
           HFAI monitors your AI systems, catches risky behavior, and keeps humans in control.
         </p>
-        <Button size="lg" className="mt-10 text-base px-8 h-12 gap-2" onClick={() => navigate("/customer/onboarding")}>
-          Enter Demo
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 mt-10">
+          <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/customer/onboarding")}>
+            Enter Demo
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+          <Button size="lg" variant="outline" className="text-base px-8 h-12" asChild>
+            <Link to="/pricing/contact">Pricing & Full Release Date</Link>
+          </Button>
+        </div>
       </section>
 
       {/* ── Value Points ── */}
@@ -52,6 +57,11 @@ export default function LandingPage() {
               </CardContent>
             </Card>
           ))}
+        </div>
+        <div className="text-center mt-8">
+          <Button variant="outline" asChild>
+            <Link to="/pricing/contact">Pricing & Full Release Date →</Link>
+          </Button>
         </div>
       </section>
 
@@ -76,12 +86,20 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
+        <div className="text-center mt-10">
+          <Button variant="outline" asChild>
+            <Link to="/pricing/contact">Pricing & Full Release Date →</Link>
+          </Button>
+        </div>
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground space-y-1">
+      <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground space-y-2">
         <p>© HFAI</p>
         <p>Demo Mode — Not for production use</p>
+        <Link to="/pricing/contact" className="text-primary hover:underline text-xs">
+          Pricing & Full Release Date
+        </Link>
       </footer>
     </div>
   );
