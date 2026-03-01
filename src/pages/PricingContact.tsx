@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { usePageView } from "@/hooks/usePageView";
 import { Shield, CheckCircle, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ const valueBullets = [
 export default function PricingContact() {
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
+  usePageView("/pricing/contact");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

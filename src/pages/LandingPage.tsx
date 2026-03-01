@@ -2,6 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Activity, AlertTriangle, UserCheck, ChevronRight, Cpu, Zap, Eye } from "lucide-react";
+import { usePageView } from "@/hooks/usePageView";
 
 const values = [
   { icon: Activity, title: "Monitor your AI systems", description: "Track every interaction across all your AI models in real time with structured event logging." },
@@ -18,6 +19,7 @@ const steps = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  usePageView("/");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
