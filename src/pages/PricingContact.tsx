@@ -25,12 +25,12 @@ export default function PricingContact() {
     e.preventDefault();
     setSending(true);
     try {
-      const res = await fetch("http://localhost:4000/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data, error: fnError } = await supabase.functions.invoke("contact", {
+        body: form,
       });
-      if (!res.ok) throw new Error("Failed to send");
+      if (fnError) throw fnError;
+      if (data?.error) throw new Error(data.error);
       setForm({ name: "", company: "", email: "", message: "" });
       toast({ title: "Message sent", description: "We'll get back to you shortly." });
     } catch {
