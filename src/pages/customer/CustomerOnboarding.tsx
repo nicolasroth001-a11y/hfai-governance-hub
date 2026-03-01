@@ -6,7 +6,8 @@ import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
 import { APIKeyDisplay } from "@/components/APIKeyDisplay";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
-import { ArrowRight, BookOpen, Key, Layers, Send, Zap } from "lucide-react";
+import { ArrowRight, BookOpen, Key, Layers, Send, Zap, SkipForward } from "lucide-react";
+import { usePageView } from "@/hooks/usePageView";
 
 const DEMO_API_KEY = "hfai_demo_k8x2mQ9vLpR4nT6wJ1yF3bA7cE0gH5d";
 
@@ -59,13 +60,24 @@ print(response.json())`;
 export default function CustomerOnboarding() {
   const [testOpen, setTestOpen] = useState(false);
   const navigate = useNavigate();
+  usePageView("/customer/onboarding");
 
   return (
     <div className="space-y-section">
-      <SectionHeader
-        title="Onboarding"
-        description="Get up and running with HFAI in minutes"
-      />
+      <div className="flex items-center justify-between">
+        <SectionHeader
+          title="Onboarding"
+          description="Get up and running with HFAI in minutes"
+        />
+        <Button
+          variant="outline"
+          onClick={() => navigate("/customer/dashboard")}
+          className="gap-2 shrink-0"
+        >
+          <SkipForward className="h-4 w-4" />
+          Skip to Dashboard
+        </Button>
+      </div>
 
       {/* ── 1. How It Works ── */}
       <ContentCard icon={Layers} title="How HFAI Works">
