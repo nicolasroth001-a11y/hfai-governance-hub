@@ -20,63 +20,35 @@ serve(async (req) => {
       );
     }
 
-    const CONTACT_EMAIL = Deno.env.get('CONTACT_EMAIL');
-    const CONTACT_EMAIL_APP_PASSWORD = Deno.env.get('CONTACT_EMAIL_APP_PASSWORD');
-
-    if (!CONTACT_EMAIL || !CONTACT_EMAIL_APP_PASSWORD) {
-      console.error('Missing email configuration');
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    if (!RESEND_API_KEY) {
+      console.error('Missing RESEND_API_KEY');
       return new Response(
         JSON.stringify({ error: 'Email service not configured.' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Use Gmail SMTP via fetch to smtp-relay or use a simple approach
-    // Since Deno doesn't have nodemailer, we'll use the Gmail SMTP API
-    const emailBody = `Name: ${name}\nCompany: ${company || 'N/A'}\nEmail: ${email}\n\nMessage:\n${message}`;
-    
-    // Construct the email in RFC 2822 format
-    const rawEmail = [
-      `From: "HFAI Contact Form" <${CONTACT_EMAIL}>`,
-      `To: nicolasroth001@gmail.com`,
-      `Reply-To: ${email}`,
-      `Subject: New inquiry from ${name} (${company || 'N/A'})`,
-      `Content-Type: text/plain; charset=utf-8`,
-      '',
-      emailBody,
-    ].join('\r\n');
-
-    const encodedEmail = btoa(unescape(encodeURIComponent(rawEmail)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-
-    // Get OAuth2 access token using Gmail API with app password via SMTP
-    // Alternative: Use a simple SMTP connection
-    // For Gmail with app passwords, we'll use the Deno smtp client
-    const { SMTPClient } = await import("https://deno.land/x/denomailer@1.6.0/mod.ts");
-
-    const client = new SMTPClient({
-      connection: {
-        hostname: "smtp.gmail.com",
-        port: 465,
-        tls: true,
-        auth: {
-          username: CONTACT_EMAIL,
-          password: CONTACT_EMAIL_APP_PASSWORD,
-        },
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        from: 'HFAI Contact Form <onboarding@resend.dev>',
+        to: ['nicolasroth001@gmail.com'],
+        reply_to: email,
+        subject: `New inquiry from ${name} (${company || 'N/A'})`,
+        text: `Name: ${name}\nCompany: ${company || 'N/A'}\nEmail: ${email}\n\nMessage:\n${message}`,
+      }),
     });
 
-    await client.send({
-      from: CONTACT_EMAIL,
-      to: "nicolasroth001@gmail.com",
-      replyTo: email,
-      subject: `New inquiry from ${name} (${company || 'N/A'})`,
-      content: emailBody,
-    });
-
-    await client.close();
+    if (!res.ok) {
+      const errorData = await res.text();
+      console.error('Resend error:', errorData);
+      throw new Error('Failed to send email');
+    }
 
     return new Response(
       JSON.stringify({ success: true }),
