@@ -8,6 +8,12 @@ import { DemoModeProvider } from "@/contexts/DemoModeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
+
+function AnalyticsTracker() {
+  useAnalyticsTracker();
+  return null;
+}
 
 // Layouts
 import CustomerLayout from "./layouts/CustomerLayout";
@@ -53,6 +59,7 @@ import AdminCreateCustomer from "./pages/admin/AdminCreateCustomer";
 import AdminLogs from "./pages/admin/AdminLogs";
 import AdminAPIKeys from "./pages/admin/AdminAPIKeys";
 import AdminHumanFirstFramework from "./pages/admin/AdminHumanFirstFramework";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
 
 import NotFound from "./pages/NotFound";
 
@@ -77,6 +84,7 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <AnalyticsTracker />
         <Routes>
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
@@ -127,6 +135,7 @@ const App = () => {
             <Route path="logs" element={<AdminLogs />} />
             <Route path="api-keys" element={<AdminAPIKeys />} />
             <Route path="docs/human-first-framework" element={<AdminHumanFirstFramework />} />
+            <Route path="analytics" element={<AdminAnalytics />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
