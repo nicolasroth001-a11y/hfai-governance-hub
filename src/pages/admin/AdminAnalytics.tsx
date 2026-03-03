@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
-import { BarChart3, Eye, Users, Globe, TrendingUp, Loader2 } from "lucide-react";
+import { BarChart3, Eye, Users, Globe, TrendingUp, Loader2, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { useDemoMode } from "@/contexts/DemoModeContext";
-import { Navigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface AnalyticsData {
   pages: { route: string; views: number; unique: number }[];
@@ -15,14 +15,37 @@ interface AnalyticsData {
   uniqueSessions: number;
 }
 
+const ANALYTICS_PASSWORD = "hfai-analytics-2026";
+
 export default function AdminAnalytics() {
-  const { isDemo } = useDemoMode();
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
   const [data, setData] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === ANALYTICS_PASSWORD) {
+      setAuthenticated(true);
+      setPasswordError(false);
+      sessionStorage.setItem("hfai_analytics_auth", "1");
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  // Check session storage on mount
   useEffect(() => {
-    if (isDemo) return;
+    if (sessionStorage.getItem("hfai_analytics_auth") === "1") {
+      setAuthenticated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!authenticated) return;
+    setLoading(true);
     const load = async () => {
       try {
         const { data: result, error: err } = await supabase.functions.invoke("analytics-data");
@@ -35,11 +58,31 @@ export default function AdminAnalytics() {
       }
     };
     load();
-  }, [isDemo]);
+  }, [authenticated]);
 
-  // Block access in demo mode
-  if (isDemo) {
-    return <Navigate to="/admin/dashboard" replace />;
+  if (!authenticated) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <form onSubmit={handleUnlock} className="w-full max-w-sm space-y-4">
+          <div className="flex flex-col items-center gap-3 mb-6">
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Lock className="h-6 w-6 text-primary" />
+            </div>
+            <h2 className="text-lg font-semibold text-foreground">Analytics Access</h2>
+            <p className="text-sm text-muted-foreground text-center">Enter the admin analytics password to continue.</p>
+          </div>
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => { setPassword(e.target.value); setPasswordError(false); }}
+            className={passwordError ? "border-destructive" : ""}
+          />
+          {passwordError && <p className="text-xs text-destructive">Incorrect password.</p>}
+          <Button type="submit" className="w-full">Unlock</Button>
+        </form>
+      </div>
+    );
   }
 
   if (loading) {
