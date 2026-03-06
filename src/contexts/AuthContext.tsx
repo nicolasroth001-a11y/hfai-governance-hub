@@ -1,105 +1,129 @@
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { User, Session } from "@supabase/supabase-js";
 
-interface AuthUser {
-  id: number;
+interface Profile {
+  id: string;
   email: string;
-  role: "admin" | "reviewer" | "customer";
   name: string;
-  org_id: number | null;
+  role: "admin" | "reviewer" | "customer";
+  org_id: string | null;
 }
 
 interface AuthContextValue {
-  user: AuthUser | null;
-  token: string | null;
+  user: User | null;
+  profile: Profile | null;
+  session: Session | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  signup: (data: { email: string; password: string; name: string; company_name: string }) => Promise<{ success: boolean; error?: string; api_key?: string }>;
-  logout: () => void;
+  signup: (data: { email: string; password: string; name: string; company_name: string }) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
-  token: null,
+  profile: null,
+  session: null,
   isAuthenticated: false,
   isLoading: true,
   login: async () => ({ success: false }),
   signup: async () => ({ success: false }),
-  logout: () => {},
+  logout: async () => {},
 });
 
-const API_BASE = "http://localhost:4000";
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Restore session from localStorage
-  useEffect(() => {
-    const savedToken = localStorage.getItem("hfai_token");
-    const savedUser = localStorage.getItem("hfai_user");
-    if (savedToken && savedUser) {
-      try {
-        setToken(savedToken);
-        setUser(JSON.parse(savedUser));
-      } catch {
-        localStorage.removeItem("hfai_token");
-        localStorage.removeItem("hfai_user");
-      }
+  const fetchProfile = useCallback(async (userId: string) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, email, name, role, org_id")
+      .eq("id", userId)
+      .single();
+    if (error) {
+      console.error("Failed to fetch profile:", error);
+      setProfile(null);
+    } else {
+      setProfile(data as Profile);
     }
-    setIsLoading(false);
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) return { success: false, error: data.error || "Login failed" };
+  useEffect(() => {
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, newSession) => {
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+        if (newSession?.user) {
+          // Use setTimeout to avoid potential deadlock with Supabase client
+          setTimeout(() => fetchProfile(newSession.user.id), 0);
+        } else {
+          setProfile(null);
+        }
+        setIsLoading(false);
+      }
+    );
 
-      setToken(data.token);
-      setUser(data.user);
-      localStorage.setItem("hfai_token", data.token);
-      localStorage.setItem("hfai_user", JSON.stringify(data.user));
-      return { success: true };
-    } catch {
-      return { success: false, error: "Cannot connect to server" };
-    }
+    // THEN check existing session
+    supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
+      setSession(existingSession);
+      setUser(existingSession?.user ?? null);
+      if (existingSession?.user) {
+        fetchProfile(existingSession.user.id);
+      }
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [fetchProfile]);
+
+  const login = useCallback(async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
   }, []);
 
   const signup = useCallback(async (data: { email: string; password: string; name: string; company_name: string }) => {
-    try {
-      const res = await fetch(`${API_BASE}/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const result = await res.json();
-      if (!res.ok) return { success: false, error: result.error || "Signup failed" };
-
-      setToken(result.token);
-      setUser(result.user);
-      localStorage.setItem("hfai_token", result.token);
-      localStorage.setItem("hfai_user", JSON.stringify(result.user));
-      return { success: true, api_key: result.organization?.api_key };
-    } catch {
-      return { success: false, error: "Cannot connect to server" };
-    }
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          name: data.name || data.company_name,
+          role: "customer",
+          company_name: data.company_name,
+        },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
   }, []);
 
-  const logout = useCallback(() => {
-    setToken(null);
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem("hfai_token");
-    localStorage.removeItem("hfai_user");
+    setSession(null);
+    setProfile(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, isLoading, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        profile,
+        session,
+        isAuthenticated: !!session,
+        isLoading,
+        login,
+        signup,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

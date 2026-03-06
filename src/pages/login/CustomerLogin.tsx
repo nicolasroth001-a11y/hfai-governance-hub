@@ -28,7 +28,7 @@ export default function CustomerLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-section">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center space-y-3">
           <div className="mx-auto h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">

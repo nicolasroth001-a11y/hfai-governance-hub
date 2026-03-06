@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
-  const { isAuthenticated, user, isLoading } = useAuth();
+  const { isAuthenticated, profile, isLoading } = useAuth();
   const { isDemo } = useDemoMode();
 
   // In demo mode, always allow access
@@ -28,8 +28,8 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     return <Navigate to={`/login/${requiredRole}`} replace />;
   }
 
-  if (user?.role !== requiredRole) {
-    return <Navigate to={`/login/${user?.role || "customer"}`} replace />;
+  if (profile && profile.role !== requiredRole) {
+    return <Navigate to={`/${profile.role}/dashboard`} replace />;
   }
 
   return <>{children}</>;
