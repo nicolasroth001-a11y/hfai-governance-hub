@@ -31,9 +31,9 @@ export default function CustomerSignup() {
     if (result.success) {
       toast({
         title: "Account created!",
-        description: result.api_key ? `Your API key: ${result.api_key.substring(0, 12)}... (save it now!)` : "Welcome to HFAI",
+        description: "Please check your email to verify your account before signing in.",
       });
-      navigate("/customer/dashboard");
+      navigate("/login/customer");
     } else {
       toast({ title: "Signup failed", description: result.error, variant: "destructive" });
     }
