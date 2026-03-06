@@ -10,16 +10,32 @@ interface Profile {
   org_id: string | null;
 }
 
+export interface SubscriptionStatus {
+  subscribed: boolean;
+  onTrial: boolean;
+  productId: string | null;
+  subscriptionEnd: string | null;
+}
+
 interface AuthContextValue {
   user: User | null;
   profile: Profile | null;
   session: Session | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  subscription: SubscriptionStatus;
+  refreshSubscription: () => Promise<void>;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signup: (data: { email: string; password: string; name: string; company_name: string }) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
 }
+
+const defaultSubscription: SubscriptionStatus = {
+  subscribed: false,
+  onTrial: false,
+  productId: null,
+  subscriptionEnd: null,
+};
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
@@ -27,6 +43,8 @@ const AuthContext = createContext<AuthContextValue>({
   session: null,
   isAuthenticated: false,
   isLoading: true,
+  subscription: defaultSubscription,
+  refreshSubscription: async () => {},
   login: async () => ({ success: false }),
   signup: async () => ({ success: false }),
   logout: async () => {},
@@ -37,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [subscription, setSubscription] = useState<SubscriptionStatus>(defaultSubscription);
 
   const fetchProfile = useCallback(async (userId: string) => {
     const { data, error } = await supabase
@@ -52,34 +71,61 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const refreshSubscription = useCallback(async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke("check-subscription");
+      if (error) {
+        console.error("Failed to check subscription:", error);
+        return;
+      }
+      if (data && !data.error) {
+        setSubscription({
+          subscribed: data.subscribed ?? false,
+          onTrial: data.on_trial ?? false,
+          productId: data.product_id ?? null,
+          subscriptionEnd: data.subscription_end ?? null,
+        });
+      }
+    } catch (err) {
+      console.error("Subscription check failed:", err);
+    }
+  }, []);
+
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
       async (_event, newSession) => {
         setSession(newSession);
         setUser(newSession?.user ?? null);
         if (newSession?.user) {
-          // Use setTimeout to avoid potential deadlock with Supabase client
           setTimeout(() => fetchProfile(newSession.user.id), 0);
+          setTimeout(() => refreshSubscription(), 100);
         } else {
           setProfile(null);
+          setSubscription(defaultSubscription);
         }
         setIsLoading(false);
       }
     );
 
-    // THEN check existing session
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
       if (existingSession?.user) {
         fetchProfile(existingSession.user.id);
+        refreshSubscription();
       }
       setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
-  }, [fetchProfile]);
+    return () => authSub.unsubscribe();
+  }, [fetchProfile, refreshSubscription]);
+
+  // Auto-refresh subscription every 60s when logged in
+  useEffect(() => {
+    if (!session) return;
+    const interval = setInterval(refreshSubscription, 60_000);
+    return () => clearInterval(interval);
+  }, [session, refreshSubscription]);
 
   const login = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -109,6 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setSession(null);
     setProfile(null);
+    setSubscription(defaultSubscription);
   }, []);
 
   return (
@@ -119,6 +166,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         session,
         isAuthenticated: !!session,
         isLoading,
+        subscription,
+        refreshSubscription,
         login,
         signup,
         logout,
