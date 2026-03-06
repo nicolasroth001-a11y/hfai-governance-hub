@@ -14,6 +14,85 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          org_id: string
+          payload: Json | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          org_id: string
+          payload?: Json | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          org_id?: string
+          payload?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_events_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_systems: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          model_type: string | null
+          name: string
+          org_id: string
+          provider: string | null
+          risk_level: string | null
+          status: string | null
+          version: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          model_type?: string | null
+          name: string
+          org_id: string
+          provider?: string | null
+          risk_level?: string | null
+          status?: string | null
+          version?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          model_type?: string | null
+          name?: string
+          org_id?: string
+          provider?: string | null
+          risk_level?: string | null
+          status?: string | null
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_systems_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analytics: {
         Row: {
           created_at: string
@@ -44,6 +123,109 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          details: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          org_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          org_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          org_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      human_reviews: {
+        Row: {
+          comments: string | null
+          created_at: string
+          decision: string | null
+          id: string
+          reviewer_id: string | null
+          reviewer_name: string | null
+          violation_id: string
+        }
+        Insert: {
+          comments?: string | null
+          created_at?: string
+          decision?: string | null
+          id?: string
+          reviewer_id?: string | null
+          reviewer_name?: string | null
+          violation_id: string
+        }
+        Update: {
+          comments?: string | null
+          created_at?: string
+          decision?: string | null
+          id?: string
+          reviewer_id?: string | null
+          reviewer_name?: string | null
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "human_reviews_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          api_key: string | null
+          contact_email: string | null
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          api_key?: string | null
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          api_key?: string | null
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       page_views: {
         Row: {
           created_at: string
@@ -68,15 +250,183 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          org_id: string | null
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id: string
+          name?: string
+          org_id?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          org_id?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rules: {
+        Row: {
+          category: string | null
+          condition: string | null
+          created_at: string
+          description: string | null
+          enabled: boolean | null
+          id: string
+          name: string
+          org_id: string | null
+          severity: string | null
+        }
+        Insert: {
+          category?: string | null
+          condition?: string | null
+          created_at?: string
+          description?: string | null
+          enabled?: boolean | null
+          id?: string
+          name: string
+          org_id?: string | null
+          severity?: string | null
+        }
+        Update: {
+          category?: string | null
+          condition?: string | null
+          created_at?: string
+          description?: string | null
+          enabled?: boolean | null
+          id?: string
+          name?: string
+          org_id?: string | null
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rules_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      violations: {
+        Row: {
+          ai_event_id: string | null
+          ai_system_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          org_id: string
+          rule_id: string | null
+          severity: string | null
+          status: string | null
+        }
+        Insert: {
+          ai_event_id?: string | null
+          ai_system_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          org_id: string
+          rule_id?: string | null
+          severity?: string | null
+          status?: string | null
+        }
+        Update: {
+          ai_event_id?: string | null
+          ai_system_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          org_id?: string
+          rule_id?: string | null
+          severity?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "violations_ai_event_id_fkey"
+            columns: ["ai_event_id"]
+            isOneToOne: false
+            referencedRelation: "ai_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "violations_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: false
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "violations_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "violations_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "reviewer" | "customer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -203,6 +553,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "reviewer", "customer"],
+    },
   },
 } as const
