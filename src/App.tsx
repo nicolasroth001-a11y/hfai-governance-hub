@@ -37,6 +37,9 @@ import CustomerRuleDetail from "./pages/customer/CustomerRuleDetail";
 import CustomerLogs from "./pages/customer/CustomerLogs";
 import CustomerOnboarding from "./pages/customer/CustomerOnboarding";
 import CustomerAISystems from "./pages/customer/CustomerAISystems";
+import CustomerAISystemDetail from "./pages/customer/CustomerAISystemDetail";
+import CustomerEvents from "./pages/customer/CustomerEvents";
+import CustomerEventDetail from "./pages/customer/CustomerEventDetail";
 import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
 
 // Reviewer pages
