@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { ArrowRight, BookOpen, Key, Layers, Send, Zap, SkipForward } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
+import { useAuth } from "@/contexts/AuthContext";
 
-const DEMO_API_KEY = "hfai_demo_k8x2mQ9vLpR4nT6wJ1yF3bA7cE0gH5d";
+const API_BASE = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1";
 
 const STEPS = [
   { icon: Layers, label: "Register AI System", description: "Add your AI model to HFAI for monitoring" },
@@ -18,18 +19,26 @@ const STEPS = [
   { icon: BookOpen, label: "Review & Audit", description: "Reviewers approve or reject flagged violations" },
 ];
 
-const curlExample = `curl -X POST http://localhost:4000/ai-events \\
-  -H "x-api-key: ${DEMO_API_KEY}" \\
+export default function CustomerOnboarding() {
+  const [testOpen, setTestOpen] = useState(false);
+  const navigate = useNavigate();
+  const { profile } = useAuth();
+  usePageView("/customer/onboarding");
+
+  const apiKeyPlaceholder = "Your API key will appear in Settings after signup";
+
+  const curlExample = `curl -X POST ${API_BASE}/ai-events \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
     "event_type": "user_message",
     "payload": "Help me close my account"
   }'`;
 
-const nodeExample = `const response = await fetch("http://localhost:4000/ai-events", {
+  const nodeExample = `const response = await fetch("${API_BASE}/ai-events", {
   method: "POST",
   headers: {
-    "x-api-key": "${DEMO_API_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
@@ -41,12 +50,12 @@ const nodeExample = `const response = await fetch("http://localhost:4000/ai-even
 const data = await response.json();
 console.log(data);`;
 
-const pythonExample = `import requests
+  const pythonExample = `import requests
 
 response = requests.post(
-    "http://localhost:4000/ai-events",
+    "${API_BASE}/ai-events",
     headers={
-        "x-api-key": "${DEMO_API_KEY}",
+        "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json",
     },
     json={
@@ -56,11 +65,6 @@ response = requests.post(
 )
 
 print(response.json())`;
-
-export default function CustomerOnboarding() {
-  const [testOpen, setTestOpen] = useState(false);
-  const navigate = useNavigate();
-  usePageView("/customer/onboarding");
 
   return (
     <div className="space-y-section">
@@ -105,14 +109,17 @@ export default function CustomerOnboarding() {
 
       {/* ── 2 & CTA side-by-side ── */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Demo API Key */}
-        <ContentCard icon={Key} title="Demo API Key">
+        {/* API Key Info */}
+        <ContentCard icon={Key} title="Your API Key">
           <div className="space-y-4">
             <p className="text-sm text-card-foreground/70">
-              Use this key in the <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">x-api-key</code> header
-              when calling <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">POST /ai-events</code>.
+              Use your API key in the <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">Authorization</code> header
+              when calling the HFAI API.
             </p>
-            <APIKeyDisplay apiKey={DEMO_API_KEY} label="x-api-key" />
+            <APIKeyDisplay apiKey={apiKeyPlaceholder} label="Authorization: Bearer" />
+            <p className="text-xs text-card-foreground/50">
+              Your unique API key is available in your organization settings after completing signup.
+            </p>
           </div>
         </ContentCard>
 
@@ -145,7 +152,7 @@ export default function CustomerOnboarding() {
       <ContentCard icon={BookOpen} title="Integration Examples" fullWidth>
         <div className="space-y-4">
           <p className="text-sm text-card-foreground/70">
-            Send AI events to HFAI from any language. Each example posts a user message and returns detected violations.
+            Send AI events to HFAI from any language. Replace <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">YOUR_API_KEY</code> with your actual key.
           </p>
           <CodeSnippetBlock language="bash" title="cURL" code={curlExample} />
           <CodeSnippetBlock language="javascript" title="Node.js (fetch)" code={nodeExample} />
