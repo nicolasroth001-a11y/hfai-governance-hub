@@ -94,6 +94,7 @@ const App = () => {
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/pricing/contact" element={<PricingContact />} />
+          <Route path="/governance" element={<GovernancePage />} />
 
           {/* Login & Signup */}
           <Route path="/login/customer" element={<CustomerLogin />} />
