@@ -110,6 +110,9 @@ const App = () => {
             <Route path="logs" element={<CustomerLogs />} />
             <Route path="onboarding" element={<CustomerOnboarding />} />
             <Route path="ai-systems" element={<CustomerAISystems />} />
+            <Route path="ai-systems/:id" element={<CustomerAISystemDetail />} />
+            <Route path="events" element={<CustomerEvents />} />
+            <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
           </Route>
 
