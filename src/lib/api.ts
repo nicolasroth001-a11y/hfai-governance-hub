@@ -1,58 +1,20 @@
-// Backend runs on port 4000 — see hfai-backend/index.js
-const API_BASE = "http://localhost:4000";
-const TIMEOUT_MS = 3000;
+import { supabase } from "@/integrations/supabase/client";
 
-// Get auth token from localStorage
-function getAuthToken(): string | null {
-  return localStorage.getItem("hfai_token");
-}
-
-async function apiRequest<T = unknown>(path: string, options?: RequestInit): Promise<T> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-  const token = getAuthToken();
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...((options?.headers as Record<string, string>) || {}),
-  };
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-
-  try {
-    const res = await fetch(`${API_BASE}${path}`, {
-      ...options,
-      headers,
-      signal: controller.signal,
-    });
-
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body.error || `Request failed: ${res.status}`);
-    }
-    return res.json();
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-// ─── AI Systems (/ai-systems) ────────────────────────
+// ─── AI Systems ────────────────────────────────────────
 export async function fetchAISystems() {
-  try {
-    return await apiRequest<any[]>("/ai-systems");
-  } catch {
-    return [];
-  }
+  const { data, error } = await supabase.from("ai_systems").select("*").order("created_at", { ascending: false });
+  if (error) { console.error("fetchAISystems:", error); return []; }
+  return data ?? [];
 }
 
 export async function fetchAISystem(id: string) {
-  try {
-    return await apiRequest<any>(`/ai-systems/${id}`);
-  } catch {
+  const { data, error } = await supabase.from("ai_systems").select("*").eq("id", id).single();
+  if (error) {
+    console.error("fetchAISystem:", error);
     const { mockAISystem } = await import("./mock-data");
     return mockAISystem;
   }
+  return data;
 }
 
 export async function createAISystem(payload: {
@@ -62,41 +24,44 @@ export async function createAISystem(payload: {
   provider?: string;
   version?: string;
   risk_level?: string;
+  org_id: string;
 }) {
-  return apiRequest<any>("/ai-systems", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+  const { data, error } = await supabase.from("ai_systems").insert(payload).select().single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 export async function updateAISystem(id: string, payload: Record<string, unknown>) {
-  return apiRequest<any>(`/ai-systems/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  });
+  const { data, error } = await supabase.from("ai_systems").update(payload).eq("id", id).select().single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 export async function deleteAISystem(id: string) {
-  return apiRequest<any>(`/ai-systems/${id}`, { method: "DELETE" });
+  const { error } = await supabase.from("ai_systems").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  return { success: true };
 }
 
-// ─── Violations (/violations) ────────────────────────
+// ─── Violations ────────────────────────────────────────
 export async function fetchViolations() {
-  try {
-    return await apiRequest<any[]>("/violations");
-  } catch {
+  const { data, error } = await supabase.from("violations").select("*").order("created_at", { ascending: false });
+  if (error) {
+    console.error("fetchViolations:", error);
     const { mockViolations } = await import("./mock-data");
     return mockViolations;
   }
+  return data ?? [];
 }
 
 export async function fetchViolation(id: string) {
-  try {
-    return await apiRequest<any>(`/violations/${id}`);
-  } catch {
+  const { data, error } = await supabase.from("violations").select("*").eq("id", id).single();
+  if (error) {
+    console.error("fetchViolation:", error);
     const { mockViolations } = await import("./mock-data");
     return mockViolations.find((v) => v.id === id) || mockViolations[0];
   }
+  return data;
 }
 
 export async function createViolation(payload: {
@@ -104,36 +69,37 @@ export async function createViolation(payload: {
   rule_id: string;
   description: string;
   severity: string;
+  org_id: string;
   ai_event_id?: string;
 }) {
-  return apiRequest<any>("/violations", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+  const { data, error } = await supabase.from("violations").insert(payload).select().single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 export async function updateViolation(id: string, payload: Record<string, unknown>) {
-  return apiRequest<any>(`/violations/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  });
+  const { data, error } = await supabase.from("violations").update(payload).eq("id", id).select().single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 export async function deleteViolation(id: string) {
-  return apiRequest<any>(`/violations/${id}`, { method: "DELETE" });
+  const { error } = await supabase.from("violations").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  return { success: true };
 }
 
-// ─── Human Reviews (/human-reviews) ─────────────────
+// ─── Human Reviews ─────────────────────────────────────
 export async function fetchReviews() {
-  try {
-    return await apiRequest<any[]>("/human-reviews");
-  } catch {
-    return [];
-  }
+  const { data, error } = await supabase.from("human_reviews").select("*").order("created_at", { ascending: false });
+  if (error) { console.error("fetchReviews:", error); return []; }
+  return data ?? [];
 }
 
 export async function fetchReview(id: string) {
-  return apiRequest<any>(`/human-reviews/${id}`);
+  const { data, error } = await supabase.from("human_reviews").select("*").eq("id", id).single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 export async function submitReview(payload: {
@@ -141,13 +107,11 @@ export async function submitReview(payload: {
   reviewer_name: string;
   decision: string;
   comments?: string;
+  reviewer_id?: string;
 }) {
-  try {
-    return await apiRequest<any>("/human-reviews", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-  } catch {
+  const { data, error } = await supabase.from("human_reviews").insert(payload).select().single();
+  if (error) {
+    console.error("submitReview:", error);
     return {
       id: `REV-DEMO-${Date.now()}`,
       ...payload,
@@ -155,23 +119,24 @@ export async function submitReview(payload: {
       success: true,
     };
   }
+  return data;
 }
 
 export async function updateReview(id: string, payload: Record<string, unknown>) {
-  return apiRequest<any>(`/human-reviews/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  });
+  const { data, error } = await supabase.from("human_reviews").update(payload).eq("id", id).select().single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
-// ─── Audit Logs (/audit-logs) ───────────────────────
+// ─── Audit Logs ────────────────────────────────────────
 export async function fetchAuditLogs() {
-  try {
-    return await apiRequest<any[]>("/audit-logs");
-  } catch {
+  const { data, error } = await supabase.from("audit_logs").select("*").order("created_at", { ascending: false });
+  if (error) {
+    console.error("fetchAuditLogs:", error);
     const { mockAuditLogs } = await import("./mock-data");
     return mockAuditLogs;
   }
+  return data ?? [];
 }
 
 export async function createAuditLog(payload: {
@@ -179,53 +144,58 @@ export async function createAuditLog(payload: {
   entity_type: string;
   entity_id: string;
   details: string;
+  user_id?: string;
+  org_id?: string;
 }) {
-  return apiRequest<any>("/audit-logs", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+  const { data, error } = await supabase.from("audit_logs").insert(payload).select().single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
-// ─── AI Events (/ai-events) ─────────────────────────
+// ─── AI Events ─────────────────────────────────────────
 export async function fetchAIEvents() {
-  return apiRequest<any[]>("/ai-events");
+  const { data, error } = await supabase.from("ai_events").select("*").order("created_at", { ascending: false });
+  if (error) { console.error("fetchAIEvents:", error); return []; }
+  return data ?? [];
 }
 
-export async function sendAIEvent(payload: { event_type: string; payload: string }, apiKey: string) {
-  try {
-    return await apiRequest<any>("/ai-events", {
-      method: "POST",
-      headers: { "x-api-key": apiKey },
-      body: JSON.stringify(payload),
-    });
-  } catch {
+export async function sendAIEvent(payload: { event_type: string; payload: string; org_id: string }) {
+  const { data, error } = await supabase.from("ai_events").insert({
+    event_type: payload.event_type,
+    payload: payload.payload,
+    org_id: payload.org_id,
+  }).select().single();
+  if (error) {
+    console.error("sendAIEvent:", error);
     const eventId = `EVT-DEMO-${Math.floor(Math.random() * 9999)}`;
-    const violationId = `VIO-DEMO-${Math.floor(Math.random() * 9999)}`;
     return {
       userEvent: { id: eventId, event_type: payload.event_type, payload: payload.payload, created_at: new Date().toISOString() },
       assistantEvent: null,
-      violations: [{ id: violationId, ai_system_id: "SYS-001", rule_id: "RULE-003", description: `Demo violation from: "${payload.payload.substring(0, 50)}"`, severity: "high" }],
+      violations: [],
     };
   }
+  return { userEvent: data, assistantEvent: null, violations: [] };
 }
 
-// ─── Rules (/rules) ─────────────────────────────────
+// ─── Rules ─────────────────────────────────────────────
 export async function fetchRules() {
-  try {
-    return await apiRequest<any[]>("/rules");
-  } catch {
+  const { data, error } = await supabase.from("rules").select("*").order("created_at", { ascending: false });
+  if (error) {
+    console.error("fetchRules:", error);
     const { mockRules } = await import("./mock-data");
     return mockRules;
   }
+  return data ?? [];
 }
 
 export async function fetchRule(id: string) {
-  try {
-    return await apiRequest<any>(`/rules/${id}`);
-  } catch {
+  const { data, error } = await supabase.from("rules").select("*").eq("id", id).single();
+  if (error) {
+    console.error("fetchRule:", error);
     const { mockRules } = await import("./mock-data");
     return mockRules.find((r) => r.id === id) || mockRules[0];
   }
+  return data;
 }
 
 export async function createRule(payload: {
@@ -235,71 +205,86 @@ export async function createRule(payload: {
   severity?: string;
   condition?: string;
   enabled?: boolean;
+  org_id?: string;
 }) {
-  try {
-    return await apiRequest<any>("/rules", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-  } catch {
+  const { data, error } = await supabase.from("rules").insert(payload).select().single();
+  if (error) {
+    console.error("createRule:", error);
     return { id: `RULE-DEMO-${Date.now()}`, ...payload, created_at: new Date().toISOString(), success: true };
   }
+  return data;
 }
 
 export async function updateRule(id: string, payload: Record<string, unknown>) {
-  try {
-    return await apiRequest<any>(`/rules/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(payload),
-    });
-  } catch {
+  const { data, error } = await supabase.from("rules").update(payload).eq("id", id).select().single();
+  if (error) {
+    console.error("updateRule:", error);
     return { id, ...payload, updated_at: new Date().toISOString(), success: true };
   }
+  return data;
 }
 
 export async function deleteRule(id: string) {
-  try {
-    return await apiRequest<any>(`/rules/${id}`, { method: "DELETE" });
-  } catch {
+  const { error } = await supabase.from("rules").delete().eq("id", id);
+  if (error) {
+    console.error("deleteRule:", error);
     return { message: "Rule deleted (demo)" };
   }
+  return { success: true };
 }
 
-// ─── Admin API (/admin) ─────────────────────────────
-export async function fetchAdminStats() {
-  return apiRequest<any>("/admin/stats");
-}
-
-export async function fetchAdminReviewers() {
-  return apiRequest<any[]>("/admin/reviewers");
-}
-
-export async function createReviewer(payload: { email: string; name: string; password: string }) {
-  return apiRequest<any>("/admin/reviewers", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function deleteReviewer(id: string) {
-  return apiRequest<any>(`/admin/reviewers/${id}`, { method: "DELETE" });
-}
-
+// ─── Admin: Organizations ──────────────────────────────
 export async function fetchAdminOrganizations() {
-  return apiRequest<any[]>("/admin/organizations");
+  const { data, error } = await supabase.from("organizations").select("*").order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data ?? [];
 }
 
 export async function createOrganization(payload: { name: string; contact_email?: string }) {
-  return apiRequest<any>("/admin/organizations", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+  const { data, error } = await supabase.from("organizations").insert(payload).select().single();
+  if (error) throw new Error(error.message);
+  return data;
 }
 
 export async function deleteOrganization(id: string) {
-  return apiRequest<any>(`/admin/organizations/${id}`, { method: "DELETE" });
+  const { error } = await supabase.from("organizations").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  return { success: true };
 }
 
+// ─── Admin: Profiles/Users ─────────────────────────────
 export async function fetchAdminUsers() {
-  return apiRequest<any[]>("/admin/users");
+  const { data, error } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+}
+
+export async function fetchAdminReviewers() {
+  const { data, error } = await supabase.from("profiles").select("*").eq("role", "reviewer").order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+}
+
+// ─── Admin: Stats (computed client-side) ───────────────
+export async function fetchAdminStats() {
+  const [violations, reviews, orgs] = await Promise.all([
+    supabase.from("violations").select("id, status", { count: "exact" }),
+    supabase.from("human_reviews").select("id", { count: "exact" }),
+    supabase.from("organizations").select("id", { count: "exact" }),
+  ]);
+  return {
+    totalViolations: violations.count ?? 0,
+    openViolations: (violations.data ?? []).filter((v) => v.status === "open").length,
+    totalReviews: reviews.count ?? 0,
+    totalOrganizations: orgs.count ?? 0,
+  };
+}
+
+// Legacy stubs — these operations now go through Supabase Auth directly
+export async function createReviewer(_payload: { email: string; name: string; password: string }) {
+  throw new Error("Use Supabase Auth to create reviewer accounts");
+}
+
+export async function deleteReviewer(_id: string) {
+  throw new Error("Use Supabase Auth admin API to delete users");
 }

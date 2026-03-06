@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
@@ -25,6 +26,7 @@ const columns: DataTableColumn<any>[] = [
 ];
 
 export default function CustomerAISystems() {
+  const { profile } = useAuth();
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ name: "", description: "", model_type: "", provider: "", version: "", risk_level: "" });
   const [systems, setSystems] = useState<any[]>([]);
@@ -40,8 +42,8 @@ export default function CustomerAISystems() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await createAISystem(form);
-      toast({ title: "AI System created", description: `API key: ${result.api_key}` });
+      const result = await createAISystem({ ...form, org_id: profile?.org_id || "" });
+      toast({ title: "AI System created", description: `System "${result.name}" registered` });
       setSystems((prev) => [result, ...prev]);
       setShowCreate(false);
       setForm({ name: "", description: "", model_type: "", provider: "", version: "", risk_level: "" });

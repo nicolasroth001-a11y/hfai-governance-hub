@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +23,7 @@ const EXAMPLE_PAYLOADS = [
 ];
 
 export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventModalProps) {
+  const { profile } = useAuth();
   const [apiKey, setApiKey] = useState("hfai_demo_k8x2mQ9vLpR4nT6wJ1yF3bA7cE0gH5d");
   const [payload, setPayload] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,7 +40,7 @@ export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventMod
     }
     setLoading(true);
     try {
-      const result = await sendAIEvent({ event_type: "user_message", payload }, apiKey);
+      const result = await sendAIEvent({ event_type: "user_message", payload, org_id: profile?.org_id || "" });
       const eventId = result.userEvent?.id?.toString() || "—";
       const violationCount = result.violations?.length || 0;
       setSuccess({ eventId, violations: violationCount });
