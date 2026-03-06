@@ -43,11 +43,7 @@ export default function CustomerLogs() {
           { key: "action", label: "Action", value: actionFilter, onChange: setActionFilter, options: actions.map((a) => ({ label: a.replace(/_/g, " "), value: a })) },
           { key: "entity", label: "Entity", value: entityFilter, onChange: setEntityFilter, options: entities.map((e) => ({ label: e, value: e })) },
         ]} />
-        {loading ? (
-          <p className="text-sm text-card-foreground/50">Loading…</p>
-        ) : (
-          <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} />
-        )}
+        <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} loading={loading} emptyMessage="No logs found" />
       </div>
     </SubscriptionGate>
   );

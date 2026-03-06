@@ -101,11 +101,7 @@ export default function CustomerAISystems() {
         </ContentCard>
       )}
 
-      {loading ? (
-        <p className="text-sm text-card-foreground/50">Loading…</p>
-      ) : (
-        <DataTable columns={columns} data={systems} rowKey={(s) => s.id} emptyMessage="No AI systems registered" />
-      )}
+      <DataTable columns={columns} data={systems} rowKey={(s) => s.id} loading={loading} emptyMessage="No AI systems registered" />
     </div>
   );
 }
