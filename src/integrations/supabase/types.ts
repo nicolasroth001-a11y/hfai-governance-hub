@@ -16,27 +16,46 @@ export type Database = {
     Tables: {
       ai_events: {
         Row: {
+          ai_system_id: string | null
           created_at: string
           event_type: string
           id: string
+          input_text: string | null
+          metadata: Json | null
           org_id: string
+          output_text: string | null
           payload: Json | null
         }
         Insert: {
+          ai_system_id?: string | null
           created_at?: string
           event_type: string
           id?: string
+          input_text?: string | null
+          metadata?: Json | null
           org_id: string
+          output_text?: string | null
           payload?: Json | null
         }
         Update: {
+          ai_system_id?: string | null
           created_at?: string
           event_type?: string
           id?: string
+          input_text?: string | null
+          metadata?: Json | null
           org_id?: string
+          output_text?: string | null
           payload?: Json | null
         }
         Relationships: [
+          {
+            foreignKeyName: "ai_events_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: false
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "ai_events_org_id_fkey"
             columns: ["org_id"]
@@ -54,9 +73,11 @@ export type Database = {
           model_type: string | null
           name: string
           org_id: string
+          owner_team: string | null
           provider: string | null
           risk_level: string | null
           status: string | null
+          updated_at: string | null
           version: string | null
         }
         Insert: {
@@ -66,9 +87,11 @@ export type Database = {
           model_type?: string | null
           name: string
           org_id: string
+          owner_team?: string | null
           provider?: string | null
           risk_level?: string | null
           status?: string | null
+          updated_at?: string | null
           version?: string | null
         }
         Update: {
@@ -78,9 +101,11 @@ export type Database = {
           model_type?: string | null
           name?: string
           org_id?: string
+          owner_team?: string | null
           provider?: string | null
           risk_level?: string | null
           status?: string | null
+          updated_at?: string | null
           version?: string | null
         }
         Relationships: [
@@ -353,8 +378,10 @@ export type Database = {
           ai_system_id: string | null
           created_at: string
           description: string | null
+          detected_at: string | null
           id: string
           org_id: string
+          resolution_notes: string | null
           rule_id: string | null
           severity: string | null
           status: string | null
@@ -364,8 +391,10 @@ export type Database = {
           ai_system_id?: string | null
           created_at?: string
           description?: string | null
+          detected_at?: string | null
           id?: string
           org_id: string
+          resolution_notes?: string | null
           rule_id?: string | null
           severity?: string | null
           status?: string | null
@@ -375,8 +404,10 @@ export type Database = {
           ai_system_id?: string | null
           created_at?: string
           description?: string | null
+          detected_at?: string | null
           id?: string
           org_id?: string
+          resolution_notes?: string | null
           rule_id?: string | null
           severity?: string | null
           status?: string | null
