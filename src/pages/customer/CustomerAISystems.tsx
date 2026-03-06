@@ -42,7 +42,7 @@ export default function CustomerAISystems() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await createAISystem({ ...form, org_id: "" });
+      const result = await createAISystem({ ...form, org_id: profile?.org_id || "" });
       toast({ title: "AI System created", description: `System "${result.name}" registered` });
       setSystems((prev) => [result, ...prev]);
       setShowCreate(false);

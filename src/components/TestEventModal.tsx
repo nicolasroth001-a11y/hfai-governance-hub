@@ -40,7 +40,7 @@ export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventMod
     }
     setLoading(true);
     try {
-      const result = await sendAIEvent({ event_type: "user_message", payload, org_id: "" });
+      const result = await sendAIEvent({ event_type: "user_message", payload, org_id: profile?.org_id || "" });
       const eventId = result.userEvent?.id?.toString() || "—";
       const violationCount = result.violations?.length || 0;
       setSuccess({ eventId, violations: violationCount });
