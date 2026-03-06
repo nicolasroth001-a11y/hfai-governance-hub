@@ -153,9 +153,31 @@ export async function createAuditLog(payload: {
 }
 
 // ─── AI Events ─────────────────────────────────────────
-export async function fetchAIEvents() {
-  const { data, error } = await supabase.from("ai_events").select("*").order("created_at", { ascending: false });
+export async function fetchAIEvents(filters?: { ai_system_id?: string; event_type?: string }) {
+  let query = supabase.from("ai_events").select("*").order("created_at", { ascending: false });
+  if (filters?.ai_system_id) query = query.eq("ai_system_id", filters.ai_system_id);
+  if (filters?.event_type) query = query.eq("event_type", filters.event_type);
+  const { data, error } = await query;
   if (error) { console.error("fetchAIEvents:", error); return []; }
+  return data ?? [];
+}
+
+export async function fetchAIEvent(id: string) {
+  const { data, error } = await supabase.from("ai_events").select("*").eq("id", id).single();
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function fetchViolationsBySystem(systemId: string) {
+  const { data, error } = await supabase.from("violations").select("*").eq("ai_system_id", systemId).order("created_at", { ascending: false });
+  if (error) { console.error("fetchViolationsBySystem:", error); return []; }
+  return data ?? [];
+}
+
+export async function fetchReviewsByViolations(violationIds: string[]) {
+  if (violationIds.length === 0) return [];
+  const { data, error } = await supabase.from("human_reviews").select("*").in("violation_id", violationIds).order("created_at", { ascending: false });
+  if (error) { console.error("fetchReviewsByViolations:", error); return []; }
   return data ?? [];
 }
 
