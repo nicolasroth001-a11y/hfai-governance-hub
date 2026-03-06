@@ -23,6 +23,7 @@ const EXAMPLE_PAYLOADS = [
 ];
 
 export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventModalProps) {
+  const { profile } = useAuth();
   const [apiKey, setApiKey] = useState("hfai_demo_k8x2mQ9vLpR4nT6wJ1yF3bA7cE0gH5d");
   const [payload, setPayload] = useState("");
   const [loading, setLoading] = useState(false);
