@@ -26,6 +26,7 @@ const columns: DataTableColumn<any>[] = [
 ];
 
 export default function CustomerAISystems() {
+  const { profile } = useAuth();
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ name: "", description: "", model_type: "", provider: "", version: "", risk_level: "" });
   const [systems, setSystems] = useState<any[]>([]);
