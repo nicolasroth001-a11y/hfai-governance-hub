@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { FilterBar } from "@/components/FilterBar";
+import { SubscriptionGate } from "@/components/SubscriptionGate";
 import { fetchAuditLogs } from "@/lib/api";
 import { mockAuditLogs } from "@/lib/mock-data";
 import { format } from "date-fns";
@@ -35,17 +36,19 @@ export default function CustomerLogs() {
   );
 
   return (
-    <div className="space-y-section">
-      <SectionHeader title="Audit Logs" description="Complete activity log" />
-      <FilterBar filters={[
-        { key: "action", label: "Action", value: actionFilter, onChange: setActionFilter, options: actions.map((a) => ({ label: a.replace(/_/g, " "), value: a })) },
-        { key: "entity", label: "Entity", value: entityFilter, onChange: setEntityFilter, options: entities.map((e) => ({ label: e, value: e })) },
-      ]} />
-      {loading ? (
-        <p className="text-sm text-card-foreground/50">Loading…</p>
-      ) : (
-        <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} />
-      )}
-    </div>
+    <SubscriptionGate feature="Audit Logs">
+      <div className="space-y-section">
+        <SectionHeader title="Audit Logs" description="Complete activity log" />
+        <FilterBar filters={[
+          { key: "action", label: "Action", value: actionFilter, onChange: setActionFilter, options: actions.map((a) => ({ label: a.replace(/_/g, " "), value: a })) },
+          { key: "entity", label: "Entity", value: entityFilter, onChange: setEntityFilter, options: entities.map((e) => ({ label: e, value: e })) },
+        ]} />
+        {loading ? (
+          <p className="text-sm text-card-foreground/50">Loading…</p>
+        ) : (
+          <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} />
+        )}
+      </div>
+    </SubscriptionGate>
   );
 }
