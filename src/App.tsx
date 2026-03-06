@@ -42,6 +42,7 @@ import CustomerAISystemDetail from "./pages/customer/CustomerAISystemDetail";
 import CustomerEvents from "./pages/customer/CustomerEvents";
 import CustomerEventDetail from "./pages/customer/CustomerEventDetail";
 import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
+import CustomerReviews from "./pages/customer/CustomerReviews";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
