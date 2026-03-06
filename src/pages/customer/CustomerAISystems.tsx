@@ -19,10 +19,10 @@ const mockSystems = [
 ];
 
 const columns: DataTableColumn<any>[] = [
-  { key: "id", header: "ID", render: (s) => <span className="text-primary font-medium">{s.id}</span> },
-  { key: "name", header: "Name", render: (s) => <span className="text-sm font-medium text-card-foreground">{s.name}</span> },
+  { key: "id", header: "ID", render: (s) => <Link to={`/customer/ai-systems/${s.id}`} className="text-primary font-medium hover:underline text-xs font-mono">{typeof s.id === 'string' ? s.id.slice(0, 8) : s.id}</Link> },
+  { key: "name", header: "Name", render: (s) => <Link to={`/customer/ai-systems/${s.id}`} className="text-sm font-medium text-card-foreground hover:underline">{s.name}</Link> },
   { key: "model_type", header: "Model", render: (s) => <span className="text-xs text-card-foreground/60 font-mono">{s.model_type || "—"}</span> },
-  { key: "risk_level", header: "Risk Level", render: (s) => <span className="text-xs text-card-foreground/60">{s.risk_level || "—"}</span> },
+  { key: "risk_level", header: "Risk Level", render: (s) => <span className="text-xs text-card-foreground/60 capitalize">{s.risk_level || "—"}</span> },
   { key: "provider", header: "Provider", render: (s) => <span className="text-xs text-card-foreground/60">{s.provider || "—"}</span> },
 ];
 
