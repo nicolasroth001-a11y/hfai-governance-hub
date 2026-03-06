@@ -43,11 +43,7 @@ export default function CustomerViolations() {
         { key: "severity", label: "Severity", value: severityFilter, onChange: setSeverityFilter, options: [{ label: "Critical", value: "critical" }, { label: "High", value: "high" }, { label: "Medium", value: "medium" }, { label: "Low", value: "low" }] },
         { key: "status", label: "Status", value: statusFilter, onChange: setStatusFilter, options: [{ label: "Open", value: "open" }, { label: "Under Review", value: "under_review" }, { label: "Resolved", value: "resolved" }] },
       ]} />
-      {loading ? (
-        <p className="text-sm text-card-foreground/50">Loading…</p>
-      ) : (
-        <DataTable columns={columns} data={filtered} rowKey={(v) => v.id} emptyMessage="No violations found" />
-      )}
+      <DataTable columns={columns} data={filtered} rowKey={(v) => v.id} loading={loading} emptyMessage="No violations found" />
     </div>
   );
 }

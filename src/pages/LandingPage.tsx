@@ -98,11 +98,14 @@ export default function LandingPage() {
 
       {/* ── Footer ── */}
       <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground space-y-2">
-        <p>© HFAI</p>
-        <p>Demo Mode — Not for production use</p>
+        <p>© HFAI — Human‑First AI Governance</p>
         <div className="flex items-center justify-center gap-4">
           <Link to="/pricing/contact" className="text-primary hover:underline text-xs">
-            Pricing & Full Release Date
+            Pricing
+          </Link>
+          <span className="text-border">·</span>
+          <Link to="/governance" className="text-primary hover:underline text-xs">
+            Governance Framework
           </Link>
           <span className="text-border">·</span>
           <Link to="/login/admin" className="text-muted-foreground hover:text-primary hover:underline text-xs">

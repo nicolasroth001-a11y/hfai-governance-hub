@@ -36,11 +36,7 @@ export default function CustomerEvents() {
       <FilterBar filters={[
         { key: "type", label: "Event Type", value: typeFilter, onChange: setTypeFilter, options: types.map((t) => ({ label: t, value: t })) },
       ]} />
-      {loading ? (
-        <p className="text-sm text-card-foreground/50">Loading…</p>
-      ) : (
-        <DataTable columns={columns} data={filtered} rowKey={(e) => e.id} emptyMessage="No events recorded yet" />
-      )}
+      <DataTable columns={columns} data={filtered} rowKey={(e) => e.id} loading={loading} emptyMessage="No events recorded yet" />
     </div>
   );
 }

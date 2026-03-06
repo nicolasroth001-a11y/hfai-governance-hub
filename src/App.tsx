@@ -27,6 +27,7 @@ import AdminLogin from "./pages/login/AdminLogin";
 import CustomerSignup from "./pages/signup/CustomerSignup";
 import LandingPage from "./pages/LandingPage";
 import PricingContact from "./pages/PricingContact";
+import GovernancePage from "./pages/GovernancePage";
 
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
@@ -41,6 +42,7 @@ import CustomerAISystemDetail from "./pages/customer/CustomerAISystemDetail";
 import CustomerEvents from "./pages/customer/CustomerEvents";
 import CustomerEventDetail from "./pages/customer/CustomerEventDetail";
 import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
+import CustomerReviews from "./pages/customer/CustomerReviews";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -92,6 +94,7 @@ const App = () => {
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/pricing/contact" element={<PricingContact />} />
+          <Route path="/governance" element={<GovernancePage />} />
 
           {/* Login & Signup */}
           <Route path="/login/customer" element={<CustomerLogin />} />
@@ -114,6 +117,7 @@ const App = () => {
             <Route path="events" element={<CustomerEvents />} />
             <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
+            <Route path="reviews" element={<CustomerReviews />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
