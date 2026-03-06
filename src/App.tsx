@@ -27,6 +27,7 @@ import AdminLogin from "./pages/login/AdminLogin";
 import CustomerSignup from "./pages/signup/CustomerSignup";
 import LandingPage from "./pages/LandingPage";
 import PricingContact from "./pages/PricingContact";
+import GovernancePage from "./pages/GovernancePage";
 
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
