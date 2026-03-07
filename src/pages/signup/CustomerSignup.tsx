@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Shield } from "lucide-react";
+import { Shield, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,10 +14,20 @@ export default function CustomerSignup() {
   const [form, setForm] = useState({ company_name: "", name: "", email: "", password: "", confirm_password: "" });
   const [loading, setLoading] = useState(false);
 
+  const passwordChecks = [
+    { label: "At least 8 characters", valid: form.password.length >= 8 },
+    { label: "Contains uppercase letter", valid: /[A-Z]/.test(form.password) },
+    { label: "Contains number", valid: /\d/.test(form.password) },
+    { label: "Passwords match", valid: form.password.length > 0 && form.password === form.confirm_password },
+  ];
+
+  const passwordStrong = passwordChecks.slice(0, 3).every((c) => c.valid);
+  const allValid = passwordChecks.every((c) => c.valid);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.password !== form.confirm_password) {
-      toast({ title: "Passwords don't match", variant: "destructive" });
+    if (!allValid) {
+      toast({ title: "Please fix password issues", variant: "destructive" });
       return;
     }
     setLoading(true);
@@ -71,7 +81,17 @@ export default function CustomerSignup() {
               <Label>Confirm Password</Label>
               <Input type="password" placeholder="••••••••" value={form.confirm_password} onChange={(e) => setForm({ ...form, confirm_password: e.target.value })} required />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating…" : "Create Account"}</Button>
+            {form.password.length > 0 && (
+              <div className="space-y-1.5 rounded-lg border border-border p-3">
+                {passwordChecks.map((c) => (
+                  <div key={c.label} className="flex items-center gap-2 text-xs">
+                    <Check className={`h-3.5 w-3.5 ${c.valid ? "text-primary" : "text-muted-foreground/30"}`} />
+                    <span className={c.valid ? "text-foreground" : "text-muted-foreground"}>{c.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            <Button type="submit" className="w-full" disabled={loading || !allValid}>{loading ? "Creating…" : "Create Account"}</Button>
             <p className="text-center text-xs text-card-foreground/50">
               Already have an account?{" "}
               <Link to="/login/customer" className="text-primary hover:underline">Log in</Link>

@@ -35,12 +35,12 @@ export default function LandingPage() {
           HFAI monitors your AI systems, catches risky behavior, and keeps humans in control.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 mt-10">
-          <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/customer/onboarding")}>
-            Enter Demo
+          <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+            Get Started
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <Button size="lg" variant="outline" className="text-base px-8 h-12" asChild>
-            <Link to="/pricing/contact">Pricing & Full Release Date</Link>
+          <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/login/customer")}>
+            Sign In
           </Button>
         </div>
       </section>
@@ -63,7 +63,7 @@ export default function LandingPage() {
         </div>
         <div className="text-center mt-8">
           <Button variant="outline" asChild>
-            <Link to="/pricing/contact">Pricing & Full Release Date →</Link>
+            <Link to="/pricing/contact">Pricing & Contact →</Link>
           </Button>
         </div>
       </section>
@@ -90,8 +90,9 @@ export default function LandingPage() {
           ))}
         </div>
         <div className="text-center mt-10">
-          <Button variant="outline" asChild>
-            <Link to="/pricing/contact">Pricing & Full Release Date →</Link>
+          <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+            Start Free
+            <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </section>
