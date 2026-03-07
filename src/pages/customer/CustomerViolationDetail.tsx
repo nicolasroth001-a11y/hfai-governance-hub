@@ -30,14 +30,14 @@ export default function CustomerViolationDetail() {
         .then((data) => {
           setV(data);
           setStatus(data.status || "open");
-          setResolutionNotes(data.resolution_notes || "");
+          setResolutionNotes((data as any).resolution_notes || "");
         })
         .catch(() => {
           const found = mockViolations.find((v) => v.id === id);
           const fallback = found || { ...mockViolationDetail, id };
           setV(fallback);
           setStatus(fallback.status || "open");
-          setResolutionNotes(fallback.resolution_notes || "");
+          setResolutionNotes((fallback as any).resolution_notes || "");
         })
         .finally(() => setLoading(false));
     }
