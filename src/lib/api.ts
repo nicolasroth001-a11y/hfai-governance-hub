@@ -9,11 +9,7 @@ export async function fetchAISystems() {
 
 export async function fetchAISystem(id: string) {
   const { data, error } = await supabase.from("ai_systems").select("*").eq("id", id).single();
-  if (error) {
-    console.error("fetchAISystem:", error);
-    const { mockAISystem } = await import("./mock-data");
-    return mockAISystem;
-  }
+  if (error) throw new Error(error.message);
   return data;
 }
 
@@ -46,21 +42,13 @@ export async function deleteAISystem(id: string) {
 // ─── Violations ────────────────────────────────────────
 export async function fetchViolations() {
   const { data, error } = await supabase.from("violations").select("*").order("created_at", { ascending: false });
-  if (error) {
-    console.error("fetchViolations:", error);
-    const { mockViolations } = await import("./mock-data");
-    return mockViolations;
-  }
+  if (error) { console.error("fetchViolations:", error); return []; }
   return data ?? [];
 }
 
 export async function fetchViolation(id: string) {
   const { data, error } = await supabase.from("violations").select("*").eq("id", id).single();
-  if (error) {
-    console.error("fetchViolation:", error);
-    const { mockViolations } = await import("./mock-data");
-    return mockViolations.find((v) => v.id === id) || mockViolations[0];
-  }
+  if (error) throw new Error(error.message);
   return data;
 }
 
@@ -110,15 +98,7 @@ export async function submitReview(payload: {
   reviewer_id?: string;
 }) {
   const { data, error } = await supabase.from("human_reviews").insert(payload).select().single();
-  if (error) {
-    console.error("submitReview:", error);
-    return {
-      id: `REV-DEMO-${Date.now()}`,
-      ...payload,
-      reviewed_at: new Date().toISOString(),
-      success: true,
-    };
-  }
+  if (error) throw new Error(error.message);
   return data;
 }
 
@@ -131,11 +111,7 @@ export async function updateReview(id: string, payload: Record<string, unknown>)
 // ─── Audit Logs ────────────────────────────────────────
 export async function fetchAuditLogs() {
   const { data, error } = await supabase.from("audit_logs").select("*").order("created_at", { ascending: false });
-  if (error) {
-    console.error("fetchAuditLogs:", error);
-    const { mockAuditLogs } = await import("./mock-data");
-    return mockAuditLogs;
-  }
+  if (error) { console.error("fetchAuditLogs:", error); return []; }
   return data ?? [];
 }
 
@@ -187,36 +163,20 @@ export async function sendAIEvent(payload: { event_type: string; payload: string
     payload: payload.payload,
     org_id: payload.org_id,
   }).select().single();
-  if (error) {
-    console.error("sendAIEvent:", error);
-    const eventId = `EVT-DEMO-${Math.floor(Math.random() * 9999)}`;
-    return {
-      userEvent: { id: eventId, event_type: payload.event_type, payload: payload.payload, created_at: new Date().toISOString() },
-      assistantEvent: null,
-      violations: [],
-    };
-  }
+  if (error) throw new Error(error.message);
   return { userEvent: data, assistantEvent: null, violations: [] };
 }
 
 // ─── Rules ─────────────────────────────────────────────
 export async function fetchRules() {
   const { data, error } = await supabase.from("rules").select("*").order("created_at", { ascending: false });
-  if (error) {
-    console.error("fetchRules:", error);
-    const { mockRules } = await import("./mock-data");
-    return mockRules;
-  }
+  if (error) { console.error("fetchRules:", error); return []; }
   return data ?? [];
 }
 
 export async function fetchRule(id: string) {
   const { data, error } = await supabase.from("rules").select("*").eq("id", id).single();
-  if (error) {
-    console.error("fetchRule:", error);
-    const { mockRules } = await import("./mock-data");
-    return mockRules.find((r) => r.id === id) || mockRules[0];
-  }
+  if (error) throw new Error(error.message);
   return data;
 }
 
@@ -230,28 +190,19 @@ export async function createRule(payload: {
   org_id?: string;
 }) {
   const { data, error } = await supabase.from("rules").insert(payload).select().single();
-  if (error) {
-    console.error("createRule:", error);
-    return { id: `RULE-DEMO-${Date.now()}`, ...payload, created_at: new Date().toISOString(), success: true };
-  }
+  if (error) throw new Error(error.message);
   return data;
 }
 
 export async function updateRule(id: string, payload: Record<string, unknown>) {
   const { data, error } = await supabase.from("rules").update(payload).eq("id", id).select().single();
-  if (error) {
-    console.error("updateRule:", error);
-    return { id, ...payload, updated_at: new Date().toISOString(), success: true };
-  }
+  if (error) throw new Error(error.message);
   return data;
 }
 
 export async function deleteRule(id: string) {
   const { error } = await supabase.from("rules").delete().eq("id", id);
-  if (error) {
-    console.error("deleteRule:", error);
-    return { message: "Rule deleted (demo)" };
-  }
+  if (error) throw new Error(error.message);
   return { success: true };
 }
 
@@ -302,11 +253,21 @@ export async function fetchAdminStats() {
   };
 }
 
-// Legacy stubs — these operations now go through Supabase Auth directly
-export async function createReviewer(_payload: { email: string; name: string; password: string }) {
-  throw new Error("Use Supabase Auth to create reviewer accounts");
+// ─── Admin: Reviewer management via edge function ──────
+export async function createReviewer(payload: { email: string; name: string; password: string }) {
+  const { data, error } = await supabase.functions.invoke("create-reviewer", {
+    body: payload,
+  });
+  if (error) throw new Error(error.message);
+  if (data?.error) throw new Error(data.error);
+  return data;
 }
 
-export async function deleteReviewer(_id: string) {
-  throw new Error("Use Supabase Auth admin API to delete users");
+export async function deleteReviewer(id: string) {
+  const { data, error } = await supabase.functions.invoke("delete-reviewer", {
+    body: { id },
+  });
+  if (error) throw new Error(error.message);
+  if (data?.error) throw new Error(data.error);
+  return data;
 }
