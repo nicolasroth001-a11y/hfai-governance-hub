@@ -10,10 +10,9 @@ import { mockViolations } from "@/lib/mock-data";
 import { formatDistanceToNow } from "date-fns";
 
 const columns: DataTableColumn<any>[] = [
-  { key: "id", header: "ID", render: (v) => <Link to={`/customer/violations/${v.id}`} className="text-primary font-medium hover:underline">{v.id}</Link> },
+  { key: "id", header: "ID", render: (v) => <Link to={`/customer/violations/${v.id}`} className="text-primary font-medium hover:underline text-xs font-mono">{typeof v.id === "string" ? v.id.slice(0, 8) : v.id}</Link> },
   { key: "description", header: "Description", render: (v) => <span className="text-sm text-card-foreground line-clamp-1">{v.description}</span> },
   { key: "severity", header: "Severity", render: (v) => <SeverityBadge severity={v.severity} /> },
-  { key: "rule_id", header: "Rule", render: (v) => <span className="text-xs font-mono text-card-foreground/60">{v.rule_id}</span> },
   { key: "detected_at", header: "Detected", render: (v) => <span className="text-xs text-card-foreground/50">{v.detected_at ? formatDistanceToNow(new Date(v.detected_at), { addSuffix: true }) : "—"}</span> },
   { key: "status", header: "Status", render: (v) => <StatusBadge status={v.status || "open"} /> },
 ];
@@ -41,7 +40,7 @@ export default function CustomerViolations() {
       <SectionHeader title="Violations" description="AI governance violations detected in your systems" />
       <FilterBar filters={[
         { key: "severity", label: "Severity", value: severityFilter, onChange: setSeverityFilter, options: [{ label: "Critical", value: "critical" }, { label: "High", value: "high" }, { label: "Medium", value: "medium" }, { label: "Low", value: "low" }] },
-        { key: "status", label: "Status", value: statusFilter, onChange: setStatusFilter, options: [{ label: "Open", value: "open" }, { label: "Under Review", value: "under_review" }, { label: "Resolved", value: "resolved" }] },
+        { key: "status", label: "Status", value: statusFilter, onChange: setStatusFilter, options: [{ label: "Open", value: "open" }, { label: "Investigating", value: "investigating" }, { label: "Resolved", value: "resolved" }] },
       ]} />
       <DataTable columns={columns} data={filtered} rowKey={(v) => v.id} loading={loading} emptyMessage="No violations found" />
     </div>
