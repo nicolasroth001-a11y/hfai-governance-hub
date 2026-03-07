@@ -29,7 +29,12 @@ export default function ReviewerLogin() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
-      <Card className="w-full max-w-md">
+      <div className="w-full max-w-md space-y-4">
+        <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back to home
+        </Link>
+      <Card className="w-full">
         <CardHeader className="text-center space-y-3">
           <div className="mx-auto h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">
             <Shield className="h-6 w-6 text-primary-foreground" />
