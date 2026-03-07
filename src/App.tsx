@@ -4,7 +4,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { DemoModeProvider } from "@/contexts/DemoModeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -25,6 +24,8 @@ import CustomerLogin from "./pages/login/CustomerLogin";
 import ReviewerLogin from "./pages/login/ReviewerLogin";
 import AdminLogin from "./pages/login/AdminLogin";
 import CustomerSignup from "./pages/signup/CustomerSignup";
+import ForgotPassword from "./pages/login/ForgotPassword";
+import ResetPassword from "./pages/login/ResetPassword";
 import LandingPage from "./pages/LandingPage";
 import PricingContact from "./pages/PricingContact";
 import GovernancePage from "./pages/GovernancePage";
@@ -83,7 +84,6 @@ const App = () => {
   return (
   <ErrorBoundary>
   <AuthProvider>
-  <DemoModeProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
@@ -96,11 +96,13 @@ const App = () => {
           <Route path="/pricing/contact" element={<PricingContact />} />
           <Route path="/governance" element={<GovernancePage />} />
 
-          {/* Login & Signup */}
+          {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />
           <Route path="/login/reviewer" element={<ReviewerLogin />} />
           <Route path="/login/admin" element={<AdminLogin />} />
           <Route path="/signup/customer" element={<CustomerSignup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Customer routes (protected) */}
           <Route path="/customer" element={<ProtectedRoute requiredRole="customer"><CustomerLayout /></ProtectedRoute>}>
@@ -153,7 +155,6 @@ const App = () => {
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-  </DemoModeProvider>
   </AuthProvider>
   </ErrorBoundary>
   );

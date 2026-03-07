@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Play, LogIn } from "lucide-react";
+import { Shield, LogIn } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
@@ -38,21 +38,16 @@ export default function AdminLogin() {
           <CardDescription>Sign in to manage HFAI governance</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <Button className="w-full gap-2" size="lg" variant="outline" onClick={() => navigate("/admin/dashboard")}>
-            <Play className="h-4 w-4" />
-            Enter Demo as Admin
-          </Button>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border/40" /></div>
-            <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-2 text-muted-foreground">or sign in</span></div>
-          </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-card-foreground">Email</Label>
               <Input id="email" type="email" placeholder="admin@hfai.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="bg-card border-card-foreground/10" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-card-foreground">Password</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password" className="text-card-foreground">Password</Label>
+                <Link to="/forgot-password" className="text-xs text-primary hover:underline">Forgot password?</Link>
+              </div>
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required className="bg-card border-card-foreground/10" />
             </div>
             <Button type="submit" className="w-full gap-2" disabled={loading}>
