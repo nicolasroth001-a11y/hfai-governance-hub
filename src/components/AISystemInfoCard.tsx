@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card as ShadcnCard } from "@/components/ui/card";
 import { fetchAISystem } from "@/lib/api";
-import { mockAISystem } from "@/lib/mock-data";
 import { Cpu, Server, Tag, Shield, Info } from "lucide-react";
 
 interface AISystemInfoCardProps {
@@ -16,11 +15,10 @@ export function AISystemInfoCard({ aiSystemId }: AISystemInfoCardProps) {
     if (aiSystemId) {
       fetchAISystem(String(aiSystemId))
         .then(setSystem)
-        .catch(() => setSystem(mockAISystem))
+        .catch(() => setSystem(null))
         .finally(() => setLoading(false));
     } else {
-      // No AI system ID provided — use mock
-      setSystem(mockAISystem);
+      setSystem(null);
       setLoading(false);
     }
   }, [aiSystemId]);
@@ -28,7 +26,7 @@ export function AISystemInfoCard({ aiSystemId }: AISystemInfoCardProps) {
   const fields = system
     ? [
         { icon: Cpu, label: "System Name", value: system.name },
-        { icon: Tag, label: "System ID", value: system.id, mono: true },
+        { icon: Tag, label: "System ID", value: typeof system.id === "string" ? system.id.slice(0, 8) : system.id, mono: true },
         { icon: Server, label: "Model Type", value: system.model_type || "—" },
         { icon: Info, label: "Provider", value: system.provider || "—" },
         { icon: Tag, label: "Version", value: system.version || "—" },
@@ -50,7 +48,7 @@ export function AISystemInfoCard({ aiSystemId }: AISystemInfoCardProps) {
           ))}
         </div>
       ) : !system ? (
-        <p className="text-xs text-card-foreground/40">No AI system information available</p>
+        <p className="text-xs text-card-foreground/40">No AI system linked to this violation</p>
       ) : (
         <div className="space-y-3">
           {fields.map((f) => (

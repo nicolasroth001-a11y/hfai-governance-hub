@@ -1,18 +1,19 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { fetchViolation, updateViolation } from "@/lib/api";
-import { mockViolations, mockViolationDetail } from "@/lib/mock-data";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
 import { AISystemInfoCard } from "@/components/AISystemInfoCard";
 import { EventPayloadCard } from "@/components/EventPayloadCard";
 import { AuditTrailCard } from "@/components/AuditTrailCard";
+import { ReviewActions } from "@/components/ReviewActions";
+import { ReviewerNotesInput } from "@/components/ReviewerNotesInput";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Gavel, StickyNote } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 export default function CustomerViolationDetail() {
@@ -23,6 +24,7 @@ export default function CustomerViolationDetail() {
   const [status, setStatus] = useState("");
   const [resolutionNotes, setResolutionNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [auditKey, setAuditKey] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -32,16 +34,12 @@ export default function CustomerViolationDetail() {
           setStatus(data.status || "open");
           setResolutionNotes((data as any).resolution_notes || "");
         })
-        .catch(() => {
-          const found = mockViolations.find((v) => v.id === id);
-          const fallback = found || { ...mockViolationDetail, id };
-          setV(fallback);
-          setStatus(fallback.status || "open");
-          setResolutionNotes((fallback as any).resolution_notes || "");
-        })
+        .catch((err) => setError(err.message || "Failed to load violation"))
         .finally(() => setLoading(false));
     }
   }, [id]);
+
+  const refreshAudit = useCallback(() => setAuditKey((k) => k + 1), []);
 
   const handleSaveResolution = async () => {
     if (!id) return;
@@ -56,6 +54,11 @@ export default function CustomerViolationDetail() {
       setSaving(false);
     }
   };
+
+  const handleDecision = useCallback((decision: "approve" | "reject") => {
+    setStatus("resolved");
+    refreshAudit();
+  }, [refreshAudit]);
 
   if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
   if (error || !v) return (
@@ -119,7 +122,17 @@ export default function CustomerViolationDetail() {
         </div>
       </ContentCard>
 
-      <AuditTrailCard violationId={v.id} />
+      {/* Customer QA Review */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
+        <ContentCard icon={Gavel} title="Internal QA Review">
+          <ReviewActions violationId={String(v.id)} onDecision={handleDecision} />
+        </ContentCard>
+        <ContentCard icon={StickyNote} title="QA Notes">
+          <ReviewerNotesInput violationId={String(v.id)} onSubmit={refreshAudit} />
+        </ContentCard>
+      </div>
+
+      <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
   );
 }

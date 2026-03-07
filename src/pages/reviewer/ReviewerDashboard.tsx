@@ -5,7 +5,6 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { fetchViolations } from "@/lib/api";
-import { mockViolations } from "@/lib/mock-data";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
@@ -16,7 +15,7 @@ export default function ReviewerDashboard() {
   useEffect(() => {
     fetchViolations()
       .then(setViolations)
-      .catch(() => setViolations(mockViolations))
+      .catch(() => setViolations([]))
       .finally(() => setLoading(false));
   }, []);
 
@@ -43,13 +42,13 @@ export default function ReviewerDashboard() {
         {loading ? (
           <p className="text-sm text-card-foreground/50">Loading…</p>
         ) : pending.length === 0 ? (
-          <p className="text-sm text-card-foreground/50">No pending violations.</p>
+          <p className="text-sm text-card-foreground/50">No pending violations. All clear!</p>
         ) : (
           <div className="space-y-1">
             {pending.map((v) => (
               <Link key={v.id} to={`/reviewer/violations/${v.id}`} className="flex items-center justify-between px-3 py-3 rounded-md hover:bg-card-foreground/[0.03] transition-colors">
                 <div className="flex items-center gap-3">
-                  <span className="text-caption font-mono text-primary font-medium">{v.id}</span>
+                  <span className="text-caption font-mono text-primary font-medium">{typeof v.id === "string" ? v.id.slice(0, 8) : v.id}</span>
                   <span className="text-body text-card-foreground line-clamp-1">{v.description}</span>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
