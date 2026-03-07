@@ -3,11 +3,10 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { FilterBar } from "@/components/FilterBar";
 import { fetchAuditLogs } from "@/lib/api";
-import { mockAuditLogs } from "@/lib/mock-data";
 import { format } from "date-fns";
 
 const columns: DataTableColumn<any>[] = [
-  { key: "created_at", header: "Time", render: (l) => <span className="text-xs text-card-foreground/60 font-mono">{format(new Date(l.created_at || l.timestamp), "MMM d, HH:mm:ss")}</span> },
+  { key: "created_at", header: "Time", render: (l) => <span className="text-xs text-card-foreground/60 font-mono">{format(new Date(l.created_at), "MMM d, HH:mm:ss")}</span> },
   { key: "action", header: "Action", render: (l) => <span className="text-sm text-card-foreground font-medium">{l.action.replace(/_/g, " ")}</span> },
   { key: "entity", header: "Entity", render: (l) => <span className="text-xs font-mono text-card-foreground/50">{l.entity_type}/{l.entity_id}</span> },
   { key: "details", header: "Details", render: (l) => <span className="text-xs text-card-foreground/50 line-clamp-1">{l.details}</span> },
@@ -22,7 +21,7 @@ export default function AdminLogs() {
   useEffect(() => {
     fetchAuditLogs()
       .then(setData)
-      .catch(() => setData(mockAuditLogs))
+      .catch(() => setData([]))
       .finally(() => setLoading(false));
   }, []);
 
@@ -41,11 +40,7 @@ export default function AdminLogs() {
         { key: "action", label: "Action", value: actionFilter, onChange: setActionFilter, options: actions.map((a) => ({ label: a.replace(/_/g, " "), value: a })) },
         { key: "entity", label: "Entity", value: entityFilter, onChange: setEntityFilter, options: entities.map((e) => ({ label: e, value: e })) },
       ]} />
-      {loading ? (
-        <p className="text-sm text-card-foreground/50">Loading…</p>
-      ) : (
-        <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} />
-      )}
+      <DataTable columns={columns} data={filtered} rowKey={(l) => l.id} loading={loading} emptyMessage="No audit logs found" />
     </div>
   );
 }

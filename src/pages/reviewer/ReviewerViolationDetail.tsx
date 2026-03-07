@@ -1,7 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { fetchViolation } from "@/lib/api";
-import { mockViolations, mockViolationDetail } from "@/lib/mock-data";
 import { ContentCard } from "@/components/ContentCard";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
 import { AISystemInfoCard } from "@/components/AISystemInfoCard";
@@ -24,11 +23,7 @@ export default function ReviewerViolationDetail() {
     if (id) {
       fetchViolation(id)
         .then((data) => { setV(data); setStatus(data.status || "open"); })
-        .catch(() => {
-          const found = mockViolations.find((v) => v.id === id);
-          const data = found || { ...mockViolationDetail, id };
-          setV(data); setStatus(data.status || "open");
-        })
+        .catch((err) => setError(err.message || "Failed to load violation"))
         .finally(() => setLoading(false));
     }
   }, [id]);
@@ -36,7 +31,7 @@ export default function ReviewerViolationDetail() {
   const refreshAudit = useCallback(() => setAuditKey((k) => k + 1), []);
 
   const handleDecision = useCallback((decision: "approve" | "reject") => {
-    setStatus(decision === "approve" ? "resolved" : "resolved");
+    setStatus("resolved");
     refreshAudit();
   }, [refreshAudit]);
 
@@ -54,7 +49,7 @@ export default function ReviewerViolationDetail() {
         <Link to="/reviewer/violations" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Violations
         </Link>
-        <SectionHeader title={`Violation #${v.id}`} description="Review and take action" />
+        <SectionHeader title={`Violation #${typeof v.id === "string" ? v.id.slice(0, 8) : v.id}`} description="Review and take action" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">

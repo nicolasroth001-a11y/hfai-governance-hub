@@ -6,7 +6,6 @@ import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FilterBar } from "@/components/FilterBar";
 import { fetchViolations } from "@/lib/api";
-import { mockViolations } from "@/lib/mock-data";
 import { formatDistanceToNow } from "date-fns";
 
 const columns: DataTableColumn<any>[] = [
@@ -26,7 +25,7 @@ export default function CustomerViolations() {
   useEffect(() => {
     fetchViolations()
       .then(setData)
-      .catch(() => setData(mockViolations))
+      .catch(() => setData([]))
       .finally(() => setLoading(false));
   }, []);
 
