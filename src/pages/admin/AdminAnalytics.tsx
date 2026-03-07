@@ -13,15 +13,12 @@ interface AnalyticsData {
   uniqueSessions: number;
 }
 
-const ANALYTICS_PASSWORD = "hfai-analytics-2026";
-
 export default function AdminAnalytics() {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
   const [data, setData] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
 
   const handleUnlock = (e: React.FormEvent) => {
     e.preventDefault();
