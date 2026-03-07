@@ -1,31 +1,61 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchViolation } from "@/lib/api";
+import { fetchViolation, updateViolation } from "@/lib/api";
 import { mockViolations, mockViolationDetail } from "@/lib/mock-data";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
 import { AISystemInfoCard } from "@/components/AISystemInfoCard";
 import { EventPayloadCard } from "@/components/EventPayloadCard";
 import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { ArrowLeft } from "lucide-react";
+import { ContentCard } from "@/components/ContentCard";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft, Save } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 export default function CustomerViolationDetail() {
   const { id } = useParams();
   const [v, setV] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [status, setStatus] = useState("");
+  const [resolutionNotes, setResolutionNotes] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (id) {
       fetchViolation(id)
-        .then(setV)
+        .then((data) => {
+          setV(data);
+          setStatus(data.status || "open");
+          setResolutionNotes((data as any).resolution_notes || "");
+        })
         .catch(() => {
           const found = mockViolations.find((v) => v.id === id);
-          setV(found || { ...mockViolationDetail, id });
+          const fallback = found || { ...mockViolationDetail, id };
+          setV(fallback);
+          setStatus(fallback.status || "open");
+          setResolutionNotes((fallback as any).resolution_notes || "");
         })
         .finally(() => setLoading(false));
     }
   }, [id]);
+
+  const handleSaveResolution = async () => {
+    if (!id) return;
+    setSaving(true);
+    try {
+      const updated = await updateViolation(id, { status, resolution_notes: resolutionNotes });
+      setV(updated);
+      toast({ title: "Updated", description: `Violation status set to "${status}"` });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
   if (error || !v) return (
@@ -41,7 +71,7 @@ export default function CustomerViolationDetail() {
         <Link to="/customer/violations" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Violations
         </Link>
-        <SectionHeader title={`Violation #${v.id}`} description="Review violation details" />
+        <SectionHeader title={`Violation #${typeof v.id === "string" ? v.id.slice(0, 8) : v.id}`} description="Review violation details and resolve" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
@@ -57,6 +87,38 @@ export default function CustomerViolationDetail() {
       </div>
 
       <EventPayloadCard data={v} />
+
+      {/* Resolution Workflow */}
+      <ContentCard title="Resolution Workflow">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label>Status</Label>
+            <Select value={status} onValueChange={setStatus}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="open">Open</SelectItem>
+                <SelectItem value="investigating">Investigating</SelectItem>
+                <SelectItem value="resolved">Resolved</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Resolution Notes</Label>
+            <Textarea
+              placeholder="Describe how this violation was investigated and resolved…"
+              value={resolutionNotes}
+              onChange={(e) => setResolutionNotes(e.target.value)}
+              rows={4}
+            />
+          </div>
+          <div className="sm:col-span-2 flex justify-end">
+            <Button onClick={handleSaveResolution} disabled={saving} className="gap-2">
+              <Save className="h-4 w-4" /> {saving ? "Saving…" : "Update Status"}
+            </Button>
+          </div>
+        </div>
+      </ContentCard>
+
       <AuditTrailCard violationId={v.id} />
     </div>
   );
