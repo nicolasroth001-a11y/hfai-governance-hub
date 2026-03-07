@@ -3,6 +3,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SubscriptionGate } from "@/components/SubscriptionGate";
 import { fetchReviews } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
