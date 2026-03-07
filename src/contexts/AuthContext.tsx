@@ -74,20 +74,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshSubscription = useCallback(async () => {
     try {
       const { data, error } = await supabase.functions.invoke("check-subscription");
-      if (error) {
-        console.error("Failed to check subscription:", error);
+      if (error || data?.error) {
+        // Stripe not configured or user has no subscription — default to free tier silently
         return;
       }
-      if (data && !data.error) {
-        setSubscription({
-          subscribed: data.subscribed ?? false,
-          onTrial: data.on_trial ?? false,
-          productId: data.product_id ?? null,
-          subscriptionEnd: data.subscription_end ?? null,
-        });
-      }
-    } catch (err) {
-      console.error("Subscription check failed:", err);
+      setSubscription({
+        subscribed: data.subscribed ?? false,
+        onTrial: data.on_trial ?? false,
+        productId: data.product_id ?? null,
+        subscriptionEnd: data.subscription_end ?? null,
+      });
+    } catch {
+      // Silently fall back to free tier
     }
   }, []);
 
