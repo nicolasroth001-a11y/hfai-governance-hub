@@ -376,6 +376,7 @@ export type Database = {
         Row: {
           ai_event_id: string | null
           ai_system_id: string | null
+          assigned_reviewer_id: string | null
           created_at: string
           description: string | null
           detected_at: string | null
@@ -389,6 +390,7 @@ export type Database = {
         Insert: {
           ai_event_id?: string | null
           ai_system_id?: string | null
+          assigned_reviewer_id?: string | null
           created_at?: string
           description?: string | null
           detected_at?: string | null
@@ -402,6 +404,7 @@ export type Database = {
         Update: {
           ai_event_id?: string | null
           ai_system_id?: string | null
+          assigned_reviewer_id?: string | null
           created_at?: string
           description?: string | null
           detected_at?: string | null
