@@ -39,28 +39,30 @@ export default function CustomerReviews() {
   const completed = reviews.filter((r) => r.decision === "approved" || r.decision === "rejected");
 
   return (
-    <div className="space-y-section">
-      <SectionHeader title="Human Reviews" description="Decisions made by human reviewers on flagged violations" />
+    <SubscriptionGate feature="Human Reviews">
+      <div className="space-y-section">
+        <SectionHeader title="Human Reviews" description="Decisions made by human reviewers on flagged violations" />
 
-      <Tabs defaultValue="pending" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="pending">Pending ({pending.length})</TabsTrigger>
-          <TabsTrigger value="completed">Completed ({completed.length})</TabsTrigger>
-          <TabsTrigger value="all">All ({reviews.length})</TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue="pending" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="pending">Pending ({pending.length})</TabsTrigger>
+            <TabsTrigger value="completed">Completed ({completed.length})</TabsTrigger>
+            <TabsTrigger value="all">All ({reviews.length})</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="pending">
-          <DataTable columns={columns} data={pending} rowKey={(r) => r.id} loading={loading} emptyMessage="No pending reviews" />
-        </TabsContent>
+          <TabsContent value="pending">
+            <DataTable columns={columns} data={pending} rowKey={(r) => r.id} loading={loading} emptyMessage="No pending reviews" />
+          </TabsContent>
 
-        <TabsContent value="completed">
-          <DataTable columns={columns} data={completed} rowKey={(r) => r.id} loading={loading} emptyMessage="No completed reviews" />
-        </TabsContent>
+          <TabsContent value="completed">
+            <DataTable columns={columns} data={completed} rowKey={(r) => r.id} loading={loading} emptyMessage="No completed reviews" />
+          </TabsContent>
 
-        <TabsContent value="all">
-          <DataTable columns={columns} data={reviews} rowKey={(r) => r.id} loading={loading} emptyMessage="No reviews yet" />
-        </TabsContent>
-      </Tabs>
-    </div>
+          <TabsContent value="all">
+            <DataTable columns={columns} data={reviews} rowKey={(r) => r.id} loading={loading} emptyMessage="No reviews yet" />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </SubscriptionGate>
   );
 }

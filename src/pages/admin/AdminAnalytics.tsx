@@ -19,28 +19,6 @@ export default function AdminAnalytics() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-
-  const handleUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === ANALYTICS_PASSWORD) {
-      setAuthenticated(true);
-      setPasswordError(false);
-      sessionStorage.setItem("hfai_analytics_auth", "1");
-    } else {
-      setPasswordError(true);
-    }
-  };
-
-  // Check session storage on mount
-  useEffect(() => {
-    if (sessionStorage.getItem("hfai_analytics_auth") === "1") {
-      setAuthenticated(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!authenticated) return;
-    setLoading(true);
     const load = async () => {
       try {
         const { data: result, error: err } = await supabase.functions.invoke("analytics-data");
@@ -78,7 +56,6 @@ export default function AdminAnalytics() {
     <div className="space-y-8">
       <SectionHeader title="Analytics" description="Site-wide traffic analytics — admin only" />
 
-      {/* Summary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-lg border border-border bg-card p-5 flex items-center gap-4">
           <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -109,7 +86,6 @@ export default function AdminAnalytics() {
         </div>
       </div>
 
-      {/* Traffic over time chart */}
       <ContentCard icon={TrendingUp} title="Traffic (Last 30 Days)">
         {data.traffic.length === 0 ? (
           <p className="text-sm text-muted-foreground">No traffic data yet.</p>
@@ -118,35 +94,16 @@ export default function AdminAnalytics() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data.traffic}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis
-                  dataKey="date"
-                  tick={{ fontSize: 11 }}
-                  className="fill-muted-foreground"
-                  tickFormatter={(v) => v.slice(5)}
-                />
+                <XAxis dataKey="date" tick={{ fontSize: 11 }} className="fill-muted-foreground" tickFormatter={(v) => v.slice(5)} />
                 <YAxis tick={{ fontSize: 11 }} className="fill-muted-foreground" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
-                    fontSize: "12px",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="views"
-                  stroke="hsl(var(--primary))"
-                  strokeWidth={2}
-                  dot={false}
-                />
+                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+                <Line type="monotone" dataKey="views" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         )}
       </ContentCard>
 
-      {/* Pages table */}
       <ContentCard icon={BarChart3} title="Most Active Pages">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -170,7 +127,6 @@ export default function AdminAnalytics() {
         </div>
       </ContentCard>
 
-      {/* Top referrers */}
       <ContentCard icon={Globe} title="Top Referrers">
         {data.referrers.length === 0 ? (
           <p className="text-sm text-muted-foreground">No referrer data yet.</p>
