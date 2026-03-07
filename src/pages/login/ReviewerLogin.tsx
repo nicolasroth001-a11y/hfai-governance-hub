@@ -62,6 +62,7 @@ export default function ReviewerLogin() {
           </form>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

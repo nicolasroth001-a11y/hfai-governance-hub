@@ -104,6 +104,7 @@ export default function CustomerSignup() {
           </form>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

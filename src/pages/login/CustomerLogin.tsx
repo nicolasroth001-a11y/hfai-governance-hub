@@ -66,6 +66,7 @@ export default function CustomerLogin() {
           </p>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }
