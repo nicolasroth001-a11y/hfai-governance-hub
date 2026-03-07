@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, XCircle, Loader2, ShieldCheck } from "lucide-react";
 import { submitReview } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +13,8 @@ interface ReviewActionsProps {
 }
 
 export function ReviewActions({ violationId, onDecision }: ReviewActionsProps) {
+  const { profile } = useAuth();
+  const reviewerName = profile?.name || profile?.email || "Unknown Reviewer";
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState<"approve" | "reject" | null>(null);
   const [submitted, setSubmitted] = useState<"approve" | "reject" | null>(null);
@@ -22,14 +25,15 @@ export function ReviewActions({ violationId, onDecision }: ReviewActionsProps) {
     try {
       await submitReview({
         violation_id: violationId,
-        reviewer_name: "Demo Reviewer",
+        reviewer_name: reviewerName,
+        reviewer_id: profile?.id,
         decision,
         comments: notes,
       });
       setSubmitted(decision);
       toast({
         title: decision === "approve" ? "✓ Violation Approved" : "✗ Violation Rejected",
-        description: `Violation #${violationId} has been ${decision === "approve" ? "approved" : "rejected"} by Demo Reviewer.`,
+        description: `Violation #${violationId.slice(0, 8)} has been ${decision === "approve" ? "approved" : "rejected"}.`,
       });
       onDecision?.(decision, notes);
     } catch (err: any) {
@@ -56,7 +60,7 @@ export function ReviewActions({ violationId, onDecision }: ReviewActionsProps) {
         <p className="text-sm font-medium text-card-foreground">
           {submitted === "approve" ? "Approved" : "Rejected"}
         </p>
-        <p className="text-xs text-card-foreground/50">Decision recorded by Demo Reviewer</p>
+        <p className="text-xs text-card-foreground/50">Decision recorded by {reviewerName}</p>
       </div>
     );
   }
@@ -107,7 +111,7 @@ export function ReviewActions({ violationId, onDecision }: ReviewActionsProps) {
       </div>
 
       <p className="text-[11px] text-card-foreground/30 text-center">
-        Submitting as Demo Reviewer
+        Submitting as {reviewerName}
       </p>
     </div>
   );
