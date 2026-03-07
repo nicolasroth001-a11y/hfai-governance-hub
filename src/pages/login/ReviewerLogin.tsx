@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, LogIn } from "lucide-react";
+import { Shield, LogIn, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
