@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
-import { BarChart3, Eye, Users, Globe, TrendingUp, Loader2, Lock } from "lucide-react";
+import { BarChart3, Eye, Users, Globe, TrendingUp, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 interface AnalyticsData {
   pages: { route: string; views: number; unique: number }[];
