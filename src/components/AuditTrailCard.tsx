@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card as ShadcnCard } from "@/components/ui/card";
 import { fetchReviews, fetchAuditLogs } from "@/lib/api";
-import { mockAuditTrailByViolation, mockAuditLogs } from "@/lib/mock-data";
 import { format, formatDistanceToNow } from "date-fns";
 import { History, CheckCircle, XCircle, Clock, MessageSquare, Activity } from "lucide-react";
 
@@ -27,7 +26,7 @@ export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
 
     Promise.all([
       fetchReviews().catch(() => []),
-      fetchAuditLogs().catch(() => mockAuditLogs),
+      fetchAuditLogs().catch(() => []),
     ]).then(([reviews, logs]) => {
       const reviewEntries: TrailEntry[] = (reviews as any[])
         .filter((r) => String(r.violation_id) === vId)
@@ -51,29 +50,7 @@ export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
           details: l.details || "",
         }));
 
-      let all = [...reviewEntries, ...auditEntries];
-
-      // If no entries found from API/mockAuditLogs, use per-violation mock trail
-      if (all.length === 0 && mockAuditTrailByViolation[vId]) {
-        all = mockAuditTrailByViolation[vId].map((l) => ({
-          id: `audit-${l.id}`,
-          timestamp: l.created_at,
-          type: "audit" as const,
-          action: l.action,
-          actor: "System",
-          details: l.details,
-        }));
-      }
-
-      // If still no entries, generate a generic trail for any violation
-      if (all.length === 0) {
-        const now = new Date();
-        all = [
-          { id: `audit-gen-1`, timestamp: new Date(now.getTime() - 120000).toISOString(), type: "audit" as const, action: "violation_detected", actor: "System", details: `Automated detection triggered for ${vId}` },
-          { id: `audit-gen-2`, timestamp: new Date(now.getTime() - 60000).toISOString(), type: "audit" as const, action: "notification_sent", actor: "System", details: "Alert sent to governance team" },
-        ];
-      }
-
+      const all = [...reviewEntries, ...auditEntries];
       all.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
       setEntries(all);
       setLoading(false);
