@@ -58,32 +58,7 @@ export default function AdminAnalytics() {
       }
     };
     load();
-  }, [authenticated]);
-
-  if (!authenticated) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <form onSubmit={handleUnlock} className="w-full max-w-sm space-y-4">
-          <div className="flex flex-col items-center gap-3 mb-6">
-            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Lock className="h-6 w-6 text-primary" />
-            </div>
-            <h2 className="text-lg font-semibold text-foreground">Analytics Access</h2>
-            <p className="text-sm text-muted-foreground text-center">Enter the admin analytics password to continue.</p>
-          </div>
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => { setPassword(e.target.value); setPasswordError(false); }}
-            className={passwordError ? "border-destructive" : ""}
-          />
-          {passwordError && <p className="text-xs text-destructive">Incorrect password.</p>}
-          <Button type="submit" className="w-full">Unlock</Button>
-        </form>
-      </div>
-    );
-  }
+  }, []);
 
   if (loading) {
     return (
