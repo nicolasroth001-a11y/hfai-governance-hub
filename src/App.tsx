@@ -95,7 +95,6 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/pricing/contact" element={<PricingContact />} />
           <Route path="/governance" element={<GovernancePage />} />
-          <Route path="/_screenshot" element={<ScreenshotDashboard />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />
