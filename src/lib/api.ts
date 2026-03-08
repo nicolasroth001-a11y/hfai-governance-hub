@@ -158,9 +158,11 @@ export async function fetchReviewsByViolations(violationIds: string[]) {
 }
 
 export async function sendAIEvent(payload: { event_type: string; payload: string; org_id: string }) {
+  const jsonPayload = { message: payload.payload, timestamp: new Date().toISOString() };
   const { data, error } = await supabase.from("ai_events").insert({
     event_type: payload.event_type,
-    payload: payload.payload,
+    payload: jsonPayload,
+    input_text: payload.payload,
     org_id: payload.org_id,
   }).select().single();
   if (error) throw new Error(error.message);

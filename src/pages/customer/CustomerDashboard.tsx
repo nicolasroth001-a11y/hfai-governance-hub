@@ -67,9 +67,9 @@ export default function CustomerDashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <SectionHeader title="Dashboard" description="Clarity and control over your AI governance" />
-        <Button onClick={() => setTestOpen(true)} size="sm" className="gap-2 h-9">
+        <Button onClick={() => setTestOpen(true)} size="sm" className="gap-2 h-9 w-full sm:w-auto">
           <Send className="h-3.5 w-3.5" /> Send Test Event
         </Button>
       </div>
