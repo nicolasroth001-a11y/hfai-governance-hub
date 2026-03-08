@@ -38,7 +38,7 @@ export default function CustomerAISystems() {
   useEffect(() => {
     fetchAISystems()
       .then(setSystems)
-      .catch(() => setSystems(mockSystems))
+      .catch(() => setSystems([]))
       .finally(() => setLoading(false));
   }, []);
 
