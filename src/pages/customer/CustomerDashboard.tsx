@@ -67,14 +67,14 @@ export default function CustomerDashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <SectionHeader title="Dashboard" description="Clarity and control over your AI governance" />
-        <Button onClick={() => setTestOpen(true)} size="sm" className="gap-2 h-9">
+        <Button onClick={() => setTestOpen(true)} size="sm" className="gap-2 h-9 w-full sm:w-auto">
           <Send className="h-3.5 w-3.5" /> Send Test Event
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <StatCard title="AI Systems" value={stats.totalSystems} icon={Cpu} />
         <StatCard title="Open Violations" value={stats.openViolations} icon={AlertTriangle} subtitle="Requires attention" />
         <StatCard title="Total Violations" value={stats.totalViolations} icon={ShieldAlert} />

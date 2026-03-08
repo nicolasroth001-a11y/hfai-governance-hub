@@ -26,11 +26,11 @@ export function TopBar({ role, userName }: TopBarProps) {
   };
 
   return (
-    <header className="h-14 flex items-center border-b border-border/40 px-6">
+    <header className="h-14 flex items-center border-b border-border/40 px-3 sm:px-6">
       <SidebarTrigger />
-      <div className="ml-auto flex items-center gap-4">
-        <span className="text-caption text-muted-foreground">{displayName}</span>
-        <div className="h-4 w-px bg-border/60" />
+      <div className="ml-auto flex items-center gap-2 sm:gap-4">
+        <span className="text-caption text-muted-foreground hidden sm:inline">{displayName}</span>
+        <div className="h-4 w-px bg-border/60 hidden sm:block" />
         <Button
           variant="ghost"
           size="sm"
@@ -38,7 +38,7 @@ export function TopBar({ role, userName }: TopBarProps) {
           onClick={handleLogout}
         >
           <LogOut className="h-3.5 w-3.5" />
-          Log out
+          <span className="hidden sm:inline">Log out</span>
         </Button>
       </div>
     </header>
