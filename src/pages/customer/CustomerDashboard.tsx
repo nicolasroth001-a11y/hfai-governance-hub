@@ -74,7 +74,7 @@ export default function CustomerDashboard() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <StatCard title="AI Systems" value={stats.totalSystems} icon={Cpu} />
         <StatCard title="Open Violations" value={stats.openViolations} icon={AlertTriangle} subtitle="Requires attention" />
         <StatCard title="Total Violations" value={stats.totalViolations} icon={ShieldAlert} />
