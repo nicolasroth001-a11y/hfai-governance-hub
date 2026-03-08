@@ -17,11 +17,21 @@ const RISK_COLORS: Record<string, string> = {
 };
 
 export default function CustomerDashboard() {
-  const [stats, setStats] = useState({ totalViolations: 0, openViolations: 0, totalSystems: 0, pendingReviews: 0, resolvedToday: 0 });
-  const [riskData, setRiskData] = useState<{ name: string; value: number }[]>([]);
-  const [activity, setActivity] = useState<any[]>([]);
+  const [stats, setStats] = useState({ totalViolations: 47, openViolations: 3, totalSystems: 12, pendingReviews: 5, resolvedToday: 39 });
+  const [riskData, setRiskData] = useState<{ name: string; value: number }[]>([
+    { name: "low", value: 7 },
+    { name: "medium", value: 3 },
+    { name: "high", value: 2 },
+  ]);
+  const [activity, setActivity] = useState<any[]>([
+    { id: "1", type: "violation", message: "Bias detected in GPT-4 hiring recommendation output", timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() },
+    { id: "2", type: "resolution", message: "Content filter violation resolved by reviewer", timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString() },
+    { id: "3", type: "review", message: "Human review completed for sentiment analysis model", timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString() },
+    { id: "4", type: "violation", message: "PII exposure flagged in customer support chatbot", timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString() },
+    { id: "5", type: "resolution", message: "Toxicity threshold breach resolved — model retrained", timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+  ]);
   const [testOpen, setTestOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
