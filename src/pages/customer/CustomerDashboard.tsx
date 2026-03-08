@@ -17,27 +17,53 @@ const RISK_COLORS: Record<string, string> = {
 };
 
 export default function CustomerDashboard() {
-  const [stats, setStats] = useState({ totalViolations: 47, openViolations: 3, totalSystems: 12, pendingReviews: 5, resolvedToday: 39 });
-  const [riskData, setRiskData] = useState<{ name: string; value: number }[]>([
-    { name: "low", value: 7 },
-    { name: "medium", value: 3 },
-    { name: "high", value: 2 },
-  ]);
-  const [activity, setActivity] = useState<any[]>([
-    { id: "1", type: "violation", message: "Bias detected in GPT-4 hiring recommendation output", timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() },
-    { id: "2", type: "resolution", message: "Content filter violation resolved by reviewer", timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString() },
-    { id: "3", type: "review", message: "Human review completed for sentiment analysis model", timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString() },
-    { id: "4", type: "violation", message: "PII exposure flagged in customer support chatbot", timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString() },
-    { id: "5", type: "resolution", message: "Toxicity threshold breach resolved — model retrained", timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
-  ]);
+  const [stats, setStats] = useState({ totalViolations: 0, openViolations: 0, totalSystems: 0, pendingReviews: 0, resolvedToday: 0 });
+  const [riskData, setRiskData] = useState<{ name: string; value: number }[]>([]);
+  const [activity, setActivity] = useState<any[]>([]);
   const [testOpen, setTestOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
-    // mock data mode — skip API
+    try {
+      const [violations, logs, systems, reviews] = await Promise.all([
+        fetchViolations(),
+        fetchAuditLogs(),
+        fetchAISystems(),
+        fetchReviews(),
+      ]);
+
+      const pendingReviews = reviews.filter((r: any) => !r.decision || r.decision === "pending" || r.decision === "escalated").length;
+
+      setStats({
+        totalViolations: violations.length,
+        openViolations: violations.filter((v: any) => v.status === "open").length,
+        totalSystems: systems.length,
+        pendingReviews,
+        resolvedToday: violations.filter((v: any) => v.status === "resolved").length,
+      });
+
+      const riskCounts: Record<string, number> = {};
+      systems.forEach((s: any) => {
+        const level = s.risk_level || "medium";
+        riskCounts[level] = (riskCounts[level] || 0) + 1;
+      });
+      setRiskData(Object.entries(riskCounts).map(([name, value]) => ({ name, value })));
+
+      setActivity(logs.slice(0, 10).map((l: any) => ({
+        id: l.id?.toString(),
+        type: l.action?.includes("violation") ? "violation" : l.action?.includes("resolve") ? "resolution" : "review",
+        message: l.details || l.action,
+        timestamp: l.created_at || new Date().toISOString(),
+      })));
+    } catch {
+      setStats({ totalViolations: 0, openViolations: 0, totalSystems: 0, pendingReviews: 0, resolvedToday: 0 });
+      setActivity([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  useEffect(() => { }, []);
+  useEffect(() => { loadData(); }, [loadData]);
 
   return (
     <div className="space-y-8">
