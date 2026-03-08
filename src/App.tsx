@@ -29,6 +29,7 @@ import ResetPassword from "./pages/login/ResetPassword";
 import LandingPage from "./pages/LandingPage";
 import PricingContact from "./pages/PricingContact";
 import GovernancePage from "./pages/GovernancePage";
+import ScreenshotDashboard from "./pages/ScreenshotDashboard";
 
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
