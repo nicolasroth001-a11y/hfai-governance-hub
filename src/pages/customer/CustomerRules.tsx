@@ -29,6 +29,7 @@ export default function CustomerRules() {
               category={r.category}
               severity_default={r.severity_default || r.severity || "medium"}
               violations_count={r.violations_count ?? 0}
+              basePath="/customer/rules"
             />
           ))}
         </div>
