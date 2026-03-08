@@ -14,10 +14,6 @@ import { Cpu, Plus, X, Search } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { fetchAISystems, createAISystem } from "@/lib/api";
 
-const mockSystems = [
-  { id: "SYS-001", name: "Customer Support Bot", model_type: "gpt-4-turbo", risk_level: "high", provider: "OpenAI" },
-  { id: "SYS-002", name: "Hiring Screener", model_type: "llama3-70b", risk_level: "critical", provider: "Meta" },
-];
 
 const riskVariant = (level: string) =>
   level === "critical" ? "destructive" : level === "high" ? "destructive" : level === "medium" ? "secondary" : "outline";
@@ -42,7 +38,7 @@ export default function CustomerAISystems() {
   useEffect(() => {
     fetchAISystems()
       .then(setSystems)
-      .catch(() => setSystems(mockSystems))
+      .catch(() => setSystems([]))
       .finally(() => setLoading(false));
   }, []);
 
