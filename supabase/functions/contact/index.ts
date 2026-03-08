@@ -1,8 +1,8 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 serve(async (req) => {
@@ -29,6 +29,8 @@ serve(async (req) => {
       );
     }
 
+    const CONTACT_EMAIL = Deno.env.get('CONTACT_EMAIL') || 'nicolasroth001@gmail.com';
+
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -37,7 +39,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         from: 'HFAI Contact Form <onboarding@resend.dev>',
-        to: ['nicolasroth001@gmail.com'],
+        to: [CONTACT_EMAIL],
         reply_to: email,
         subject: `New inquiry from ${name} (${company || 'N/A'})`,
         text: `Name: ${name}\nCompany: ${company || 'N/A'}\nEmail: ${email}\n\nMessage:\n${message}`,

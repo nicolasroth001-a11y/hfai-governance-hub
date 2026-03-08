@@ -19,12 +19,51 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Verify caller is an admin
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+
+    const supabaseUser = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user }, error: authError } = await supabaseUser.auth.getUser(token);
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Fetch all analytics rows (limited to last 10k for performance)
+    // Check admin role
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .eq("role", "admin")
+      .single();
+
+    if (!roleData) {
+      return new Response(JSON.stringify({ error: "Admin access required" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { data, error } = await supabase
       .from("analytics")
       .select("*")
@@ -39,10 +78,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Compute aggregates server-side
     const rows = data || [];
 
-    // Page stats
     const pageMap = new Map<string, { views: number; sessions: Set<string> }>();
     for (const row of rows) {
       const entry = pageMap.get(row.route) || { views: 0, sessions: new Set() };
@@ -54,7 +91,6 @@ Deno.serve(async (req) => {
       .map(([route, { views, sessions }]) => ({ route, views, unique: sessions.size }))
       .sort((a, b) => b.views - a.views);
 
-    // Traffic over time (last 30 days, daily)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const dailyMap = new Map<string, number>();
@@ -69,12 +105,10 @@ Deno.serve(async (req) => {
       .map(([date, views]) => ({ date, views }))
       .sort((a, b) => a.date.localeCompare(b.date));
 
-    // Top referrers
     const refMap = new Map<string, number>();
     for (const row of rows) {
       if (row.referrer) {
-        const r = row.referrer;
-        refMap.set(r, (refMap.get(r) || 0) + 1);
+        refMap.set(row.referrer, (refMap.get(row.referrer) || 0) + 1);
       }
     }
     const referrers = Array.from(refMap.entries())
@@ -82,7 +116,6 @@ Deno.serve(async (req) => {
       .sort((a, b) => b.count - a.count)
       .slice(0, 20);
 
-    // Total stats
     const totalViews = rows.length;
     const uniqueSessions = new Set(rows.map((r) => r.session_id)).size;
 

@@ -2,7 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 Deno.serve(async (req) => {
@@ -11,15 +11,24 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Verify the caller is an admin
-    const authHeader = req.headers.get("authorization");
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+
+    // User-context client for auth validation
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_ANON_KEY")!,
-      { global: { headers: { Authorization: authHeader! } } }
+      { global: { headers: { Authorization: authHeader } } }
     );
 
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
     if (authError || !user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -27,12 +36,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Check admin role
+    // Service role client for admin operations
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    // Check admin role
     const { data: roleData } = await supabaseAdmin
       .from("user_roles")
       .select("role")
@@ -56,7 +66,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Create the reviewer user via admin API
     const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -71,7 +80,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Log the action
     await supabaseAdmin.from("audit_logs").insert({
       action: "reviewer_created",
       entity_type: "user",
