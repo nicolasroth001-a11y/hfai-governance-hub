@@ -34,46 +34,10 @@ export default function CustomerDashboard() {
   const [loading, setLoading] = useState(false);
 
   const loadData = useCallback(async () => {
-    try {
-      const [violations, logs, systems, reviews] = await Promise.all([
-        fetchViolations(),
-        fetchAuditLogs(),
-        fetchAISystems(),
-        fetchReviews(),
-      ]);
-
-      const pendingReviews = reviews.filter((r: any) => !r.decision || r.decision === "pending" || r.decision === "escalated").length;
-
-      setStats({
-        totalViolations: violations.length,
-        openViolations: violations.filter((v: any) => v.status === "open").length,
-        totalSystems: systems.length,
-        pendingReviews,
-        resolvedToday: violations.filter((v: any) => v.status === "resolved").length,
-      });
-
-      const riskCounts: Record<string, number> = {};
-      systems.forEach((s: any) => {
-        const level = s.risk_level || "medium";
-        riskCounts[level] = (riskCounts[level] || 0) + 1;
-      });
-      setRiskData(Object.entries(riskCounts).map(([name, value]) => ({ name, value })));
-
-      setActivity(logs.slice(0, 10).map((l: any) => ({
-        id: l.id?.toString(),
-        type: l.action?.includes("violation") ? "violation" : l.action?.includes("resolve") ? "resolution" : "review",
-        message: l.details || l.action,
-        timestamp: l.created_at || new Date().toISOString(),
-      })));
-    } catch {
-      setStats({ totalViolations: 0, openViolations: 0, totalSystems: 0, pendingReviews: 0, resolvedToday: 0 });
-      setActivity([]);
-    } finally {
-      setLoading(false);
-    }
+    // mock data mode — skip API
   }, []);
 
-  useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => { }, []);
 
   return (
     <div className="space-y-8">
