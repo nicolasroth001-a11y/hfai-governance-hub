@@ -11,11 +11,12 @@ interface RuleCardProps {
   category: string;
   severity_default: string;
   violations_count: number;
+  basePath?: string;
 }
 
-export function RuleCard({ id, name, description, category, severity_default, violations_count }: RuleCardProps) {
+export function RuleCard({ id, name, description, category, severity_default, violations_count, basePath = "/rules" }: RuleCardProps) {
   return (
-    <Link to={`/rules/${id}`}>
+    <Link to={`${basePath}/${id}`}>
       <ShadcnCard className="p-6 hover:shadow-card-hover transition-all duration-200 cursor-pointer h-full">
         <div className="flex items-start justify-between mb-3">
           <div>
