@@ -310,6 +310,133 @@ export type Database = {
           },
         ]
       }
+      remediation_actions: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          org_id: string
+          rca_id: string
+          status: string | null
+          title: string
+          updated_at: string | null
+          violation_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          org_id: string
+          rca_id: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+          violation_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          org_id?: string
+          rca_id?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "remediation_actions_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "remediation_actions_rca_id_fkey"
+            columns: ["rca_id"]
+            isOneToOne: false
+            referencedRelation: "root_cause_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "remediation_actions_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      root_cause_analyses: {
+        Row: {
+          ai_diagnosis: string | null
+          ai_recommendations: string | null
+          ai_suggested_rules: Json | null
+          analyzed_by: string | null
+          created_at: string
+          human_diagnosis: string | null
+          human_notes: string | null
+          id: string
+          org_id: string
+          status: string | null
+          updated_at: string | null
+          violation_id: string
+        }
+        Insert: {
+          ai_diagnosis?: string | null
+          ai_recommendations?: string | null
+          ai_suggested_rules?: Json | null
+          analyzed_by?: string | null
+          created_at?: string
+          human_diagnosis?: string | null
+          human_notes?: string | null
+          id?: string
+          org_id: string
+          status?: string | null
+          updated_at?: string | null
+          violation_id: string
+        }
+        Update: {
+          ai_diagnosis?: string | null
+          ai_recommendations?: string | null
+          ai_suggested_rules?: Json | null
+          analyzed_by?: string | null
+          created_at?: string
+          human_diagnosis?: string | null
+          human_notes?: string | null
+          id?: string
+          org_id?: string
+          status?: string | null
+          updated_at?: string | null
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "root_cause_analyses_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "root_cause_analyses_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rules: {
         Row: {
           category: string | null
@@ -371,6 +498,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      violation_patterns: {
+        Row: {
+          created_at: string
+          description: string | null
+          first_seen: string | null
+          frequency: number | null
+          id: string
+          last_seen: string | null
+          org_id: string | null
+          pattern_name: string
+          rule_ids: string[] | null
+          status: string | null
+          violation_ids: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          first_seen?: string | null
+          frequency?: number | null
+          id?: string
+          last_seen?: string | null
+          org_id?: string | null
+          pattern_name: string
+          rule_ids?: string[] | null
+          status?: string | null
+          violation_ids?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          first_seen?: string | null
+          frequency?: number | null
+          id?: string
+          last_seen?: string | null
+          org_id?: string | null
+          pattern_name?: string
+          rule_ids?: string[] | null
+          status?: string | null
+          violation_ids?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "violation_patterns_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       violations: {
         Row: {
