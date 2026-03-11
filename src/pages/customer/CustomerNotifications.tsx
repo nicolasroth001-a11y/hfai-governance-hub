@@ -257,7 +257,7 @@ export default function CustomerNotifications() {
                 <div key={log.id} className="flex items-center justify-between py-3 gap-4">
                   <div className="flex items-center gap-3 min-w-0">
                     {log.status === "sent" ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                      <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
                     ) : (
                       <XCircle className="h-4 w-4 text-destructive shrink-0" />
                     )}
