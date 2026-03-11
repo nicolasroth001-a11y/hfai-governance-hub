@@ -36,6 +36,7 @@ export default function CustomerRuleTemplates() {
         description: t.description,
         severity: t.severity,
         category: t.category,
+        condition: t.condition,
         enabled: true,
         org_id: profile?.org_id || undefined,
       });
