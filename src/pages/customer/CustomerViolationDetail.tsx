@@ -7,6 +7,7 @@ import { EventPayloadCard } from "@/components/EventPayloadCard";
 import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { ReviewActions } from "@/components/ReviewActions";
 import { ReviewerNotesInput } from "@/components/ReviewerNotesInput";
+import { RCASection } from "@/components/RCASection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
