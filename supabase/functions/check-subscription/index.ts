@@ -41,6 +41,20 @@ serve(async (req) => {
     if (!user.email) throw new Error("User email not available");
     logStep("User authenticated", { email: user.email });
 
+    // Grant full Enterprise access to test account
+    const TEST_EMAILS = ["customer@hfai.io"];
+    if (TEST_EMAILS.includes(user.email)) {
+      logStep("Test account — granting full Enterprise access");
+      return new Response(JSON.stringify({
+        subscribed: true,
+        on_trial: false,
+        product_id: "prod_U83jB97VVesTcg", // Enterprise product
+        subscription_end: new Date(Date.now() + 365 * 86400000).toISOString(),
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
 
