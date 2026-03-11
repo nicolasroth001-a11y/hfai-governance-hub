@@ -105,7 +105,6 @@ export default function CustomerSecurity() {
       <SectionHeader
         title="Security Settings"
         description="Manage two-factor authentication for your account"
-        icon={Shield}
       />
 
       <Card>
