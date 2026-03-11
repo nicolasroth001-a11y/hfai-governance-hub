@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { RoleSidebar, NavItem } from "@/components/RoleSidebar";
 import { TopBar } from "@/components/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell } from "lucide-react";
+import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell, ShieldCheck } from "lucide-react";
 
 const navItems: NavItem[] = [
   { title: "Dashboard", url: "/customer/dashboard", icon: LayoutDashboard },
@@ -14,6 +14,7 @@ const navItems: NavItem[] = [
   { title: "Rule Templates", url: "/customer/rule-templates", icon: FileText },
   { title: "Notifications", url: "/customer/notifications", icon: Bell },
   { title: "Audit Logs", url: "/customer/logs", icon: ClipboardList },
+  { title: "Security", url: "/customer/security", icon: ShieldCheck },
   { title: "Onboarding", url: "/customer/onboarding", icon: Rocket },
 ];
 

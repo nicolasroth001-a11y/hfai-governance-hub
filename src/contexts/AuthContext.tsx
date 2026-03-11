@@ -24,8 +24,10 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   isLoading: boolean;
   subscription: SubscriptionStatus;
+  mfaRequired: boolean;
   refreshSubscription: () => Promise<void>;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  checkMFA: () => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string; mfaRequired?: boolean }>;
   signup: (data: { email: string; password: string; name: string; company_name: string }) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
 }
@@ -44,7 +46,9 @@ const AuthContext = createContext<AuthContextValue>({
   isAuthenticated: false,
   isLoading: true,
   subscription: defaultSubscription,
+  mfaRequired: false,
   refreshSubscription: async () => {},
+  checkMFA: async () => false,
   login: async () => ({ success: false }),
   signup: async () => ({ success: false }),
   logout: async () => {},
@@ -56,6 +60,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [subscription, setSubscription] = useState<SubscriptionStatus>(defaultSubscription);
+  const [mfaRequired, setMfaRequired] = useState(false);
+
+  const checkMFA = useCallback(async (): Promise<boolean> => {
+    const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (data && data.nextLevel === "aal2" && data.currentLevel === "aal1") {
+      setMfaRequired(true);
+      return true;
+    }
+    setMfaRequired(false);
+    return false;
+  }, []);
 
   const fetchProfile = useCallback(async (userId: string) => {
     const { data, error } = await supabase
@@ -128,8 +143,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { success: false, error: error.message };
-    return { success: true };
-  }, []);
+    // Check if MFA is required after login
+    const needsMfa = await checkMFA();
+    return { success: true, mfaRequired: needsMfa };
+  }, [checkMFA]);
 
   const signup = useCallback(async (data: { email: string; password: string; name: string; company_name: string }) => {
     const { error } = await supabase.auth.signUp({
@@ -165,7 +182,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!session,
         isLoading,
         subscription,
+        mfaRequired,
         refreshSubscription,
+        checkMFA,
         login,
         signup,
         logout,
