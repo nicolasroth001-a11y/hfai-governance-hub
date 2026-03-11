@@ -11,6 +11,13 @@ const logStep = (step: string, details?: any) => {
   console.log(`[CREATE-CHECKOUT] ${step}${details ? ` - ${JSON.stringify(details)}` : ''}`);
 };
 
+// Valid price IDs
+const VALID_PRICES = new Set([
+  "price_1T86TdL0paaPta3ZTOMYma2o", // Starter
+  "price_1T9nbOL0paaPta3Zp91ftpUo", // Pro
+  "price_1T9ncPL0paaPta3ZOLIpE2XP", // Enterprise
+]);
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -39,9 +46,20 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated", { email: user.email });
 
+    // Get requested price from body (default to Starter)
+    let priceId = "price_1T86TdL0paaPta3ZTOMYma2o";
+    try {
+      const body = await req.json();
+      if (body?.price_id && VALID_PRICES.has(body.price_id)) {
+        priceId = body.price_id;
+      }
+    } catch {
+      // No body or invalid JSON — use default
+    }
+    logStep("Price selected", { priceId });
+
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
 
-    // Check existing customer
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     let customerId: string | undefined;
     if (customers.data.length > 0) {
@@ -54,7 +72,7 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
-      line_items: [{ price: "price_1T86TdL0paaPta3ZTOMYma2o", quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
       subscription_data: {
         trial_period_days: 7,

@@ -1,18 +1,100 @@
-// Stripe product/price mapping for HFAI
-export const HFAI_PRO = {
-  product_id: "prod_U6J5wUGrIWUqSz",
-  price_id: "price_1T86TdL0paaPta3ZTOMYma2o",
-  name: "HFAI Pro",
-  price: 19,
-  currency: "USD",
-  interval: "month" as const,
-  trial_days: 7,
-  features: [
-    "Unlimited AI systems",
-    "Unlimited rules & violations",
-    "Advanced analytics dashboard",
-    "Human review workflows",
-    "Full audit trail",
-    "Priority support",
-  ],
+// Stripe product/price mapping for HFAI tiers
+
+export type TierKey = "starter" | "pro" | "enterprise";
+
+export interface TierConfig {
+  product_id: string;
+  price_id: string;
+  name: string;
+  price: number;
+  currency: string;
+  interval: "month";
+  trial_days: number;
+  features: string[];
+  highlighted?: boolean;
+}
+
+export const TIERS: Record<TierKey, TierConfig> = {
+  starter: {
+    product_id: "prod_U6J5wUGrIWUqSz",
+    price_id: "price_1T86TdL0paaPta3ZTOMYma2o",
+    name: "Starter",
+    price: 19,
+    currency: "USD",
+    interval: "month",
+    trial_days: 7,
+    features: [
+      "Up to 3 AI systems",
+      "Governance rules engine",
+      "Violation detection & alerts",
+      "Basic event logging",
+      "Email notifications",
+    ],
+  },
+  pro: {
+    product_id: "prod_U83i1kLpe72gKv",
+    price_id: "price_1T9nbOL0paaPta3Zp91ftpUo",
+    name: "Pro",
+    price: 49.99,
+    currency: "USD",
+    interval: "month",
+    trial_days: 7,
+    highlighted: true,
+    features: [
+      "Unlimited AI systems",
+      "Everything in Starter",
+      "Advanced analytics dashboard",
+      "Human review workflows",
+      "Full audit trail",
+      "Priority email support",
+    ],
+  },
+  enterprise: {
+    product_id: "prod_U83jB97VVesTcg",
+    price_id: "price_1T9ncPL0paaPta3ZOLIpE2XP",
+    name: "Enterprise",
+    price: 149.99,
+    currency: "USD",
+    interval: "month",
+    trial_days: 7,
+    features: [
+      "Everything in Pro",
+      "Root cause analysis (AI‑powered)",
+      "Remediation action tracking",
+      "Violation pattern detection",
+      "Custom rule templates",
+      "Dedicated priority support",
+    ],
+  },
 } as const;
+
+// Map product IDs to tier keys for subscription checking
+export const PRODUCT_TO_TIER: Record<string, TierKey> = Object.fromEntries(
+  Object.entries(TIERS).map(([key, tier]) => [tier.product_id, key as TierKey])
+);
+
+// Tier hierarchy for feature gating (higher index = more access)
+export const TIER_LEVEL: Record<TierKey, number> = {
+  starter: 1,
+  pro: 2,
+  enterprise: 3,
+};
+
+// Feature-to-minimum-tier mapping
+export const FEATURE_TIER: Record<string, TierKey> = {
+  "AI Systems": "starter",
+  "Rules": "starter",
+  "Violations": "starter",
+  "Events": "starter",
+  "Notifications": "starter",
+  "Analytics": "pro",
+  "Human Reviews": "pro",
+  "Audit Logs": "pro",
+  "Root Cause Analysis": "enterprise",
+  "Remediation": "enterprise",
+  "Pattern Detection": "enterprise",
+  "Rule Templates": "enterprise",
+};
+
+// Legacy compat
+export const HFAI_PRO = TIERS.pro;
