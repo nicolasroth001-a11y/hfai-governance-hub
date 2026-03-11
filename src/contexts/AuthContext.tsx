@@ -24,8 +24,10 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   isLoading: boolean;
   subscription: SubscriptionStatus;
+  mfaRequired: boolean;
   refreshSubscription: () => Promise<void>;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  checkMFA: () => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string; mfaRequired?: boolean }>;
   signup: (data: { email: string; password: string; name: string; company_name: string }) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
 }
