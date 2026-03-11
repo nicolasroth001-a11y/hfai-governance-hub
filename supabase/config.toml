@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.notify-violation]
 verify_jwt = false
+
+[functions.ingest-event]
+verify_jwt = false

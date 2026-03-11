@@ -157,16 +157,17 @@ export async function fetchReviewsByViolations(violationIds: string[]) {
   return data ?? [];
 }
 
-export async function sendAIEvent(payload: { event_type: string; payload: string; org_id: string }) {
-  const jsonPayload = { message: payload.payload, timestamp: new Date().toISOString() };
-  const { data, error } = await supabase.from("ai_events").insert({
-    event_type: payload.event_type,
-    payload: jsonPayload,
-    input_text: payload.payload,
-    org_id: payload.org_id,
-  }).select().single();
+export async function sendAIEvent(payload: { event_type: string; payload: string; org_id: string; ai_system_id?: string }) {
+  const { data, error } = await supabase.functions.invoke("ingest-event", {
+    body: {
+      event_type: payload.event_type,
+      payload: payload.payload,
+      ai_system_id: payload.ai_system_id || null,
+    },
+  });
   if (error) throw new Error(error.message);
-  return { userEvent: data, assistantEvent: null, violations: [] };
+  if (data?.error) throw new Error(data.error);
+  return { userEvent: data.userEvent, assistantEvent: data.assistantEvent, violations: data.violations ?? [] };
 }
 
 // ─── Rules ─────────────────────────────────────────────
