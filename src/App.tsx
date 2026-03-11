@@ -44,6 +44,7 @@ import CustomerEvents from "./pages/customer/CustomerEvents";
 import CustomerEventDetail from "./pages/customer/CustomerEventDetail";
 import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
 import CustomerReviews from "./pages/customer/CustomerReviews";
+import CustomerNotifications from "./pages/customer/CustomerNotifications";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -120,6 +121,7 @@ const App = () => {
             <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
             <Route path="reviews" element={<CustomerReviews />} />
+            <Route path="notifications" element={<CustomerNotifications />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
