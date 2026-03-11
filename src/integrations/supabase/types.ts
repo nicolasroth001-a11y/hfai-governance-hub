@@ -227,6 +227,101 @@ export type Database = {
           },
         ]
       }
+      notification_logs: {
+        Row: {
+          channel: string
+          created_at: string
+          error: string | null
+          id: string
+          org_id: string
+          recipients: string[]
+          status: string
+          subject: string | null
+          violation_id: string | null
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          org_id: string
+          recipients?: string[]
+          status?: string
+          subject?: string | null
+          violation_id?: string | null
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          org_id?: string
+          recipients?: string[]
+          status?: string
+          subject?: string | null
+          violation_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_logs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_logs_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          email_enabled: boolean
+          email_recipients: string[]
+          id: string
+          notify_all_violations: boolean
+          notify_high_severity: boolean
+          notify_patterns: boolean
+          org_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          email_enabled?: boolean
+          email_recipients?: string[]
+          id?: string
+          notify_all_violations?: boolean
+          notify_high_severity?: boolean
+          notify_patterns?: boolean
+          org_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          email_enabled?: boolean
+          email_recipients?: string[]
+          id?: string
+          notify_all_violations?: boolean
+          notify_high_severity?: boolean
+          notify_patterns?: boolean
+          org_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_preferences_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           api_key: string | null
