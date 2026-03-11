@@ -151,7 +151,7 @@ export default function CustomerNotifications() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <SectionHeader title="Notifications" subtitle="Configure email alerts for violations" />
+        <SectionHeader title="Notifications" description="Configure email alerts for violations" />
         <div className="flex items-center justify-center py-20 text-muted-foreground">Loading…</div>
       </div>
     );
