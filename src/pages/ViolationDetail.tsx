@@ -6,6 +6,7 @@ import { AISystemInfoCard } from "@/components/AISystemInfoCard";
 import { EventPayloadCard } from "@/components/EventPayloadCard";
 import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { ReviewActions } from "@/components/ReviewActions";
+import { RCASection } from "@/components/RCASection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { fetchViolation } from "@/lib/api";
 import { ArrowLeft, Gavel } from "lucide-react";
@@ -67,6 +68,8 @@ export default function ViolationDetail() {
           </ContentCard>
         </div>
       </div>
+
+      <RCASection violationId={String(v.id)} />
 
       <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>

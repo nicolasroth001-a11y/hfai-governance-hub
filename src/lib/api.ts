@@ -273,3 +273,66 @@ export async function deleteReviewer(id: string) {
   if (data?.error) throw new Error(data.error);
   return data;
 }
+
+// ─── Root Cause Analysis ───────────────────────────────
+export async function triggerRCA(violationId: string) {
+  const { data, error } = await supabase.functions.invoke("analyze-violation", {
+    body: { violation_id: violationId },
+  });
+  if (error) throw new Error(error.message);
+  if (data?.error) throw new Error(data.error);
+  return data;
+}
+
+export async function fetchRCA(violationId: string) {
+  const { data, error } = await supabase
+    .from("root_cause_analyses")
+    .select("*")
+    .eq("violation_id", violationId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) { console.error("fetchRCA:", error); return null; }
+  return data;
+}
+
+export async function updateRCA(id: string, payload: Record<string, unknown>) {
+  const { data, error } = await supabase
+    .from("root_cause_analyses")
+    .update({ ...payload, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function fetchRemediationActions(violationId: string) {
+  const { data, error } = await supabase
+    .from("remediation_actions")
+    .select("*")
+    .eq("violation_id", violationId)
+    .order("created_at", { ascending: true });
+  if (error) { console.error("fetchRemediationActions:", error); return []; }
+  return data ?? [];
+}
+
+export async function updateRemediationAction(id: string, payload: Record<string, unknown>) {
+  const { data, error } = await supabase
+    .from("remediation_actions")
+    .update({ ...payload, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function fetchViolationPatterns(violationId: string) {
+  const { data, error } = await supabase
+    .from("violation_patterns")
+    .select("*")
+    .contains("violation_ids", [violationId]);
+  if (error) { console.error("fetchViolationPatterns:", error); return []; }
+  return data ?? [];
+}

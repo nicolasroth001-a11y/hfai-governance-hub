@@ -7,6 +7,7 @@ import { EventPayloadCard } from "@/components/EventPayloadCard";
 import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { ReviewActions } from "@/components/ReviewActions";
 import { ReviewerNotesInput } from "@/components/ReviewerNotesInput";
+import { RCASection } from "@/components/RCASection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -131,6 +132,8 @@ export default function CustomerViolationDetail() {
           <ReviewerNotesInput violationId={String(v.id)} onSubmit={refreshAudit} />
         </ContentCard>
       </div>
+
+      <RCASection violationId={String(v.id)} canEdit />
 
       <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
