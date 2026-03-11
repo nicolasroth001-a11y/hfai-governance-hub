@@ -60,6 +60,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [subscription, setSubscription] = useState<SubscriptionStatus>(defaultSubscription);
+  const [mfaRequired, setMfaRequired] = useState(false);
+
+  const checkMFA = useCallback(async (): Promise<boolean> => {
+    const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (data && data.nextLevel === "aal2" && data.currentLevel === "aal1") {
+      setMfaRequired(true);
+      return true;
+    }
+    setMfaRequired(false);
+    return false;
+  }, []);
 
   const fetchProfile = useCallback(async (userId: string) => {
     const { data, error } = await supabase
