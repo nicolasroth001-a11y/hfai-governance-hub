@@ -123,6 +123,7 @@ const App = () => {
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
             <Route path="reviews" element={<CustomerReviews />} />
             <Route path="notifications" element={<CustomerNotifications />} />
+            <Route path="security" element={<CustomerSecurity />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
