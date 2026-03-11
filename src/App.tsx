@@ -121,6 +121,7 @@ const App = () => {
             <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
             <Route path="reviews" element={<CustomerReviews />} />
+            <Route path="notifications" element={<CustomerNotifications />} />
           </Route>
 
           {/* Reviewer routes (protected) */}

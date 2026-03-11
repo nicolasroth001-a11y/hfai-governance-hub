@@ -159,7 +159,7 @@ export default function CustomerNotifications() {
 
   return (
     <div className="space-y-6">
-      <SectionHeader title="Notifications" subtitle="Configure email alerts for violations and patterns" />
+      <SectionHeader title="Notifications" description="Configure email alerts for violations and patterns" />
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Email Settings */}
