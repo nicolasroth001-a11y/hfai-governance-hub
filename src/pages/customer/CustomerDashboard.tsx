@@ -5,6 +5,9 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
+import { LiveEventFeed } from "@/components/LiveEventFeed";
+import { RealtimeStats } from "@/components/RealtimeStats";
+import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { fetchViolations, fetchAuditLogs, fetchAISystems, fetchReviews } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
@@ -16,12 +19,23 @@ const RISK_COLORS: Record<string, string> = {
   critical: "hsl(280 70% 50%)",
 };
 
+const REALTIME_TABLES = ["violations", "ai_events", "audit_logs"];
+
 export default function CustomerDashboard() {
   const [stats, setStats] = useState({ totalViolations: 0, openViolations: 0, totalSystems: 0, pendingReviews: 0, resolvedToday: 0 });
   const [riskData, setRiskData] = useState<{ name: string; value: number }[]>([]);
   const [activity, setActivity] = useState<any[]>([]);
   const [testOpen, setTestOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Realtime subscription
+  const { connected, events, clearEvents } = useRealtimeSubscription({
+    tables: REALTIME_TABLES,
+    onEvent: useCallback(() => {
+      // Auto-refresh stats when a realtime event arrives
+      loadData();
+    }, []),
+  });
 
   const loadData = useCallback(async () => {
     try {
@@ -74,6 +88,9 @@ export default function CustomerDashboard() {
         </Button>
       </div>
 
+      {/* Realtime stats strip */}
+      <RealtimeStats events={events} />
+
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <StatCard title="AI Systems" value={stats.totalSystems} icon={Cpu} />
         <StatCard title="Open Violations" value={stats.openViolations} icon={AlertTriangle} subtitle="Requires attention" />
@@ -83,6 +100,9 @@ export default function CustomerDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Live Event Feed */}
+        <LiveEventFeed events={events} connected={connected} onClear={clearEvents} />
+
         <ContentCard title="Risk Distribution">
           {riskData.length === 0 ? (
             <p className="text-sm text-card-foreground/50 py-8 text-center">No AI systems registered yet</p>
@@ -100,31 +120,31 @@ export default function CustomerDashboard() {
             </ResponsiveContainer>
           )}
         </ContentCard>
-
-        <ContentCard title="Recent Activity">
-          {loading ? (
-            <p className="text-sm text-card-foreground/50">Loading…</p>
-          ) : activity.length === 0 ? (
-            <p className="text-sm text-card-foreground/50">No recent activity.</p>
-          ) : (
-            <div className="space-y-4">
-              {activity.map((item) => (
-                <div key={item.id} className="flex items-start gap-3">
-                  <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
-                    item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"
-                  }`} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-body text-card-foreground">{item.message}</p>
-                    <p className="text-[11px] text-card-foreground/35 mt-0.5">
-                      {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </ContentCard>
       </div>
+
+      <ContentCard title="Recent Activity">
+        {loading ? (
+          <p className="text-sm text-card-foreground/50">Loading…</p>
+        ) : activity.length === 0 ? (
+          <p className="text-sm text-card-foreground/50">No recent activity.</p>
+        ) : (
+          <div className="space-y-4">
+            {activity.map((item) => (
+              <div key={item.id} className="flex items-start gap-3">
+                <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
+                  item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"
+                }`} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-body text-card-foreground">{item.message}</p>
+                  <p className="text-[11px] text-card-foreground/35 mt-0.5">
+                    {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </ContentCard>
 
       <TestEventModal open={testOpen} onOpenChange={setTestOpen} onEventSent={loadData} />
     </div>
