@@ -2,3 +2,6 @@ project_id = "uomnlgpqundhlmqkuhog"
 
 [functions.analyze-violation]
 verify_jwt = false
+
+[functions.notify-violation]
+verify_jwt = false
