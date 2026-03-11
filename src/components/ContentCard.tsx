@@ -7,7 +7,7 @@ interface ContentCardProps {
   children: ReactNode;
   className?: string;
   icon?: LucideIcon;
-  title?: string;
+  title?: ReactNode;
   fullWidth?: boolean;
 }
 
