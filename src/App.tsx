@@ -45,6 +45,7 @@ import CustomerEventDetail from "./pages/customer/CustomerEventDetail";
 import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
 import CustomerReviews from "./pages/customer/CustomerReviews";
 import CustomerNotifications from "./pages/customer/CustomerNotifications";
+import CustomerSecurity from "./pages/customer/CustomerSecurity";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
