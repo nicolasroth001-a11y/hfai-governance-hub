@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { PRODUCT_TO_TIER, type TierKey } from "@/lib/stripe-config";
 import type { User, Session } from "@supabase/supabase-js";
 
 interface Profile {
@@ -13,6 +14,7 @@ interface Profile {
 export interface SubscriptionStatus {
   subscribed: boolean;
   onTrial: boolean;
+  tier: TierKey | null;
   productId: string | null;
   subscriptionEnd: string | null;
 }
@@ -35,6 +37,7 @@ interface AuthContextValue {
 const defaultSubscription: SubscriptionStatus = {
   subscribed: false,
   onTrial: false,
+  tier: null,
   productId: null,
   subscriptionEnd: null,
 };
@@ -90,13 +93,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data, error } = await supabase.functions.invoke("check-subscription");
       if (error || data?.error) {
-        // Stripe not configured or user has no subscription — default to free tier silently
         return;
       }
+      const productId = data.product_id ?? null;
       setSubscription({
         subscribed: data.subscribed ?? false,
         onTrial: data.on_trial ?? false,
-        productId: data.product_id ?? null,
+        tier: productId ? (PRODUCT_TO_TIER[productId] ?? null) : null,
+        productId,
         subscriptionEnd: data.subscription_end ?? null,
       });
     } catch {
@@ -133,7 +137,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => authSub.unsubscribe();
   }, [fetchProfile, refreshSubscription]);
 
-  // Auto-refresh subscription every 60s when logged in
   useEffect(() => {
     if (!session) return;
     const interval = setInterval(refreshSubscription, 60_000);
@@ -143,7 +146,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { success: false, error: error.message };
-    // Check if MFA is required after login
     const needsMfa = await checkMFA();
     return { success: true, mfaRequired: needsMfa };
   }, [checkMFA]);
