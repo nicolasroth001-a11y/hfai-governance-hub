@@ -69,6 +69,8 @@ export default function ViolationDetail() {
         </div>
       </div>
 
+      <RCASection violationId={String(v.id)} />
+
       <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
   );

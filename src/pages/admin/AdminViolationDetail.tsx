@@ -141,6 +141,8 @@ export default function AdminViolationDetail() {
         </div>
       </div>
 
+      <RCASection violationId={String(v.id)} canEdit />
+
       <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
   );

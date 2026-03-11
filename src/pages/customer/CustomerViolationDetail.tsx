@@ -133,6 +133,8 @@ export default function CustomerViolationDetail() {
         </ContentCard>
       </div>
 
+      <RCASection violationId={String(v.id)} canEdit />
+
       <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
   );
