@@ -8,6 +8,7 @@ import { EventPayloadCard } from "@/components/EventPayloadCard";
 import { AuditTrailCard } from "@/components/AuditTrailCard";
 import { ReviewActions } from "@/components/ReviewActions";
 import { ReviewerNotesInput } from "@/components/ReviewerNotesInput";
+import { RCASection } from "@/components/RCASection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ArrowLeft, Gavel, StickyNote } from "lucide-react";
 
