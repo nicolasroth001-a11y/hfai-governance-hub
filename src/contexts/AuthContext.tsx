@@ -143,8 +143,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { success: false, error: error.message };
-    return { success: true };
-  }, []);
+    // Check if MFA is required after login
+    const needsMfa = await checkMFA();
+    return { success: true, mfaRequired: needsMfa };
+  }, [checkMFA]);
 
   const signup = useCallback(async (data: { email: string; password: string; name: string; company_name: string }) => {
     const { error } = await supabase.auth.signUp({
