@@ -226,8 +226,8 @@ serve(async (req) => {
 
     // Log notification
     await supabase.from("notification_logs").insert({
-      org_id: violation.org_id,
-      violation_id: violation.id,
+      org_id: orgId,
+      violation_id: isTest ? null : violation.id,
       channel: "email",
       recipients,
       subject,
