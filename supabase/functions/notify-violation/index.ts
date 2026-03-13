@@ -131,7 +131,7 @@ serve(async (req) => {
       const { data: org } = await supabase
         .from("organizations")
         .select("contact_email")
-        .eq("id", violation.org_id)
+        .eq("id", orgId)
         .single();
       if (org?.contact_email) recipients = [org.contact_email];
     }
