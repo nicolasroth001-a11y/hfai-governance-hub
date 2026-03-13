@@ -10,6 +10,7 @@ import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
 import { StatsBar } from "@/components/landing/StatsBar";
 import { FAQSection } from "@/components/landing/FAQSection";
+import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
