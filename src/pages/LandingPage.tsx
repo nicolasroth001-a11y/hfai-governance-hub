@@ -64,6 +64,7 @@ const trustPoints = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [demoOpen, setDemoOpen] = useState(false);
   usePageView("/");
 
   return (
