@@ -135,6 +135,7 @@ export function FullDemoExperience({ open, onClose }: FullDemoExperienceProps) {
           }));
           setViolations((prev) => [...newViolations, ...prev]);
           setActiveTab("violations");
+          setMobileView("dashboard");
         }, 600);
       }
     }, 1200 + Math.random() * 800);
