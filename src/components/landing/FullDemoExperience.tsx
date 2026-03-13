@@ -191,10 +191,31 @@ export function FullDemoExperience({ open, onClose }: FullDemoExperienceProps) {
           </div>
         </div>
 
+        {/* Mobile view toggle */}
+        <div className="flex lg:hidden border-b border-border/30">
+          <button
+            onClick={() => setMobileView("chat")}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-colors ${mobileView === "chat" ? "text-primary border-b-2 border-primary" : "text-muted-foreground"}`}
+          >
+            <MessageSquare className="h-3 w-3" /> Chat
+          </button>
+          <button
+            onClick={() => setMobileView("dashboard")}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-colors ${mobileView === "dashboard" ? "text-primary border-b-2 border-primary" : "text-muted-foreground"}`}
+          >
+            <BarChart3 className="h-3 w-3" /> Dashboard
+            {violations.length > 0 && (
+              <span className="h-4 min-w-4 px-1 rounded-full bg-destructive/20 text-destructive text-[10px] flex items-center justify-center">
+                {violations.length}
+              </span>
+            )}
+          </button>
+        </div>
+
         {/* Main content */}
-        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
           {/* Chat panel */}
-          <div className="flex-1 flex flex-col min-h-0 border-r border-border/30">
+          <div className={`flex-1 flex flex-col min-h-0 lg:border-r border-border/30 ${mobileView !== "chat" ? "hidden lg:flex" : "flex"}`}>
             <div className="px-4 py-2 border-b border-border/20 flex items-center gap-2">
               <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
               <span className="text-xs font-medium text-muted-foreground">AI Chat — Demo Mode</span>
