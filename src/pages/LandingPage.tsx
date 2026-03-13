@@ -374,6 +374,6 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+      <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
-}
