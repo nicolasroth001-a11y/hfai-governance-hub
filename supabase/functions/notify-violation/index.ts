@@ -92,7 +92,7 @@ serve(async (req) => {
     const { data: prefs } = await supabase
       .from("notification_preferences")
       .select("*")
-      .eq("org_id", violation.org_id)
+      .eq("org_id", orgId)
       .single();
 
     // If no prefs exist or email disabled, skip
