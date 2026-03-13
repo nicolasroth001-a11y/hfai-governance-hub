@@ -321,7 +321,7 @@ export function FullDemoExperience({ open, onClose }: FullDemoExperienceProps) {
           </div>
 
           {/* Dashboard panel */}
-          <div className="w-full lg:w-[420px] flex flex-col min-h-0 bg-background/50">
+          <div className={`w-full lg:w-[420px] flex flex-col min-h-0 bg-background/50 ${mobileView !== "dashboard" ? "hidden lg:flex" : "flex"}`}>
             {/* Stats row */}
             <div className="grid grid-cols-4 gap-px bg-border/20 border-b border-border/30">
               {[
