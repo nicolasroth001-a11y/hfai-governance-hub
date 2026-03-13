@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
 import { StatsBar } from "@/components/landing/StatsBar";
 import { FAQSection } from "@/components/landing/FAQSection";
+import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
@@ -63,6 +65,7 @@ const trustPoints = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [demoOpen, setDemoOpen] = useState(false);
   usePageView("/");
 
   return (
@@ -140,8 +143,8 @@ export default function LandingPage() {
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
               Start Free <ChevronRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12" asChild>
-              <a href="#demo">See It In Action</a>
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
+              <Eye className="h-4 w-4" /> Try Live Demo
             </Button>
           </motion.div>
 
@@ -371,6 +374,7 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+      <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
 }
