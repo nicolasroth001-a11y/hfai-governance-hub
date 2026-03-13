@@ -36,18 +36,56 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, serviceKey);
 
-    // Fetch violation with related data
-    const { data: violation, error: vErr } = await supabase
-      .from("violations")
-      .select("*")
-      .eq("id", violation_id)
-      .single();
+    const isTest = violation_id === "test";
+    let violation: any;
+    let orgId: string;
 
-    if (vErr || !violation) {
-      return new Response(JSON.stringify({ error: "Violation not found" }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (isTest) {
+      // For test notifications, get org_id from the authenticated user
+      const authHeader = req.headers.get("Authorization");
+      const token = authHeader?.replace("Bearer ", "") || "";
+      const { data: userData } = await supabase.auth.getUser(token);
+      if (!userData?.user) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("org_id")
+        .eq("id", userData.user.id)
+        .single();
+      if (!profile?.org_id) {
+        return new Response(JSON.stringify({ error: "No organization found" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      orgId = profile.org_id;
+      violation = {
+        id: "test",
+        org_id: orgId,
+        severity: "high",
+        status: "open",
+        description: "This is a test notification from HFAI to verify your email alert configuration is working correctly.",
+        detected_at: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+      };
+    } else {
+      // Fetch real violation
+      const { data: vData, error: vErr } = await supabase
+        .from("violations")
+        .select("*")
+        .eq("id", violation_id)
+        .single();
+
+      if (vErr || !vData) {
+        return new Response(JSON.stringify({ error: "Violation not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      violation = vData;
+      orgId = violation.org_id;
     }
 
     // Fetch org notification preferences
