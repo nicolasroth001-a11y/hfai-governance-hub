@@ -216,7 +216,7 @@ export function FullDemoExperience({ open, onClose }: FullDemoExperienceProps) {
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
           {/* Chat panel */}
           <div className={`flex-1 flex flex-col min-h-0 lg:border-r border-border/30 ${mobileView !== "chat" ? "hidden lg:flex" : "flex"}`}>
-            <div className="px-4 py-2 border-b border-border/20 flex items-center gap-2">
+            <div className="hidden lg:flex px-4 py-2 border-b border-border/20 items-center gap-2">
               <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
               <span className="text-xs font-medium text-muted-foreground">AI Chat — Demo Mode</span>
             </div>
