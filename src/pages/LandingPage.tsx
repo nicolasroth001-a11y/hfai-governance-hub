@@ -377,3 +377,4 @@ export default function LandingPage() {
       <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
+}
