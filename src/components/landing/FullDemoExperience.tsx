@@ -74,6 +74,7 @@ export function FullDemoExperience({ open, onClose }: FullDemoExperienceProps) {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [activeTab, setActiveTab] = useState<"violations" | "stats" | "rules">("violations");
+  const [mobileView, setMobileView] = useState<"chat" | "dashboard">("chat");
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
