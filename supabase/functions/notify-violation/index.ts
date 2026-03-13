@@ -210,7 +210,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "HFAI Alerts <alerts@notify.hfa-i.org>",
+        from: "HFAI Alerts <onboarding@resend.dev>",
         to: recipients,
         subject,
         html: htmlBody,
