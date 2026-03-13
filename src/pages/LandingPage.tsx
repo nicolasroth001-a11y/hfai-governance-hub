@@ -143,8 +143,8 @@ export default function LandingPage() {
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
               Start Free <ChevronRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12" asChild>
-              <a href="#demo">See It In Action</a>
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
+              <Eye className="h-4 w-4" /> Try Live Demo
             </Button>
           </motion.div>
 
