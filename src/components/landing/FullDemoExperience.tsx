@@ -168,7 +168,7 @@ export function FullDemoExperience({ open, onClose }: FullDemoExperienceProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex flex-col"
+        className="fixed inset-0 z-[100] bg-background backdrop-blur-sm flex flex-col overflow-hidden"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 h-14 border-b border-border/40 shrink-0">
