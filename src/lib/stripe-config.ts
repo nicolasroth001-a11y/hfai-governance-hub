@@ -1,6 +1,6 @@
 // Stripe product/price mapping for HFAI tiers
 
-export type TierKey = "starter" | "pro" | "enterprise";
+export type TierKey = "free" | "starter" | "pro" | "enterprise";
 
 export interface TierConfig {
   product_id: string;
@@ -15,6 +15,22 @@ export interface TierConfig {
 }
 
 export const TIERS: Record<TierKey, TierConfig> = {
+  free: {
+    product_id: "",
+    price_id: "",
+    name: "Free",
+    price: 0,
+    currency: "USD",
+    interval: "month",
+    trial_days: 0,
+    features: [
+      "1 AI system",
+      "5 governance rules",
+      "Basic violation detection",
+      "7‑day event history",
+      "Community support",
+    ],
+  },
   starter: {
     product_id: "prod_U6J5wUGrIWUqSz",
     price_id: "price_1T86TdL0paaPta3ZTOMYma2o",
@@ -75,17 +91,25 @@ export const PRODUCT_TO_TIER: Record<string, TierKey> = Object.fromEntries(
 
 // Tier hierarchy for feature gating (higher index = more access)
 export const TIER_LEVEL: Record<TierKey, number> = {
+  free: 0,
   starter: 1,
   pro: 2,
   enterprise: 3,
 };
 
+// Free tier limits
+export const FREE_TIER_LIMITS = {
+  maxAISystems: 1,
+  maxRules: 5,
+  eventHistoryDays: 7,
+};
+
 // Feature-to-minimum-tier mapping
 export const FEATURE_TIER: Record<string, TierKey> = {
-  "AI Systems": "starter",
-  "Rules": "starter",
-  "Violations": "starter",
-  "Events": "starter",
+  "AI Systems": "free",
+  "Rules": "free",
+  "Violations": "free",
+  "Events": "free",
   "Notifications": "starter",
   "Analytics": "pro",
   "Human Reviews": "pro",

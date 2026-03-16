@@ -19,10 +19,10 @@ export function SubscriptionGate({ feature, children }: SubscriptionGateProps) {
 
   const requiredTier = FEATURE_TIER[feature] ?? "starter";
   const requiredLevel = TIER_LEVEL[requiredTier];
-  const currentLevel = subscription.tier ? TIER_LEVEL[subscription.tier] : 0;
+  const currentLevel = TIER_LEVEL[subscription.tier ?? "free"];
 
-  // User has sufficient tier access
-  if (subscription.subscribed && currentLevel >= requiredLevel) {
+  // Free tier gets access to free-tier features; paid tiers check subscription
+  if (requiredTier === "free" || currentLevel >= requiredLevel) {
     return <>{children}</>;
   }
 

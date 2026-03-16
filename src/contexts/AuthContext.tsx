@@ -37,7 +37,7 @@ interface AuthContextValue {
 const defaultSubscription: SubscriptionStatus = {
   subscribed: false,
   onTrial: false,
-  tier: null,
+  tier: "free",
   productId: null,
   subscriptionEnd: null,
 };
@@ -96,10 +96,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
       const productId = data.product_id ?? null;
+      const tier = productId ? (PRODUCT_TO_TIER[productId] ?? "free") : "free";
       setSubscription({
         subscribed: data.subscribed ?? false,
         onTrial: data.on_trial ?? false,
-        tier: productId ? (PRODUCT_TO_TIER[productId] ?? null) : null,
+        tier,
         productId,
         subscriptionEnd: data.subscription_end ?? null,
       });

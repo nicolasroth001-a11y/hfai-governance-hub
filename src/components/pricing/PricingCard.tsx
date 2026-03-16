@@ -60,10 +60,11 @@ export function PricingCard({ tier, tierKey, isAuthenticated, isCurrentPlan, sub
         <div className="space-y-2">
           <h3 className="text-lg font-bold tracking-tight">{tier.name}</h3>
           <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-bold">${tier.price}</span>
-            <span className="text-muted-foreground text-sm">/{tier.interval}</span>
+            <span className="text-3xl font-bold">{tier.price === 0 ? "Free" : `$${tier.price}`}</span>
+            {tier.price > 0 && <span className="text-muted-foreground text-sm">/{tier.interval}</span>}
           </div>
-          <p className="text-xs text-muted-foreground">{tier.trial_days}‑day free trial</p>
+          {tier.trial_days > 0 && <p className="text-xs text-muted-foreground">{tier.trial_days}‑day free trial</p>}
+          {tier.price === 0 && <p className="text-xs text-muted-foreground">No credit card required</p>}
         </div>
 
         <ul className="space-y-2.5 flex-1">
@@ -82,13 +83,27 @@ export function PricingCard({ tier, tierKey, isAuthenticated, isCurrentPlan, sub
                 {subscription.onTrial ? "Trial active" : "Active"} 
                 {subscription.subscriptionEnd && ` · Renews ${new Date(subscription.subscriptionEnd).toLocaleDateString()}`}
               </p>
-              <Button variant="outline" className="w-full text-sm" onClick={onManageSubscription}>
-                Manage Subscription
-              </Button>
+              {tier.price > 0 && (
+                <Button variant="outline" className="w-full text-sm" onClick={onManageSubscription}>
+                  Manage Subscription
+                </Button>
+              )}
             </div>
+          ) : tier.price === 0 ? (
+            isAuthenticated ? (
+              <Button variant="outline" className="w-full text-sm" disabled>
+                <CheckCircle className="h-4 w-4 mr-1" /> Included
+              </Button>
+            ) : (
+              <Link to="/signup/customer">
+                <Button className="w-full gap-2 text-sm" variant="outline">
+                  <CreditCard className="h-4 w-4" /> Get Started Free
+                </Button>
+              </Link>
+            )
           ) : isAuthenticated ? (
             <Button
-              className={`w-full gap-2 text-sm ${tier.highlighted ? "" : ""}`}
+              className={`w-full gap-2 text-sm`}
               variant={tier.highlighted ? "default" : "outline"}
               onClick={handleCheckout}
               disabled={loading}
