@@ -37,7 +37,7 @@ interface AuthContextValue {
 const defaultSubscription: SubscriptionStatus = {
   subscribed: false,
   onTrial: false,
-  tier: null,
+  tier: "free",
   productId: null,
   subscriptionEnd: null,
 };
