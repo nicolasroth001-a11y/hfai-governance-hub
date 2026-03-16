@@ -106,10 +106,10 @@ export const FREE_TIER_LIMITS = {
 
 // Feature-to-minimum-tier mapping
 export const FEATURE_TIER: Record<string, TierKey> = {
-  "AI Systems": "starter",
-  "Rules": "starter",
-  "Violations": "starter",
-  "Events": "starter",
+  "AI Systems": "free",
+  "Rules": "free",
+  "Violations": "free",
+  "Events": "free",
   "Notifications": "starter",
   "Analytics": "pro",
   "Human Reviews": "pro",
