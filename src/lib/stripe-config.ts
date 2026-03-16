@@ -15,6 +15,22 @@ export interface TierConfig {
 }
 
 export const TIERS: Record<TierKey, TierConfig> = {
+  free: {
+    product_id: "",
+    price_id: "",
+    name: "Free",
+    price: 0,
+    currency: "USD",
+    interval: "month",
+    trial_days: 0,
+    features: [
+      "1 AI system",
+      "5 governance rules",
+      "Basic violation detection",
+      "7‑day event history",
+      "Community support",
+    ],
+  },
   starter: {
     product_id: "prod_U6J5wUGrIWUqSz",
     price_id: "price_1T86TdL0paaPta3ZTOMYma2o",
