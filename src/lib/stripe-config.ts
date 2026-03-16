@@ -91,9 +91,17 @@ export const PRODUCT_TO_TIER: Record<string, TierKey> = Object.fromEntries(
 
 // Tier hierarchy for feature gating (higher index = more access)
 export const TIER_LEVEL: Record<TierKey, number> = {
+  free: 0,
   starter: 1,
   pro: 2,
   enterprise: 3,
+};
+
+// Free tier limits
+export const FREE_TIER_LIMITS = {
+  maxAISystems: 1,
+  maxRules: 5,
+  eventHistoryDays: 7,
 };
 
 // Feature-to-minimum-tier mapping
