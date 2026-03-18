@@ -29,6 +29,9 @@ import ResetPassword from "./pages/login/ResetPassword";
 import LandingPage from "./pages/LandingPage";
 import PricingContact from "./pages/PricingContact";
 import GovernancePage from "./pages/GovernancePage";
+import BlogIndex from "./pages/blog/BlogIndex";
+import AIGovernancePlatformGuide from "./pages/blog/AIGovernancePlatformGuide";
+import EUAIActComplianceTool from "./pages/blog/EUAIActComplianceTool";
 
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
