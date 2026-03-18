@@ -78,11 +78,11 @@ export default function LandingPage() {
             <span className="text-sm font-semibold text-foreground tracking-tight">HFAI</span>
           </Link>
           <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/blog")}>
+              Resources
+            </Button>
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/pricing/contact")}>
               Pricing
-            </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/governance")}>
-              Framework
             </Button>
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               Sign In
@@ -364,6 +364,8 @@ export default function LandingPage() {
           </div>
           <div className="flex flex-col items-center sm:items-end gap-2">
             <div className="flex items-center gap-4">
+              <Link to="/blog" className="text-primary hover:underline text-xs">Resources</Link>
+              <span className="text-border/30">·</span>
               <Link to="/pricing/contact" className="text-primary hover:underline text-xs">Pricing</Link>
               <span className="text-border/30">·</span>
               <Link to="/governance" className="text-primary hover:underline text-xs">Framework</Link>
