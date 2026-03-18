@@ -78,11 +78,11 @@ export default function LandingPage() {
             <span className="text-sm font-semibold text-foreground tracking-tight">HFAI</span>
           </Link>
           <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/blog")}>
+              Resources
+            </Button>
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/pricing/contact")}>
               Pricing
-            </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/governance")}>
-              Framework
             </Button>
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               Sign In
