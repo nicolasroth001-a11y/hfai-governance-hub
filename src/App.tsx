@@ -100,6 +100,9 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/pricing/contact" element={<PricingContact />} />
           <Route path="/governance" element={<GovernancePage />} />
+          <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/blog/ai-governance-platform-complete-guide" element={<AIGovernancePlatformGuide />} />
+          <Route path="/blog/eu-ai-act-compliance-tool" element={<EUAIActComplianceTool />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />
