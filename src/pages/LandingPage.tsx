@@ -26,7 +26,7 @@ const values = [
   {
     icon: Activity,
     title: "Real-time Monitoring",
-    description: "Connect your OpenAI key and every AI interaction is logged automatically — zero custom code.",
+    description: "Two integration paths: Proxy (zero-code for OpenAI) or REST API (any AI provider). Full visibility either way.",
     highlight: "Visibility",
   },
   {
@@ -50,7 +50,7 @@ const values = [
 ];
 
 const steps = [
-  { icon: Cpu, label: "Connect", desc: "Paste your API key" },
+  { icon: Cpu, label: "Connect", desc: "Proxy or REST API" },
   { icon: Zap, label: "Evaluate", desc: "Rules checked in <200ms" },
   { icon: AlertTriangle, label: "Detect", desc: "Violations flagged" },
   { icon: Eye, label: "Review", desc: "Humans decide" },
@@ -131,7 +131,7 @@ export default function LandingPage() {
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
             Monitor every AI decision. Catch risky behavior instantly.
-            Zero code changes — just connect and go.
+            Two paths: zero-code proxy or flexible REST API — your choice.
           </motion.p>
 
           <motion.div
