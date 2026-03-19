@@ -26,7 +26,7 @@ const values = [
   {
     icon: Activity,
     title: "Real-time Monitoring",
-    description: "Connect your OpenAI key and every AI interaction is logged automatically — zero custom code.",
+    description: "Two integration paths: Proxy (zero-code for OpenAI) or REST API (any AI provider). Full visibility either way.",
     highlight: "Visibility",
   },
   {
