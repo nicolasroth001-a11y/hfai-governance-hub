@@ -212,7 +212,7 @@ console.log(response.choices[0].message.content);`;
           </ContentCard>
 
           {/* Integration snippets */}
-          <ContentCard title="Integration — 2 minute setup" icon={<ExternalLink className="h-5 w-5 text-primary" />}>
+          <ContentCard title="Integration — 2 minute setup" icon={ExternalLink}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Swap your OpenAI base URL and API key. That's it — your existing code works unchanged.
