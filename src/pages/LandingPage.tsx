@@ -131,7 +131,7 @@ export default function LandingPage() {
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
             Monitor every AI decision. Catch risky behavior instantly.
-            Keep humans in control — always.
+            Zero code changes — just connect and go.
           </motion.p>
 
           <motion.div
