@@ -132,6 +132,7 @@ const App = () => {
             <Route path="reviews" element={<CustomerReviews />} />
             <Route path="notifications" element={<CustomerNotifications />} />
             <Route path="security" element={<CustomerSecurity />} />
+            <Route path="connect" element={<CustomerConnect />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
