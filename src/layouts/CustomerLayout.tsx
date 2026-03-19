@@ -14,7 +14,9 @@ const navItems: NavItem[] = [
   { title: "Rule Templates", url: "/customer/rule-templates", icon: FileText },
   { title: "Notifications", url: "/customer/notifications", icon: Bell },
   { title: "Audit Logs", url: "/customer/logs", icon: ClipboardList },
+  { title: "Auto-Connect", url: "/customer/connect", icon: Plug },
   { title: "Security", url: "/customer/security", icon: ShieldCheck },
+  { title: "Onboarding", url: "/customer/onboarding", icon: Rocket },
   { title: "Onboarding", url: "/customer/onboarding", icon: Rocket },
 ];
 
