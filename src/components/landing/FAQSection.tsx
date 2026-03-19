@@ -3,7 +3,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const faqs = [
   {
     q: "How does HFAI integrate with my AI systems?",
-    a: "HFAI provides a simple REST API. Send AI events as they occur — inputs, outputs, metadata — and our engine evaluates them against your governance rules in real time. Integration takes less than 30 minutes.",
+    a: "HFAI provides a proxy endpoint. Just paste your OpenAI API key, swap your base URL, and every AI call is automatically monitored — no custom code needed. Setup takes less than 2 minutes.",
   },
   {
     q: "What types of AI violations can HFAI detect?",

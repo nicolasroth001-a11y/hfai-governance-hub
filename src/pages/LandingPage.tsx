@@ -26,7 +26,7 @@ const values = [
   {
     icon: Activity,
     title: "Real-time Monitoring",
-    description: "Track every AI interaction across all models with structured event logging and instant visibility.",
+    description: "Connect your OpenAI key and every AI interaction is logged automatically — zero custom code.",
     highlight: "Visibility",
   },
   {
