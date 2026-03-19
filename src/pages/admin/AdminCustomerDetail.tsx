@@ -5,7 +5,7 @@ import { ContentCard } from "@/components/ContentCard";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Building2, Users, Bot, AlertTriangle, Key, Copy } from "lucide-react";
+import { ArrowLeft, Building2, Users, Bot, AlertTriangle, Plug } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { deleteOrganization } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
