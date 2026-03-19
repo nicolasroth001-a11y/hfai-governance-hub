@@ -17,7 +17,6 @@ const navItems: NavItem[] = [
   { title: "Auto-Connect", url: "/customer/connect", icon: Plug },
   { title: "Security", url: "/customer/security", icon: ShieldCheck },
   { title: "Onboarding", url: "/customer/onboarding", icon: Rocket },
-  { title: "Onboarding", url: "/customer/onboarding", icon: Rocket },
 ];
 
 export default function CustomerLayout() {
