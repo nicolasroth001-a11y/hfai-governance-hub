@@ -199,7 +199,7 @@ console.log(response.choices[0].message.content);`;
           </Card>
 
           {/* Proxy token */}
-          <ContentCard title="Your Proxy Token" icon={<Shield className="h-5 w-5 text-primary" />}>
+          <ContentCard title="Your Proxy Token" icon={Shield}>
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
                 Use this token as your API key. All requests will be monitored by HFAI automatically.
