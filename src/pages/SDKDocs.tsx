@@ -1,0 +1,257 @@
+import { Link } from "react-router-dom";
+import { Shield, ArrowLeft, Copy, Check, Zap, Lock, Code } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
+import { usePageView } from "@/hooks/usePageView";
+import { useState } from "react";
+
+const INGEST_URL = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/ingest-event";
+const PROXY_URL = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/openai-proxy";
+
+const pythonSdkProxy = `# ── HFAI Python SDK (Proxy) ──────────────────────
+# pip install openai
+import openai
+
+# 1. Point your OpenAI client at HFAI
+client = openai.OpenAI(
+    api_key="YOUR_PROXY_TOKEN",        # From Connect page
+    base_url="${PROXY_URL}",
+)
+
+# 2. Use exactly like normal — HFAI monitors automatically
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Summarize our refund policy"},
+    ],
+)
+
+print(response.choices[0].message.content)
+# ✅ HFAI logs input/output, evaluates rules, flags violations`;
+
+const pythonSdkRest = `# ── HFAI Python SDK (REST API) ───────────────────
+# Works with ANY AI provider — keep your data private
+import requests
+import anthropic  # or openai, google, etc.
+
+# 1. Call your AI provider directly (unchanged)
+client = anthropic.Anthropic(api_key="YOUR_ANTHROPIC_KEY")
+ai_response = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Summarize our refund policy"}],
+)
+output = ai_response.content[0].text
+
+# 2. Log the event to HFAI (one POST request)
+requests.post(
+    "${INGEST_URL}",
+    headers={
+        "Content-Type": "application/json",
+        "x-api-key": "YOUR_HFAI_API_KEY",  # From Connect page
+    },
+    json={
+        "event_type": "chat_completion",
+        "payload": "User asked about refund policy",
+        "metadata": {
+            "model": "claude-sonnet-4-20250514",
+            "provider": "anthropic",
+            "output_preview": output[:200],
+        },
+    },
+)
+# ✅ HFAI evaluates rules — your AI traffic never leaves your infra`;
+
+const nodeSdkProxy = `// ── HFAI Node.js SDK (Proxy) ────────────────────
+// npm install openai
+import OpenAI from "openai";
+
+// 1. Point your client at HFAI
+const client = new OpenAI({
+  apiKey: "YOUR_PROXY_TOKEN",
+  baseURL: "${PROXY_URL}",
+});
+
+// 2. Use exactly like normal
+const response = await client.chat.completions.create({
+  model: "gpt-4o",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Summarize our refund policy" },
+  ],
+});
+
+console.log(response.choices[0].message.content);
+// ✅ HFAI logs & evaluates automatically`;
+
+const nodeSdkRest = `// ── HFAI Node.js SDK (REST API) ─────────────────
+// Works with ANY AI provider
+import Anthropic from "@anthropic-ai/sdk";
+
+// 1. Call your AI provider directly
+const anthropic = new Anthropic({ apiKey: "YOUR_ANTHROPIC_KEY" });
+const aiResponse = await anthropic.messages.create({
+  model: "claude-sonnet-4-20250514",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: "Summarize our refund policy" }],
+});
+const output = aiResponse.content[0].text;
+
+// 2. Log to HFAI
+await fetch("${INGEST_URL}", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "x-api-key": "YOUR_HFAI_API_KEY",
+  },
+  body: JSON.stringify({
+    event_type: "chat_completion",
+    payload: "User asked about refund policy",
+    metadata: {
+      model: "claude-sonnet-4-20250514",
+      provider: "anthropic",
+      output_preview: output.slice(0, 200),
+    },
+  }),
+});
+// ✅ Only metadata sent — AI traffic stays private`;
+
+export default function SDKDocs() {
+  usePageView("/docs/sdk");
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(label);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  const CopyBtn = ({ text, label }: { text: string; label: string }) => (
+    <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1" onClick={() => copyToClipboard(text, label)}>
+      {copied === label ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+      {copied === label ? "Copied" : "Copy"}
+    </Button>
+  );
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto max-w-6xl flex items-center justify-between px-6 h-14">
+          <Link to="/" className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-primary" />
+            <span className="text-sm font-semibold text-foreground tracking-tight">HFAI</span>
+          </Link>
+          <Link to="/" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
+            <ArrowLeft className="h-3 w-3" /> Back
+          </Link>
+        </div>
+      </nav>
+
+      <main className="mx-auto max-w-3xl w-full px-6 pt-24 pb-20 space-y-10">
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Developer Docs</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">SDK & Integration Guide</h1>
+          <p className="mt-3 text-sm text-muted-foreground max-w-xl leading-relaxed">
+            HFAI offers two integration paths. Choose the one that fits your architecture.
+          </p>
+        </div>
+
+        {/* Comparison cards */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Card className="border-primary/20 bg-primary/5">
+            <CardContent className="p-5 space-y-2">
+              <div className="flex items-center gap-2">
+                <Zap className="h-4 w-4 text-primary" />
+                <h3 className="text-sm font-semibold text-foreground">Proxy (Zero-Code)</h3>
+              </div>
+              <ul className="space-y-1 text-xs text-muted-foreground">
+                <li>✓ Swap one line — base URL</li>
+                <li>✓ Full input/output visibility</li>
+                <li>✓ Auto rule evaluation</li>
+                <li>✓ Supports OpenAI, Anthropic, Google</li>
+                <li className="text-primary/70">⚡ AI traffic flows through HFAI</li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="border-primary/20 bg-primary/5">
+            <CardContent className="p-5 space-y-2">
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-primary" />
+                <h3 className="text-sm font-semibold text-foreground">REST API (Any AI)</h3>
+              </div>
+              <ul className="space-y-1 text-xs text-muted-foreground">
+                <li>✓ Works with any AI provider</li>
+                <li>✓ Only metadata sent to HFAI</li>
+                <li>✓ Auto rule evaluation</li>
+                <li>✓ Custom models & open-source</li>
+                <li className="text-primary/70">🔒 AI traffic stays in your infra</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Code examples */}
+        <Tabs defaultValue="python" className="w-full">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <Code className="h-5 w-5 text-primary" /> Code Examples
+            </h2>
+            <TabsList>
+              <TabsTrigger value="python" className="text-xs">Python</TabsTrigger>
+              <TabsTrigger value="node" className="text-xs">Node.js</TabsTrigger>
+            </TabsList>
+          </div>
+
+          <TabsContent value="python" className="space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-foreground">Proxy Integration (Zero-Code)</h3>
+                <CopyBtn text={pythonSdkProxy} label="py-proxy" />
+              </div>
+              <CodeSnippetBlock code={pythonSdkProxy} language="python" />
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-foreground">REST API Integration (Data-Private)</h3>
+                <CopyBtn text={pythonSdkRest} label="py-rest" />
+              </div>
+              <CodeSnippetBlock code={pythonSdkRest} language="python" />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="node" className="space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-foreground">Proxy Integration (Zero-Code)</h3>
+                <CopyBtn text={nodeSdkProxy} label="node-proxy" />
+              </div>
+              <CodeSnippetBlock code={nodeSdkProxy} language="typescript" />
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-foreground">REST API Integration (Data-Private)</h3>
+                <CopyBtn text={nodeSdkRest} label="node-rest" />
+              </div>
+              <CodeSnippetBlock code={nodeSdkRest} language="typescript" />
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* CTA */}
+        <Card className="border-primary/20 bg-primary/5">
+          <CardContent className="p-6 text-center space-y-3">
+            <h3 className="text-lg font-bold text-foreground">Ready to integrate?</h3>
+            <p className="text-sm text-muted-foreground">Sign up free and get your API keys in 2 minutes.</p>
+            <div className="flex gap-3 justify-center">
+              <Button asChild><Link to="/signup/customer">Get Started Free</Link></Button>
+              <Button variant="outline" asChild><Link to="/pilot">Free Pilot Program</Link></Button>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+    </div>
+  );
+}
