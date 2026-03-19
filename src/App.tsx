@@ -29,6 +29,7 @@ import ResetPassword from "./pages/login/ResetPassword";
 import LandingPage from "./pages/LandingPage";
 import PricingContact from "./pages/PricingContact";
 import PilotSignup from "./pages/PilotSignup";
+import SDKDocs from "./pages/SDKDocs";
 import GovernancePage from "./pages/GovernancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
 import AIGovernancePlatformGuide from "./pages/blog/AIGovernancePlatformGuide";
