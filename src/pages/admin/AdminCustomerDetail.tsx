@@ -60,12 +60,6 @@ export default function AdminCustomerDetail() {
     }
   };
 
-  const copyApiKey = () => {
-    if (org?.api_key) {
-      navigator.clipboard.writeText(org.api_key);
-      toast({ title: "API key copied" });
-    }
-  };
 
   const userColumns: DataTableColumn<any>[] = [
     { key: "name", header: "Name", render: (r) => <span className="font-medium">{r.name || "—"}</span> },
