@@ -10,7 +10,7 @@ const navItems: NavItem[] = [
   { title: "Rules", url: "/admin/rules", icon: BookOpen },
   { title: "Reviewers", url: "/admin/reviewers", icon: Users },
   { title: "Customers", url: "/admin/customers", icon: Building2 },
-  { title: "API Keys", url: "/admin/api-keys", icon: Key },
+  { title: "Connections", url: "/admin/api-keys", icon: Plug },
   { title: "Audit Logs", url: "/admin/logs", icon: ClipboardList },
   { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
 ];
