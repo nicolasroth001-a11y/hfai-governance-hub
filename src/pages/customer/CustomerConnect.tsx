@@ -147,7 +147,7 @@ console.log(response.choices[0].message.content);`;
       <SectionHeader title="Auto-Connect" description="Connect your OpenAI API key and monitor every AI call automatically — zero code changes." />
 
       {!provider ? (
-        <ContentCard title="Connect OpenAI" icon={<Plug className="h-5 w-5 text-primary" />}>
+        <ContentCard title="Connect OpenAI" icon={Plug}>
           <div className="space-y-4">
             <p className="text-sm text-muted-foreground">
               Paste your OpenAI API key below. HFAI will create a proxy endpoint you can use instead of the OpenAI API.
