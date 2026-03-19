@@ -3,7 +3,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const faqs = [
   {
     q: "How does HFAI integrate with my AI systems?",
-    a: "HFAI provides a proxy endpoint. Just paste your OpenAI API key, swap your base URL, and every AI call is automatically monitored — no custom code needed. Setup takes less than 2 minutes.",
+    a: "HFAI offers two integration methods. The Proxy (Zero-Code) lets you swap your OpenAI base URL to the HFAI endpoint — every call is monitored automatically with no code changes. The REST API works with any AI provider (Anthropic, Google, open-source, etc.) — you send events to HFAI after your AI responds, keeping your data flow entirely under your control.",
+  },
+  {
+    q: "What's the difference between Proxy and REST API?",
+    a: "The Proxy intercepts AI traffic in real time — your requests flow through HFAI, giving full visibility into inputs and outputs with zero code changes. The REST API keeps your AI traffic private between you and your provider — only event metadata is sent to HFAI for monitoring. Choose Proxy for instant setup, REST API for maximum data control.",
   },
   {
     q: "What types of AI violations can HFAI detect?",
@@ -15,7 +19,7 @@ const faqs = [
   },
   {
     q: "Is my data secure?",
-    a: "Absolutely. All data is encrypted at rest and in transit. We follow SOC 2 aligned practices, and your data never leaves your environment without explicit permission.",
+    a: "Absolutely. All data is encrypted at rest and in transit. We follow SOC 2 aligned practices. With the REST API integration, your AI traffic never leaves your environment — only event metadata is sent to HFAI. With the Proxy, traffic is encrypted end-to-end and processed in real time.",
   },
 ];
 
