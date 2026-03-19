@@ -57,9 +57,9 @@ const steps = [
 ];
 
 const trustPoints = [
-  "Enterprise-grade security",
+  "Enterprise-grade encryption",
   "SOC 2 aligned practices",
-  "No data leaves your environment",
+  "2-minute setup, zero code changes",
   "Sub-200ms detection",
 ];
 
