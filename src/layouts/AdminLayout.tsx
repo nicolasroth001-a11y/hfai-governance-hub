@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { RoleSidebar, NavItem } from "@/components/RoleSidebar";
 import { TopBar } from "@/components/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Users, Building2, Key, ScrollText, BarChart3 } from "lucide-react";
+import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Users, Building2, Plug, ScrollText, BarChart3 } from "lucide-react";
 
 const navItems: NavItem[] = [
   { title: "Dashboard", url: "/admin/dashboard", icon: LayoutDashboard },
