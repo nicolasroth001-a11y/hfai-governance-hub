@@ -115,13 +115,13 @@ export default function LandingPage() {
             transition={{ delay: 0.2 }}
             className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-4"
           >
-            AI Governance Platform
+            Human-in-the-Loop AI Governance
           </motion.p>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
-            Human‑First
+            Keep Humans in Control
             <br />
-            <span className="text-primary">AI Governance</span>
+            <span className="text-primary">of Every AI Decision</span>
           </h1>
 
           <motion.p
@@ -130,8 +130,8 @@ export default function LandingPage() {
             transition={{ delay: 0.3 }}
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
-            Monitor every AI decision. Catch risky behavior instantly.
-            Two paths: zero-code proxy or flexible REST API — your choice.
+            Monitor AI in real time. Catch risky behavior instantly. Route critical decisions to human reviewers.
+            Works with OpenAI, Anthropic, Google, and any custom model.
           </motion.p>
 
           <motion.div
