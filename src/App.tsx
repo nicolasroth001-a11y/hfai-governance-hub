@@ -28,6 +28,8 @@ import ForgotPassword from "./pages/login/ForgotPassword";
 import ResetPassword from "./pages/login/ResetPassword";
 import LandingPage from "./pages/LandingPage";
 import PricingContact from "./pages/PricingContact";
+import PilotSignup from "./pages/PilotSignup";
+import SDKDocs from "./pages/SDKDocs";
 import GovernancePage from "./pages/GovernancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
 import AIGovernancePlatformGuide from "./pages/blog/AIGovernancePlatformGuide";
@@ -100,6 +102,8 @@ const App = () => {
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/pricing/contact" element={<PricingContact />} />
+          <Route path="/pilot" element={<PilotSignup />} />
+          <Route path="/docs/sdk" element={<SDKDocs />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/ai-governance-platform-complete-guide" element={<AIGovernancePlatformGuide />} />
