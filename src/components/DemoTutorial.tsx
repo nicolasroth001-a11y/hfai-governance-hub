@@ -13,7 +13,7 @@ const steps = [
     icon: Activity,
     title: "Monitor AI Systems",
     description:
-      "Register your AI systems, generate API keys, and stream events in real time. Every interaction is logged for full traceability.",
+      "Connect your OpenAI API key, swap one line of code, and every AI interaction is automatically monitored in real time.",
   },
   {
     icon: AlertTriangle,

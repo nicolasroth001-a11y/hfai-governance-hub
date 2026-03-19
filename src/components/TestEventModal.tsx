@@ -3,7 +3,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { sendAIEvent } from "@/lib/api";
@@ -24,16 +23,11 @@ const EXAMPLE_PAYLOADS = [
 
 export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventModalProps) {
   const { profile } = useAuth();
-  const [apiKey, setApiKey] = useState("hfai_demo_k8x2mQ9vLpR4nT6wJ1yF3bA7cE0gH5d");
   const [payload, setPayload] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<{ eventId: string; violations: number } | null>(null);
 
   const handleSubmit = async () => {
-    if (!apiKey.trim()) {
-      toast({ title: "API key required", description: "Enter the x-api-key for your AI system.", variant: "destructive" });
-      return;
-    }
     if (!payload.trim()) {
       toast({ title: "Payload required", description: "Enter a message or select an example.", variant: "destructive" });
       return;
@@ -71,7 +65,7 @@ export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventMod
               <Zap className="h-4 w-4 text-primary" />
               Send Test Event
             </DialogTitle>
-            <DialogDescription>Submit a user message to your AI system and see how HFAI evaluates it.</DialogDescription>
+            <DialogDescription>Submit a test message to see how HFAI evaluates it against your governance rules.</DialogDescription>
           </DialogHeader>
         </div>
 
@@ -101,19 +95,6 @@ export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventMod
         ) : (
           /* ── Form State ── */
           <div className="px-6 py-5 space-y-5">
-            {/* API Key */}
-            <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-card-foreground/70">API Key (x-api-key)</Label>
-              <Input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Paste your AI system API key"
-                className="bg-background/50 border-border font-mono text-xs h-9"
-              />
-              <p className="text-[10px] text-muted-foreground">Pre-filled with demo key. Ready to send.</p>
-            </div>
-
             {/* Example Payloads */}
             <div className="space-y-2">
               <Label className="text-xs font-medium text-card-foreground/70">Quick Examples</Label>
@@ -152,7 +133,7 @@ export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventMod
               <Button variant="outline" size="sm" onClick={() => handleClose(false)} disabled={loading}>
                 Cancel
               </Button>
-              <Button size="sm" onClick={handleSubmit} disabled={loading || (!apiKey.trim() || !payload.trim())} className="gap-1.5">
+              <Button size="sm" onClick={handleSubmit} disabled={loading || !payload.trim()} className="gap-1.5">
                 {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
                 {loading ? "Sending…" : "Send Event"}
               </Button>
