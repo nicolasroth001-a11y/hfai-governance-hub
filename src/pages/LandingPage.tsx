@@ -50,7 +50,7 @@ const values = [
 ];
 
 const steps = [
-  { icon: Cpu, label: "AI System", desc: "Your AI sends events" },
+  { icon: Cpu, label: "Connect", desc: "Paste your API key" },
   { icon: Zap, label: "Evaluate", desc: "Rules checked in <200ms" },
   { icon: AlertTriangle, label: "Detect", desc: "Violations flagged" },
   { icon: Eye, label: "Review", desc: "Humans decide" },
