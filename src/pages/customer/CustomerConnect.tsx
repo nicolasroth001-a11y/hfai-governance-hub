@@ -144,7 +144,7 @@ console.log(response.choices[0].message.content);`;
 
   return (
     <div className="space-y-6">
-      <SectionHeader title="Auto-Connect" subtitle="Connect your OpenAI API key and monitor every AI call automatically — zero code changes." />
+      <SectionHeader title="Auto-Connect" description="Connect your OpenAI API key and monitor every AI call automatically — zero code changes." />
 
       {!provider ? (
         <ContentCard title="Connect OpenAI" icon={<Plug className="h-5 w-5 text-primary" />}>
