@@ -38,7 +38,7 @@ export const TIERS: Record<TierKey, TierConfig> = {
     price: 19,
     currency: "USD",
     interval: "month",
-    trial_days: 7,
+    trial_days: 14,
     features: [
       "Up to 3 AI systems",
       "Governance rules engine",
@@ -54,7 +54,7 @@ export const TIERS: Record<TierKey, TierConfig> = {
     price: 49.99,
     currency: "USD",
     interval: "month",
-    trial_days: 7,
+    trial_days: 14,
     highlighted: true,
     features: [
       "Unlimited AI systems",
@@ -72,7 +72,7 @@ export const TIERS: Record<TierKey, TierConfig> = {
     price: 149.99,
     currency: "USD",
     interval: "month",
-    trial_days: 7,
+    trial_days: 14,
     features: [
       "Everything in Pro",
       "Root cause analysis (AI‑powered)",

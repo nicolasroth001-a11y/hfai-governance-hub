@@ -189,6 +189,50 @@ export type Database = {
           },
         ]
       }
+      connected_providers: {
+        Row: {
+          api_key_encrypted: string
+          base_url: string | null
+          created_at: string
+          id: string
+          org_id: string
+          provider: string
+          proxy_token: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          api_key_encrypted: string
+          base_url?: string | null
+          created_at?: string
+          id?: string
+          org_id: string
+          provider?: string
+          proxy_token?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          api_key_encrypted?: string
+          base_url?: string | null
+          created_at?: string
+          id?: string
+          org_id?: string
+          provider?: string
+          proxy_token?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connected_providers_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_send_log: {
         Row: {
           created_at: string

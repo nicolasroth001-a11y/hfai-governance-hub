@@ -49,6 +49,7 @@ import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
 import CustomerReviews from "./pages/customer/CustomerReviews";
 import CustomerNotifications from "./pages/customer/CustomerNotifications";
 import CustomerSecurity from "./pages/customer/CustomerSecurity";
+import CustomerConnect from "./pages/customer/CustomerConnect";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -131,6 +132,7 @@ const App = () => {
             <Route path="reviews" element={<CustomerReviews />} />
             <Route path="notifications" element={<CustomerNotifications />} />
             <Route path="security" element={<CustomerSecurity />} />
+            <Route path="connect" element={<CustomerConnect />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
