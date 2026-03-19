@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
@@ -15,25 +16,34 @@ import { usePageView } from "@/hooks/usePageView";
 const PROXY_BASE = `https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/openai-proxy`;
 const INGEST_BASE = `https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/ingest-event`;
 
+const PROVIDERS = [
+  { value: "openai", label: "OpenAI", keyPrefix: "sk-", keyPlaceholder: "sk-...", baseUrl: "https://api.openai.com/v1/chat/completions" },
+  { value: "anthropic", label: "Anthropic", keyPrefix: "sk-ant-", keyPlaceholder: "sk-ant-...", baseUrl: "https://api.anthropic.com/v1/messages" },
+  { value: "google", label: "Google Gemini", keyPrefix: "AI", keyPlaceholder: "AIza...", baseUrl: "https://generativelanguage.googleapis.com/v1beta" },
+] as const;
+
+type ProviderType = typeof PROVIDERS[number]["value"];
+
 export default function CustomerConnect() {
   const { profile } = useAuth();
   usePageView("/customer/connect");
 
   const [apiKey, setApiKey] = useState("");
+  const [selectedProvider, setSelectedProvider] = useState<ProviderType>("openai");
   const [saving, setSaving] = useState(false);
-  const [provider, setProvider] = useState<any>(null);
+  const [connectedProviders, setConnectedProviders] = useState<any[]>([]);
   const [org, setOrg] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [showKey, setShowKey] = useState(false);
+  const [showKey, setShowKey] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     if (!profile?.org_id) return;
     const [providerRes, orgRes] = await Promise.all([
-      supabase.from("connected_providers").select("*").eq("org_id", profile.org_id).eq("provider", "openai").single(),
+      supabase.from("connected_providers").select("*").eq("org_id", profile.org_id).eq("status", "active"),
       supabase.from("organizations").select("*").eq("id", profile.org_id).single(),
     ]);
-    setProvider(providerRes.data);
+    setConnectedProviders(providerRes.data || []);
     setOrg(orgRes.data);
     setLoading(false);
   }, [profile?.org_id]);
@@ -41,10 +51,8 @@ export default function CustomerConnect() {
   useEffect(() => { loadData(); }, [loadData]);
 
   const handleConnect = async () => {
-    if (!apiKey.startsWith("sk-")) {
-      toast({ title: "Invalid key", description: "OpenAI API keys start with sk-", variant: "destructive" });
-      return;
-    }
+    const providerConfig = PROVIDERS.find(p => p.value === selectedProvider);
+    if (!providerConfig) return;
     if (!profile?.org_id) return;
     setSaving(true);
     try {
@@ -52,12 +60,13 @@ export default function CustomerConnect() {
         .from("connected_providers")
         .upsert({
           org_id: profile.org_id,
-          provider: "openai",
+          provider: selectedProvider,
           api_key_encrypted: apiKey,
+          base_url: providerConfig.baseUrl,
           status: "active",
         } as any, { onConflict: "org_id,provider" });
       if (error) throw error;
-      toast({ title: "Connected!", description: "OpenAI is now connected via the proxy." });
+      toast({ title: "Connected!", description: `${providerConfig.label} is now connected via the proxy.` });
       setApiKey("");
       await loadData();
     } catch (err: any) {
@@ -67,14 +76,13 @@ export default function CustomerConnect() {
     }
   };
 
-  const handleDisconnect = async () => {
-    if (!provider?.id) return;
-    const { error } = await supabase.from("connected_providers").delete().eq("id", provider.id);
+  const handleDisconnect = async (id: string, name: string) => {
+    const { error } = await supabase.from("connected_providers").delete().eq("id", id);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Disconnected", description: "OpenAI provider removed." });
-      setProvider(null);
+      toast({ title: "Disconnected", description: `${name} provider removed.` });
+      await loadData();
     }
   };
 
@@ -91,11 +99,9 @@ export default function CustomerConnect() {
     </Button>
   );
 
-  const proxyToken = provider?.proxy_token || "hfproxy_...";
   const orgApiKey = org?.api_key || "hfai_...";
-  const maskedOpenAIKey = provider?.api_key_encrypted
-    ? `${provider.api_key_encrypted.slice(0, 7)}...${provider.api_key_encrypted.slice(-4)}`
-    : "";
+  const activeProvider = connectedProviders[0];
+  const proxyToken = activeProvider?.proxy_token || "hfproxy_...";
 
   // Proxy snippets
   const pythonProxy = `import openai
@@ -136,6 +142,7 @@ console.log(response.choices[0].message.content);`;
   // REST API snippets
   const pythonRest = `import requests
 
+# Works with ANY AI provider — OpenAI, Anthropic, Google, custom models
 response = requests.post(
     "${INGEST_BASE}",
     headers={
@@ -200,7 +207,6 @@ console.log(await response.json());`;
 
         {/* ── PROXY TAB ── */}
         <TabsContent value="proxy" className="space-y-6">
-          {/* Benefits */}
           <Card className="border-primary/20 bg-primary/5">
             <CardContent className="p-5">
               <div className="flex items-start gap-3">
@@ -208,86 +214,96 @@ console.log(await response.json());`;
                   <Zap className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-foreground mb-1">Best for: OpenAI users who want instant setup</h3>
+                  <h3 className="text-sm font-semibold text-foreground mb-1">Best for: Instant setup with OpenAI, Anthropic, or Google</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Swap your OpenAI base URL to the HFAI proxy. Every API call flows through HFAI and is automatically monitored — <strong>zero code changes</strong> beyond one line. Your AI traffic passes through our proxy, giving HFAI full visibility into inputs and outputs in real time.
+                    Swap your AI provider's base URL to the HFAI proxy. Every API call flows through HFAI and is automatically monitored — <strong>zero code changes</strong> beyond one line. Your AI traffic passes through our proxy, giving HFAI full real-time visibility into inputs and outputs.
                   </p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {!provider ? (
-            <ContentCard title="Connect OpenAI" icon={Plug}>
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Paste your OpenAI API key below. HFAI will create a proxy endpoint you can use instead of the OpenAI API.
-                </p>
-                <div className="flex gap-2">
-                  <Input
-                    type="password"
-                    placeholder="sk-..."
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    className="font-mono text-sm"
-                  />
-                  <Button onClick={handleConnect} disabled={saving || !apiKey}>
-                    {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Plug className="h-4 w-4 mr-1" />}
-                    Connect
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Your key is stored securely and only used to forward requests to OpenAI on your behalf.
-                </p>
-              </div>
-            </ContentCard>
-          ) : (
-            <>
-              {/* Status card */}
-              <Card className="border-primary/30 bg-primary/5">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <Shield className="h-5 w-5 text-primary" />
+          {/* Connected providers list */}
+          {connectedProviders.length > 0 && (
+            <div className="space-y-3">
+              {connectedProviders.map((cp) => {
+                const config = PROVIDERS.find(p => p.value === cp.provider);
+                const masked = cp.api_key_encrypted
+                  ? `${cp.api_key_encrypted.slice(0, 7)}...${cp.api_key_encrypted.slice(-4)}`
+                  : "";
+                return (
+                  <Card key={cp.id} className="border-primary/30 bg-primary/5">
+                    <CardContent className="p-5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                            <Shield className="h-5 w-5 text-primary" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-foreground">{config?.label || cp.provider} Connected</h3>
+                            <p className="text-xs text-muted-foreground">
+                              Key: {showKey[cp.id] ? masked : "••••••••••••"}
+                              <button onClick={() => setShowKey(prev => ({ ...prev, [cp.id]: !prev[cp.id] }))} className="ml-1 inline-flex items-center text-primary hover:underline">
+                                {showKey[cp.id] ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                              </button>
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              Token: <code className="font-mono text-[10px]">{cp.proxy_token?.slice(0, 12)}...</code>
+                              <CopyButton text={cp.proxy_token} label={`token-${cp.id}`} />
+                            </p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => handleDisconnect(cp.id, config?.label || cp.provider)}>
+                          <Trash2 className="h-3 w-3 mr-1" /> Disconnect
+                        </Button>
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">OpenAI Connected</h3>
-                        <p className="text-xs text-muted-foreground">
-                          Key: {showKey ? maskedOpenAIKey : "••••••••••••"}
-                          <button onClick={() => setShowKey(!showKey)} className="ml-1 inline-flex items-center text-primary hover:underline">
-                            {showKey ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
-                          </button>
-                        </p>
-                      </div>
-                    </div>
-                    <Button variant="outline" size="sm" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={handleDisconnect}>
-                      <Trash2 className="h-3 w-3 mr-1" /> Disconnect
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Proxy token */}
-              <ContentCard title="Your Proxy Token" icon={Shield}>
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground">
-                    Use this token as your API key. All requests will be monitored by HFAI automatically.
-                  </p>
-                  <div className="flex items-center gap-2 p-3 rounded-lg bg-secondary/40 border border-border/40 font-mono text-sm">
-                    <code className="flex-1 break-all text-foreground">{proxyToken}</code>
-                    <CopyButton text={proxyToken} label="proxy-token" />
-                  </div>
-                </div>
-              </ContentCard>
-            </>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
           )}
+
+          {/* Add new provider */}
+          <ContentCard title="Connect a Provider" icon={Plug}>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Select your AI provider and paste your API key. HFAI creates a proxy endpoint that monitors all requests automatically.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Select value={selectedProvider} onValueChange={(v) => setSelectedProvider(v as ProviderType)}>
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PROVIDERS.map(p => (
+                      <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  type="password"
+                  placeholder={PROVIDERS.find(p => p.value === selectedProvider)?.keyPlaceholder}
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  className="font-mono text-sm flex-1"
+                />
+                <Button onClick={handleConnect} disabled={saving || !apiKey}>
+                  {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Plug className="h-4 w-4 mr-1" />}
+                  Connect
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Your key is stored securely and only used to forward requests to your provider on your behalf.
+              </p>
+            </div>
+          </ContentCard>
 
           {/* Proxy integration snippets */}
           <ContentCard title="Proxy Integration — 2 minute setup" icon={ExternalLink}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Swap your OpenAI base URL and API key. That's it — your existing code works unchanged.
+                Swap your AI provider's base URL and use your proxy token as the API key. That's it — your existing code works unchanged.
               </p>
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
@@ -316,7 +332,6 @@ console.log(await response.json());`;
 
         {/* ── REST API TAB ── */}
         <TabsContent value="rest" className="space-y-6">
-          {/* Benefits */}
           <Card className="border-primary/20 bg-primary/5">
             <CardContent className="p-5">
               <div className="flex items-start gap-3">
@@ -333,7 +348,6 @@ console.log(await response.json());`;
             </CardContent>
           </Card>
 
-          {/* REST API Key */}
           <ContentCard title="Your REST API Key" icon={Key}>
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
@@ -346,7 +360,6 @@ console.log(await response.json());`;
             </div>
           </ContentCard>
 
-          {/* REST integration snippets */}
           <ContentCard title="REST API Integration" icon={ExternalLink}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
