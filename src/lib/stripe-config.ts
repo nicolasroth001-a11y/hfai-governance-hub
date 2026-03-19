@@ -38,7 +38,7 @@ export const TIERS: Record<TierKey, TierConfig> = {
     price: 19,
     currency: "USD",
     interval: "month",
-    trial_days: 7,
+    trial_days: 14,
     features: [
       "Up to 3 AI systems",
       "Governance rules engine",
