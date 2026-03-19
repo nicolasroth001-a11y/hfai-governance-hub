@@ -26,7 +26,7 @@ const values = [
   {
     icon: Activity,
     title: "Real-time Monitoring",
-    description: "Track every AI interaction across all models with structured event logging and instant visibility.",
+    description: "Connect your OpenAI key and every AI interaction is logged automatically — zero custom code.",
     highlight: "Visibility",
   },
   {
@@ -50,7 +50,7 @@ const values = [
 ];
 
 const steps = [
-  { icon: Cpu, label: "AI System", desc: "Your AI sends events" },
+  { icon: Cpu, label: "Connect", desc: "Paste your API key" },
   { icon: Zap, label: "Evaluate", desc: "Rules checked in <200ms" },
   { icon: AlertTriangle, label: "Detect", desc: "Violations flagged" },
   { icon: Eye, label: "Review", desc: "Humans decide" },
@@ -131,7 +131,7 @@ export default function LandingPage() {
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
             Monitor every AI decision. Catch risky behavior instantly.
-            Keep humans in control — always.
+            Zero code changes — just connect and go.
           </motion.p>
 
           <motion.div

@@ -9,7 +9,7 @@ const DEMO_STEPS = [
     id: "ingest",
     label: "AI Event Ingested",
     icon: Zap,
-    description: "Your AI system sends an event to HFAI via API",
+    description: "Your AI calls flow through the HFAI proxy automatically",
     detail: {
       title: "user_message event received",
       code: `{

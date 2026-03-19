@@ -3,19 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
-import { APIKeyDisplay } from "@/components/APIKeyDisplay";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
-import { ArrowRight, BookOpen, Key, Layers, Send, Zap, SkipForward } from "lucide-react";
+import { ArrowRight, BookOpen, Plug, Layers, Send, Zap, SkipForward } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { useAuth } from "@/contexts/AuthContext";
 
-const API_BASE = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1";
+const PROXY_BASE = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/openai-proxy";
 
 const STEPS = [
-  { icon: Layers, label: "Register AI System", description: "Add your AI model to HFAI for monitoring" },
-  { icon: Send, label: "Send Events", description: "POST user messages via the /ai-events endpoint" },
-  { icon: Zap, label: "Auto-detect Violations", description: "HFAI evaluates events against your rules" },
+  { icon: Plug, label: "Connect Provider", description: "Paste your OpenAI API key — takes 30 seconds" },
+  { icon: Layers, label: "Swap Base URL", description: "Point your AI SDK to the HFAI proxy endpoint" },
+  { icon: Zap, label: "Auto-detect Violations", description: "Every AI call is monitored against your rules" },
   { icon: BookOpen, label: "Review & Audit", description: "Reviewers approve or reject flagged violations" },
 ];
 
@@ -25,53 +24,50 @@ export default function CustomerOnboarding() {
   const { profile } = useAuth();
   usePageView("/customer/onboarding");
 
-  const apiKeyPlaceholder = "Your API key will appear in Settings after signup";
+  const pythonExample = `import openai
 
-  const curlExample = `curl -X POST ${API_BASE}/ai-events \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "event_type": "user_message",
-    "payload": "Help me close my account"
-  }'`;
-
-  const nodeExample = `const response = await fetch("${API_BASE}/ai-events", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer YOUR_API_KEY",
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    event_type: "user_message",
-    payload: "Help me close my account",
-  }),
-});
-
-const data = await response.json();
-console.log(data);`;
-
-  const pythonExample = `import requests
-
-response = requests.post(
-    "${API_BASE}/ai-events",
-    headers={
-        "Authorization": "Bearer YOUR_API_KEY",
-        "Content-Type": "application/json",
-    },
-    json={
-        "event_type": "user_message",
-        "payload": "Help me close my account",
-    },
+# Step 1: Change base_url to HFAI proxy
+client = openai.OpenAI(
+    api_key="YOUR_PROXY_TOKEN",  # from Auto-Connect page
+    base_url="${PROXY_BASE}",
 )
 
-print(response.json())`;
+# Step 2: Use exactly like normal — HFAI monitors automatically
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+print(response.choices[0].message.content)`;
+
+  const nodeExample = `import OpenAI from "openai";
+
+// Step 1: Change baseURL to HFAI proxy
+const client = new OpenAI({
+  apiKey: "YOUR_PROXY_TOKEN",  // from Auto-Connect page
+  baseURL: "${PROXY_BASE}",
+});
+
+// Step 2: Use exactly like normal — HFAI monitors automatically
+const response = await client.chat.completions.create({
+  model: "gpt-4o",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+console.log(response.choices[0].message.content);`;
+
+  const curlExample = `curl ${PROXY_BASE} \\
+  -H "Content-Type: application/json" \\
+  -H "x-api-key: YOUR_PROXY_TOKEN" \\
+  -d '{
+    "model": "gpt-4o",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'`;
 
   return (
     <div className="space-y-section">
       <div className="flex items-center justify-between">
         <SectionHeader
           title="Onboarding"
-          description="Get up and running with HFAI in minutes"
+          description="Get up and running with HFAI in minutes — zero code changes required"
         />
         <Button
           variant="outline"
@@ -86,7 +82,7 @@ print(response.json())`;
       {/* ── 1. How It Works ── */}
       <ContentCard icon={Layers} title="How HFAI Works">
         <p className="text-sm text-card-foreground/70 mb-5">
-          HFAI monitors your AI systems for policy violations in real time. Here's the flow:
+          HFAI acts as a proxy between your app and OpenAI. Every AI call is automatically monitored — no custom integration needed.
         </p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((step, i) => (
@@ -109,16 +105,23 @@ print(response.json())`;
 
       {/* ── 2 & CTA side-by-side ── */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* API Key Info */}
-        <ContentCard icon={Key} title="Your API Key">
+        {/* Auto-Connect CTA */}
+        <ContentCard icon={Plug} title="Connect Your AI Provider">
           <div className="space-y-4">
             <p className="text-sm text-card-foreground/70">
-              Use your API key in the <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">Authorization</code> header
-              when calling the HFAI API.
+              Paste your OpenAI API key and get a proxy URL. Swap one line in your code and HFAI monitors every call automatically.
             </p>
-            <APIKeyDisplay apiKey={apiKeyPlaceholder} label="Authorization: Bearer" />
+            <Button
+              size="lg"
+              onClick={() => navigate("/customer/connect")}
+              className="w-full gap-2 text-base"
+            >
+              <Plug className="h-4 w-4" />
+              Set Up Auto-Connect
+              <ArrowRight className="h-4 w-4 ml-auto" />
+            </Button>
             <p className="text-xs text-card-foreground/50">
-              Your unique API key is available in your organization settings after completing signup.
+              Takes less than 2 minutes. No SDK or code changes required.
             </p>
           </div>
         </ContentCard>
@@ -152,11 +155,11 @@ print(response.json())`;
       <ContentCard icon={BookOpen} title="Integration Examples" fullWidth>
         <div className="space-y-4">
           <p className="text-sm text-card-foreground/70">
-            Send AI events to HFAI from any language. Replace <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">YOUR_API_KEY</code> with your actual key.
+            Just swap your OpenAI base URL to the HFAI proxy. Replace <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">YOUR_PROXY_TOKEN</code> with the token from your <button onClick={() => navigate("/customer/connect")} className="text-primary hover:underline">Auto-Connect page</button>.
           </p>
+          <CodeSnippetBlock language="python" title="Python (OpenAI SDK)" code={pythonExample} />
+          <CodeSnippetBlock language="javascript" title="Node.js (OpenAI SDK)" code={nodeExample} />
           <CodeSnippetBlock language="bash" title="cURL" code={curlExample} />
-          <CodeSnippetBlock language="javascript" title="Node.js (fetch)" code={nodeExample} />
-          <CodeSnippetBlock language="python" title="Python (requests)" code={pythonExample} />
         </div>
       </ContentCard>
     </div>

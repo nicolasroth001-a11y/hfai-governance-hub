@@ -5,7 +5,7 @@ import { ContentCard } from "@/components/ContentCard";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Building2, Users, Bot, AlertTriangle, Key, Copy } from "lucide-react";
+import { ArrowLeft, Building2, Users, Bot, AlertTriangle, Plug } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { deleteOrganization } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
@@ -60,12 +60,6 @@ export default function AdminCustomerDetail() {
     }
   };
 
-  const copyApiKey = () => {
-    if (org?.api_key) {
-      navigator.clipboard.writeText(org.api_key);
-      toast({ title: "API key copied" });
-    }
-  };
 
   const userColumns: DataTableColumn<any>[] = [
     { key: "name", header: "Name", render: (r) => <span className="font-medium">{r.name || "—"}</span> },
@@ -171,17 +165,11 @@ export default function AdminCustomerDetail() {
         <ContentCard icon={AlertTriangle} title="Violations">
           <p className="text-2xl font-bold">{violations.length}</p>
         </ContentCard>
-        <ContentCard icon={Key} title="API Key">
-          <div className="flex items-center gap-2">
-            <code className="text-xs bg-muted px-2 py-1 rounded truncate max-w-[120px]">
-              {org.api_key ? `${org.api_key.slice(0, 12)}…` : "None"}
-            </code>
-            {org.api_key && (
-              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={copyApiKey}>
-                <Copy className="h-3 w-3" />
-              </Button>
-            )}
-          </div>
+        <ContentCard icon={Plug} title="Provider">
+          <p className="text-sm font-medium text-card-foreground">
+            {/* Will show connected status */}
+            OpenAI Proxy
+          </p>
         </ContentCard>
       </div>
 
