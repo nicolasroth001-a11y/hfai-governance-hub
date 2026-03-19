@@ -54,7 +54,7 @@ export function SubscriptionGate({ feature, children }: SubscriptionGateProps) {
             <h2 className="text-xl font-bold tracking-tight">{feature} requires {tierConfig.name}</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Upgrade to {tierConfig.name} for ${tierConfig.price}/mo to unlock {feature.toLowerCase()}.
-              {tierConfig.trial_days > 0 && " Start with a free 7‑day trial."}
+              {tierConfig.trial_days > 0 && ` Start with a free ${tierConfig.trial_days}‑day trial.`}
             </p>
           </div>
           <div className="space-y-3">
