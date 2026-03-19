@@ -343,8 +343,8 @@ export default function LandingPage() {
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
               Get Started Free <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/pricing/contact")}>
-              Talk to Sales
+            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/pilot")}>
+              Apply for Free Pilot
             </Button>
           </div>
         </motion.div>
