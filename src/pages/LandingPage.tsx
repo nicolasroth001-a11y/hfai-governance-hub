@@ -78,7 +78,7 @@ export default function LandingPage() {
             <span className="text-sm font-semibold text-foreground tracking-tight">HFAI</span>
           </Link>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/docs/sdk")}>
+            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/docs/sdk")}>
               Docs
             </Button>
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/blog")}>
