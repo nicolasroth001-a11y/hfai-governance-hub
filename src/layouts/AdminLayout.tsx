@@ -2,12 +2,13 @@ import { Outlet } from "react-router-dom";
 import { RoleSidebar, NavItem } from "@/components/RoleSidebar";
 import { TopBar } from "@/components/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Users, Building2, Plug, ScrollText, BarChart3 } from "lucide-react";
+import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Users, Building2, Plug, ScrollText, BarChart3, FileText } from "lucide-react";
 
 const navItems: NavItem[] = [
   { title: "Dashboard", url: "/admin/dashboard", icon: LayoutDashboard },
   { title: "Violations", url: "/admin/violations", icon: AlertTriangle },
   { title: "Rules", url: "/admin/rules", icon: BookOpen },
+  { title: "Blog", url: "/admin/blog", icon: FileText },
   { title: "Reviewers", url: "/admin/reviewers", icon: Users },
   { title: "Customers", url: "/admin/customers", icon: Building2 },
   { title: "Connections", url: "/admin/api-keys", icon: Plug },

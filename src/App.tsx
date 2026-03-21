@@ -32,9 +32,7 @@ import PilotSignup from "./pages/PilotSignup";
 import SDKDocs from "./pages/SDKDocs";
 import GovernancePage from "./pages/GovernancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
-import AIGovernancePlatformGuide from "./pages/blog/AIGovernancePlatformGuide";
-import EUAIActComplianceTool from "./pages/blog/EUAIActComplianceTool";
-import HumanOversightAISystems from "./pages/blog/HumanOversightAISystems";
+import BlogPostPage from "./pages/blog/BlogPostPage";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CustomerViolations from "./pages/customer/CustomerViolations";
