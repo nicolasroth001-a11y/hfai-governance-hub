@@ -120,6 +120,7 @@ export default function CustomerAISystemDetail() {
               { label: "Owner Team", value: system.owner_team },
               { label: "Risk Level", value: system.risk_level },
               { label: "Status", value: system.status },
+              { label: "EU Risk Tier", value: system.eu_risk_tier?.replace("_", " ") || "Not classified" },
             ].map((item) => (
               <ContentCard key={item.label} title={item.label}>
                 <p className="text-sm text-card-foreground font-medium capitalize">{item.value || "—"}</p>
