@@ -77,6 +77,9 @@ export default function CustomerAISystemDetail() {
         version: editForm.version,
         risk_level: editForm.risk_level,
         owner_team: editForm.owner_team,
+        eu_risk_tier: editForm.eu_risk_tier,
+        data_governance_notes: editForm.data_governance_notes,
+        transparency_uri: editForm.transparency_uri,
       });
       setSystem(updated);
       toast({ title: "Saved", description: "System settings updated." });
