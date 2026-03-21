@@ -52,7 +52,7 @@ export default function AdminBlogPosts() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <SectionHeader title="Blog Posts" subtitle="Create and manage your blog content" />
+        <SectionHeader title="Blog Posts" description="Create and manage your blog content" />
         <Button className="gap-2" onClick={() => navigate("/admin/blog/new")}>
           <Plus className="h-4 w-4" /> New Post
         </Button>

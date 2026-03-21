@@ -159,7 +159,7 @@ export default function AdminBlogEditor() {
           <Button variant="ghost" size="icon" onClick={() => navigate("/admin/blog")}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <SectionHeader title={isNew ? "New Blog Post" : "Edit Post"} subtitle="Write and publish blog content" />
+          <SectionHeader title={isNew ? "New Blog Post" : "Edit Post"} description="Write and publish blog content" />
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="gap-1" onClick={() => handleSave(false)} disabled={saving}>
