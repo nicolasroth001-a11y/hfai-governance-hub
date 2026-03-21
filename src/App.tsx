@@ -75,6 +75,8 @@ import AdminLogs from "./pages/admin/AdminLogs";
 import AdminAPIKeys from "./pages/admin/AdminAPIKeys";
 import AdminHumanFirstFramework from "./pages/admin/AdminHumanFirstFramework";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminBlogPosts from "./pages/admin/AdminBlogPosts";
+import AdminBlogEditor from "./pages/admin/AdminBlogEditor";
 
 import NotFound from "./pages/NotFound";
 
