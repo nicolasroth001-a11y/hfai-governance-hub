@@ -29,7 +29,6 @@ serve(async (req) => {
       );
     }
 
-    const CONTACT_EMAIL = Deno.env.get('CONTACT_EMAIL') || 'nicolasroth001@gmail.com';
     // Resend free tier only allows sending to the account owner's email
     const RECIPIENT = 'nicolasroth001@gmail.com';
 
