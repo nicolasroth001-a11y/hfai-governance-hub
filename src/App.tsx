@@ -52,6 +52,7 @@ import CustomerReviews from "./pages/customer/CustomerReviews";
 import CustomerNotifications from "./pages/customer/CustomerNotifications";
 import CustomerSecurity from "./pages/customer/CustomerSecurity";
 import CustomerConnect from "./pages/customer/CustomerConnect";
+import CustomerCompliance from "./pages/customer/CustomerCompliance";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
