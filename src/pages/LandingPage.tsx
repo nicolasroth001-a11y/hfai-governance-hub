@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, Activity, AlertTriangle, UserCheck, ChevronRight,
-  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight,
+  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, Star,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
@@ -60,7 +60,14 @@ const trustPoints = [
   "Enterprise-grade encryption",
   "SOC 2 aligned practices",
   "2-minute setup, zero code changes",
-  "Sub-200ms detection",
+  "EU AI Act ready",
+];
+
+const pilotIncludes = [
+  { icon: Cpu, text: "Unlimited AI systems for 14 days" },
+  { icon: Scale, text: "Full EU AI Act compliance toolkit" },
+  { icon: UserCheck, text: "Dedicated onboarding support" },
+  { icon: Shield, text: "Governance report at end of trial" },
 ];
 
 export default function LandingPage() {
@@ -90,8 +97,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/login/customer")}>
               Sign In
             </Button>
-            <Button size="sm" className="text-xs gap-1" onClick={() => navigate("/signup/customer")}>
-              Get Started <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90" onClick={() => navigate("/pilot")}>
+              Free Pilot <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
         </div>
@@ -99,7 +106,6 @@ export default function LandingPage() {
 
       {/* ── Hero ── */}
       <section className="relative flex flex-col items-center justify-center text-center px-6 pt-32 sm:pt-40 pb-16 sm:pb-24">
-        {/* Ambient glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
         <motion.div
@@ -108,18 +114,19 @@ export default function LandingPage() {
           transition={{ duration: 0.5 }}
           className="relative"
         >
-          <div className="mx-auto h-14 w-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6">
-            <Shield className="h-7 w-7 text-primary" />
-          </div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-4"
+          {/* Urgency badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6"
           >
-            Human-in-the-Loop AI Governance
-          </motion.p>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span className="text-xs font-medium text-primary">EU AI Act enforcement begins Aug 2026 — are you ready?</span>
+          </motion.div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
             Keep Humans in Control
@@ -134,7 +141,7 @@ export default function LandingPage() {
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
             Monitor AI in real time. Catch risky behavior instantly. Route critical decisions to human reviewers.
-            Works with OpenAI, Anthropic, Google, and any custom model.
+            EU AI Act compliant out of the box.
           </motion.p>
 
           <motion.div
@@ -143,8 +150,8 @@ export default function LandingPage() {
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 mt-8 justify-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              Start Free <ChevronRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
+              Start Free 14-Day Pilot <ChevronRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> Try Live Demo
@@ -196,6 +203,49 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Pilot CTA (early placement) ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-4xl rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-background to-primary/5 p-8 sm:p-12"
+        >
+          <div className="flex flex-col sm:flex-row items-center gap-8">
+            <div className="flex-1 space-y-4">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-primary" />
+                <span className="text-xs uppercase tracking-[0.15em] text-primary font-semibold">Free 14-Day Pilot</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
+                See governance working on <span className="text-primary">your</span> AI systems
+              </h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                No credit card. No commitment. Full platform access with dedicated onboarding support.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {pilotIncludes.map((item) => (
+                  <div key={item.text} className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <item.icon className="h-3.5 w-3.5 text-primary shrink-0" />
+                    <span>{item.text}</span>
+                  </div>
+                ))}
+              </div>
+              <Button size="lg" className="gap-2 mt-2" onClick={() => navigate("/pilot")}>
+                Apply Now — It's Free <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="shrink-0 hidden sm:flex flex-col items-center gap-2 text-center p-6 rounded-xl border border-border/30 bg-background/50">
+              <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <Shield className="h-8 w-8 text-primary" />
+              </div>
+              <p className="text-sm font-semibold text-foreground">White-Glove Setup</p>
+              <p className="text-[11px] text-muted-foreground max-w-[160px]">We help you integrate and configure — zero effort on your end</p>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
       {/* ── Value Propositions ── */}
       <section className="px-6 pb-24">
         <motion.div
@@ -237,6 +287,51 @@ export default function LandingPage() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* ── EU AI Act Section ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-4xl"
+        >
+          <div className="text-center mb-8">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">Compliance Built-In</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mt-2">
+              EU AI Act Ready — Today
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
+              Full enforcement begins August 2026. HFAI covers the requirements so you don't have to scramble.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { article: "Art. 9", label: "Risk Management", desc: "Configurable rule engine with severity classification" },
+              { article: "Art. 12", label: "Record Keeping", desc: "Every AI event captured with full input/output metadata" },
+              { article: "Art. 13", label: "Transparency", desc: "Complete audit trail with exportable compliance reports" },
+              { article: "Art. 14", label: "Human Oversight", desc: "Reviewer workflows with approve/reject/escalate" },
+              { article: "Art. 15", label: "Accuracy Monitoring", desc: "Real-time anomaly detection and pattern analysis" },
+              { article: "Art. 61", label: "Post-Market Monitoring", desc: "Continuous event monitoring and violation detection" },
+            ].map((item) => (
+              <Card key={item.article} className="border border-border/30 bg-secondary/10">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] font-mono text-primary/70">{item.article}</span>
+                    <span className="text-sm font-semibold text-foreground">{item.label}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="text-center mt-6">
+            <Button variant="outline" size="sm" className="gap-1 text-xs" onClick={() => navigate("/governance")}>
+              View Full Framework <ArrowRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </motion.div>
       </section>
 
       {/* ── How It Works ── */}
@@ -328,7 +423,7 @@ export default function LandingPage() {
         <FAQSection />
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── Final CTA ── */}
       <section className="px-6 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -337,17 +432,19 @@ export default function LandingPage() {
           className="mx-auto max-w-3xl text-center rounded-2xl border border-primary/20 bg-primary/5 p-10 sm:p-14"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-            Ready to govern your AI responsibly?
+            Your AI is making decisions right now.
+            <br />
+            <span className="text-primary">Who's watching?</span>
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-            Start monitoring your AI systems in minutes. No credit card required.
+            Start your free 14-day pilot. No credit card. No commitment. Full platform access.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              Get Started Free <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
+              Start Free Pilot <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/pilot")}>
-              Apply for Free Pilot
+            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/pricing/contact")}>
+              View Pricing
             </Button>
           </div>
         </motion.div>
@@ -372,6 +469,8 @@ export default function LandingPage() {
               <Link to="/pricing/contact" className="text-primary hover:underline text-xs">Pricing</Link>
               <span className="text-border/30">·</span>
               <Link to="/governance" className="text-primary hover:underline text-xs">Framework</Link>
+              <span className="text-border/30">·</span>
+              <Link to="/pilot" className="text-primary hover:underline text-xs">Free Pilot</Link>
               <span className="text-border/30">·</span>
               <Link to="/login/admin" className="text-muted-foreground hover:text-primary hover:underline text-xs">Admin</Link>
             </div>
