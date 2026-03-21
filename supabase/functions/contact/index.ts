@@ -29,7 +29,8 @@ serve(async (req) => {
       );
     }
 
-    const CONTACT_EMAIL = Deno.env.get('CONTACT_EMAIL') || 'nicolasroth001@gmail.com';
+    // Resend free tier only allows sending to the account owner's email
+    const RECIPIENT = 'nicolasroth001@gmail.com';
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -39,7 +40,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         from: 'HFAI Contact Form <onboarding@resend.dev>',
-        to: [CONTACT_EMAIL],
+        to: [RECIPIENT],
         reply_to: email,
         subject: `New inquiry from ${name} (${company || 'N/A'})`,
         text: `Name: ${name}\nCompany: ${company || 'N/A'}\nEmail: ${email}\n\nMessage:\n${message}`,
