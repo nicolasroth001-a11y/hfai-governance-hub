@@ -109,9 +109,7 @@ const App = () => {
           <Route path="/docs/sdk" element={<SDKDocs />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
-          <Route path="/blog/ai-governance-platform-complete-guide" element={<AIGovernancePlatformGuide />} />
-          <Route path="/blog/eu-ai-act-compliance-tool" element={<EUAIActComplianceTool />} />
-          <Route path="/blog/human-oversight-ai-systems" element={<HumanOversightAISystems />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />
