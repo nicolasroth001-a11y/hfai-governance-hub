@@ -165,6 +165,8 @@ const App = () => {
             <Route path="api-keys" element={<AdminAPIKeys />} />
             <Route path="docs/human-first-framework" element={<AdminHumanFirstFramework />} />
             <Route path="analytics" element={<AdminAnalytics />} />
+            <Route path="blog" element={<AdminBlogPosts />} />
+            <Route path="blog/:id" element={<AdminBlogEditor />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
