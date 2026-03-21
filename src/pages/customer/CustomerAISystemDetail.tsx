@@ -77,6 +77,9 @@ export default function CustomerAISystemDetail() {
         version: editForm.version,
         risk_level: editForm.risk_level,
         owner_team: editForm.owner_team,
+        eu_risk_tier: editForm.eu_risk_tier,
+        data_governance_notes: editForm.data_governance_notes,
+        transparency_uri: editForm.transparency_uri,
       });
       setSystem(updated);
       toast({ title: "Saved", description: "System settings updated." });
@@ -120,6 +123,7 @@ export default function CustomerAISystemDetail() {
               { label: "Owner Team", value: system.owner_team },
               { label: "Risk Level", value: system.risk_level },
               { label: "Status", value: system.status },
+              { label: "EU Risk Tier", value: system.eu_risk_tier?.replace("_", " ") || "Not classified" },
             ].map((item) => (
               <ContentCard key={item.label} title={item.label}>
                 <p className="text-sm text-card-foreground font-medium capitalize">{item.value || "—"}</p>
@@ -176,9 +180,30 @@ export default function CustomerAISystemDetail() {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-2">
+                  <Label>EU AI Act Risk Tier</Label>
+                  <Select value={editForm.eu_risk_tier || "not_classified"} onValueChange={(v) => setEditForm({ ...editForm, eu_risk_tier: v })}>
+                    <SelectTrigger><SelectValue placeholder="Select tier" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="not_classified">Not Classified</SelectItem>
+                      <SelectItem value="minimal_risk">Minimal Risk</SelectItem>
+                      <SelectItem value="limited_risk">Limited Risk</SelectItem>
+                      <SelectItem value="high_risk">High Risk</SelectItem>
+                      <SelectItem value="unacceptable">Unacceptable</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="space-y-2 sm:col-span-2">
                   <Label>Description</Label>
                   <Textarea value={editForm.description || ""} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} />
+                </div>
+                <div className="space-y-2 sm:col-span-2">
+                  <Label>Data Governance Notes</Label>
+                  <Textarea placeholder="Document training data sources, bias testing, data representativeness…" value={editForm.data_governance_notes || ""} onChange={(e) => setEditForm({ ...editForm, data_governance_notes: e.target.value })} />
+                </div>
+                <div className="space-y-2 sm:col-span-2">
+                  <Label>Transparency URI</Label>
+                  <Input placeholder="URL where users are informed about AI interaction" value={editForm.transparency_uri || ""} onChange={(e) => setEditForm({ ...editForm, transparency_uri: e.target.value })} />
                 </div>
                 <div className="sm:col-span-2 flex justify-end">
                   <Button onClick={handleSave} disabled={saving} className="gap-2">

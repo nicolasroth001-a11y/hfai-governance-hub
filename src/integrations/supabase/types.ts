@@ -68,7 +68,9 @@ export type Database = {
       ai_systems: {
         Row: {
           created_at: string
+          data_governance_notes: string | null
           description: string | null
+          eu_risk_tier: string | null
           id: string
           model_type: string | null
           name: string
@@ -77,12 +79,15 @@ export type Database = {
           provider: string | null
           risk_level: string | null
           status: string | null
+          transparency_uri: string | null
           updated_at: string | null
           version: string | null
         }
         Insert: {
           created_at?: string
+          data_governance_notes?: string | null
           description?: string | null
+          eu_risk_tier?: string | null
           id?: string
           model_type?: string | null
           name: string
@@ -91,12 +96,15 @@ export type Database = {
           provider?: string | null
           risk_level?: string | null
           status?: string | null
+          transparency_uri?: string | null
           updated_at?: string | null
           version?: string | null
         }
         Update: {
           created_at?: string
+          data_governance_notes?: string | null
           description?: string | null
+          eu_risk_tier?: string | null
           id?: string
           model_type?: string | null
           name?: string
@@ -105,6 +113,7 @@ export type Database = {
           provider?: string | null
           risk_level?: string | null
           status?: string | null
+          transparency_uri?: string | null
           updated_at?: string | null
           version?: string | null
         }
