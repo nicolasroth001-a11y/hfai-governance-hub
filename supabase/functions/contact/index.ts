@@ -40,7 +40,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         from: 'HFAI Contact Form <onboarding@resend.dev>',
-        to: [CONTACT_EMAIL],
+        to: [RECIPIENT],
         reply_to: email,
         subject: `New inquiry from ${name} (${company || 'N/A'})`,
         text: `Name: ${name}\nCompany: ${company || 'N/A'}\nEmail: ${email}\n\nMessage:\n${message}`,
