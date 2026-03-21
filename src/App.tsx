@@ -32,9 +32,7 @@ import PilotSignup from "./pages/PilotSignup";
 import SDKDocs from "./pages/SDKDocs";
 import GovernancePage from "./pages/GovernancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
-import AIGovernancePlatformGuide from "./pages/blog/AIGovernancePlatformGuide";
-import EUAIActComplianceTool from "./pages/blog/EUAIActComplianceTool";
-import HumanOversightAISystems from "./pages/blog/HumanOversightAISystems";
+import BlogPostPage from "./pages/blog/BlogPostPage";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CustomerViolations from "./pages/customer/CustomerViolations";
@@ -75,6 +73,8 @@ import AdminLogs from "./pages/admin/AdminLogs";
 import AdminAPIKeys from "./pages/admin/AdminAPIKeys";
 import AdminHumanFirstFramework from "./pages/admin/AdminHumanFirstFramework";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminBlogPosts from "./pages/admin/AdminBlogPosts";
+import AdminBlogEditor from "./pages/admin/AdminBlogEditor";
 
 import NotFound from "./pages/NotFound";
 
@@ -107,9 +107,7 @@ const App = () => {
           <Route path="/docs/sdk" element={<SDKDocs />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
-          <Route path="/blog/ai-governance-platform-complete-guide" element={<AIGovernancePlatformGuide />} />
-          <Route path="/blog/eu-ai-act-compliance-tool" element={<EUAIActComplianceTool />} />
-          <Route path="/blog/human-oversight-ai-systems" element={<HumanOversightAISystems />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />
@@ -167,6 +165,8 @@ const App = () => {
             <Route path="api-keys" element={<AdminAPIKeys />} />
             <Route path="docs/human-first-framework" element={<AdminHumanFirstFramework />} />
             <Route path="analytics" element={<AdminAnalytics />} />
+            <Route path="blog" element={<AdminBlogPosts />} />
+            <Route path="blog/:id" element={<AdminBlogEditor />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
