@@ -141,7 +141,7 @@ export default function LandingPage() {
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
             Monitor AI in real time. Catch risky behavior instantly. Route critical decisions to human reviewers.
-            EU AI Act compliant out of the box.
+            EU AI Act and NIST AI RMF compliant out of the box.
           </motion.p>
 
           <motion.div
