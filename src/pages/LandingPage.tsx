@@ -84,20 +84,20 @@ export default function LandingPage() {
             <Shield className="h-5 w-5 text-primary" />
             <span className="text-sm font-semibold text-foreground tracking-tight">HFAI</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/docs/sdk")}>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/docs/sdk")}>
               Docs
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/blog")}>
+            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/blog")}>
               Resources
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/pricing/contact")}>
+            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/pricing/contact")}>
               Pricing
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/login/customer")}>
+            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               Sign In
             </Button>
-            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90" onClick={() => navigate("/pilot")}>
+            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/pilot")}>
               Free Pilot <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
