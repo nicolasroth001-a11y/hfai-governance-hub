@@ -17,6 +17,7 @@ interface BlogPost {
   published_at: string | null;
   meta_title: string;
   meta_description: string;
+  source_url: string | null;
 }
 
 function renderMarkdown(content: string): string {
