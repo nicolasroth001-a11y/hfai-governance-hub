@@ -171,8 +171,8 @@ export async function sendAIEvent(payload: { event_type: string; payload: string
 }
 
 // ─── Rules ─────────────────────────────────────────────
-export async function fetchRules() {
-  const { data, error } = await supabase.from("rules").select("*").order("created_at", { ascending: false });
+export async function fetchRules(limit = 500) {
+  const { data, error } = await supabase.from("rules").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchRules:", error); return []; }
   return data ?? [];
 }
