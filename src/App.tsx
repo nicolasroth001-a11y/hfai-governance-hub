@@ -31,6 +31,7 @@ import PricingContact from "./pages/PricingContact";
 import PilotSignup from "./pages/PilotSignup";
 import SDKDocs from "./pages/SDKDocs";
 import GovernancePage from "./pages/GovernancePage";
+import NISTCompliancePage from "./pages/NISTCompliancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
 import BlogPostPage from "./pages/blog/BlogPostPage";
 import BlogSubmit from "./pages/blog/BlogSubmit";
