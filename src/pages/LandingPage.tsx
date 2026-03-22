@@ -60,12 +60,12 @@ const trustPoints = [
   "Enterprise-grade encryption",
   "SOC 2 aligned practices",
   "2-minute setup, zero code changes",
-  "EU AI Act ready",
+  "EU AI Act + NIST AI RMF ready",
 ];
 
 const pilotIncludes = [
   { icon: Cpu, text: "Unlimited AI systems for 14 days" },
-  { icon: Scale, text: "Full EU AI Act compliance toolkit" },
+  { icon: Scale, text: "EU AI Act + NIST AI RMF compliance" },
   { icon: UserCheck, text: "Dedicated onboarding support" },
   { icon: Shield, text: "Governance report at end of trial" },
 ];
@@ -141,7 +141,7 @@ export default function LandingPage() {
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
             Monitor AI in real time. Catch risky behavior instantly. Route critical decisions to human reviewers.
-            EU AI Act compliant out of the box.
+            EU AI Act and NIST AI RMF compliant out of the box.
           </motion.p>
 
           <motion.div
@@ -292,7 +292,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── EU AI Act Section ── */}
+      {/* ── Compliance Section (EU AI Act + NIST) ── */}
       <section className="px-6 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -301,37 +301,74 @@ export default function LandingPage() {
           className="mx-auto max-w-4xl"
         >
           <div className="text-center mb-8">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">Compliance Built-In</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">Dual Compliance Built-In</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mt-2">
-              EU AI Act Ready — Today
+              EU AI Act + NIST AI RMF Ready
             </h2>
             <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
-              Full enforcement begins August 2026. HFAI covers the requirements so you don't have to scramble.
+              One platform. Two regulatory frameworks. Full coverage for both US and EU AI governance requirements.
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { article: "Art. 9", label: "Risk Management", desc: "Configurable rule engine with severity classification" },
-              { article: "Art. 12", label: "Record Keeping", desc: "Every AI event captured with full input/output metadata" },
-              { article: "Art. 13", label: "Transparency", desc: "Complete audit trail with exportable compliance reports" },
-              { article: "Art. 14", label: "Human Oversight", desc: "Reviewer workflows with approve/reject/escalate" },
-              { article: "Art. 15", label: "Accuracy Monitoring", desc: "Real-time anomaly detection and pattern analysis" },
-              { article: "Art. 61", label: "Post-Market Monitoring", desc: "Continuous event monitoring and violation detection" },
-            ].map((item) => (
-              <Card key={item.article} className="border border-border/30 bg-secondary/10">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-[10px] font-mono text-primary/70">{item.article}</span>
-                    <span className="text-sm font-semibold text-foreground">{item.label}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
+
+          {/* EU AI Act Cards */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">🇪🇺</span>
+              <span className="text-xs font-semibold text-foreground">EU AI Act</span>
+              <span className="text-[10px] text-muted-foreground">— Enforcement Aug 2026</span>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { article: "Art. 9", label: "Risk Management", desc: "Configurable rule engine with severity classification" },
+                { article: "Art. 12", label: "Record Keeping", desc: "Every AI event captured with full input/output metadata" },
+                { article: "Art. 13", label: "Transparency", desc: "Complete audit trail with exportable compliance reports" },
+                { article: "Art. 14", label: "Human Oversight", desc: "Reviewer workflows with approve/reject/escalate" },
+                { article: "Art. 15", label: "Accuracy Monitoring", desc: "Real-time anomaly detection and pattern analysis" },
+                { article: "Art. 61", label: "Post-Market Monitoring", desc: "Continuous event monitoring and violation detection" },
+              ].map((item) => (
+                <Card key={item.article} className="border border-border/30 bg-secondary/10">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] font-mono text-primary/70">{item.article}</span>
+                      <span className="text-sm font-semibold text-foreground">{item.label}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-          <div className="text-center mt-6">
+
+          {/* NIST AI RMF Cards */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">🇺🇸</span>
+              <span className="text-xs font-semibold text-foreground">NIST AI Risk Management Framework</span>
+              <span className="text-[10px] text-muted-foreground">— Referenced by FTC, SEC, CFPB</span>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { fn: "GOVERN", desc: "Role-based access, Human-First doctrine, full audit trails", color: "text-primary" },
+                { fn: "MAP", desc: "AI system registry with risk tiers, model cards, and data governance", color: "text-blue-500" },
+                { fn: "MEASURE", desc: "Real-time monitoring, rule engine, violation pattern detection", color: "text-emerald-500" },
+                { fn: "MANAGE", desc: "Human oversight reviews, RCA, remediation actions, alerts", color: "text-amber-500" },
+              ].map((item) => (
+                <Card key={item.fn} className="border border-border/30 bg-secondary/10">
+                  <CardContent className="p-4">
+                    <span className={`text-[10px] font-mono font-bold ${item.color}`}>{item.fn}</span>
+                    <p className="text-xs text-muted-foreground leading-relaxed mt-1.5">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mt-6 flex flex-wrap gap-2 justify-center">
             <Button variant="outline" size="sm" className="gap-1 text-xs" onClick={() => navigate("/governance")}>
-              View Full Framework <ArrowRight className="h-3 w-3" />
+              EU AI Act Details <ArrowRight className="h-3 w-3" />
+            </Button>
+            <Button variant="outline" size="sm" className="gap-1 text-xs" onClick={() => navigate("/nist-ai-rmf")}>
+              NIST AI RMF Details <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
         </motion.div>

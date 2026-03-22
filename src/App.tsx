@@ -31,6 +31,7 @@ import PricingContact from "./pages/PricingContact";
 import PilotSignup from "./pages/PilotSignup";
 import SDKDocs from "./pages/SDKDocs";
 import GovernancePage from "./pages/GovernancePage";
+import NISTCompliancePage from "./pages/NISTCompliancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
 import BlogPostPage from "./pages/blog/BlogPostPage";
 import BlogSubmit from "./pages/blog/BlogSubmit";
@@ -108,6 +109,7 @@ const App = () => {
           <Route path="/pilot" element={<PilotSignup />} />
           <Route path="/docs/sdk" element={<SDKDocs />} />
           <Route path="/governance" element={<GovernancePage />} />
+          <Route path="/nist-ai-rmf" element={<NISTCompliancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/submit" element={<BlogSubmit />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
