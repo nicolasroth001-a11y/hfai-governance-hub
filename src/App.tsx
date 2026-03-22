@@ -33,6 +33,7 @@ import SDKDocs from "./pages/SDKDocs";
 import GovernancePage from "./pages/GovernancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
 import BlogPostPage from "./pages/blog/BlogPostPage";
+import BlogSubmit from "./pages/blog/BlogSubmit";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CustomerViolations from "./pages/customer/CustomerViolations";
