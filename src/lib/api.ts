@@ -216,6 +216,16 @@ export async function fetchAdminOrganizations() {
   return data ?? [];
 }
 
+export async function fetchOrgCounts(): Promise<Record<string, { user_count: number; system_count: number; violation_count: number }>> {
+  const { data, error } = await supabase.rpc("get_org_counts");
+  if (error) { console.error("fetchOrgCounts:", error); return {}; }
+  const map: Record<string, { user_count: number; system_count: number; violation_count: number }> = {};
+  for (const row of data ?? []) {
+    map[row.org_id] = { user_count: Number(row.user_count), system_count: Number(row.system_count), violation_count: Number(row.violation_count) };
+  }
+  return map;
+}
+
 export async function createOrganization(payload: { name: string; contact_email?: string }) {
   const { data, error } = await supabase.from("organizations").insert(payload).select().single();
   if (error) throw new Error(error.message);
