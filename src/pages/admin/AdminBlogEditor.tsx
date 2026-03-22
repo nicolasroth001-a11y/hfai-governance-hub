@@ -25,6 +25,7 @@ interface PostForm {
   meta_description: string;
   read_time: string;
   author_name: string;
+  source_url: string;
 }
 
 const defaultForm: PostForm = {
@@ -39,6 +40,7 @@ const defaultForm: PostForm = {
   meta_description: "",
   read_time: "",
   author_name: "HFAI Team",
+  source_url: "",
 };
 
 function slugify(text: string): string {
