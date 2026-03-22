@@ -78,8 +78,8 @@ export async function deleteViolation(id: string) {
 }
 
 // ─── Human Reviews ─────────────────────────────────────
-export async function fetchReviews() {
-  const { data, error } = await supabase.from("human_reviews").select("*").order("created_at", { ascending: false });
+export async function fetchReviews(limit = 500) {
+  const { data, error } = await supabase.from("human_reviews").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchReviews:", error); return []; }
   return data ?? [];
 }
