@@ -1,8 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
 
 // ─── AI Systems ────────────────────────────────────────
-export async function fetchAISystems() {
-  const { data, error } = await supabase.from("ai_systems").select("*").order("created_at", { ascending: false });
+export async function fetchAISystems(limit = 500) {
+  const { data, error } = await supabase.from("ai_systems").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchAISystems:", error); return []; }
   return data ?? [];
 }
