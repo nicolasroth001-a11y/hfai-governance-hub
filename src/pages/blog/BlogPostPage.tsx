@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Shield, ArrowLeft, ArrowRight, Calendar, Clock, Tag, User } from "lucide-react";
+import { Shield, ArrowLeft, ArrowRight, Calendar, Clock, Tag, User, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePageView } from "@/hooks/usePageView";
 
