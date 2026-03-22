@@ -108,6 +108,7 @@ const App = () => {
           <Route path="/docs/sdk" element={<SDKDocs />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/blog/submit" element={<BlogSubmit />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
 
           {/* Login & Signup & Password Reset */}

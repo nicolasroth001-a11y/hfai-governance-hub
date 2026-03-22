@@ -5,7 +5,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Eye, Trash2, Calendar } from "lucide-react";
+import { Plus, Edit, Eye, Trash2, Calendar, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 
@@ -19,6 +19,8 @@ interface BlogPost {
   tags: string[];
   created_at: string;
   published_at: string | null;
+  author_name: string | null;
+  submitter_email: string | null;
 }
 
 export default function AdminBlogPosts() {
@@ -30,9 +32,9 @@ export default function AdminBlogPosts() {
   const loadPosts = async () => {
     const { data, error } = await supabase
       .from("blog_posts")
-      .select("id, title, slug, excerpt, status, featured, tags, created_at, published_at")
+      .select("id, title, slug, excerpt, status, featured, tags, created_at, published_at, author_name, submitter_email")
       .order("created_at", { ascending: false });
-    if (!error && data) setPosts(data);
+    if (!error && data) setPosts(data as BlogPost[]);
     setLoading(false);
   };
 
@@ -49,6 +51,106 @@ export default function AdminBlogPosts() {
     }
   };
 
+  const handleQuickAction = async (id: string, action: "publish" | "reject") => {
+    if (action === "reject") {
+      const { error } = await supabase.from("blog_posts").delete().eq("id", id);
+      if (error) {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: "Rejected", description: "Submission removed." });
+        loadPosts();
+      }
+    } else {
+      const { error } = await supabase
+        .from("blog_posts")
+        .update({ status: "published", published_at: new Date().toISOString() } as any)
+        .eq("id", id);
+      if (error) {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: "Published!", description: "Post is now live." });
+        loadPosts();
+      }
+    }
+  };
+
+  const pendingPosts = posts.filter((p) => p.status === "pending_review");
+  const otherPosts = posts.filter((p) => p.status !== "pending_review");
+
+  const statusVariant = (status: string) => {
+    if (status === "published") return "default" as const;
+    if (status === "pending_review") return "destructive" as const;
+    return "secondary" as const;
+  };
+
+  const statusLabel = (status: string) => {
+    if (status === "pending_review") return "Pending Review";
+    return status;
+  };
+
+  const renderPostCard = (post: BlogPost, showReviewActions = false) => (
+    <Card key={post.id} className="border-border/40">
+      <CardContent className="p-4 flex items-center justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <Badge variant={statusVariant(post.status)} className="text-[10px]">
+              {statusLabel(post.status)}
+            </Badge>
+            {post.featured && <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">Featured</Badge>}
+            {post.tags.map((tag) => (
+              <span key={tag} className="text-[10px] text-muted-foreground">{tag}</span>
+            ))}
+          </div>
+          <h3 className="text-sm font-semibold text-foreground truncate">{post.title}</h3>
+          <p className="text-xs text-muted-foreground truncate mt-0.5">{post.excerpt || "No excerpt"}</p>
+          <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground/60">
+            {post.author_name && <span>by {post.author_name}</span>}
+            {post.submitter_email && <span>({post.submitter_email})</span>}
+            <span className="flex items-center gap-1">
+              <Calendar className="h-2.5 w-2.5" />
+              {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          {showReviewActions && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
+                onClick={() => handleQuickAction(post.id, "publish")}
+                title="Approve & Publish"
+              >
+                <CheckCircle className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-destructive"
+                onClick={() => handleQuickAction(post.id, "reject")}
+                title="Reject & Delete"
+              >
+                <XCircle className="h-4 w-4" />
+              </Button>
+            </>
+          )}
+          {post.status === "published" && (
+            <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+              <Link to={`/blog/${post.slug}`} target="_blank"><Eye className="h-3.5 w-3.5" /></Link>
+            </Button>
+          )}
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/admin/blog/${post.id}`)}>
+            <Edit className="h-3.5 w-3.5" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleDelete(post.id, post.title)}>
+            <Trash2 className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -60,54 +162,42 @@ export default function AdminBlogPosts() {
 
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading...</p>
-      ) : posts.length === 0 ? (
-        <Card className="border-dashed">
-          <CardContent className="p-12 text-center">
-            <p className="text-muted-foreground text-sm">No blog posts yet.</p>
-            <Button className="mt-4 gap-2" onClick={() => navigate("/admin/blog/new")}>
-              <Plus className="h-4 w-4" /> Write Your First Post
-            </Button>
-          </CardContent>
-        </Card>
       ) : (
-        <div className="space-y-3">
-          {posts.map((post) => (
-            <Card key={post.id} className="border-border/40">
-              <CardContent className="p-4 flex items-center justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Badge variant={post.status === "published" ? "default" : "secondary"} className="text-[10px]">
-                      {post.status}
-                    </Badge>
-                    {post.featured && <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">Featured</Badge>}
-                    {post.tags.map((tag) => (
-                      <span key={tag} className="text-[10px] text-muted-foreground">{tag}</span>
-                    ))}
-                  </div>
-                  <h3 className="text-sm font-semibold text-foreground truncate">{post.title}</h3>
-                  <p className="text-xs text-muted-foreground truncate mt-0.5">{post.excerpt || "No excerpt"}</p>
-                  <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground/60">
-                    <Calendar className="h-2.5 w-2.5" />
-                    {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  {post.status === "published" && (
-                    <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                      <Link to={`/blog/${post.slug}`} target="_blank"><Eye className="h-3.5 w-3.5" /></Link>
-                    </Button>
-                  )}
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/admin/blog/${post.id}`)}>
-                    <Edit className="h-3.5 w-3.5" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleDelete(post.id, post.title)}>
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
+        <>
+          {/* Pending Review Section */}
+          {pendingPosts.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 text-destructive" />
+                <h2 className="text-sm font-semibold text-foreground">
+                  Pending Review ({pendingPosts.length})
+                </h2>
+              </div>
+              <div className="space-y-2 p-4 rounded-lg border-2 border-destructive/20 bg-destructive/5">
+                {pendingPosts.map((post) => renderPostCard(post, true))}
+              </div>
+            </div>
+          )}
+
+          {/* All Other Posts */}
+          {otherPosts.length === 0 && pendingPosts.length === 0 ? (
+            <Card className="border-dashed">
+              <CardContent className="p-12 text-center">
+                <p className="text-muted-foreground text-sm">No blog posts yet.</p>
+                <Button className="mt-4 gap-2" onClick={() => navigate("/admin/blog/new")}>
+                  <Plus className="h-4 w-4" /> Write Your First Post
+                </Button>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          ) : (
+            <div className="space-y-3">
+              {otherPosts.length > 0 && pendingPosts.length > 0 && (
+                <h2 className="text-sm font-semibold text-foreground">All Posts</h2>
+              )}
+              {otherPosts.map((post) => renderPostCard(post))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
