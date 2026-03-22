@@ -109,6 +109,7 @@ const App = () => {
           <Route path="/pilot" element={<PilotSignup />} />
           <Route path="/docs/sdk" element={<SDKDocs />} />
           <Route path="/governance" element={<GovernancePage />} />
+          <Route path="/nist-ai-rmf" element={<NISTCompliancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/submit" element={<BlogSubmit />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
