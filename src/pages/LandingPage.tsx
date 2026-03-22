@@ -156,7 +156,7 @@ export default function LandingPage() {
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> Try Live Demo
             </Button>
-            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/blog")}>
+            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2 hidden sm:inline-flex" onClick={() => navigate("/blog")}>
               <BookOpen className="h-4 w-4" /> Read Our Blog
             </Button>
           </motion.div>
