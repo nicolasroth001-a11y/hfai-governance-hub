@@ -213,6 +213,7 @@ export type Database = {
           slug: string
           source_url: string | null
           status: string
+          submitter_email: string | null
           tags: string[]
           title: string
           updated_at: string
@@ -231,6 +232,7 @@ export type Database = {
           slug: string
           source_url?: string | null
           status?: string
+          submitter_email?: string | null
           tags?: string[]
           title: string
           updated_at?: string
@@ -249,6 +251,7 @@ export type Database = {
           slug?: string
           source_url?: string | null
           status?: string
+          submitter_email?: string | null
           tags?: string[]
           title?: string
           updated_at?: string
