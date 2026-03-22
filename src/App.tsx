@@ -140,6 +140,7 @@ const App = () => {
             <Route path="security" element={<CustomerSecurity />} />
             <Route path="connect" element={<CustomerConnect />} />
             <Route path="compliance" element={<CustomerCompliance />} />
+            <Route path="blog-submit" element={<CustomerBlogSubmit />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
