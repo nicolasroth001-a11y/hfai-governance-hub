@@ -65,7 +65,7 @@ const trustPoints = [
 
 const pilotIncludes = [
   { icon: Cpu, text: "Unlimited AI systems for 14 days" },
-  { icon: Scale, text: "Full EU AI Act compliance toolkit" },
+  { icon: Scale, text: "EU AI Act + NIST AI RMF compliance" },
   { icon: UserCheck, text: "Dedicated onboarding support" },
   { icon: Shield, text: "Governance report at end of trial" },
 ];
