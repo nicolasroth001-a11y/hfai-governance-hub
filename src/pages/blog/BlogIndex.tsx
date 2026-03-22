@@ -44,7 +44,7 @@ export default function BlogIndex() {
           </Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="text-xs" asChild>
-              <Link to="/blog">Resources</Link>
+              <Link to="/blog/submit">Submit a Post</Link>
             </Button>
             <Button variant="ghost" size="sm" className="text-xs" asChild>
               <Link to="/pricing/contact">Pricing</Link>
