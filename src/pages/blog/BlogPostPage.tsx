@@ -44,7 +44,7 @@ export default function BlogPostPage() {
     if (!slug) return;
     supabase
       .from("blog_posts")
-      .select("title, slug, content, excerpt, tags, read_time, author_name, published_at, meta_title, meta_description")
+      .select("title, slug, content, excerpt, tags, read_time, author_name, published_at, meta_title, meta_description, source_url")
       .eq("slug", slug)
       .eq("status", "published")
       .single()
