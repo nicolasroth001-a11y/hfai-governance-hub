@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Shield, ArrowLeft, ArrowRight, Calendar, Clock, Tag, User } from "lucide-react";
+import { Shield, ArrowLeft, ArrowRight, Calendar, Clock, Tag, User, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePageView } from "@/hooks/usePageView";
 
@@ -17,6 +17,7 @@ interface BlogPost {
   published_at: string | null;
   meta_title: string;
   meta_description: string;
+  source_url: string | null;
 }
 
 function renderMarkdown(content: string): string {
@@ -43,7 +44,7 @@ export default function BlogPostPage() {
     if (!slug) return;
     supabase
       .from("blog_posts")
-      .select("title, slug, content, excerpt, tags, read_time, author_name, published_at, meta_title, meta_description")
+      .select("title, slug, content, excerpt, tags, read_time, author_name, published_at, meta_title, meta_description, source_url")
       .eq("slug", slug)
       .eq("status", "published")
       .single()
@@ -115,6 +116,14 @@ export default function BlogPostPage() {
             className="mt-8 prose-content"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
           />
+
+          {(post as any).source_url && (
+            <div className="mt-8 pt-6 border-t border-border/30">
+              <a href={(post as any).source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-primary hover:underline">
+                <ExternalLink className="h-3 w-3" /> View Source / Reference
+              </a>
+            </div>
+          )}
         </motion.div>
       </article>
 

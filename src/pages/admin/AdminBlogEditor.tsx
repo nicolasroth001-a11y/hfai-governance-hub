@@ -25,6 +25,7 @@ interface PostForm {
   meta_description: string;
   read_time: string;
   author_name: string;
+  source_url: string;
 }
 
 const defaultForm: PostForm = {
@@ -39,6 +40,7 @@ const defaultForm: PostForm = {
   meta_description: "",
   read_time: "",
   author_name: "HFAI Team",
+  source_url: "",
 };
 
 function slugify(text: string): string {
@@ -82,6 +84,7 @@ export default function AdminBlogEditor() {
             meta_description: data.meta_description || "",
             read_time: data.read_time || "",
             author_name: data.author_name || "HFAI Team",
+            source_url: (data as any).source_url || "",
           });
           setLoading(false);
         });
@@ -118,7 +121,7 @@ export default function AdminBlogEditor() {
     const status = publishNow ? "published" : form.status;
     const published_at = publishNow ? new Date().toISOString() : undefined;
 
-    const payload = {
+    const payload: Record<string, any> = {
       title: form.title.trim(),
       slug: form.slug.trim(),
       excerpt: form.excerpt.trim(),
@@ -130,15 +133,16 @@ export default function AdminBlogEditor() {
       meta_description: form.meta_description.trim() || form.excerpt.trim(),
       read_time: readTime,
       author_name: form.author_name.trim(),
+      source_url: form.source_url.trim(),
       updated_at: new Date().toISOString(),
       ...(published_at ? { published_at } : {}),
     };
 
     let error;
     if (isNew) {
-      ({ error } = await supabase.from("blog_posts").insert(payload));
+      ({ error } = await supabase.from("blog_posts").insert(payload as any));
     } else {
-      ({ error } = await supabase.from("blog_posts").update(payload).eq("id", id));
+      ({ error } = await supabase.from("blog_posts").update(payload as any).eq("id", id));
     }
 
     setSaving(false);
@@ -245,6 +249,11 @@ export default function AdminBlogEditor() {
                   <Label htmlFor="author">Author</Label>
                   <Input id="author" value={form.author_name} onChange={(e) => setForm((f) => ({ ...f, author_name: e.target.value }))} className="mt-1" />
                 </div>
+              </div>
+              <div>
+                <Label htmlFor="source_url">Source / Reference URL</Label>
+                <Input id="source_url" value={form.source_url} onChange={(e) => setForm((f) => ({ ...f, source_url: e.target.value }))} placeholder="https://example.com/research-paper" className="mt-1" />
+                <p className="text-[10px] text-muted-foreground mt-1">Link to original source, research, or reference material</p>
               </div>
               <div>
                 <Label htmlFor="read_time">Read Time</Label>
