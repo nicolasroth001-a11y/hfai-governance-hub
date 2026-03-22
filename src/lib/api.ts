@@ -129,8 +129,8 @@ export async function createAuditLog(payload: {
 }
 
 // ─── AI Events ─────────────────────────────────────────
-export async function fetchAIEvents(filters?: { ai_system_id?: string; event_type?: string }) {
-  let query = supabase.from("ai_events").select("*").order("created_at", { ascending: false });
+export async function fetchAIEvents(filters?: { ai_system_id?: string; event_type?: string }, limit = 500) {
+  let query = supabase.from("ai_events").select("*").order("created_at", { ascending: false }).limit(limit);
   if (filters?.ai_system_id) query = query.eq("ai_system_id", filters.ai_system_id);
   if (filters?.event_type) query = query.eq("event_type", filters.event_type);
   const { data, error } = await query;
