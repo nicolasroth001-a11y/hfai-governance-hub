@@ -121,7 +121,7 @@ export default function AdminBlogEditor() {
     const status = publishNow ? "published" : form.status;
     const published_at = publishNow ? new Date().toISOString() : undefined;
 
-    const payload = {
+    const payload: Record<string, any> = {
       title: form.title.trim(),
       slug: form.slug.trim(),
       excerpt: form.excerpt.trim(),
@@ -133,6 +133,7 @@ export default function AdminBlogEditor() {
       meta_description: form.meta_description.trim() || form.excerpt.trim(),
       read_time: readTime,
       author_name: form.author_name.trim(),
+      source_url: form.source_url.trim(),
       updated_at: new Date().toISOString(),
       ...(published_at ? { published_at } : {}),
     };
