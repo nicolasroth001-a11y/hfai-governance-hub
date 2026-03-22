@@ -140,9 +140,9 @@ export default function AdminBlogEditor() {
 
     let error;
     if (isNew) {
-      ({ error } = await supabase.from("blog_posts").insert(payload));
+      ({ error } = await supabase.from("blog_posts").insert(payload as any));
     } else {
-      ({ error } = await supabase.from("blog_posts").update(payload).eq("id", id));
+      ({ error } = await supabase.from("blog_posts").update(payload as any).eq("id", id));
     }
 
     setSaving(false);
