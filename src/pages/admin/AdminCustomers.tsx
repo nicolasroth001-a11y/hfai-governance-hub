@@ -5,7 +5,7 @@ import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Plus, Trash2, Eye } from "lucide-react";
-import { fetchAdminOrganizations, deleteOrganization } from "@/lib/api";
+import { fetchAdminOrganizations, deleteOrganization, fetchOrgCounts } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import {
