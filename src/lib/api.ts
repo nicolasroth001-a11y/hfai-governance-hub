@@ -109,8 +109,8 @@ export async function updateReview(id: string, payload: Record<string, unknown>)
 }
 
 // ─── Audit Logs ────────────────────────────────────────
-export async function fetchAuditLogs() {
-  const { data, error } = await supabase.from("audit_logs").select("*").order("created_at", { ascending: false });
+export async function fetchAuditLogs(limit = 500) {
+  const { data, error } = await supabase.from("audit_logs").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchAuditLogs:", error); return []; }
   return data ?? [];
 }
