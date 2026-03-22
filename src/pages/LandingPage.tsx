@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, Activity, AlertTriangle, UserCheck, ChevronRight,
-  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, Star,
+  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, Star, BookOpen,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
@@ -148,13 +148,16 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-3 mt-8 justify-center"
+            className="flex flex-col sm:flex-row gap-3 mt-8 justify-center items-center"
           >
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
               Start Free 14-Day Pilot <ChevronRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> Try Live Demo
+            </Button>
+            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/blog")}>
+              <BookOpen className="h-4 w-4" /> Read Our Blog
             </Button>
           </motion.div>
 
