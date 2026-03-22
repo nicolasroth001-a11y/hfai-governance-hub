@@ -84,20 +84,20 @@ export default function LandingPage() {
             <Shield className="h-5 w-5 text-primary" />
             <span className="text-sm font-semibold text-foreground tracking-tight">HFAI</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/docs/sdk")}>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/docs/sdk")}>
               Docs
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/blog")}>
+            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/blog")}>
               Resources
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/pricing/contact")}>
+            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/pricing/contact")}>
               Pricing
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/login/customer")}>
+            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               Sign In
             </Button>
-            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90" onClick={() => navigate("/pilot")}>
+            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/pilot")}>
               Free Pilot <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
@@ -156,7 +156,7 @@ export default function LandingPage() {
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> Try Live Demo
             </Button>
-            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/blog")}>
+            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2 hidden sm:inline-flex" onClick={() => navigate("/blog")}>
               <BookOpen className="h-4 w-4" /> Read Our Blog
             </Button>
           </motion.div>
@@ -519,6 +519,16 @@ export default function LandingPage() {
         </div>
       </footer>
       <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
+
+      {/* ── Sticky mobile CTA ── */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
+        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/pilot")}>
+          Start Free Pilot <ArrowRight className="h-3.5 w-3.5" />
+        </Button>
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/blog")}>
+          <BookOpen className="h-3.5 w-3.5" />
+        </Button>
+      </div>
     </div>
   );
 }
