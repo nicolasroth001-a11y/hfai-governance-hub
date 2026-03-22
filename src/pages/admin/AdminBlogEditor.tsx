@@ -84,6 +84,7 @@ export default function AdminBlogEditor() {
             meta_description: data.meta_description || "",
             read_time: data.read_time || "",
             author_name: data.author_name || "HFAI Team",
+            source_url: (data as any).source_url || "",
           });
           setLoading(false);
         });
