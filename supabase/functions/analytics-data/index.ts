@@ -64,11 +64,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { data, error } = await supabase
-      .from("analytics")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(10000);
+    // Use DB function for aggregation instead of fetching all rows
+    const { data: summary, error } = await supabase.rpc("get_analytics_summary");
 
     if (error) {
       console.error("Query error:", error);
@@ -78,49 +75,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    const rows = data || [];
-
-    const pageMap = new Map<string, { views: number; sessions: Set<string> }>();
-    for (const row of rows) {
-      const entry = pageMap.get(row.route) || { views: 0, sessions: new Set() };
-      entry.views++;
-      entry.sessions.add(row.session_id);
-      pageMap.set(row.route, entry);
-    }
-    const pages = Array.from(pageMap.entries())
-      .map(([route, { views, sessions }]) => ({ route, views, unique: sessions.size }))
-      .sort((a, b) => b.views - a.views);
-
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const dailyMap = new Map<string, number>();
-    for (const row of rows) {
-      const d = new Date(row.created_at);
-      if (d >= thirtyDaysAgo) {
-        const key = d.toISOString().slice(0, 10);
-        dailyMap.set(key, (dailyMap.get(key) || 0) + 1);
-      }
-    }
-    const traffic = Array.from(dailyMap.entries())
-      .map(([date, views]) => ({ date, views }))
-      .sort((a, b) => a.date.localeCompare(b.date));
-
-    const refMap = new Map<string, number>();
-    for (const row of rows) {
-      if (row.referrer) {
-        refMap.set(row.referrer, (refMap.get(row.referrer) || 0) + 1);
-      }
-    }
-    const referrers = Array.from(refMap.entries())
-      .map(([referrer, count]) => ({ referrer, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 20);
-
-    const totalViews = rows.length;
-    const uniqueSessions = new Set(rows.map((r) => r.session_id)).size;
-
     return new Response(
-      JSON.stringify({ pages, traffic, referrers, totalViews, uniqueSessions }),
+      JSON.stringify(summary),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
