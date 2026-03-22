@@ -251,6 +251,11 @@ export default function AdminBlogEditor() {
                 </div>
               </div>
               <div>
+                <Label htmlFor="source_url">Source / Reference URL</Label>
+                <Input id="source_url" value={form.source_url} onChange={(e) => setForm((f) => ({ ...f, source_url: e.target.value }))} placeholder="https://example.com/research-paper" className="mt-1" />
+                <p className="text-[10px] text-muted-foreground mt-1">Link to original source, research, or reference material</p>
+              </div>
+              <div>
                 <Label htmlFor="read_time">Read Time</Label>
                 <Input id="read_time" value={form.read_time} onChange={(e) => setForm((f) => ({ ...f, read_time: e.target.value }))} placeholder="Auto-calculated if empty" className="mt-1" />
               </div>

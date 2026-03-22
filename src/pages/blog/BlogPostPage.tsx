@@ -116,6 +116,14 @@ export default function BlogPostPage() {
             className="mt-8 prose-content"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
           />
+
+          {(post as any).source_url && (
+            <div className="mt-8 pt-6 border-t border-border/30">
+              <a href={(post as any).source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-primary hover:underline">
+                <ExternalLink className="h-3 w-3" /> View Source / Reference
+              </a>
+            </div>
+          )}
         </motion.div>
       </article>
 
