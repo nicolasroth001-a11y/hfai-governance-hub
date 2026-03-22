@@ -40,8 +40,8 @@ export async function deleteAISystem(id: string) {
 }
 
 // ─── Violations ────────────────────────────────────────
-export async function fetchViolations() {
-  const { data, error } = await supabase.from("violations").select("*").order("created_at", { ascending: false });
+export async function fetchViolations(limit = 500) {
+  const { data, error } = await supabase.from("violations").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchViolations:", error); return []; }
   return data ?? [];
 }
