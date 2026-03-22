@@ -60,7 +60,7 @@ const trustPoints = [
   "Enterprise-grade encryption",
   "SOC 2 aligned practices",
   "2-minute setup, zero code changes",
-  "EU AI Act ready",
+  "EU AI Act + NIST AI RMF ready",
 ];
 
 const pilotIncludes = [
