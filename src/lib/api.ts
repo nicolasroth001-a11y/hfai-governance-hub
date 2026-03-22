@@ -1,8 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
 
 // ─── AI Systems ────────────────────────────────────────
-export async function fetchAISystems() {
-  const { data, error } = await supabase.from("ai_systems").select("*").order("created_at", { ascending: false });
+export async function fetchAISystems(limit = 500) {
+  const { data, error } = await supabase.from("ai_systems").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchAISystems:", error); return []; }
   return data ?? [];
 }
@@ -40,8 +40,8 @@ export async function deleteAISystem(id: string) {
 }
 
 // ─── Violations ────────────────────────────────────────
-export async function fetchViolations() {
-  const { data, error } = await supabase.from("violations").select("*").order("created_at", { ascending: false });
+export async function fetchViolations(limit = 500) {
+  const { data, error } = await supabase.from("violations").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchViolations:", error); return []; }
   return data ?? [];
 }
@@ -78,8 +78,8 @@ export async function deleteViolation(id: string) {
 }
 
 // ─── Human Reviews ─────────────────────────────────────
-export async function fetchReviews() {
-  const { data, error } = await supabase.from("human_reviews").select("*").order("created_at", { ascending: false });
+export async function fetchReviews(limit = 500) {
+  const { data, error } = await supabase.from("human_reviews").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchReviews:", error); return []; }
   return data ?? [];
 }
@@ -109,8 +109,8 @@ export async function updateReview(id: string, payload: Record<string, unknown>)
 }
 
 // ─── Audit Logs ────────────────────────────────────────
-export async function fetchAuditLogs() {
-  const { data, error } = await supabase.from("audit_logs").select("*").order("created_at", { ascending: false });
+export async function fetchAuditLogs(limit = 500) {
+  const { data, error } = await supabase.from("audit_logs").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchAuditLogs:", error); return []; }
   return data ?? [];
 }
@@ -129,8 +129,8 @@ export async function createAuditLog(payload: {
 }
 
 // ─── AI Events ─────────────────────────────────────────
-export async function fetchAIEvents(filters?: { ai_system_id?: string; event_type?: string }) {
-  let query = supabase.from("ai_events").select("*").order("created_at", { ascending: false });
+export async function fetchAIEvents(filters?: { ai_system_id?: string; event_type?: string }, limit = 500) {
+  let query = supabase.from("ai_events").select("*").order("created_at", { ascending: false }).limit(limit);
   if (filters?.ai_system_id) query = query.eq("ai_system_id", filters.ai_system_id);
   if (filters?.event_type) query = query.eq("event_type", filters.event_type);
   const { data, error } = await query;
@@ -171,8 +171,8 @@ export async function sendAIEvent(payload: { event_type: string; payload: string
 }
 
 // ─── Rules ─────────────────────────────────────────────
-export async function fetchRules() {
-  const { data, error } = await supabase.from("rules").select("*").order("created_at", { ascending: false });
+export async function fetchRules(limit = 500) {
+  const { data, error } = await supabase.from("rules").select("*").order("created_at", { ascending: false }).limit(limit);
   if (error) { console.error("fetchRules:", error); return []; }
   return data ?? [];
 }
@@ -214,6 +214,16 @@ export async function fetchAdminOrganizations() {
   const { data, error } = await supabase.from("organizations").select("*").order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data ?? [];
+}
+
+export async function fetchOrgCounts(): Promise<Record<string, { user_count: number; system_count: number; violation_count: number }>> {
+  const { data, error } = await supabase.rpc("get_org_counts");
+  if (error) { console.error("fetchOrgCounts:", error); return {}; }
+  const map: Record<string, { user_count: number; system_count: number; violation_count: number }> = {};
+  for (const row of data ?? []) {
+    map[row.org_id] = { user_count: Number(row.user_count), system_count: Number(row.system_count), violation_count: Number(row.violation_count) };
+  }
+  return map;
 }
 
 export async function createOrganization(payload: { name: string; contact_email?: string }) {

@@ -5,8 +5,7 @@ import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Plus, Trash2, Eye } from "lucide-react";
-import { fetchAdminOrganizations, deleteOrganization } from "@/lib/api";
-import { supabase } from "@/integrations/supabase/client";
+import { fetchAdminOrganizations, deleteOrganization, fetchOrgCounts } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -39,24 +38,16 @@ export default function AdminCustomers() {
   const load = async () => {
     setLoading(true);
     try {
-      const rawOrgs = await fetchAdminOrganizations();
-
-      // Fetch counts in parallel
-      const [profilesRes, systemsRes, violationsRes] = await Promise.all([
-        supabase.from("profiles").select("org_id"),
-        supabase.from("ai_systems").select("org_id"),
-        supabase.from("violations").select("org_id"),
+      const [rawOrgs, counts] = await Promise.all([
+        fetchAdminOrganizations(),
+        fetchOrgCounts(),
       ]);
-
-      const profiles = profilesRes.data ?? [];
-      const systems = systemsRes.data ?? [];
-      const violations = violationsRes.data ?? [];
 
       const enriched: OrgRow[] = rawOrgs.map((o: any) => ({
         ...o,
-        userCount: profiles.filter((p) => p.org_id === o.id).length,
-        systemCount: systems.filter((s) => s.org_id === o.id).length,
-        violationCount: violations.filter((v) => v.org_id === o.id).length,
+        userCount: counts[o.id]?.user_count ?? 0,
+        systemCount: counts[o.id]?.system_count ?? 0,
+        violationCount: counts[o.id]?.violation_count ?? 0,
       }));
 
       setOrgs(enriched);

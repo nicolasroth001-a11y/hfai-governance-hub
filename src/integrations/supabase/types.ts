@@ -955,6 +955,16 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_analytics_summary: { Args: never; Returns: Json }
+      get_org_counts: {
+        Args: never
+        Returns: {
+          org_id: string
+          system_count: number
+          user_count: number
+          violation_count: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
