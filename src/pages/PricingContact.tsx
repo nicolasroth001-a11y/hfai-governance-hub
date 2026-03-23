@@ -31,9 +31,26 @@ export default function PricingContact() {
     e.preventDefault();
     setSending(true);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke("contact", { body: form });
-      if (fnError) throw fnError;
-      if (data?.error) throw new Error(data.error);
+      const id = crypto.randomUUID();
+      // Send inquiry notification to admin
+      const { error: inquiryError } = await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "contact-inquiry",
+          recipientEmail: form.email,
+          idempotencyKey: `contact-inquiry-${id}`,
+          templateData: { name: form.name, company: form.company, email: form.email, message: form.message },
+        },
+      });
+      if (inquiryError) throw inquiryError;
+      // Send confirmation to the person who contacted
+      await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "contact-confirmation",
+          recipientEmail: form.email,
+          idempotencyKey: `contact-confirm-${id}`,
+          templateData: { name: form.name },
+        },
+      });
       setForm({ name: "", company: "", email: "", message: "" });
       toast({ title: "Message sent", description: "We'll get back to you shortly." });
     } catch {
