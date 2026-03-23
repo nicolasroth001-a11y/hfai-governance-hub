@@ -1,19 +1,17 @@
 project_id = "uomnlgpqundhlmqkuhog"
 
-[functions.analyze-violation]
-verify_jwt = false
-
-[functions.notify-violation]
-verify_jwt = false
-
-[functions.ingest-event]
-verify_jwt = false
-
-[functions.process-email-queue]
-verify_jwt = false
-
-[functions.openai-proxy]
-verify_jwt = false
-
-[functions.deliver-webhook]
-verify_jwt = false
+[functions]
+  [functions.analyze-violation]
+    verify_jwt = false
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.deliver-webhook]
+    verify_jwt = false
+  [functions.ingest-event]
+    verify_jwt = false
+  [functions.notify-violation]
+    verify_jwt = false
+  [functions.openai-proxy]
+    verify_jwt = false
+  [functions.process-email-queue]
+    verify_jwt = false
