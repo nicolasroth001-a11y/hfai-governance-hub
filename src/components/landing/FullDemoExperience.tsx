@@ -9,6 +9,7 @@ import {
   Bot, User, Eye, Clock, ChevronRight, Zap, BarChart3,
   MessageSquare, FileWarning,
 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 // ── Trigger rules ──
 const RULES = [
