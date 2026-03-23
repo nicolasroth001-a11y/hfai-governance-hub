@@ -116,6 +116,7 @@ const App = () => {
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/submit" element={<BlogSubmit />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/unsubscribe" element={<Unsubscribe />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />
