@@ -32,9 +32,13 @@ export function TestEventModal({ open, onOpenChange, onEventSent }: TestEventMod
       toast({ title: "Payload required", description: "Enter a message or select an example.", variant: "destructive" });
       return;
     }
+    if (!profile?.org_id) {
+      toast({ title: "Not ready", description: "Your account is still loading. Please try again in a moment.", variant: "destructive" });
+      return;
+    }
     setLoading(true);
     try {
-      const result = await sendAIEvent({ event_type: "user_message", payload, org_id: profile?.org_id || "" });
+      const result = await sendAIEvent({ event_type: "user_message", payload, org_id: profile.org_id });
       const eventId = result.userEvent?.id?.toString() || "—";
       const violationCount = result.violations?.length || 0;
       setSuccess({ eventId, violations: violationCount });
