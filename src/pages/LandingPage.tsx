@@ -490,6 +490,29 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Blog CTA Section ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-4xl"
+        >
+          <div className="rounded-2xl border border-border/40 bg-secondary/20 p-8 sm:p-10 flex flex-col sm:flex-row items-center gap-6">
+            <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+              <BookOpen className="h-7 w-7 text-primary" />
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">AI Governance Insights & Guides</h3>
+              <p className="mt-1 text-sm text-muted-foreground">Practical articles on AI compliance, the EU AI Act, NIST AI RMF, and keeping humans in control.</p>
+            </div>
+            <Button size="lg" variant="outline" className="gap-2 shrink-0" onClick={() => navigate("/blog")}>
+              Read the Blog <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </motion.div>
+      </section>
+
       {/* ── Footer ── */}
       <footer className="border-t border-border/30 py-10 px-6">
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
