@@ -9,6 +9,7 @@ import {
   Bot, User, Eye, Clock, ChevronRight, Zap, BarChart3,
   MessageSquare, FileWarning,
 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 // ── Trigger rules ──
 const RULES = [
@@ -145,6 +146,13 @@ export function FullDemoExperience({ open, onClose }: FullDemoExperienceProps) {
     setViolations((prev) =>
       prev.map((v) => v.id === violationId ? { ...v, status: action } : v)
     );
+    toast({
+      title: action === "confirmed" ? "⚠️ Violation Confirmed" : "✓ Violation Dismissed",
+      description: action === "confirmed"
+        ? "This violation has been confirmed and flagged for remediation."
+        : "This violation has been dismissed — no further action needed.",
+      variant: action === "confirmed" ? "destructive" : "default",
+    });
   }, []);
 
   const stats = {

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { Shield, ArrowLeft, Copy, Check, Zap, Lock, Code } from "lucide-react";
+import { Shield, ArrowLeft, Copy, Check, Zap, Lock, Code, AlertTriangle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
 import { usePageView } from "@/hooks/usePageView";
 import { useState } from "react";
@@ -240,12 +241,162 @@ export default function SDKDocs() {
           </TabsContent>
         </Tabs>
 
+        {/* Authentication */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+            <Lock className="h-5 w-5 text-primary" /> Authentication
+          </h2>
+          <Card className="border-border/40">
+            <CardContent className="p-5 space-y-3">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                All API requests require authentication via a header. The method depends on your integration path:
+              </p>
+              <div className="space-y-2">
+                <div className="flex items-start gap-3 text-sm">
+                  <Badge variant="outline" className="shrink-0 text-[10px] mt-0.5">Proxy</Badge>
+                  <div>
+                    <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">api_key = "YOUR_PROXY_TOKEN"</code>
+                    <p className="text-xs text-muted-foreground mt-1">Passed as OpenAI API key. Generated on the <strong>Connect</strong> page after linking your provider.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 text-sm">
+                  <Badge variant="outline" className="shrink-0 text-[10px] mt-0.5">REST</Badge>
+                  <div>
+                    <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">x-api-key: YOUR_HFAI_API_KEY</code>
+                    <p className="text-xs text-muted-foreground mt-1">Passed as a request header. Found on your organization's <strong>Connect</strong> page.</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Rate Limits */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+            <Zap className="h-5 w-5 text-primary" /> Rate Limits
+          </h2>
+          <Card className="border-border/40">
+            <CardContent className="p-5">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/40 text-left">
+                      <th className="pb-2 font-medium text-foreground">Tier</th>
+                      <th className="pb-2 font-medium text-foreground">Events / min</th>
+                      <th className="pb-2 font-medium text-foreground">Burst</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-muted-foreground">
+                    <tr className="border-b border-border/20">
+                      <td className="py-2">Free</td>
+                      <td className="py-2">60</td>
+                      <td className="py-2">10</td>
+                    </tr>
+                    <tr className="border-b border-border/20">
+                      <td className="py-2">Starter</td>
+                      <td className="py-2">300</td>
+                      <td className="py-2">50</td>
+                    </tr>
+                    <tr className="border-b border-border/20">
+                      <td className="py-2">Pro</td>
+                      <td className="py-2">1,000</td>
+                      <td className="py-2">200</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2">Enterprise</td>
+                      <td className="py-2">Custom</td>
+                      <td className="py-2">Custom</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-xs text-muted-foreground/60 mt-3">
+                Rate-limited responses return <code className="bg-muted px-1 rounded">429 Too Many Requests</code> with a <code className="bg-muted px-1 rounded">Retry-After</code> header.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Error Codes */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-primary" /> Error Codes
+          </h2>
+          <Card className="border-border/40">
+            <CardContent className="p-5">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/40 text-left">
+                      <th className="pb-2 font-medium text-foreground">Code</th>
+                      <th className="pb-2 font-medium text-foreground">Meaning</th>
+                      <th className="pb-2 font-medium text-foreground hidden sm:table-cell">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-muted-foreground">
+                    {[
+                      { code: "200", meaning: "Success", action: "Event ingested & evaluated" },
+                      { code: "400", meaning: "Bad Request", action: "Check required fields: event_type, org_id" },
+                      { code: "401", meaning: "Unauthorized", action: "Verify your API key or proxy token" },
+                      { code: "403", meaning: "Forbidden", action: "Your plan doesn't include this feature" },
+                      { code: "429", meaning: "Rate Limited", action: "Back off and retry after Retry-After header" },
+                      { code: "500", meaning: "Server Error", action: "Retry with exponential backoff" },
+                    ].map((row) => (
+                      <tr key={row.code} className="border-b border-border/20 last:border-0">
+                        <td className="py-2 font-mono text-xs">{row.code}</td>
+                        <td className="py-2">{row.meaning}</td>
+                        <td className="py-2 text-xs hidden sm:table-cell">{row.action}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Webhook Setup */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+            <Code className="h-5 w-5 text-primary" /> Webhook Notifications
+          </h2>
+          <Card className="border-border/40">
+            <CardContent className="p-5 space-y-3">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                HFAI can send real-time webhook notifications when violations are detected. Configure webhooks from the <strong>Notifications</strong> settings page in your dashboard.
+              </p>
+              <div className="space-y-2">
+                <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">Payload Format</h4>
+                <CodeSnippetBlock code={`// POST to your webhook URL
+{
+  "event": "violation.created",
+  "violation_id": "v-abc123",
+  "rule_id": "R-001",
+  "severity": "critical",
+  "description": "PII Disclosure detected",
+  "ai_system_id": "sys-xyz",
+  "timestamp": "2025-03-23T10:15:00Z"
+}`} language="json" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">Supported Events</h4>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-primary" /> <code className="bg-muted px-1 rounded">violation.created</code> — New violation detected</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-primary" /> <code className="bg-muted px-1 rounded">violation.reviewed</code> — Human review completed</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-primary" /> <code className="bg-muted px-1 rounded">rca.completed</code> — Root cause analysis finished</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* CTA */}
         <Card className="border-primary/20 bg-primary/5">
           <CardContent className="p-6 text-center space-y-3">
             <h3 className="text-lg font-bold text-foreground">Ready to integrate?</h3>
             <p className="text-sm text-muted-foreground">Sign up free and get your API keys in 2 minutes.</p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-3 justify-center flex-wrap">
               <Button asChild><Link to="/signup/customer">Get Started Free</Link></Button>
               <Button variant="outline" asChild><Link to="/pilot">Free Pilot Program</Link></Button>
             </div>

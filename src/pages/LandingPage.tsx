@@ -525,8 +525,11 @@ export default function LandingPage() {
         <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/pilot")}>
           Start Free Pilot <ArrowRight className="h-3.5 w-3.5" />
         </Button>
-        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/blog")}>
-          <BookOpen className="h-3.5 w-3.5" />
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/docs/sdk")}>
+          Docs
+        </Button>
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/pricing/contact")}>
+          Pricing
         </Button>
       </div>
     </div>
