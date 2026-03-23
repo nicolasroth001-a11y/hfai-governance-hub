@@ -112,7 +112,7 @@ serve(async (req) => {
     if (insertErr) throw new Error(`Insert event failed: ${insertErr.message}`);
     log("Event logged", { id: userEvent.id });
 
-    // 2. Check rules for violations
+    // 2. Check rules for violations — hybrid: keyword match + AI classification
     const { data: rules } = await supabase
       .from("rules")
       .select("*")
@@ -120,52 +120,101 @@ serve(async (req) => {
       .eq("enabled", true);
 
     const violations: unknown[] = [];
+    const keywordMatched: string[] = []; // rule IDs matched by keywords
 
     if (rules && rules.length > 0) {
+      // Phase 1: Fast keyword pre-filter
       for (const rule of rules) {
-        let violated = false;
-
-        // Check condition-based matching
         if (rule.condition) {
           try {
             const condStr = typeof rule.condition === "string" ? rule.condition : JSON.stringify(rule.condition);
-            // Simple keyword matching against input text
             if (inputText && condStr) {
               const keywords = condStr.toLowerCase().split(/[,\s]+/).filter(Boolean);
               const lowerInput = inputText.toLowerCase();
-              violated = keywords.some((kw: string) => kw.length > 2 && lowerInput.includes(kw));
+              if (keywords.some((kw: string) => kw.length > 2 && lowerInput.includes(kw))) {
+                keywordMatched.push(rule.id);
+              }
             }
-          } catch {
-            // Skip malformed conditions
-          }
+          } catch { /* skip */ }
         }
+      }
 
-        if (violated) {
-          const { data: violation } = await supabase
-            .from("violations")
-            .insert({
-              ai_system_id: aiSystemId,
-              rule_id: rule.id,
-              description: `Rule violated: ${rule.name} – ${rule.description || ""}`,
-              severity: rule.severity || "medium",
-              ai_event_id: userEvent.id,
-              org_id: orgId,
-            })
-            .select()
-            .single();
+      // Phase 2: AI classification for ambiguous content (when no keyword match but content exists)
+      let aiClassifiedRuleIds: string[] = [];
+      const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
+      if (keywordMatched.length === 0 && inputText && inputText.length > 10 && lovableApiKey) {
+        try {
+          const ruleDescriptions = rules.map((r: any) => `- ${r.id}: ${r.name} — ${r.description || "No description"} (severity: ${r.severity})`).join("\n");
+          const classifyRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${lovableApiKey}`,
+            },
+            body: JSON.stringify({
+              model: "google/gemini-2.5-flash-lite",
+              messages: [
+                {
+                  role: "system",
+                  content: `You are an AI governance rule evaluator. Given user input/output text and a list of rules, determine which rules (if any) are violated. Reply ONLY with a JSON array of violated rule IDs, e.g. ["R-001","R-003"]. If none are violated, reply [].`,
+                },
+                {
+                  role: "user",
+                  content: `RULES:\n${ruleDescriptions}\n\nTEXT TO EVALUATE:\n${inputText.slice(0, 2000)}`,
+                },
+              ],
+              max_tokens: 128,
+              temperature: 0.1,
+            }),
+          });
 
-          if (violation) {
-            violations.push(violation);
-            await supabase.from("audit_logs").insert({
-              action: "violation_created",
-              entity_type: "violation",
-              entity_id: violation.id,
-              details: `Auto-detected: ${rule.name}`,
-              org_id: orgId,
-            });
+          if (classifyRes.ok) {
+            const classifyData = await classifyRes.json();
+            const raw = classifyData.choices?.[0]?.message?.content || "[]";
+            // Extract JSON array from response
+            const match = raw.match(/\[.*?\]/s);
+            if (match) {
+              const parsed = JSON.parse(match[0]);
+              aiClassifiedRuleIds = parsed.filter((id: string) => rules.some((r: any) => r.id === id));
+              log("AI classification result", { aiClassifiedRuleIds });
+            }
           }
-          log("Violation created", { ruleId: rule.id, violationId: violation?.id });
+        } catch (e) {
+          log("AI classification failed (falling back to keyword-only)", { error: String(e) });
         }
+      }
+
+      // Combine matched rule IDs
+      const violatedRuleIds = new Set([...keywordMatched, ...aiClassifiedRuleIds]);
+
+      for (const rule of rules) {
+        if (!violatedRuleIds.has(rule.id)) continue;
+
+        const detectionMethod = keywordMatched.includes(rule.id) ? "keyword" : "ai_classification";
+        const { data: violation } = await supabase
+          .from("violations")
+          .insert({
+            ai_system_id: aiSystemId,
+            rule_id: rule.id,
+            description: `Rule violated: ${rule.name} – ${rule.description || ""} [detected via ${detectionMethod}]`,
+            severity: rule.severity || "medium",
+            ai_event_id: userEvent.id,
+            org_id: orgId,
+          })
+          .select()
+          .single();
+
+        if (violation) {
+          violations.push(violation);
+          await supabase.from("audit_logs").insert({
+            action: "violation_created",
+            entity_type: "violation",
+            entity_id: violation.id,
+            details: `Auto-detected (${detectionMethod}): ${rule.name}`,
+            org_id: orgId,
+          });
+        }
+        log("Violation created", { ruleId: rule.id, violationId: violation?.id, detectionMethod });
       }
     }
 
@@ -216,6 +265,25 @@ serve(async (req) => {
       } catch (e) {
         log("AI response generation failed (non-fatal)", { error: String(e) });
       }
+    }
+
+    // 4. Trigger webhook delivery for violations (fire-and-forget)
+    if (violations.length > 0) {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      for (const v of violations as any[]) {
+        try {
+          fetch(`${supabaseUrl}/functions/v1/deliver-webhook`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serviceKey}`,
+            },
+            body: JSON.stringify({ violation_id: v.id, event_type: "violation.created" }),
+          }).catch(() => {}); // fire-and-forget
+        } catch { /* non-blocking */ }
+      }
+      log("Webhook delivery triggered", { count: violations.length });
     }
 
     return new Response(

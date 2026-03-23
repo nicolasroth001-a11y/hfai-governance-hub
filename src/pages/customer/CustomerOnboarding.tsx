@@ -6,9 +6,12 @@ import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowRight, BookOpen, Plug, Layers, Send, Zap, SkipForward, Key, Shield } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, BookOpen, Plug, Layers, Send, Zap, SkipForward, Key, Shield, CheckCircle, Circle } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOnboardingProgress } from "@/hooks/useOnboardingProgress";
 
 const PROXY_BASE = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/openai-proxy";
 const INGEST_BASE = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/ingest-event";
@@ -31,6 +34,7 @@ export default function CustomerOnboarding() {
   const [testOpen, setTestOpen] = useState(false);
   const navigate = useNavigate();
   const { profile } = useAuth();
+  const { steps, progress, completedAt, completeStep } = useOnboardingProgress();
   usePageView("/customer/onboarding");
 
   const pythonProxy = `import openai
@@ -102,6 +106,33 @@ const response = await fetch("${INGEST_BASE}", {
           <SkipForward className="h-4 w-4" /> Skip to Dashboard
         </Button>
       </div>
+
+      {/* ── Onboarding Progress ── */}
+      <Card className="border-primary/20 bg-primary/5">
+        <CardContent className="p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-foreground">Setup Progress</h3>
+            <span className="text-xs text-muted-foreground">
+              {completedAt ? "✅ Complete!" : `${Math.round(progress * 100)}%`}
+            </span>
+          </div>
+          <Progress value={progress * 100} className="h-2" />
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+            {steps.map((step) => (
+              <div key={step.id} className="flex items-center gap-2 text-xs">
+                {step.completed ? (
+                  <CheckCircle className="h-3.5 w-3.5 text-primary shrink-0" />
+                ) : (
+                  <Circle className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0" />
+                )}
+                <span className={step.completed ? "text-foreground" : "text-muted-foreground"}>
+                  {step.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* ── Integration Methods ── */}
       <Tabs defaultValue="proxy" className="w-full">
