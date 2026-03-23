@@ -88,8 +88,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/docs/sdk")}>
               Docs
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/blog")}>
-              Resources
+            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/blog")}>
+              Blog
             </Button>
             <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/pricing/contact")}>
               Pricing
