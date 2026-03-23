@@ -41,9 +41,10 @@ export default function CustomerSignup() {
     if (result.success) {
       toast({
         title: "Account created!",
-        description: "Please check your email to verify your account before signing in.",
+        description: "Welcome to HFAI. Redirecting to your dashboard…",
       });
-      navigate("/login/customer");
+      // Short delay to let auth state propagate, then redirect
+      setTimeout(() => navigate("/customer/dashboard"), 1500);
     } else {
       toast({ title: "Signup failed", description: result.error, variant: "destructive" });
     }
