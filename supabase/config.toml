@@ -14,4 +14,6 @@ verify_jwt = false
 
 [functions.openai-proxy]
 verify_jwt = false
+
+[functions.deliver-webhook]
 verify_jwt = false
