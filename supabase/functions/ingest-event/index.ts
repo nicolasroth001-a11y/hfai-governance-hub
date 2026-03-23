@@ -267,6 +267,25 @@ serve(async (req) => {
       }
     }
 
+    // 4. Trigger webhook delivery for violations (fire-and-forget)
+    if (violations.length > 0) {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      for (const v of violations as any[]) {
+        try {
+          fetch(`${supabaseUrl}/functions/v1/deliver-webhook`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serviceKey}`,
+            },
+            body: JSON.stringify({ violation_id: v.id, event_type: "violation.created" }),
+          }).catch(() => {}); // fire-and-forget
+        } catch { /* non-blocking */ }
+      }
+      log("Webhook delivery triggered", { count: violations.length });
+    }
+
     return new Response(
       JSON.stringify({ userEvent, assistantEvent, violations }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
