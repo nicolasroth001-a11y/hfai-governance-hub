@@ -29,23 +29,24 @@ export const SignupEmail = ({
 }: SignupEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Confirm your email for {siteName}</Preview>
+    <Preview>Welcome to {siteName} — confirm your email</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
+        <Text style={brand}>HFAI</Text>
+        <Heading style={h1}>Welcome aboard</Heading>
         <Text style={text}>
           Thanks for signing up for{' '}
           <Link href={siteUrl} style={link}>
             <strong>{siteName}</strong>
           </Link>
-          !
+          ! We're excited to have you.
         </Text>
         <Text style={text}>
           Please confirm your email address (
           <Link href={`mailto:${recipient}`} style={link}>
             {recipient}
           </Link>
-          ) by clicking the button below:
+          ) to get started:
         </Text>
         <Button style={button} href={confirmationUrl}>
           Verify Email
@@ -60,27 +61,11 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
-const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
-}
-const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
-}
-const link = { color: 'inherit', textDecoration: 'underline' }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
-}
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Inter', Arial, sans-serif" }
+const container = { padding: '32px 28px' }
+const brand = { fontSize: '14px', fontWeight: 'bold' as const, color: '#c4993a', letterSpacing: '2px', margin: '0 0 24px' }
+const h1 = { fontSize: '24px', fontWeight: 'bold' as const, color: '#292524', margin: '0 0 20px' }
+const text = { fontSize: '14px', color: '#78716c', lineHeight: '1.6', margin: '0 0 24px' }
+const link = { color: '#c4993a', textDecoration: 'underline' }
+const button = { backgroundColor: '#c4993a', color: '#292524', fontSize: '14px', fontWeight: '600' as const, borderRadius: '16px', padding: '12px 24px', textDecoration: 'none' }
+const footer = { fontSize: '12px', color: '#a8a29e', margin: '32px 0 0' }
