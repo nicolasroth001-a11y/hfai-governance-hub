@@ -34,6 +34,7 @@ export default function CustomerOnboarding() {
   const [testOpen, setTestOpen] = useState(false);
   const navigate = useNavigate();
   const { profile } = useAuth();
+  const { steps, progress, completedAt, completeStep } = useOnboardingProgress();
   usePageView("/customer/onboarding");
 
   const pythonProxy = `import openai
