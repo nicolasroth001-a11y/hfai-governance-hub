@@ -21,9 +21,11 @@ export default function PricingContact() {
   usePageView("/pricing/contact");
 
   const checkoutStatus = searchParams.get("checkout");
-  if (checkoutStatus === "success" && !subscription.subscribed) {
-    refreshSubscription();
-  }
+  useEffect(() => {
+    if (checkoutStatus === "success" && !subscription.subscribed) {
+      refreshSubscription();
+    }
+  }, [checkoutStatus, subscription.subscribed, refreshSubscription]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
