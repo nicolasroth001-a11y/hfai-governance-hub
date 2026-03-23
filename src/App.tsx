@@ -35,6 +35,7 @@ import NISTCompliancePage from "./pages/NISTCompliancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
 import BlogPostPage from "./pages/blog/BlogPostPage";
 import BlogSubmit from "./pages/blog/BlogSubmit";
+import Unsubscribe from "./pages/Unsubscribe";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CustomerViolations from "./pages/customer/CustomerViolations";
