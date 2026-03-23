@@ -6,9 +6,12 @@ import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowRight, BookOpen, Plug, Layers, Send, Zap, SkipForward, Key, Shield } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, BookOpen, Plug, Layers, Send, Zap, SkipForward, Key, Shield, CheckCircle, Circle } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOnboardingProgress } from "@/hooks/useOnboardingProgress";
 
 const PROXY_BASE = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/openai-proxy";
 const INGEST_BASE = "https://uomnlgpqundhlmqkuhog.supabase.co/functions/v1/ingest-event";
