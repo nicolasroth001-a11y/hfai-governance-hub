@@ -14,6 +14,10 @@ const faqs = [
     a: "Content safety violations, bias detection, PII exposure, hallucination patterns, unauthorized data access, prompt injection attempts, and custom rules you define for your specific use case.",
   },
   {
+    q: "Do I get automated compliance reports?",
+    a: "Yes — HFAI generates and delivers a Weekly AI Governance Summary to your inbox every Monday. Each report includes your total AI systems, high-risk classifications, open and resolved violations, active governance rules, and human review activity. No manual work required — full EU AI Act compliance visibility on autopilot.",
+  },
+  {
     q: "What is Root Cause Analysis?",
     a: "Our AI-powered RCA engine diagnoses why violations occur, suggests rule changes, identifies recurring patterns, and generates remediation checklists — all validated by human reviewers.",
   },
@@ -22,7 +26,6 @@ const faqs = [
     a: "Absolutely. All data is encrypted at rest and in transit. We follow SOC 2 aligned practices. With the REST API integration, your AI traffic never leaves your environment — only event metadata is sent to HFAI. With the Proxy, traffic is encrypted end-to-end and processed in real time.",
   },
 ];
-
 export function FAQSection() {
   return (
     <Accordion type="single" collapsible className="w-full max-w-2xl mx-auto">
