@@ -29,6 +29,7 @@ export default function CustomerDashboard() {
   const [activity, setActivity] = useState<any[]>([]);
   const [testOpen, setTestOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { completedAt, progress: onboardingProgress, loading: onboardingLoading } = useOnboardingProgress();
 
   // Realtime subscription
   const { connected, events, clearEvents } = useRealtimeSubscription({
