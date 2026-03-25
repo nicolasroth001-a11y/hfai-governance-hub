@@ -97,8 +97,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               Sign In
             </Button>
-            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/pilot")}>
-              Free Pilot <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/signup/customer")}>
+              Start Free <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
         </div>
@@ -150,14 +150,14 @@ export default function LandingPage() {
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 mt-8 justify-center items-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
-              Start Free 14-Day Pilot <ChevronRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              Create Free Account <ChevronRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> Try Live Demo
             </Button>
-            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/blog")}>
-              <BookOpen className="h-4 w-4" /> Read Our Blog
+            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
+              <Clock className="h-4 w-4" /> Request Pilot
             </Button>
           </motion.div>
 
@@ -234,9 +234,14 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Button size="lg" className="gap-2 mt-2" onClick={() => navigate("/pilot")}>
-                Apply Now — It's Free <ArrowRight className="h-4 w-4" />
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                <Button size="lg" className="gap-2" onClick={() => navigate("/signup/customer")}>
+                  Start Free — No Card Required <ArrowRight className="h-4 w-4" />
+                </Button>
+                <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate("/pilot")}>
+                  Request White-Glove Pilot
+                </Button>
+              </div>
             </div>
             <div className="shrink-0 hidden sm:flex flex-col items-center gap-2 text-center p-6 rounded-xl border border-border/30 bg-background/50">
               <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center">
@@ -448,6 +453,41 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Post-Demo Signup CTA ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-2xl text-center rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-background to-primary/5 p-8 sm:p-10"
+        >
+          <div className="mx-auto h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+            <Zap className="h-6 w-6 text-primary" />
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            Like what you see? Start governing in minutes.
+          </h3>
+          <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
+            Create a free account — no credit card, no sales call. Connect your first AI system in under 2 minutes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 mt-6 justify-center">
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              Create Free Account <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button size="lg" variant="ghost" className="text-base h-12 gap-2" onClick={() => navigate("/pricing/contact")}>
+              View Plans
+            </Button>
+          </div>
+          <div className="flex items-center justify-center gap-4 mt-4">
+            {["No credit card", "Free forever tier", "2-min setup"].map(t => (
+              <span key={t} className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                <CheckCircle className="h-3 w-3 text-primary/70" /> {t}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
       {/* ── FAQ ── */}
       <section className="px-6 pb-24">
         <motion.div
@@ -480,8 +520,8 @@ export default function LandingPage() {
             Start your free 14-day pilot. No credit card. No commitment. Full platform access.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
-              Start Free Pilot <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              Create Free Account <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/pricing/contact")}>
               View Pricing
@@ -545,11 +585,11 @@ export default function LandingPage() {
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
-        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/pilot")}>
-          Start Free Pilot <ArrowRight className="h-3.5 w-3.5" />
+        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/signup/customer")}>
+          Start Free <ArrowRight className="h-3.5 w-3.5" />
         </Button>
-        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/blog")}>
-          Blog
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/pilot")}>
+          Pilot
         </Button>
         <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/pricing/contact")}>
           Pricing
