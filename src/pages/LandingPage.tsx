@@ -234,9 +234,14 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Button size="lg" className="gap-2 mt-2" onClick={() => navigate("/pilot")}>
-                Apply Now — It's Free <ArrowRight className="h-4 w-4" />
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                <Button size="lg" className="gap-2" onClick={() => navigate("/signup/customer")}>
+                  Start Free — No Card Required <ArrowRight className="h-4 w-4" />
+                </Button>
+                <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate("/pilot")}>
+                  Request White-Glove Pilot
+                </Button>
+              </div>
             </div>
             <div className="shrink-0 hidden sm:flex flex-col items-center gap-2 text-center p-6 rounded-xl border border-border/30 bg-background/50">
               <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center">
