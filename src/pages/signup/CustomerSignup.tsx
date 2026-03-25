@@ -36,6 +36,7 @@ export default function CustomerSignup() {
       password: form.password,
       name: form.name || form.company_name,
       company_name: form.company_name,
+      signup_source: "customer_signup_page",
     });
     setLoading(false);
     if (result.success) {

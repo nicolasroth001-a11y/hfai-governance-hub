@@ -45,6 +45,7 @@ export default function PilotSignup() {
       password: form.password,
       name: form.name || form.company_name,
       company_name: form.company_name,
+      signup_source: "pilot_signup_page",
     });
     setLoading(false);
     if (result.success) {
