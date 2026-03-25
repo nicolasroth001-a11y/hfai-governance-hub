@@ -453,6 +453,41 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Post-Demo Signup CTA ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-2xl text-center rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-background to-primary/5 p-8 sm:p-10"
+        >
+          <div className="mx-auto h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+            <Zap className="h-6 w-6 text-primary" />
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            Like what you see? Start governing in minutes.
+          </h3>
+          <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
+            Create a free account — no credit card, no sales call. Connect your first AI system in under 2 minutes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 mt-6 justify-center">
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              Create Free Account <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button size="lg" variant="ghost" className="text-base h-12 gap-2" onClick={() => navigate("/pricing/contact")}>
+              View Plans
+            </Button>
+          </div>
+          <div className="flex items-center justify-center gap-4 mt-4">
+            {["No credit card", "Free forever tier", "2-min setup"].map(t => (
+              <span key={t} className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                <CheckCircle className="h-3 w-3 text-primary/70" /> {t}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
       {/* ── FAQ ── */}
       <section className="px-6 pb-24">
         <motion.div
