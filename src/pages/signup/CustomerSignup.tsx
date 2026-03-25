@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
+import { trackFunnelEvent } from "@/lib/funnel";
 
 export default function CustomerSignup() {
   const navigate = useNavigate();
