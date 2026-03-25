@@ -82,6 +82,12 @@ export default function CustomerDashboard() {
 
   useEffect(() => { loadData(); }, [loadData]);
 
+  // Show onboarding wizard for brand-new users
+  const isNewUser = !onboardingLoading && !completedAt && onboardingProgress === 0;
+  if (isNewUser) {
+    return <OnboardingWelcome />;
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">

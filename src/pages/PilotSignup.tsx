@@ -40,6 +40,7 @@ export default function PilotSignup() {
       toast({ title: "Please fix password issues", variant: "destructive" });
       return;
     }
+    trackFunnelEvent("signup_started", { source: "pilot_signup_page" });
     setLoading(true);
     const result = await signup({
       email: form.email,
@@ -50,6 +51,7 @@ export default function PilotSignup() {
     });
     setLoading(false);
     if (result.success) {
+      trackFunnelEvent("signup_completed", { source: "pilot_signup_page", email: form.email });
       toast({
         title: "🎉 Pilot account created!",
         description: "Welcome to HFAI. Redirecting to your dashboard…",
