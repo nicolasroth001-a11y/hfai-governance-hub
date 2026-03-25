@@ -151,8 +151,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { success: true, mfaRequired: needsMfa };
   }, [checkMFA]);
 
-  const signup = useCallback(async (data: { email: string; password: string; name: string; company_name: string }) => {
-    const { error } = await supabase.auth.signUp({
+  const signup = useCallback(async (data: { email: string; password: string; name: string; company_name: string; signup_source?: string }) => {
+    const { data: authData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -160,11 +160,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: data.name || data.company_name,
           role: "customer",
           company_name: data.company_name,
+          signup_source: data.signup_source || "direct",
+          signup_timestamp: new Date().toISOString(),
         },
         emailRedirectTo: window.location.origin,
       },
     });
     if (error) return { success: false, error: error.message };
+
+    // Send welcome email via transactional email system
+    if (authData?.user) {
+      supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "welcome",
+          recipientEmail: data.email,
+          idempotencyKey: `welcome-${authData.user.id}`,
+          templateData: {
+            name: data.name || data.company_name,
+            companyName: data.company_name,
+          },
+        },
+      }).catch((err) => console.error("Welcome email failed:", err));
+    }
+
     return { success: true };
   }, []);
 
