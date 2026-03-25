@@ -97,8 +97,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               Sign In
             </Button>
-            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/pilot")}>
-              Free Pilot <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/signup/customer")}>
+              Start Free <ArrowRight className="h-3 w-3" />
             </Button>
           </div>
         </div>
