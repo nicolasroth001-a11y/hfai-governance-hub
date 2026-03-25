@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
+import { trackFunnelEvent } from "@/lib/funnel";
 
 export default function CustomerSignup() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export default function CustomerSignup() {
       toast({ title: "Please fix password issues", variant: "destructive" });
       return;
     }
+    trackFunnelEvent("signup_started", { source: "customer_signup_page" });
     setLoading(true);
     const result = await signup({
       email: form.email,
@@ -40,11 +42,11 @@ export default function CustomerSignup() {
     });
     setLoading(false);
     if (result.success) {
+      trackFunnelEvent("signup_completed", { source: "customer_signup_page", email: form.email });
       toast({
         title: "Account created!",
         description: "Welcome to HFAI. Redirecting to your dashboard…",
       });
-      // Short delay to let auth state propagate, then redirect
       setTimeout(() => navigate("/customer/dashboard"), 1500);
     } else {
       toast({ title: "Signup failed", description: result.error, variant: "destructive" });

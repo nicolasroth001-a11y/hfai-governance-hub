@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { LiveEventFeed } from "@/components/LiveEventFeed";
 import { RealtimeStats } from "@/components/RealtimeStats";
+import { OnboardingWelcome } from "@/components/OnboardingWelcome";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
+import { useOnboardingProgress } from "@/hooks/useOnboardingProgress";
 import { fetchViolations, fetchAuditLogs, fetchAISystems, fetchReviews } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
@@ -27,6 +29,7 @@ export default function CustomerDashboard() {
   const [activity, setActivity] = useState<any[]>([]);
   const [testOpen, setTestOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { completedAt, progress: onboardingProgress, loading: onboardingLoading } = useOnboardingProgress();
 
   // Realtime subscription
   const { connected, events, clearEvents } = useRealtimeSubscription({
@@ -78,6 +81,12 @@ export default function CustomerDashboard() {
   }, []);
 
   useEffect(() => { loadData(); }, [loadData]);
+
+  // Show onboarding wizard for brand-new users
+  const isNewUser = !onboardingLoading && !completedAt && onboardingProgress === 0;
+  if (isNewUser) {
+    return <OnboardingWelcome />;
+  }
 
   return (
     <div className="space-y-8">

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { usePageView } from "@/hooks/usePageView";
+import { trackFunnelEvent } from "@/lib/funnel";
 
 const pilotBenefits = [
   { icon: Zap, title: "Full Platform Access", description: "Proxy + REST API, unlimited AI systems, all governance features for 14 days." },
@@ -39,6 +40,7 @@ export default function PilotSignup() {
       toast({ title: "Please fix password issues", variant: "destructive" });
       return;
     }
+    trackFunnelEvent("signup_started", { source: "pilot_signup_page" });
     setLoading(true);
     const result = await signup({
       email: form.email,
@@ -49,6 +51,7 @@ export default function PilotSignup() {
     });
     setLoading(false);
     if (result.success) {
+      trackFunnelEvent("signup_completed", { source: "pilot_signup_page", email: form.email });
       toast({
         title: "🎉 Pilot account created!",
         description: "Welcome to HFAI. Redirecting to your dashboard…",
