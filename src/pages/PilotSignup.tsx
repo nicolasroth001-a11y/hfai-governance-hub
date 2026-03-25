@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { usePageView } from "@/hooks/usePageView";
+import { trackFunnelEvent } from "@/lib/funnel";
 
 const pilotBenefits = [
   { icon: Zap, title: "Full Platform Access", description: "Proxy + REST API, unlimited AI systems, all governance features for 14 days." },
