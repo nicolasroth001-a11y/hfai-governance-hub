@@ -12,6 +12,9 @@ import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
 import { StatsBar } from "@/components/landing/StatsBar";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
+import { ComplianceCalculator } from "@/components/landing/ComplianceCalculator";
+import { UseCaseCards } from "@/components/landing/UseCaseCards";
+import { LeadCapture } from "@/components/landing/LeadCapture";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
@@ -297,7 +300,27 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Compliance Section (EU AI Act + NIST) ── */}
+      {/* ── Use Cases ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">
+            Real-World Scenarios
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mt-2">
+            HFAI in Action
+          </h2>
+          <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
+            See how teams in regulated industries use HFAI to govern AI at the decision boundary.
+          </p>
+        </motion.div>
+        <UseCaseCards />
+      </section>
+
       <section className="px-6 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -377,6 +400,25 @@ export default function LandingPage() {
             </Button>
           </div>
         </motion.div>
+      </section>
+
+
+      {/* ── Compliance Calculator ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+            Are You Ready?
+          </h2>
+          <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
+            Check your compliance timeline against upcoming regulatory deadlines.
+          </p>
+        </motion.div>
+        <ComplianceCalculator />
       </section>
 
       {/* ── How It Works ── */}
@@ -486,6 +528,11 @@ export default function LandingPage() {
             ))}
           </div>
         </motion.div>
+      </section>
+
+      {/* ── Lead Capture ── */}
+      <section className="px-6 pb-24">
+        <LeadCapture />
       </section>
 
       {/* ── FAQ ── */}
