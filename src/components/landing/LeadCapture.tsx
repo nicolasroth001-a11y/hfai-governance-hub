@@ -74,7 +74,7 @@ export function LeadCapture() {
                   <h3 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
                     AI Compliance Readiness Checklist
                   </h3>
-                  <p className="text-sm text-muted-foreground mt-2 mb-4 leading-relaxed">
+                  <p className="text-sm text-foreground/70 mt-2 mb-4 leading-relaxed">
                     Everything you need to prepare for EU AI Act and NIST AI RMF compliance — in one actionable checklist.
                   </p>
                   <ul className="space-y-2">
