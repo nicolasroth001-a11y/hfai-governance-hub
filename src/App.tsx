@@ -116,6 +116,7 @@ const App = () => {
           <Route path="/nist-ai-rmf" element={<NISTCompliancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/submit" element={<BlogSubmit />} />
+          <Route path="/blog/eu-ai-act-omnibus-vii-timeline-update" element={<EUAIActOmnibusVII />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
 
