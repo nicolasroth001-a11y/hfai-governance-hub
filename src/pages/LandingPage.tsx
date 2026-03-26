@@ -320,7 +320,7 @@ export default function LandingPage() {
             <div className="flex items-center gap-2 mb-3">
               <span className="text-lg">🇪🇺</span>
               <span className="text-xs font-semibold text-foreground">EU AI Act</span>
-              <span className="text-[10px] text-muted-foreground">— Enforcement Aug 2026</span>
+              <span className="text-[10px] text-muted-foreground">— GPAI rules Aug 2026 · High-risk Dec 2027 (Omnibus VII)</span>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
