@@ -402,6 +402,25 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+
+      {/* ── Compliance Calculator ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+            Are You Ready?
+          </h2>
+          <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
+            Check your compliance timeline against upcoming regulatory deadlines.
+          </p>
+        </motion.div>
+        <ComplianceCalculator />
+      </section>
+
       {/* ── How It Works ── */}
       <section className="px-6 pb-24">
         <motion.div
