@@ -74,14 +74,14 @@ export function LeadCapture() {
                   <h3 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
                     AI Compliance Readiness Checklist
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1 mb-3">
+                  <p className="text-sm text-muted-foreground mt-2 mb-4 leading-relaxed">
                     Everything you need to prepare for EU AI Act and NIST AI RMF compliance — in one actionable checklist.
                   </p>
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-2">
                     {CHECKLIST_ITEMS.map((item) => (
-                      <li key={item} className="flex items-start gap-1.5">
-                        <CheckCircle className="h-3 w-3 text-primary shrink-0 mt-0.5" />
-                        <span className="text-[11px] text-muted-foreground">{item}</span>
+                      <li key={item} className="flex items-start gap-2">
+                        <CheckCircle className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                        <span className="text-sm text-foreground/80">{item}</span>
                       </li>
                     ))}
                   </ul>
