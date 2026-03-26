@@ -530,6 +530,11 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Lead Capture ── */}
+      <section className="px-6 pb-24">
+        <LeadCapture />
+      </section>
+
       {/* ── FAQ ── */}
       <section className="px-6 pb-24">
         <motion.div
