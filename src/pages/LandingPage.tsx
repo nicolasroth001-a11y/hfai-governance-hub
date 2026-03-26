@@ -12,6 +12,9 @@ import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
 import { StatsBar } from "@/components/landing/StatsBar";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
+import { ComplianceCalculator } from "@/components/landing/ComplianceCalculator";
+import { UseCaseCards } from "@/components/landing/UseCaseCards";
+import { LeadCapture } from "@/components/landing/LeadCapture";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
