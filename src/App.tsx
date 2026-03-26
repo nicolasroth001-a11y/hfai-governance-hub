@@ -35,6 +35,7 @@ import NISTCompliancePage from "./pages/NISTCompliancePage";
 import BlogIndex from "./pages/blog/BlogIndex";
 import BlogPostPage from "./pages/blog/BlogPostPage";
 import BlogSubmit from "./pages/blog/BlogSubmit";
+import EUAIActOmnibusVII from "./pages/blog/EUAIActOmnibusVII";
 import Unsubscribe from "./pages/Unsubscribe";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
@@ -115,6 +116,7 @@ const App = () => {
           <Route path="/nist-ai-rmf" element={<NISTCompliancePage />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/submit" element={<BlogSubmit />} />
+          <Route path="/blog/eu-ai-act-omnibus-vii-timeline-update" element={<EUAIActOmnibusVII />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
 

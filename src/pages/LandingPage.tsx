@@ -125,7 +125,7 @@ export default function LandingPage() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            <span className="text-xs font-medium text-primary">EU AI Act enforcement begins Aug 2026 — are you ready?</span>
+            <span className="text-xs font-medium text-primary">EU AI Act general-purpose AI rules active Aug 2026 · High-risk obligations begin Dec 2027</span>
           </motion.div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
@@ -320,7 +320,7 @@ export default function LandingPage() {
             <div className="flex items-center gap-2 mb-3">
               <span className="text-lg">🇪🇺</span>
               <span className="text-xs font-semibold text-foreground">EU AI Act</span>
-              <span className="text-[10px] text-muted-foreground">— Enforcement Aug 2026</span>
+              <span className="text-[10px] text-muted-foreground">— GPAI rules Aug 2026 · High-risk Dec 2027 (Omnibus VII)</span>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
