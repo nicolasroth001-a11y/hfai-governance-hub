@@ -13,10 +13,10 @@ describe("stripe-config", () => {
       expect(TIERS.free.trial_days).toBe(0);
     });
 
-    it("paid tiers have 14-day trials", () => {
-      expect(TIERS.starter.trial_days).toBe(14);
-      expect(TIERS.pro.trial_days).toBe(14);
-      expect(TIERS.enterprise.trial_days).toBe(14);
+    it("paid tiers have 30-day trials", () => {
+      expect(TIERS.starter.trial_days).toBe(30);
+      expect(TIERS.pro.trial_days).toBe(30);
+      expect(TIERS.enterprise.trial_days).toBe(30);
     });
 
     it("paid tiers have valid Stripe product and price IDs", () => {

@@ -12,7 +12,7 @@ import { usePageView } from "@/hooks/usePageView";
 import { trackFunnelEvent } from "@/lib/funnel";
 
 const pilotBenefits = [
-  { icon: Zap, title: "Full Platform Access", description: "Proxy + REST API, unlimited AI systems, all governance features for 14 days." },
+  { icon: Zap, title: "Full Platform Access", description: "Proxy + REST API, unlimited AI systems, all governance features for 30 days." },
   { icon: Users, title: "Dedicated Onboarding", description: "Our team helps you integrate, configure rules, and train reviewers." },
   { icon: BarChart3, title: "Governance Report", description: "At the end, receive a full audit of your AI systems' compliance posture." },
   { icon: Shield, title: "Zero Risk", description: "No credit card required. No commitment. Cancel anytime." },
@@ -95,7 +95,7 @@ export default function PilotSignup() {
       <section className="relative flex flex-col items-center text-center px-6 pt-28 sm:pt-36 pb-12">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-3">Free 14-Day Pilot</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-3">Free 30-Day Trial</p>
           <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground max-w-3xl leading-[1.1]">
             Start Governing Your AI —
             <br />

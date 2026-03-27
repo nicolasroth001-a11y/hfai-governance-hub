@@ -15,6 +15,10 @@ import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
 import { ComplianceCalculator } from "@/components/landing/ComplianceCalculator";
 import { UseCaseCards } from "@/components/landing/UseCaseCards";
 import { LeadCapture } from "@/components/landing/LeadCapture";
+import { CountdownTimer } from "@/components/landing/CountdownTimer";
+import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
+import { BookDemoCTA } from "@/components/landing/BookDemoCTA";
+import { FounderSection } from "@/components/landing/FounderSection";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
@@ -67,7 +71,7 @@ const trustPoints = [
 ];
 
 const pilotIncludes = [
-  { icon: Cpu, text: "Unlimited AI systems for 14 days" },
+  { icon: Cpu, text: "Unlimited AI systems for 30 days" },
   { icon: Scale, text: "EU AI Act + NIST AI RMF compliance" },
   { icon: UserCheck, text: "Dedicated onboarding support" },
   { icon: Shield, text: "Governance report at end of trial" },
@@ -202,6 +206,11 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Countdown Timer ── */}
+      <section className="px-6 pb-24">
+        <CountdownTimer />
+      </section>
+
       {/* ── Stats Bar ── */}
       <section className="px-6 pb-24">
         <div className="mx-auto max-w-3xl">
@@ -221,7 +230,7 @@ export default function LandingPage() {
             <div className="flex-1 space-y-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-primary" />
-                <span className="text-xs uppercase tracking-[0.15em] text-primary font-semibold">Free 14-Day Pilot</span>
+                <span className="text-xs uppercase tracking-[0.15em] text-primary font-semibold">Free 30-Day Trial</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
                 See governance working on <span className="text-primary">your</span> AI systems
@@ -535,6 +544,21 @@ export default function LandingPage() {
         <LeadCapture />
       </section>
 
+      {/* ── Newsletter Signup ── */}
+      <section className="px-6 pb-24">
+        <NewsletterSignup />
+      </section>
+
+      {/* ── Book a Demo ── */}
+      <section className="px-6 pb-24">
+        <BookDemoCTA />
+      </section>
+
+      {/* ── Founder Section ── */}
+      <section className="px-6 pb-24">
+        <FounderSection />
+      </section>
+
       {/* ── FAQ ── */}
       <section className="px-6 pb-24">
         <motion.div
@@ -564,7 +588,7 @@ export default function LandingPage() {
             <span className="text-primary">Who's watching?</span>
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-            Start your free 14-day pilot. No credit card. No commitment. Full platform access.
+            Start your free 30-day trial. No credit card. No commitment. Full platform access.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
