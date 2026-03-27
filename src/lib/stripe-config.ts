@@ -72,7 +72,7 @@ export const TIERS: Record<TierKey, TierConfig> = {
     price: 149.99,
     currency: "USD",
     interval: "month",
-    trial_days: 14,
+    trial_days: 30,
     features: [
       "Everything in Pro",
       "Root cause analysis (AI‑powered)",
