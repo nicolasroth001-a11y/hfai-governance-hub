@@ -111,7 +111,6 @@ export default function AdminNewsletter() {
           title="Templates"
           value="3"
           icon={FileText}
-          description="Welcome, blast, digest"
         />
       </div>
 
