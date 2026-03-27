@@ -12,7 +12,7 @@ import { usePageView } from "@/hooks/usePageView";
 import { trackFunnelEvent } from "@/lib/funnel";
 
 const pilotBenefits = [
-  { icon: Zap, title: "Full Platform Access", description: "Proxy + REST API, unlimited AI systems, all governance features for 14 days." },
+  { icon: Zap, title: "Full Platform Access", description: "Proxy + REST API, unlimited AI systems, all governance features for 30 days." },
   { icon: Users, title: "Dedicated Onboarding", description: "Our team helps you integrate, configure rules, and train reviewers." },
   { icon: BarChart3, title: "Governance Report", description: "At the end, receive a full audit of your AI systems' compliance posture." },
   { icon: Shield, title: "Zero Risk", description: "No credit card required. No commitment. Cancel anytime." },
