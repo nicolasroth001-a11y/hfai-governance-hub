@@ -92,7 +92,7 @@ export default function AdminNewsletter() {
     <div>
       <SectionHeader
         title="Newsletter"
-        subtitle="Compose and send newsletters to your subscribers"
+        description="Compose and send newsletters to your subscribers"
       />
 
       {/* Stats */}
