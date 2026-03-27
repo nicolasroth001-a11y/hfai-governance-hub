@@ -427,6 +427,36 @@ export type Database = {
           },
         ]
       }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          gdpr_consent: boolean
+          id: string
+          status: string
+          subscribed_at: string
+          unsubscribed_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          gdpr_consent?: boolean
+          id?: string
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          gdpr_consent?: boolean
+          id?: string
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Relationships: []
+      }
       notification_logs: {
         Row: {
           channel: string
