@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const bundled = await bundle({
-  entryPoint: path.resolve(__dirname, "src/index.ts"),
+  entryPoint: path.resolve(__dirname, "../src/index.ts"),
   webpackOverride: (config) => config,
 });
 
@@ -20,6 +20,6 @@ const composition = await selectComposition({ serveUrl: bundled, id: "main", pup
 
 for (const f of [50, 400, 800, 1200, 1650]) {
   await renderStill({ composition, serveUrl: bundled, output: `/tmp/frame-${f}.png`, frame: f, puppeteerInstance: browser });
-  console.log(`Frame ${f} ✓`);
+  console.log("Frame " + f + " done");
 }
 await browser.close({ silent: false });
