@@ -544,6 +544,21 @@ export default function LandingPage() {
         <LeadCapture />
       </section>
 
+      {/* ── Newsletter Signup ── */}
+      <section className="px-6 pb-24">
+        <NewsletterSignup />
+      </section>
+
+      {/* ── Book a Demo ── */}
+      <section className="px-6 pb-24">
+        <BookDemoCTA />
+      </section>
+
+      {/* ── Founder Section ── */}
+      <section className="px-6 pb-24">
+        <FounderSection />
+      </section>
+
       {/* ── FAQ ── */}
       <section className="px-6 pb-24">
         <motion.div
