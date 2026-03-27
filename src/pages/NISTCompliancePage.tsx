@@ -188,7 +188,7 @@ export default function NISTCompliancePage() {
               </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button size="lg" className="gap-2" asChild>
-                  <Link to="/pilot">Start Free 14-Day Pilot <ArrowRight className="h-4 w-4" /></Link>
+                  <Link to="/pilot">Start Free 30-Day Trial <ArrowRight className="h-4 w-4" /></Link>
                 </Button>
                 <Button size="lg" variant="outline" className="gap-2" asChild>
                   <Link to="/governance">View Governance Framework</Link>

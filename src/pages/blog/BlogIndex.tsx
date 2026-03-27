@@ -120,7 +120,7 @@ export default function BlogIndex() {
       <section className="px-6 pb-24">
         <div className="mx-auto max-w-3xl text-center rounded-2xl border border-primary/20 bg-primary/5 p-10">
           <h2 className="text-xl sm:text-2xl font-bold text-foreground">Ready to govern your AI?</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Start your free 14-day pilot — no credit card required.</p>
+          <p className="mt-2 text-sm text-muted-foreground">Start your free 30-day trial — no credit card required.</p>
           <Button size="lg" className="mt-6 gap-2" asChild>
             <Link to="/pilot">Start Free Pilot <ArrowRight className="h-4 w-4" /></Link>
           </Button>
