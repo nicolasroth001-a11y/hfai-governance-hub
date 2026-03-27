@@ -80,7 +80,7 @@ import AdminHumanFirstFramework from "./pages/admin/AdminHumanFirstFramework";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminBlogPosts from "./pages/admin/AdminBlogPosts";
 import AdminBlogEditor from "./pages/admin/AdminBlogEditor";
-
+import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
