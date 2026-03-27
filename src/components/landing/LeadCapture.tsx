@@ -32,6 +32,17 @@ export function LeadCapture() {
         referrer: email,
       });
 
+      // Send the checklist email
+      const idempotencyKey = `checklist-${email}-${Date.now()}`;
+      await supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "compliance-checklist",
+          recipientEmail: email,
+          idempotencyKey,
+          templateData: { email },
+        },
+      });
+
       setSubmitted(true);
       toast({
         title: "Checklist sent!",
