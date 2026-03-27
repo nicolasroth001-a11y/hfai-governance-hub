@@ -1,156 +1,81 @@
 import React from "react";
 import { interpolate, spring } from "remotion";
 import { colors } from "../theme";
+import { SidebarNav } from "../components/SidebarNav";
+import { TopBarUI } from "../components/TopBarUI";
+
+const auditEntries = [
+  { time: "14:32:01", action: "Event ingested", detail: "chat_completion from gpt-support-bot (f2c9e1a8)", color: colors.teal },
+  { time: "14:32:02", action: "12 rules evaluated", detail: "3 rules triggered, 1 critical match", color: colors.gold },
+  { time: "14:32:02", action: "Violation created", detail: "VIO-2847 — PII exposure in AI response (Critical)", color: colors.red },
+  { time: "14:32:03", action: "Notification sent", detail: "Email alert to noah@acmecorp.com, security@acmecorp.com", color: colors.yellow },
+  { time: "14:35:18", action: "Status updated", detail: "Open → Investigating by noah@acmecorp.com", color: colors.yellow },
+  { time: "14:38:42", action: "Resolution notes added", detail: "Confirmed PII leak, escalating to security team", color: colors.creamMuted },
+  { time: "14:39:01", action: "QA Review completed", detail: "Confirmed & Escalated by Noah (Approve)", color: colors.green },
+  { time: "14:39:05", action: "Audit log sealed", detail: "Immutable record created — EU AI Act compliant", color: colors.gold },
+];
 
 interface Props {
   frame: number;
 }
 
-const auditEntries = [
-  { time: "14:32:00", action: "Event EVT-4821 ingested", actor: "System", icon: "⚡", color: colors.teal },
-  { time: "14:32:01", action: "12 rules evaluated — 3 triggered", actor: "Rule Engine", icon: "🛡️", color: colors.gold },
-  { time: "14:32:01", action: "Violation VIO-2847 created (Critical)", actor: "System", icon: "🚨", color: colors.red },
-  { time: "14:32:15", action: "Assigned to reviewer Sarah Chen", actor: "System", icon: "👤", color: colors.yellow },
-  { time: "14:34:22", action: "Violation confirmed — Escalated", actor: "Sarah Chen", icon: "✅", color: colors.green },
-  { time: "14:34:22", action: "Model flagged for retraining", actor: "System", icon: "🔄", color: colors.teal },
-];
-
 export const AuditTrailScene: React.FC<Props> = ({ frame }) => {
   const fps = 30;
-
-  const panelIn = spring({ frame: frame - 10, fps, config: { damping: 18, stiffness: 140 } });
-
-  // Closing brand appear
-  const brandIn = spring({ frame: frame - 280, fps, config: { damping: 15, stiffness: 120 } });
+  const pageIn = spring({ frame, fps, config: { damping: 22, stiffness: 160 } });
+  const showClose = frame > 280;
+  const closeIn = spring({ frame: frame - 280, fps, config: { damping: 18, stiffness: 120 } });
 
   return (
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-      {/* Audit trail panel */}
-      <div
-        style={{
-          position: "absolute",
-          top: 80,
-          left: 230,
-          right: 30,
-          background: colors.uiCard,
-          border: `1px solid ${colors.uiBorder}`,
-          borderRadius: 12,
-          padding: 24,
-          opacity: panelIn,
-          transform: `translateY(${interpolate(panelIn, [0, 1], [20, 0])}px)`,
-          boxShadow: `0 12px 40px ${colors.bgDeep}90`,
-          zIndex: 15,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-          <span style={{ fontSize: 16 }}>📋</span>
-          <div style={{ fontSize: 15, fontWeight: 600, color: colors.cream }}>
-            Complete Audit Trail — VIO-2847
-          </div>
-          <div
-            style={{
-              marginLeft: "auto",
-              fontSize: 10,
-              color: colors.green,
-              fontWeight: 600,
-            }}
-          >
-            Fully Traceable
-          </div>
-        </div>
-
-        {/* Timeline */}
-        <div style={{ position: "relative", paddingLeft: 24 }}>
-          {/* Vertical line */}
-          <div
-            style={{
-              position: "absolute",
-              left: 7,
-              top: 8,
-              bottom: 8,
-              width: 2,
-              background: colors.uiBorder,
-            }}
-          />
-
-          {auditEntries.map((entry, i) => {
-            const entryIn = spring({ frame: frame - 30 - i * 20, fps, config: { damping: 18, stiffness: 180 } });
-            return (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 14,
-                  padding: "10px 0",
-                  position: "relative",
-                  opacity: entryIn,
-                  transform: `translateX(${interpolate(entryIn, [0, 1], [-10, 0])}px)`,
-                }}
-              >
-                {/* Timeline dot */}
-                <div
-                  style={{
-                    position: "absolute",
-                    left: -20,
-                    width: 12,
-                    height: 12,
-                    borderRadius: "50%",
-                    background: entry.color,
-                    border: `2px solid ${colors.uiCard}`,
-                    zIndex: 2,
-                  }}
-                />
-                <span style={{ fontSize: 14, width: 24, textAlign: "center" }}>{entry.icon}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 12, color: colors.cream }}>{entry.action}</div>
-                  <div style={{ fontSize: 10, color: colors.creamDim, marginTop: 2 }}>{entry.actor}</div>
-                </div>
-                <div style={{ fontSize: 10, color: colors.creamDim, fontFamily: "monospace" }}>{entry.time}</div>
+    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", display: "flex", pointerEvents: "none" }}>
+      {!showClose && (
+        <>
+          <SidebarNav frame={frame} activeItem="Audit Logs" />
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", background: colors.uiBg }}>
+            <TopBarUI email="noah@acmecorp.com" />
+            <div style={{ flex: 1, padding: "24px 28px", overflow: "hidden", opacity: pageIn }}>
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 20, fontWeight: 600, color: colors.cream, fontFamily: "Space Grotesk, sans-serif" }}>Audit Logs</div>
+                <div style={{ fontSize: 11, color: colors.creamDim, marginTop: 3 }}>Complete, immutable record of all governance actions</div>
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Closing brand overlay */}
-      {frame > 260 && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: `${colors.bgDeep}${Math.round(interpolate(frame, [260, 320], [0, 230], { extrapolateRight: "clamp" })).toString(16).padStart(2, "0")}`,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 30,
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "Space Grotesk, sans-serif",
-              fontSize: 36,
-              fontWeight: 700,
-              color: colors.gold,
-              letterSpacing: 4,
-              opacity: brandIn,
-              transform: `scale(${interpolate(brandIn, [0, 1], [0.9, 1])})`,
-              marginBottom: 12,
-            }}
-          >
-            HFAI
+              <div style={{ background: colors.uiCard, borderRadius: 10, border: `1px solid ${colors.uiBorder}`, padding: 16 }}>
+                {auditEntries.map((entry, i) => {
+                  const entryIn = spring({ frame: frame - 20 - i * 12, fps, config: { damping: 18, stiffness: 160 } });
+                  const isLast = i === auditEntries.length - 1;
+                  return (
+                    <div key={i} style={{ display: "flex", gap: 12, opacity: entryIn, transform: `translateY(${interpolate(entryIn, [0, 1], [8, 0])}px)`, paddingBottom: isLast ? 0 : 12, marginBottom: isLast ? 0 : 12, borderBottom: isLast ? "none" : `1px solid ${colors.uiBorder}` }}>
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 16 }}>
+                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: entry.color, marginTop: 2, boxShadow: `0 0 6px ${entry.color}40` }} />
+                        {!isLast && <div style={{ width: 1, flex: 1, background: colors.uiBorder, marginTop: 4 }} />}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span style={{ fontSize: 11, fontWeight: 600, color: colors.cream }}>{entry.action}</span>
+                          <span style={{ fontSize: 9, color: colors.creamDim, fontFamily: "monospace" }}>{entry.time}</span>
+                        </div>
+                        <div style={{ fontSize: 10, color: colors.creamMuted, marginTop: 2, lineHeight: 1.4 }}>{entry.detail}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {frame > 140 && (
+                <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 8, background: colors.greenBg, border: `1px solid ${colors.green}30`, borderRadius: 8, padding: "8px 14px", opacity: spring({ frame: frame - 140, fps, config: { damping: 18, stiffness: 160 } }) }}>
+                  <span style={{ fontSize: 14 }}>✅</span>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: colors.green }}>EU AI Act Compliant</div>
+                    <div style={{ fontSize: 9, color: colors.creamMuted }}>Full audit trail maintained with immutable records</div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          <div
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: 16,
-              color: colors.creamMuted,
-              opacity: brandIn,
-            }}
-          >
-            humanfirstai.com
-          </div>
+        </>
+      )}
+      {showClose && (
+        <div style={{ width: "100%", height: "100%", background: `radial-gradient(ellipse at 50% 40%, ${colors.bgWarm} 0%, ${colors.bgDeep} 70%)`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", opacity: closeIn }}>
+          <div style={{ fontFamily: "Space Grotesk, sans-serif", fontSize: 36, fontWeight: 700, color: colors.gold, letterSpacing: 4, transform: `translateY(${interpolate(closeIn, [0, 1], [20, 0])}px)` }}>HFAI</div>
+          <div style={{ fontSize: 14, color: colors.cream, marginTop: 8, letterSpacing: 2, opacity: interpolate(closeIn, [0.3, 1], [0, 1], { extrapolateLeft: "clamp" }) }}>Human-First AI Governance</div>
+          <div style={{ fontSize: 11, color: colors.creamDim, marginTop: 20, opacity: interpolate(closeIn, [0.5, 1], [0, 1], { extrapolateLeft: "clamp" }) }}>humanfirstai.com</div>
         </div>
       )}
     </div>

@@ -1,176 +1,88 @@
 import React from "react";
 import { interpolate, spring } from "remotion";
 import { colors } from "../theme";
+import { SidebarNav } from "../components/SidebarNav";
+import { TopBarUI } from "../components/TopBarUI";
+
+const violationRows = [
+  { id: "VIO-2847", desc: "PII exposure in AI response — personal data leaked", severity: "critical", detected: "just now", status: "open", isNew: true },
+  { id: "VIO-2846", desc: "Content safety rule triggered on moderation check", severity: "high", detected: "1 hour ago", status: "open", isNew: false },
+  { id: "VIO-2845", desc: "Bias threshold exceeded in hiring classifier", severity: "medium", detected: "3 hours ago", status: "investigating", isNew: false },
+  { id: "VIO-2844", desc: "Transparency obligation not met for EU user", severity: "high", detected: "5 hours ago", status: "resolved", isNew: false },
+  { id: "VIO-2843", desc: "Response exceeded toxicity threshold", severity: "medium", detected: "8 hours ago", status: "resolved", isNew: false },
+];
+
+const severityColors: Record<string, { text: string; bg: string }> = {
+  critical: { text: colors.red, bg: colors.redBg },
+  high: { text: "#e07040", bg: "#3a2218" },
+  medium: { text: colors.yellow, bg: colors.yellowBg },
+  low: { text: colors.green, bg: colors.greenBg },
+};
+
+const statusColors: Record<string, { text: string; bg: string }> = {
+  open: { text: colors.red, bg: colors.redBg },
+  investigating: { text: colors.yellow, bg: colors.yellowBg },
+  resolved: { text: colors.green, bg: colors.greenBg },
+};
 
 interface Props {
   frame: number;
 }
 
-const triggeredRules = [
-  { name: "Content Safety Policy", severity: "critical", match: true },
-  { name: "User Manipulation Detection", severity: "high", match: true },
-  { name: "Output Transparency", severity: "medium", match: true },
-];
-
 export const ViolationDetected: React.FC<Props> = ({ frame }) => {
   const fps = 30;
-
-  // Alert flash
-  const flashOpacity = frame < 30
-    ? interpolate(Math.sin(frame * 0.8), [-1, 1], [0, 0.15])
-    : 0;
-
-  // Violation card entrance
-  const cardIn = spring({ frame: frame - 30, fps, config: { damping: 15, stiffness: 140 } });
-
-  // Rule list stagger
+  const flashOpacity = interpolate(frame, [0, 8, 20], [0, 0.12, 0], { extrapolateRight: "clamp" });
+  const toastIn = spring({ frame: frame - 5, fps, config: { damping: 18, stiffness: 200 } });
   const fadeOut = interpolate(frame, [320, 360], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
   return (
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: fadeOut }}>
-      {/* Red flash overlay */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: colors.red,
-          opacity: flashOpacity,
-          zIndex: 20,
-        }}
-      />
-
-      {/* Alert notification */}
-      {frame > 15 && (
-        <div
-          style={{
-            position: "absolute",
-            top: 60,
-            left: "50%",
-            transform: `translateX(-50%) translateY(${interpolate(
-              spring({ frame: frame - 15, fps, config: { damping: 18, stiffness: 200 } }),
-              [0, 1], [-20, 0]
-            )}px)`,
-            background: colors.redBg,
-            border: `1px solid ${colors.red}50`,
-            borderRadius: 10,
-            padding: "10px 20px",
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            zIndex: 25,
-            boxShadow: `0 8px 30px ${colors.red}20`,
-            opacity: spring({ frame: frame - 15, fps, config: { damping: 20, stiffness: 200 } }),
-          }}
-        >
-          <span style={{ fontSize: 18 }}>🚨</span>
-          <div style={{ fontSize: 13, fontWeight: 600, color: colors.red }}>
-            Critical Violation Detected — VIO-2847
+    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", display: "flex", pointerEvents: "none", opacity: fadeOut }}>
+      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: colors.red, opacity: flashOpacity, zIndex: 10 }} />
+      <SidebarNav frame={frame} activeItem="Violations" />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", background: colors.uiBg }}>
+        <TopBarUI email="noah@acmecorp.com" />
+        <div style={{ flex: 1, padding: "24px 28px", overflow: "hidden", position: "relative" }}>
+          <div style={{ marginBottom: 6 }}>
+            <div style={{ fontSize: 20, fontWeight: 600, color: colors.cream, fontFamily: "Space Grotesk, sans-serif" }}>Violations</div>
+            <div style={{ fontSize: 11, color: colors.creamDim, marginTop: 3 }}>AI governance violations detected in your systems</div>
           </div>
-        </div>
-      )}
-
-      {/* Violation detail card */}
-      {frame > 25 && (
-        <div
-          style={{
-            position: "absolute",
-            top: 120,
-            left: 230,
-            right: 30,
-            background: colors.uiCard,
-            border: `1px solid ${colors.red}30`,
-            borderLeft: `3px solid ${colors.red}`,
-            borderRadius: 12,
-            padding: 24,
-            opacity: cardIn,
-            transform: `translateY(${interpolate(cardIn, [0, 1], [20, 0])}px)`,
-            boxShadow: `0 12px 40px ${colors.bgDeep}90`,
-            zIndex: 15,
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <div>
-              <div style={{ fontSize: 10, color: colors.creamDim, fontFamily: "monospace", marginBottom: 4 }}>VIO-2847</div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: colors.cream }}>
-                AI provided instructions to circumvent safety controls
+          <div style={{ display: "flex", gap: 10, marginBottom: 16, marginTop: 16 }}>
+            {["Severity", "Status"].map((label, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, background: colors.uiCard, border: `1px solid ${colors.uiBorder}`, borderRadius: 6, padding: "5px 12px", fontSize: 10, color: colors.creamMuted }}>
+                {label}: <span style={{ color: colors.cream }}>All</span><span style={{ fontSize: 8, marginLeft: 4 }}>▼</span>
               </div>
-            </div>
-            <div
-              style={{
-                background: colors.redBg,
-                border: `1px solid ${colors.red}40`,
-                borderRadius: 6,
-                padding: "4px 12px",
-                fontSize: 11,
-                fontWeight: 600,
-                color: colors.red,
-                textTransform: "uppercase" as const,
-                letterSpacing: 1,
-              }}
-            >
-              CRITICAL
-            </div>
+            ))}
           </div>
-
-          {/* Triggered rules */}
-          <div style={{ fontSize: 12, color: colors.creamDim, marginBottom: 10 }}>Rules Triggered:</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {triggeredRules.map((rule, i) => {
-              const ruleIn = spring({ frame: frame - 60 - i * 15, fps, config: { damping: 18, stiffness: 180 } });
-              const severityColor = rule.severity === "critical" ? colors.red : rule.severity === "high" ? colors.yellow : colors.gold;
+          <div style={{ background: colors.uiCard, borderRadius: 10, border: `1px solid ${colors.uiBorder}`, overflow: "hidden" }}>
+            <div style={{ display: "flex", padding: "10px 14px", borderBottom: `1px solid ${colors.uiBorder}`, fontSize: 9, fontWeight: 600, color: colors.creamDim, textTransform: "uppercase" as const, letterSpacing: 1 }}>
+              <div style={{ width: 80 }}>ID</div><div style={{ flex: 1 }}>Description</div><div style={{ width: 80 }}>Severity</div><div style={{ width: 90 }}>Detected</div><div style={{ width: 90 }}>Status</div>
+            </div>
+            {violationRows.map((row, i) => {
+              const rowIn = spring({ frame: frame - 25 - i * 5, fps, config: { damping: 20, stiffness: 180 } });
+              const sc = severityColors[row.severity] || severityColors.medium;
+              const stc = statusColors[row.status] || statusColors.open;
               return (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    background: colors.uiBg,
-                    borderRadius: 8,
-                    padding: "10px 14px",
-                    border: `1px solid ${colors.uiBorder}`,
-                    opacity: ruleIn,
-                    transform: `translateX(${interpolate(ruleIn, [0, 1], [-15, 0])}px)`,
-                  }}
-                >
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: severityColor }} />
-                  <div style={{ flex: 1, fontSize: 12, color: colors.cream }}>{rule.name}</div>
-                  <div
-                    style={{
-                      fontSize: 9,
-                      fontWeight: 600,
-                      textTransform: "uppercase" as const,
-                      letterSpacing: 1,
-                      color: severityColor,
-                      padding: "2px 8px",
-                      borderRadius: 4,
-                      background: `${severityColor}15`,
-                    }}
-                  >
-                    {rule.severity}
-                  </div>
+                <div key={i} style={{ display: "flex", padding: "9px 14px", alignItems: "center", borderBottom: i < violationRows.length - 1 ? `1px solid ${colors.uiBorder}` : "none", opacity: rowIn, background: row.isNew ? `${colors.red}08` : "transparent" }}>
+                  <div style={{ width: 80, fontSize: 10, color: colors.gold, fontFamily: "monospace", fontWeight: row.isNew ? 600 : 400 }}>{row.id}</div>
+                  <div style={{ flex: 1, fontSize: 10, color: row.isNew ? colors.cream : colors.creamMuted, overflow: "hidden", whiteSpace: "nowrap" as const, textOverflow: "ellipsis" as const }}>{row.desc}</div>
+                  <div style={{ width: 80 }}><span style={{ fontSize: 8, fontWeight: 600, color: sc.text, background: sc.bg, padding: "2px 6px", borderRadius: 4, textTransform: "uppercase" as const, letterSpacing: 0.5 }}>{row.severity}</span></div>
+                  <div style={{ width: 90, fontSize: 9, color: colors.creamDim }}>{row.detected}</div>
+                  <div style={{ width: 90 }}><span style={{ fontSize: 8, fontWeight: 500, color: stc.text, background: stc.bg, padding: "2px 6px", borderRadius: 4, textTransform: "capitalize" as const }}>{row.status}</span></div>
                 </div>
               );
             })}
           </div>
-
-          {/* Source info */}
-          <div
-            style={{
-              display: "flex",
-              gap: 20,
-              marginTop: 16,
-              fontSize: 11,
-              color: colors.creamDim,
-              opacity: interpolate(frame, [120, 140], [0, 1], { extrapolateRight: "clamp" }),
-            }}
-          >
-            <span>System: <span style={{ color: colors.creamMuted }}>gpt-support-bot</span></span>
-            <span>Event: <span style={{ color: colors.creamMuted }}>EVT-4821</span></span>
-            <span>Status: <span style={{ color: colors.yellow }}>Pending Review</span></span>
-          </div>
+          {frame > 3 && frame < 200 && (
+            <div style={{ position: "absolute", top: 20, right: 20, background: colors.redBg, border: `1px solid ${colors.red}40`, borderRadius: 8, padding: "10px 14px", maxWidth: 280, opacity: interpolate(toastIn, [0, 1], [0, 1]), transform: `translateX(${interpolate(toastIn, [0, 1], [30, 0])}px)` }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                <span style={{ fontSize: 12 }}>🚨</span>
+                <span style={{ fontSize: 10, fontWeight: 600, color: colors.red }}>Critical Violation Detected</span>
+              </div>
+              <div style={{ fontSize: 9, color: colors.creamMuted, lineHeight: 1.4 }}>PII exposure detected in gpt-support-bot response to user query.</div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
