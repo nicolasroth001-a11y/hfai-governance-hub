@@ -19,10 +19,10 @@ export function NewsletterSignup() {
 
     setLoading(true);
     try {
-      await supabase.from("page_views").insert({
-        page: "/newsletter-signup",
-        referrer: email,
+      const { error } = await supabase.functions.invoke("newsletter-subscribe", {
+        body: { email, gdpr_consent: true },
       });
+      if (error) throw error;
 
       setSubmitted(true);
       toast({
