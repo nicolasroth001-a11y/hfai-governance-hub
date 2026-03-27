@@ -568,7 +568,7 @@ export default function LandingPage() {
             <span className="text-primary">Who's watching?</span>
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-            Start your free 14-day pilot. No credit card. No commitment. Full platform access.
+            Start your free 30-day trial. No credit card. No commitment. Full platform access.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
