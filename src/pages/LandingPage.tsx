@@ -225,7 +225,7 @@ export default function LandingPage() {
             <div className="flex-1 space-y-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-primary" />
-                <span className="text-xs uppercase tracking-[0.15em] text-primary font-semibold">Free 14-Day Pilot</span>
+                <span className="text-xs uppercase tracking-[0.15em] text-primary font-semibold">Free 30-Day Trial</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
                 See governance working on <span className="text-primary">your</span> AI systems
