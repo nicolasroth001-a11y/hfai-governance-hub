@@ -14,6 +14,7 @@ import { template as contactConfirmation } from './contact-confirmation.tsx'
 import { template as weeklyComplianceReport } from './weekly-compliance-report.tsx'
 import { template as welcome } from './welcome.tsx'
 import { template as complianceChecklist } from './compliance-checklist.tsx'
+import { template as newsletterWelcome } from './newsletter-welcome.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'contact-inquiry': contactInquiry,
@@ -21,4 +22,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'weekly-compliance-report': weeklyComplianceReport,
   'welcome': welcome,
   'compliance-checklist': complianceChecklist,
+  'newsletter-welcome': newsletterWelcome,
 }
