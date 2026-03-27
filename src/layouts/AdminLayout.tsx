@@ -9,6 +9,7 @@ const navItems: NavItem[] = [
   { title: "Violations", url: "/admin/violations", icon: AlertTriangle },
   { title: "Rules", url: "/admin/rules", icon: BookOpen },
   { title: "Blog", url: "/admin/blog", icon: FileText },
+  { title: "Newsletter", url: "/admin/newsletter", icon: Mail },
   { title: "Reviewers", url: "/admin/reviewers", icon: Users },
   { title: "Customers", url: "/admin/customers", icon: Building2 },
   { title: "Connections", url: "/admin/api-keys", icon: Plug },

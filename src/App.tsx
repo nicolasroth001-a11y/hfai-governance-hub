@@ -179,6 +179,7 @@ const App = () => {
             <Route path="analytics" element={<AdminAnalytics />} />
             <Route path="blog" element={<AdminBlogPosts />} />
             <Route path="blog/:id" element={<AdminBlogEditor />} />
+            <Route path="newsletter" element={<AdminNewsletter />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
