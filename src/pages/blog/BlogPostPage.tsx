@@ -51,7 +51,34 @@ export default function BlogPostPage() {
       .then(({ data }) => {
         setPost(data);
         setLoading(false);
-        if (data?.meta_title) document.title = data.meta_title + " | HFAI";
+        if (data) {
+          const title = data.meta_title || data.title;
+          const desc = data.meta_description || data.excerpt;
+          document.title = title + " | HFAI";
+          
+          // Update OG meta tags for social sharing
+          const setMeta = (prop: string, content: string, attr = "property") => {
+            let el = document.querySelector(`meta[${attr}="${prop}"]`);
+            if (!el) {
+              el = document.createElement("meta");
+              el.setAttribute(attr, prop);
+              document.head.appendChild(el);
+            }
+            el.setAttribute("content", content);
+          };
+          const url = `https://www.hfa-i.org/blog/${data.slug}`;
+          setMeta("og:title", title + " | HFAI");
+          setMeta("og:description", desc);
+          setMeta("og:url", url);
+          setMeta("og:type", "article");
+          setMeta("twitter:title", title + " | HFAI", "name");
+          setMeta("twitter:description", desc, "name");
+          setMeta("description", desc, "name");
+          
+          // Set canonical
+          let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+          if (canonical) canonical.href = url;
+        }
       });
   }, [slug]);
 
