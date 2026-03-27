@@ -206,6 +206,11 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Countdown Timer ── */}
+      <section className="px-6 pb-24">
+        <CountdownTimer />
+      </section>
+
       {/* ── Stats Bar ── */}
       <section className="px-6 pb-24">
         <div className="mx-auto max-w-3xl">
