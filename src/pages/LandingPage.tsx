@@ -15,6 +15,10 @@ import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
 import { ComplianceCalculator } from "@/components/landing/ComplianceCalculator";
 import { UseCaseCards } from "@/components/landing/UseCaseCards";
 import { LeadCapture } from "@/components/landing/LeadCapture";
+import { CountdownTimer } from "@/components/landing/CountdownTimer";
+import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
+import { BookDemoCTA } from "@/components/landing/BookDemoCTA";
+import { FounderSection } from "@/components/landing/FounderSection";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
