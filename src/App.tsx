@@ -80,7 +80,7 @@ import AdminHumanFirstFramework from "./pages/admin/AdminHumanFirstFramework";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminBlogPosts from "./pages/admin/AdminBlogPosts";
 import AdminBlogEditor from "./pages/admin/AdminBlogEditor";
-
+import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -179,6 +179,7 @@ const App = () => {
             <Route path="analytics" element={<AdminAnalytics />} />
             <Route path="blog" element={<AdminBlogPosts />} />
             <Route path="blog/:id" element={<AdminBlogEditor />} />
+            <Route path="newsletter" element={<AdminNewsletter />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
