@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const CALENDLY_URL = "https://calendly.com"; // TODO: Replace with real Calendly link
+const CALENDLY_URL = "https://calendly.com/nicolasroth001/hfai-demo";
 
 export function BookDemoCTA() {
   return (
