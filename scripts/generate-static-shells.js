@@ -34,6 +34,10 @@ const routeMeta = {
     title: "AI Governance Blog — HFAI",
     description: "Practical guides on AI compliance, governance platforms, and keeping humans in control.",
   },
+  "/blog/submit": {
+    title: "Submit a Blog Post — HFAI",
+    description: "Share your AI governance insights with the HFAI community. Submit an article for review.",
+  },
   "/blog/ai-governance-platform-guide": {
     title: "AI Governance Platform: Complete Guide 2026 — HFAI",
     description: "Everything you need to know about AI governance platforms, compliance, and human oversight.",
@@ -46,11 +50,15 @@ const routeMeta = {
     title: "Why Human Oversight Is Non-Negotiable for AI — HFAI",
     description: "Human oversight in AI systems: why it matters, how to implement it, and regulatory requirements.",
   },
+  "/blog/eu-ai-act-omnibus-vii-timeline-update": {
+    title: "EU AI Act Omnibus VII Timeline Update — HFAI",
+    description: "Latest updates on the EU AI Act Omnibus VII timeline and what it means for AI compliance.",
+  },
   "/governance": {
     title: "AI Governance Framework — HFAI",
     description: "A structured approach to AI governance: model inventory, evaluation, data usage, and oversight.",
   },
-  "/nist-compliance": {
+  "/nist-ai-rmf": {
     title: "NIST AI RMF Compliance — HFAI",
     description: "Map your AI risk management to the NIST AI RMF framework with HFAI.",
   },
@@ -61,6 +69,10 @@ const routeMeta = {
   "/signup/customer": {
     title: "Create Account — HFAI",
     description: "Create your free HFAI account and start governing your AI systems today.",
+  },
+  "/unsubscribe": {
+    title: "Unsubscribe — HFAI",
+    description: "Manage your HFAI email preferences.",
   },
 };
 

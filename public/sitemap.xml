@@ -26,6 +26,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.hfa-i.org/blog/submit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.hfa-i.org/blog/ai-governance-platform-guide</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -41,12 +46,17 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.hfa-i.org/blog/eu-ai-act-omnibus-vii-timeline-update</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.hfa-i.org/governance</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.hfa-i.org/nist-compliance</loc>
+    <loc>https://www.hfa-i.org/nist-ai-rmf</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
