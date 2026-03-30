@@ -48,8 +48,10 @@ export default function CustomerNotifications() {
   const [sendingTest, setSendingTest] = useState(false);
 
   const loadData = useCallback(async () => {
-    if (!profile?.org_id) return;
-    setLoading(true);
+    if (!profile?.org_id) {
+      setLoading(false);
+      return;
+    }
     try {
       const [prefsRes, logsRes] = await Promise.all([
         supabase.from("notification_preferences").select("*").eq("org_id", profile.org_id).maybeSingle(),
