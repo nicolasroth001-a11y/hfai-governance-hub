@@ -93,7 +93,7 @@ export default function PricingContact() {
             Simple, Transparent Pricing
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Human‑First AI Governance for teams of every size. Start with a 14‑day free trial on any paid plan.
+            Human‑First AI Governance for teams of every size. Start with a 30‑day free trial on any paid plan.
           </p>
         </section>
 
