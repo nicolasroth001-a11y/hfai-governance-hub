@@ -145,6 +145,7 @@ const App = () => {
             <Route path="onboarding" element={<CustomerOnboarding />} />
             <Route path="ai-systems" element={<CustomerAISystems />} />
             <Route path="ai-systems/:id" element={<CustomerAISystemDetail />} />
+            <Route path="deployment-readiness" element={<CustomerDeploymentReadiness />} />
             <Route path="events" element={<CustomerEvents />} />
             <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />

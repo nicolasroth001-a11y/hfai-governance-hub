@@ -7,6 +7,7 @@ import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, F
 const navItems: NavItem[] = [
   { title: "Dashboard", url: "/customer/dashboard", icon: LayoutDashboard },
   { title: "AI Systems", url: "/customer/ai-systems", icon: Cpu },
+  { title: "Deployment Readiness", url: "/customer/deployment-readiness", icon: ClipboardCheck },
   { title: "Events", url: "/customer/events", icon: Activity },
   { title: "Violations", url: "/customer/violations", icon: AlertTriangle },
   { title: "Human Reviews", url: "/customer/reviews", icon: UserCheck },
