@@ -71,18 +71,20 @@ export function OnboardingWelcome() {
   const current = WIZARD_STEPS[step];
   const progress = ((step + 1) / WIZARD_STEPS.length) * 100;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     trackFunnelEvent("onboarding_step_completed", { step: current.id, stepIndex: step });
 
     if (step === 0) {
-      // Mark that user started onboarding
       trackFunnelEvent("onboarding_started", { name: profile?.name });
     }
 
     if (current.route) {
-      // If this is the last step or has a route, navigate away
       if (step === WIZARD_STEPS.length - 1) {
         trackFunnelEvent("onboarding_completed", {});
+        // Mark all steps complete before navigating to dashboard
+        for (const s of WIZARD_STEPS) {
+          await completeStep(s.id);
+        }
       }
       navigate(current.route);
     } else if (step < WIZARD_STEPS.length - 1) {
@@ -90,9 +92,13 @@ export function OnboardingWelcome() {
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     trackFunnelEvent("onboarding_skipped", { skippedAt: current.id });
-    navigate("/customer/dashboard");
+    // Mark all steps complete so wizard doesn't reappear
+    for (const step of WIZARD_STEPS) {
+      await completeStep(step.id);
+    }
+    window.location.reload();
   };
 
   return (
@@ -121,11 +127,11 @@ export function OnboardingWelcome() {
                     <current.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-foreground">{current.title}</h2>
+                    <h2 className="text-lg font-bold text-card-foreground">{current.title}</h2>
                   </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-card-foreground/70 leading-relaxed">
                   {current.description}
                 </p>
 
@@ -133,7 +139,7 @@ export function OnboardingWelcome() {
                   {current.bullets.map((b) => (
                     <div key={b} className="flex items-start gap-2.5 text-sm">
                       <CheckCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                      <span className="text-foreground/80">{b}</span>
+                      <span className="text-card-foreground/80">{b}</span>
                     </div>
                   ))}
                 </div>
