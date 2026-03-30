@@ -275,10 +275,10 @@ export default function LandingPage() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
-            Everything you need to govern AI
+            Compliance, Not Just Security
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
-            From detection to diagnosis to remediation — one platform.
+            AI security tools stop threats. HFAI proves to regulators that your AI is governed.
           </p>
         </motion.div>
 
