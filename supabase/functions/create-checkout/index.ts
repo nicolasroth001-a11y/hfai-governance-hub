@@ -16,6 +16,7 @@ const VALID_PRICES = new Set([
   "price_1T86TdL0paaPta3ZTOMYma2o", // Starter
   "price_1T9nbOL0paaPta3Zp91ftpUo", // Pro
   "price_1T9ncPL0paaPta3ZOLIpE2XP", // Enterprise
+  "price_1TGiOiL0paaPta3ZKlKaA1lU", // Sovereign
 ]);
 
 serve(async (req) => {

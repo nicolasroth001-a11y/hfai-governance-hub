@@ -83,8 +83,8 @@ export const TIERS: Record<TierKey, TierConfig> = {
     ],
   },
   sovereign: {
-    product_id: "prod_SOVEREIGN_PLACEHOLDER",
-    price_id: "price_SOVEREIGN_PLACEHOLDER",
+    product_id: "prod_UFCotAY4Bwbhxj",
+    price_id: "price_1TGiOiL0paaPta3ZKlKaA1lU",
     name: "Sovereign",
     price: 499,
     currency: "USD",
