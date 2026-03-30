@@ -60,6 +60,7 @@ import CustomerCertificates from "./pages/customer/CustomerCertificates";
 import CustomerDriftDetection from "./pages/customer/CustomerDriftDetection";
 import CustomerPrecedentIntelligence from "./pages/customer/CustomerPrecedentIntelligence";
 import CustomerMultiJurisdiction from "./pages/customer/CustomerMultiJurisdiction";
+import CustomerDeploymentReadiness from "./pages/customer/CustomerDeploymentReadiness";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
