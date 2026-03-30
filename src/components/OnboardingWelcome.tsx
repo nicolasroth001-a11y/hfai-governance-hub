@@ -82,6 +82,8 @@ export function OnboardingWelcome() {
       if (step === WIZARD_STEPS.length - 1) {
         trackFunnelEvent("onboarding_completed", {});
         await skipAll();
+        window.location.replace(current.route);
+        return;
       }
       navigate(current.route);
     } else if (step < WIZARD_STEPS.length - 1) {
@@ -92,7 +94,7 @@ export function OnboardingWelcome() {
   const handleSkip = async () => {
     trackFunnelEvent("onboarding_skipped", { skippedAt: current.id });
     await skipAll();
-    navigate("/customer/dashboard");
+    window.location.replace("/customer/dashboard");
   };
 
   return (
