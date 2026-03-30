@@ -71,18 +71,20 @@ export function OnboardingWelcome() {
   const current = WIZARD_STEPS[step];
   const progress = ((step + 1) / WIZARD_STEPS.length) * 100;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     trackFunnelEvent("onboarding_step_completed", { step: current.id, stepIndex: step });
 
     if (step === 0) {
-      // Mark that user started onboarding
       trackFunnelEvent("onboarding_started", { name: profile?.name });
     }
 
     if (current.route) {
-      // If this is the last step or has a route, navigate away
       if (step === WIZARD_STEPS.length - 1) {
         trackFunnelEvent("onboarding_completed", {});
+        // Mark all steps complete before navigating to dashboard
+        for (const s of WIZARD_STEPS) {
+          await completeStep(s.id);
+        }
       }
       navigate(current.route);
     } else if (step < WIZARD_STEPS.length - 1) {
