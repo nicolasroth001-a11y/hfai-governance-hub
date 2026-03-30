@@ -309,6 +309,68 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Differentiation ── */}
+      <section className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-4xl"
+        >
+          <div className="text-center mb-10">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">
+              Why HFAI
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mt-2">
+              Different Problem, Different Tool
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
+              Enterprise AI security platforms protect your data from AI agents. HFAI proves to <em>regulators</em> that your AI systems are governed.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Card className="border border-border/30 bg-secondary/10">
+              <CardContent className="p-6 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center">
+                    <Shield className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                  <span className="text-sm font-semibold text-muted-foreground">Enterprise AI Security</span>
+                </div>
+                <ul className="space-y-2 text-xs text-muted-foreground">
+                  <li className="flex items-start gap-2"><span className="text-muted-foreground/50 mt-0.5">—</span> Secures agent access to enterprise data</li>
+                  <li className="flex items-start gap-2"><span className="text-muted-foreground/50 mt-0.5">—</span> Buyer: CISO / Security teams</li>
+                  <li className="flex items-start gap-2"><span className="text-muted-foreground/50 mt-0.5">—</span> Focus: data protection & threat prevention</li>
+                  <li className="flex items-start gap-2"><span className="text-muted-foreground/50 mt-0.5">—</span> Enterprise-only pricing ($100K+)</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-primary/30 bg-primary/5 ring-1 ring-primary/20">
+              <CardContent className="p-6 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Scale className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="text-sm font-semibold text-primary">HFAI — Compliance Layer</span>
+                </div>
+                <ul className="space-y-2 text-xs text-foreground/80">
+                  <li className="flex items-start gap-2"><CheckCircle className="h-3 w-3 text-primary shrink-0 mt-0.5" /> Proves regulatory compliance (EU AI Act, NIST)</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="h-3 w-3 text-primary shrink-0 mt-0.5" /> Buyer: Compliance officers, DPOs, Legal</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="h-3 w-3 text-primary shrink-0 mt-0.5" /> Focus: audit trails, human oversight, conformity</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="h-3 w-3 text-primary shrink-0 mt-0.5" /> Startup-friendly pricing, free 30-day trial</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            You need both. Security stops threats. Compliance proves governance. HFAI is the compliance layer.
+          </p>
+        </motion.div>
+      </section>
+
       {/* ── Use Cases ── */}
       <section className="px-6 pb-24">
         <motion.div
