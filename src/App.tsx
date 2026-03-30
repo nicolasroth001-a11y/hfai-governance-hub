@@ -152,6 +152,10 @@ const App = () => {
             <Route path="security" element={<CustomerSecurity />} />
             <Route path="connect" element={<CustomerConnect />} />
             <Route path="compliance" element={<CustomerCompliance />} />
+            <Route path="certificates" element={<CustomerCertificates />} />
+            <Route path="drift-detection" element={<CustomerDriftDetection />} />
+            <Route path="precedent-intelligence" element={<CustomerPrecedentIntelligence />} />
+            <Route path="multi-jurisdiction" element={<CustomerMultiJurisdiction />} />
             <Route path="blog-submit" element={<CustomerBlogSubmit />} />
           </Route>
 
