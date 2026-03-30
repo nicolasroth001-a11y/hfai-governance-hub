@@ -82,6 +82,25 @@ export const TIERS: Record<TierKey, TierConfig> = {
       "Dedicated priority support",
     ],
   },
+  sovereign: {
+    product_id: "prod_SOVEREIGN_PLACEHOLDER",
+    price_id: "price_SOVEREIGN_PLACEHOLDER",
+    name: "Sovereign",
+    price: 499,
+    currency: "USD",
+    interval: "month",
+    trial_days: 30,
+    highlighted: false,
+    features: [
+      "Everything in Enterprise",
+      "Compliance certificates & attestations",
+      "Regulatory precedent intelligence",
+      "Regulator‑ready export packs",
+      "Conformity drift detection",
+      "Multi‑jurisdiction engine (EU, US, UK, CA)",
+      "Dedicated compliance advisor",
+    ],
+  },
 } as const;
 
 // Map product IDs to tier keys for subscription checking
