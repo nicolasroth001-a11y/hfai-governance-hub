@@ -137,7 +137,7 @@ export function OnboardingWelcome() {
                   {current.bullets.map((b) => (
                     <div key={b} className="flex items-start gap-2.5 text-sm">
                       <CheckCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                      <span className="text-foreground/80">{b}</span>
+                      <span className="text-card-foreground/80">{b}</span>
                     </div>
                   ))}
                 </div>
