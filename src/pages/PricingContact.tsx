@@ -70,7 +70,7 @@ export default function PricingContact() {
     }
   };
 
-  const tierKeys: TierKey[] = ["free", "starter", "pro", "enterprise"];
+  const tierKeys: TierKey[] = ["free", "starter", "pro", "enterprise", "sovereign"];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -93,12 +93,12 @@ export default function PricingContact() {
             Simple, Transparent Pricing
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Human‑First AI Governance for teams of every size. Start with a 14‑day free trial on any paid plan.
+            Human‑First AI Governance for teams of every size. Start with a 30‑day free trial on any paid plan.
           </p>
         </section>
 
         {/* Pricing Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
           {tierKeys.map((key) => (
             <PricingCard
               key={key}

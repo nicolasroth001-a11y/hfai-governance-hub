@@ -56,6 +56,10 @@ import CustomerSecurity from "./pages/customer/CustomerSecurity";
 import CustomerConnect from "./pages/customer/CustomerConnect";
 import CustomerCompliance from "./pages/customer/CustomerCompliance";
 import CustomerBlogSubmit from "./pages/customer/CustomerBlogSubmit";
+import CustomerCertificates from "./pages/customer/CustomerCertificates";
+import CustomerDriftDetection from "./pages/customer/CustomerDriftDetection";
+import CustomerPrecedentIntelligence from "./pages/customer/CustomerPrecedentIntelligence";
+import CustomerMultiJurisdiction from "./pages/customer/CustomerMultiJurisdiction";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -148,6 +152,10 @@ const App = () => {
             <Route path="security" element={<CustomerSecurity />} />
             <Route path="connect" element={<CustomerConnect />} />
             <Route path="compliance" element={<CustomerCompliance />} />
+            <Route path="certificates" element={<CustomerCertificates />} />
+            <Route path="drift-detection" element={<CustomerDriftDetection />} />
+            <Route path="precedent-intelligence" element={<CustomerPrecedentIntelligence />} />
+            <Route path="multi-jurisdiction" element={<CustomerMultiJurisdiction />} />
             <Route path="blog-submit" element={<CustomerBlogSubmit />} />
           </Route>
 
