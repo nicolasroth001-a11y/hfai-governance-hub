@@ -114,6 +114,7 @@ export const TIER_LEVEL: Record<TierKey, number> = {
   starter: 1,
   pro: 2,
   enterprise: 3,
+  sovereign: 4,
 };
 
 // Free tier limits
