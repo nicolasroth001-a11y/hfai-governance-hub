@@ -129,7 +129,7 @@ export function OnboardingWelcome() {
                   </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-card-foreground/70 leading-relaxed">
                   {current.description}
                 </p>
 
