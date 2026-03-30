@@ -2,11 +2,12 @@ import { Outlet } from "react-router-dom";
 import { RoleSidebar, NavItem } from "@/components/RoleSidebar";
 import { TopBar } from "@/components/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp, Brain, Globe } from "lucide-react";
+import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp, Brain, Globe, ClipboardCheck } from "lucide-react";
 
 const navItems: NavItem[] = [
   { title: "Dashboard", url: "/customer/dashboard", icon: LayoutDashboard },
   { title: "AI Systems", url: "/customer/ai-systems", icon: Cpu },
+  { title: "Deployment Readiness", url: "/customer/deployment-readiness", icon: ClipboardCheck },
   { title: "Events", url: "/customer/events", icon: Activity },
   { title: "Violations", url: "/customer/violations", icon: AlertTriangle },
   { title: "Human Reviews", url: "/customer/reviews", icon: UserCheck },

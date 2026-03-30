@@ -302,6 +302,90 @@ export type Database = {
           },
         ]
       }
+      deployment_readiness: {
+        Row: {
+          ai_system_id: string
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          data_governance_notes: string | null
+          data_governance_reviewed: boolean
+          id: string
+          operating_model_defined: boolean
+          operating_model_notes: string | null
+          org_id: string
+          oversight_assigned: boolean
+          oversight_notes: string | null
+          risk_classification_notes: string | null
+          risk_classified: boolean
+          rule_coverage_notes: string | null
+          rule_coverage_verified: boolean
+          status: string
+          transparency_documented: boolean
+          transparency_notes: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_system_id: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          data_governance_notes?: string | null
+          data_governance_reviewed?: boolean
+          id?: string
+          operating_model_defined?: boolean
+          operating_model_notes?: string | null
+          org_id: string
+          oversight_assigned?: boolean
+          oversight_notes?: string | null
+          risk_classification_notes?: string | null
+          risk_classified?: boolean
+          rule_coverage_notes?: string | null
+          rule_coverage_verified?: boolean
+          status?: string
+          transparency_documented?: boolean
+          transparency_notes?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_system_id?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          data_governance_notes?: string | null
+          data_governance_reviewed?: boolean
+          id?: string
+          operating_model_defined?: boolean
+          operating_model_notes?: string | null
+          org_id?: string
+          oversight_assigned?: boolean
+          oversight_notes?: string | null
+          risk_classification_notes?: string | null
+          risk_classified?: boolean
+          rule_coverage_notes?: string | null
+          rule_coverage_verified?: boolean
+          status?: string
+          transparency_documented?: boolean
+          transparency_notes?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deployment_readiness_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: true
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deployment_readiness_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_send_log: {
         Row: {
           created_at: string

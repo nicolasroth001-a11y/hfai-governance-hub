@@ -60,6 +60,7 @@ import CustomerCertificates from "./pages/customer/CustomerCertificates";
 import CustomerDriftDetection from "./pages/customer/CustomerDriftDetection";
 import CustomerPrecedentIntelligence from "./pages/customer/CustomerPrecedentIntelligence";
 import CustomerMultiJurisdiction from "./pages/customer/CustomerMultiJurisdiction";
+import CustomerDeploymentReadiness from "./pages/customer/CustomerDeploymentReadiness";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -144,6 +145,7 @@ const App = () => {
             <Route path="onboarding" element={<CustomerOnboarding />} />
             <Route path="ai-systems" element={<CustomerAISystems />} />
             <Route path="ai-systems/:id" element={<CustomerAISystemDetail />} />
+            <Route path="deployment-readiness" element={<CustomerDeploymentReadiness />} />
             <Route path="events" element={<CustomerEvents />} />
             <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
