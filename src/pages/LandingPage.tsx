@@ -136,9 +136,9 @@ export default function LandingPage() {
           </motion.div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground max-w-4xl leading-[1.1]">
-            Keep Humans in Control
+            The EU AI Act
             <br />
-            <span className="text-primary">of Every AI Decision</span>
+            <span className="text-primary">Compliance Layer</span>
           </h1>
 
           <motion.p
@@ -147,8 +147,8 @@ export default function LandingPage() {
             transition={{ delay: 0.3 }}
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
-            Monitor AI in real time. Catch risky behavior instantly. Route critical decisions to human reviewers.
-            EU AI Act and NIST AI RMF compliant out of the box.
+            Enterprise AI security tools protect data. HFAI proves regulatory compliance.
+            Real-time oversight, audit trails, and human review — purpose-built for the EU AI Act.
           </motion.p>
 
           <motion.div
