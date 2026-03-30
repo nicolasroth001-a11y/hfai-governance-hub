@@ -92,7 +92,7 @@ export function OnboardingWelcome() {
   const handleSkip = async () => {
     trackFunnelEvent("onboarding_skipped", { skippedAt: current.id });
     await skipAll();
-    navigate("/customer/dashboard");
+    window.location.replace("/customer/dashboard");
   };
 
   return (
