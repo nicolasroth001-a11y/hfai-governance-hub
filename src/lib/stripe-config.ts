@@ -138,6 +138,11 @@ export const FEATURE_TIER: Record<string, TierKey> = {
   "Remediation": "enterprise",
   "Pattern Detection": "enterprise",
   "Rule Templates": "enterprise",
+  "Compliance Certificates": "sovereign",
+  "Precedent Intelligence": "sovereign",
+  "Regulator Export Packs": "sovereign",
+  "Drift Detection": "sovereign",
+  "Multi-Jurisdiction": "sovereign",
 };
 
 // Legacy compat
