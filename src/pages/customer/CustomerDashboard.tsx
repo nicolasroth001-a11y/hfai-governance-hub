@@ -32,11 +32,12 @@ export default function CustomerDashboard() {
   const { completedAt, progress: onboardingProgress, loading: onboardingLoading } = useOnboardingProgress();
 
   // Realtime subscription
+  const handleRealtimeEvent = useCallback(() => {
+    loadData();
+  }, []);
   const { connected, events, clearEvents } = useRealtimeSubscription({
     tables: REALTIME_TABLES,
-    onEvent: useCallback(() => {
-      loadData();
-    }, []),
+    onEvent: handleRealtimeEvent,
   });
 
   // Safety: if onboarding loading gets stuck, force it after 5s

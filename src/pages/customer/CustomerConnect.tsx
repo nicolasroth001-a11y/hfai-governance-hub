@@ -38,14 +38,22 @@ export default function CustomerConnect() {
   const [copied, setCopied] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
-    if (!profile?.org_id) return;
-    const [providerRes, orgRes] = await Promise.all([
-      supabase.from("connected_providers").select("*").eq("org_id", profile.org_id).eq("status", "active"),
-      supabase.from("organizations").select("*").eq("id", profile.org_id).single(),
-    ]);
-    setConnectedProviders(providerRes.data || []);
-    setOrg(orgRes.data);
-    setLoading(false);
+    if (!profile?.org_id) {
+      setLoading(false);
+      return;
+    }
+    try {
+      const [providerRes, orgRes] = await Promise.all([
+        supabase.from("connected_providers").select("*").eq("org_id", profile.org_id).eq("status", "active"),
+        supabase.from("organizations").select("*").eq("id", profile.org_id).single(),
+      ]);
+      setConnectedProviders(providerRes.data || []);
+      setOrg(orgRes.data);
+    } catch (err) {
+      console.error("CustomerConnect loadData:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [profile?.org_id]);
 
   useEffect(() => { loadData(); }, [loadData]);
