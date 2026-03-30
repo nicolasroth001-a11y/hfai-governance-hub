@@ -82,6 +82,8 @@ export function OnboardingWelcome() {
       if (step === WIZARD_STEPS.length - 1) {
         trackFunnelEvent("onboarding_completed", {});
         await skipAll();
+        window.location.replace(current.route);
+        return;
       }
       navigate(current.route);
     } else if (step < WIZARD_STEPS.length - 1) {
