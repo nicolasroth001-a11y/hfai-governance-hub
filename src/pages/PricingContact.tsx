@@ -70,7 +70,7 @@ export default function PricingContact() {
     }
   };
 
-  const tierKeys: TierKey[] = ["free", "starter", "pro", "enterprise"];
+  const tierKeys: TierKey[] = ["free", "starter", "pro", "enterprise", "sovereign"];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
