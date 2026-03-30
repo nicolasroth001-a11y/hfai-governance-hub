@@ -91,11 +91,8 @@ export function OnboardingWelcome() {
 
   const handleSkip = async () => {
     trackFunnelEvent("onboarding_skipped", { skippedAt: current.id });
-    // Mark all steps complete so wizard doesn't reappear
-    for (const step of WIZARD_STEPS) {
-      await completeStep(step.id);
-    }
-    window.location.reload();
+    await skipAll();
+    navigate("/customer/dashboard");
   };
 
   return (
