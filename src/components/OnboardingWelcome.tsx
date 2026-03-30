@@ -81,10 +81,7 @@ export function OnboardingWelcome() {
     if (current.route) {
       if (step === WIZARD_STEPS.length - 1) {
         trackFunnelEvent("onboarding_completed", {});
-        // Mark all steps complete before navigating to dashboard
-        for (const s of WIZARD_STEPS) {
-          await completeStep(s.id);
-        }
+        await skipAll();
       }
       navigate(current.route);
     } else if (step < WIZARD_STEPS.length - 1) {
