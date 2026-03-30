@@ -151,6 +151,11 @@ const App = () => {
             <Route path="ai-systems" element={<CustomerAISystems />} />
             <Route path="ai-systems/:id" element={<CustomerAISystemDetail />} />
             <Route path="deployment-readiness" element={<CustomerDeploymentReadiness />} />
+            <Route path="bias-auditing" element={<CustomerBiasAuditing />} />
+            <Route path="model-versions" element={<CustomerModelVersions />} />
+            <Route path="scheduled-audits" element={<CustomerScheduledAudits />} />
+            <Route path="vendor-risk" element={<CustomerVendorRisk />} />
+            <Route path="data-lineage" element={<CustomerDataLineage />} />
             <Route path="events" element={<CustomerEvents />} />
             <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />
