@@ -90,9 +90,13 @@ export function OnboardingWelcome() {
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     trackFunnelEvent("onboarding_skipped", { skippedAt: current.id });
-    navigate("/customer/dashboard");
+    // Mark all steps complete so wizard doesn't reappear
+    for (const step of WIZARD_STEPS) {
+      await completeStep(step.id);
+    }
+    window.location.reload();
   };
 
   return (
