@@ -29,23 +29,31 @@ export function useOnboardingProgress() {
   const orgId = profile?.org_id;
 
   const fetchProgress = useCallback(async () => {
-    if (!orgId) return;
-    const { data } = await supabase
-      .from("onboarding_progress")
-      .select("*")
-      .eq("org_id", orgId)
-      .maybeSingle();
-
-    if (data) {
-      const completedSteps = (data as any).steps_completed || [];
-      setSteps(ONBOARDING_STEPS.map((id) => ({
-        id,
-        label: STEP_LABELS[id],
-        completed: completedSteps.includes(id),
-      })));
-      setCompletedAt((data as any).completed_at);
+    if (!orgId) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    try {
+      const { data } = await supabase
+        .from("onboarding_progress")
+        .select("*")
+        .eq("org_id", orgId)
+        .maybeSingle();
+
+      if (data) {
+        const completedSteps = (data as any).steps_completed || [];
+        setSteps(ONBOARDING_STEPS.map((id) => ({
+          id,
+          label: STEP_LABELS[id],
+          completed: completedSteps.includes(id),
+        })));
+        setCompletedAt((data as any).completed_at);
+      }
+    } catch (err) {
+      console.error("useOnboardingProgress:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [orgId]);
 
   useEffect(() => {

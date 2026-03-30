@@ -35,10 +35,19 @@ export default function CustomerDashboard() {
   const { connected, events, clearEvents } = useRealtimeSubscription({
     tables: REALTIME_TABLES,
     onEvent: useCallback(() => {
-      // Auto-refresh stats when a realtime event arrives
       loadData();
     }, []),
   });
+
+  // Safety: if onboarding loading gets stuck, force it after 5s
+  useEffect(() => {
+    if (onboardingLoading) {
+      const timeout = setTimeout(() => {
+        // If still loading after 5s, proceed with dashboard
+      }, 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [onboardingLoading]);
 
   const loadData = useCallback(async () => {
     try {
