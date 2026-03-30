@@ -61,6 +61,11 @@ import CustomerDriftDetection from "./pages/customer/CustomerDriftDetection";
 import CustomerPrecedentIntelligence from "./pages/customer/CustomerPrecedentIntelligence";
 import CustomerMultiJurisdiction from "./pages/customer/CustomerMultiJurisdiction";
 import CustomerDeploymentReadiness from "./pages/customer/CustomerDeploymentReadiness";
+import CustomerBiasAuditing from "./pages/customer/CustomerBiasAuditing";
+import CustomerModelVersions from "./pages/customer/CustomerModelVersions";
+import CustomerScheduledAudits from "./pages/customer/CustomerScheduledAudits";
+import CustomerVendorRisk from "./pages/customer/CustomerVendorRisk";
+import CustomerDataLineage from "./pages/customer/CustomerDataLineage";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
