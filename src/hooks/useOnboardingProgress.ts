@@ -86,7 +86,24 @@ export function useOnboardingProgress() {
     }
   }, [orgId, steps]);
 
+  const skipAll = useCallback(async () => {
+    if (!orgId) return;
+    const { error } = await supabase
+      .from("onboarding_progress")
+      .upsert({
+        org_id: orgId,
+        steps_completed: ONBOARDING_STEPS,
+        current_step: "done",
+        completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "org_id" });
+    if (!error) {
+      setSteps(ONBOARDING_STEPS.map((id) => ({ id, label: STEP_LABELS[id], completed: true })));
+      setCompletedAt(new Date().toISOString());
+    }
+  }, [orgId]);
+
   const progress = steps.filter((s) => s.completed).length / steps.length;
 
-  return { steps, progress, completedAt, loading, completeStep, refetch: fetchProgress };
+  return { steps, progress, completedAt, loading, completeStep, skipAll, refetch: fetchProgress };
 }

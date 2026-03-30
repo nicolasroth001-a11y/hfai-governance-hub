@@ -67,7 +67,7 @@ export function OnboardingWelcome() {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { completeStep } = useOnboardingProgress();
+  const { completeStep, skipAll } = useOnboardingProgress();
   const current = WIZARD_STEPS[step];
   const progress = ((step + 1) / WIZARD_STEPS.length) * 100;
 
@@ -81,10 +81,7 @@ export function OnboardingWelcome() {
     if (current.route) {
       if (step === WIZARD_STEPS.length - 1) {
         trackFunnelEvent("onboarding_completed", {});
-        // Mark all steps complete before navigating to dashboard
-        for (const s of WIZARD_STEPS) {
-          await completeStep(s.id);
-        }
+        await skipAll();
       }
       navigate(current.route);
     } else if (step < WIZARD_STEPS.length - 1) {
@@ -94,11 +91,8 @@ export function OnboardingWelcome() {
 
   const handleSkip = async () => {
     trackFunnelEvent("onboarding_skipped", { skippedAt: current.id });
-    // Mark all steps complete so wizard doesn't reappear
-    for (const step of WIZARD_STEPS) {
-      await completeStep(step.id);
-    }
-    window.location.reload();
+    await skipAll();
+    navigate("/customer/dashboard");
   };
 
   return (
