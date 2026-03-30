@@ -125,7 +125,7 @@ export function OnboardingWelcome() {
                     <current.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-foreground">{current.title}</h2>
+                    <h2 className="text-lg font-bold text-card-foreground">{current.title}</h2>
                   </div>
                 </div>
 
