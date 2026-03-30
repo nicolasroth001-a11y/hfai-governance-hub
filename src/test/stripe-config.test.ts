@@ -4,8 +4,8 @@ import type { TierKey } from "@/lib/stripe-config";
 
 describe("stripe-config", () => {
   describe("TIERS", () => {
-    it("defines all four tiers", () => {
-      expect(Object.keys(TIERS)).toEqual(["free", "starter", "pro", "enterprise"]);
+    it("defines all five tiers", () => {
+      expect(Object.keys(TIERS)).toEqual(["free", "starter", "pro", "enterprise", "sovereign"]);
     });
 
     it("free tier has price 0 and no trial", () => {
@@ -17,6 +17,7 @@ describe("stripe-config", () => {
       expect(TIERS.starter.trial_days).toBe(30);
       expect(TIERS.pro.trial_days).toBe(30);
       expect(TIERS.enterprise.trial_days).toBe(30);
+      expect(TIERS.sovereign.trial_days).toBe(30);
     });
 
     it("paid tiers have valid Stripe product and price IDs", () => {
@@ -24,6 +25,11 @@ describe("stripe-config", () => {
         expect(TIERS[key].product_id).toMatch(/^prod_/);
         expect(TIERS[key].price_id).toMatch(/^price_/);
       }
+    });
+
+    it("sovereign tier exists with correct price", () => {
+      expect(TIERS.sovereign.price).toBe(499);
+      expect(TIERS.sovereign.name).toBe("Sovereign");
     });
 
     it("pro tier is highlighted", () => {
@@ -51,6 +57,7 @@ describe("stripe-config", () => {
       expect(TIER_LEVEL.free).toBeLessThan(TIER_LEVEL.starter);
       expect(TIER_LEVEL.starter).toBeLessThan(TIER_LEVEL.pro);
       expect(TIER_LEVEL.pro).toBeLessThan(TIER_LEVEL.enterprise);
+      expect(TIER_LEVEL.enterprise).toBeLessThan(TIER_LEVEL.sovereign);
     });
   });
 
@@ -65,6 +72,13 @@ describe("stripe-config", () => {
 
     it("allows AI Systems for free", () => {
       expect(FEATURE_TIER["AI Systems"]).toBe("free");
+    });
+
+    it("gates Sovereign features correctly", () => {
+      expect(FEATURE_TIER["Compliance Certificates"]).toBe("sovereign");
+      expect(FEATURE_TIER["Precedent Intelligence"]).toBe("sovereign");
+      expect(FEATURE_TIER["Drift Detection"]).toBe("sovereign");
+      expect(FEATURE_TIER["Multi-Jurisdiction"]).toBe("sovereign");
     });
   });
 
