@@ -67,7 +67,7 @@ export function OnboardingWelcome() {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { completeStep } = useOnboardingProgress();
+  const { completeStep, skipAll } = useOnboardingProgress();
   const current = WIZARD_STEPS[step];
   const progress = ((step + 1) / WIZARD_STEPS.length) * 100;
 
