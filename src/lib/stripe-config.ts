@@ -1,6 +1,6 @@
 // Stripe product/price mapping for HFAI tiers
 
-export type TierKey = "free" | "starter" | "pro" | "enterprise";
+export type TierKey = "free" | "starter" | "pro" | "enterprise" | "sovereign";
 
 export interface TierConfig {
   product_id: string;
