@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { RoleSidebar, NavItem } from "@/components/RoleSidebar";
 import { TopBar } from "@/components/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp, Brain, Globe, ClipboardCheck } from "lucide-react";
+import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp, Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2, Database } from "lucide-react";
 
 const navItems: NavItem[] = [
   { title: "Dashboard", url: "/customer/dashboard", icon: LayoutDashboard },
@@ -13,6 +13,11 @@ const navItems: NavItem[] = [
   { title: "Human Reviews", url: "/customer/reviews", icon: UserCheck },
   { title: "Rules", url: "/customer/rules", icon: BookOpen },
   { title: "Rule Templates", url: "/customer/rule-templates", icon: FileText },
+  { title: "Bias Auditing", url: "/customer/bias-auditing", icon: BarChart3 },
+  { title: "Model Versions", url: "/customer/model-versions", icon: GitBranch },
+  { title: "Scheduled Audits", url: "/customer/scheduled-audits", icon: CalendarClock },
+  { title: "Vendor Risk", url: "/customer/vendor-risk", icon: Building2 },
+  { title: "Data Lineage", url: "/customer/data-lineage", icon: Database },
   { title: "EU Compliance", url: "/customer/compliance", icon: Scale },
   { title: "Certificates", url: "/customer/certificates", icon: Award },
   { title: "Drift Detection", url: "/customer/drift-detection", icon: TrendingUp },

@@ -61,6 +61,11 @@ import CustomerDriftDetection from "./pages/customer/CustomerDriftDetection";
 import CustomerPrecedentIntelligence from "./pages/customer/CustomerPrecedentIntelligence";
 import CustomerMultiJurisdiction from "./pages/customer/CustomerMultiJurisdiction";
 import CustomerDeploymentReadiness from "./pages/customer/CustomerDeploymentReadiness";
+import CustomerBiasAuditing from "./pages/customer/CustomerBiasAuditing";
+import CustomerModelVersions from "./pages/customer/CustomerModelVersions";
+import CustomerScheduledAudits from "./pages/customer/CustomerScheduledAudits";
+import CustomerVendorRisk from "./pages/customer/CustomerVendorRisk";
+import CustomerDataLineage from "./pages/customer/CustomerDataLineage";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -146,6 +151,11 @@ const App = () => {
             <Route path="ai-systems" element={<CustomerAISystems />} />
             <Route path="ai-systems/:id" element={<CustomerAISystemDetail />} />
             <Route path="deployment-readiness" element={<CustomerDeploymentReadiness />} />
+            <Route path="bias-auditing" element={<CustomerBiasAuditing />} />
+            <Route path="model-versions" element={<CustomerModelVersions />} />
+            <Route path="scheduled-audits" element={<CustomerScheduledAudits />} />
+            <Route path="vendor-risk" element={<CustomerVendorRisk />} />
+            <Route path="data-lineage" element={<CustomerDataLineage />} />
             <Route path="events" element={<CustomerEvents />} />
             <Route path="events/:id" element={<CustomerEventDetail />} />
             <Route path="rule-templates" element={<CustomerRuleTemplates />} />

@@ -65,6 +65,63 @@ export type Database = {
           },
         ]
       }
+      ai_system_versions: {
+        Row: {
+          ai_system_id: string
+          approved_at: string | null
+          approved_by: string | null
+          change_description: string | null
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_values: Json | null
+          org_id: string
+          previous_values: Json | null
+          version_label: string
+        }
+        Insert: {
+          ai_system_id: string
+          approved_at?: string | null
+          approved_by?: string | null
+          change_description?: string | null
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_values?: Json | null
+          org_id: string
+          previous_values?: Json | null
+          version_label?: string
+        }
+        Update: {
+          ai_system_id?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          change_description?: string | null
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_values?: Json | null
+          org_id?: string
+          previous_values?: Json | null
+          version_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_system_versions_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: false
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_system_versions_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_systems: {
         Row: {
           created_at: string
@@ -198,6 +255,66 @@ export type Database = {
           },
         ]
       }
+      bias_fairness_audits: {
+        Row: {
+          ai_system_id: string
+          created_at: string
+          dataset_description: string | null
+          id: string
+          metric_type: string
+          notes: string | null
+          org_id: string
+          passed: boolean | null
+          score: number | null
+          status: string
+          threshold: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_system_id: string
+          created_at?: string
+          dataset_description?: string | null
+          id?: string
+          metric_type?: string
+          notes?: string | null
+          org_id: string
+          passed?: boolean | null
+          score?: number | null
+          status?: string
+          threshold?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_system_id?: string
+          created_at?: string
+          dataset_description?: string | null
+          id?: string
+          metric_type?: string
+          notes?: string | null
+          org_id?: string
+          passed?: boolean | null
+          score?: number | null
+          status?: string
+          threshold?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bias_fairness_audits_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: false
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bias_fairness_audits_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blog_posts: {
         Row: {
           author_name: string | null
@@ -295,6 +412,75 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "connected_providers_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_lineage_records: {
+        Row: {
+          ai_system_id: string
+          collection_method: string | null
+          consent_basis: string | null
+          created_at: string
+          data_description: string | null
+          data_source_name: string
+          data_source_type: string
+          geographic_origin: string | null
+          id: string
+          notes: string | null
+          org_id: string
+          pii_detected: boolean | null
+          quality_score: number | null
+          retention_period: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_system_id: string
+          collection_method?: string | null
+          consent_basis?: string | null
+          created_at?: string
+          data_description?: string | null
+          data_source_name: string
+          data_source_type?: string
+          geographic_origin?: string | null
+          id?: string
+          notes?: string | null
+          org_id: string
+          pii_detected?: boolean | null
+          quality_score?: number | null
+          retention_period?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_system_id?: string
+          collection_method?: string | null
+          consent_basis?: string | null
+          created_at?: string
+          data_description?: string | null
+          data_source_name?: string
+          data_source_type?: string
+          geographic_origin?: string | null
+          id?: string
+          notes?: string | null
+          org_id?: string
+          pii_detected?: boolean | null
+          quality_score?: number | null
+          retention_period?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_lineage_records_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: false
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_lineage_records_org_id_fkey"
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -928,6 +1114,66 @@ export type Database = {
           },
         ]
       }
+      scheduled_audits: {
+        Row: {
+          ai_system_id: string
+          assigned_to: string | null
+          audit_type: string
+          created_at: string
+          frequency_days: number
+          id: string
+          last_completed_at: string | null
+          next_due_at: string
+          notes: string | null
+          org_id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          ai_system_id: string
+          assigned_to?: string | null
+          audit_type?: string
+          created_at?: string
+          frequency_days?: number
+          id?: string
+          last_completed_at?: string | null
+          next_due_at?: string
+          notes?: string | null
+          org_id: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          ai_system_id?: string
+          assigned_to?: string | null
+          audit_type?: string
+          created_at?: string
+          frequency_days?: number
+          id?: string
+          last_completed_at?: string | null
+          next_due_at?: string
+          notes?: string | null
+          org_id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scheduled_audits_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: false
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scheduled_audits_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       suppressed_emails: {
         Row: {
           created_at: string
@@ -969,6 +1215,75 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      vendor_risk_assessments: {
+        Row: {
+          ai_system_id: string | null
+          assessment_date: string | null
+          compliance_status: string | null
+          contract_terms: string | null
+          created_at: string
+          data_processing_agreement: boolean | null
+          id: string
+          notes: string | null
+          org_id: string
+          risk_score: number | null
+          security_review_passed: boolean | null
+          status: string
+          updated_at: string | null
+          vendor_contact: string | null
+          vendor_name: string
+        }
+        Insert: {
+          ai_system_id?: string | null
+          assessment_date?: string | null
+          compliance_status?: string | null
+          contract_terms?: string | null
+          created_at?: string
+          data_processing_agreement?: boolean | null
+          id?: string
+          notes?: string | null
+          org_id: string
+          risk_score?: number | null
+          security_review_passed?: boolean | null
+          status?: string
+          updated_at?: string | null
+          vendor_contact?: string | null
+          vendor_name: string
+        }
+        Update: {
+          ai_system_id?: string | null
+          assessment_date?: string | null
+          compliance_status?: string | null
+          contract_terms?: string | null
+          created_at?: string
+          data_processing_agreement?: boolean | null
+          id?: string
+          notes?: string | null
+          org_id?: string
+          risk_score?: number | null
+          security_review_passed?: boolean | null
+          status?: string
+          updated_at?: string | null
+          vendor_contact?: string | null
+          vendor_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_risk_assessments_ai_system_id_fkey"
+            columns: ["ai_system_id"]
+            isOneToOne: false
+            referencedRelation: "ai_systems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_risk_assessments_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       violation_patterns: {
         Row: {
