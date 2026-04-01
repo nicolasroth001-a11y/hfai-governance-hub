@@ -664,7 +664,9 @@ export type Database = {
           comments: string | null
           created_at: string
           decision: string | null
+          hash_sequence: number | null
           id: string
+          integrity_hash: string | null
           reviewer_id: string | null
           reviewer_name: string | null
           violation_id: string
@@ -673,7 +675,9 @@ export type Database = {
           comments?: string | null
           created_at?: string
           decision?: string | null
+          hash_sequence?: number | null
           id?: string
+          integrity_hash?: string | null
           reviewer_id?: string | null
           reviewer_name?: string | null
           violation_id: string
@@ -682,7 +686,9 @@ export type Database = {
           comments?: string | null
           created_at?: string
           decision?: string | null
+          hash_sequence?: number | null
           id?: string
+          integrity_hash?: string | null
           reviewer_id?: string | null
           reviewer_name?: string | null
           violation_id?: string
