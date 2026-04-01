@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card as ShadcnCard } from "@/components/ui/card";
 import { fetchReviews, fetchAuditLogs } from "@/lib/api";
 import { format, formatDistanceToNow } from "date-fns";
-import { History, CheckCircle, XCircle, Clock, MessageSquare, Activity } from "lucide-react";
+import { History, CheckCircle, XCircle, Clock, MessageSquare, Activity, Shield } from "lucide-react";
 
 interface AuditTrailCardProps {
   violationId: string | number;
@@ -15,6 +15,8 @@ interface TrailEntry {
   action: string;
   actor: string;
   details: string;
+  integrityHash?: string;
+  hashSequence?: number;
 }
 
 export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
@@ -37,6 +39,8 @@ export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
           action: r.decision || "reviewed",
           actor: r.reviewer_name || "Unknown",
           details: r.comments || "No comments",
+          integrityHash: r.integrity_hash || undefined,
+          hashSequence: r.hash_sequence || undefined,
         }));
 
       const auditEntries: TrailEntry[] = (logs as any[])
@@ -118,6 +122,14 @@ export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
                 </div>
                 {entry.details && (
                   <p className="text-xs text-card-foreground/50 mt-0.5 leading-relaxed">{entry.details}</p>
+                )}
+                {entry.integrityHash && (
+                  <div className="flex items-center gap-1.5 mt-1.5 px-2 py-1 rounded bg-primary/5 border border-primary/10 w-fit">
+                    <Shield className="h-3 w-3 text-primary/60 shrink-0" />
+                    <span className="text-[10px] font-mono text-primary/70 truncate max-w-[220px]" title={entry.integrityHash}>
+                      #{entry.hashSequence} · {entry.integrityHash.slice(0, 16)}…
+                    </span>
+                  </div>
                 )}
                 <p className="text-[11px] text-card-foreground/30 mt-1 flex items-center gap-1">
                   <Clock className="h-3 w-3" />
