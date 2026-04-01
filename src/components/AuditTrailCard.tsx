@@ -39,6 +39,8 @@ export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
           action: r.decision || "reviewed",
           actor: r.reviewer_name || "Unknown",
           details: r.comments || "No comments",
+          integrityHash: r.integrity_hash || undefined,
+          hashSequence: r.hash_sequence || undefined,
         }));
 
       const auditEntries: TrailEntry[] = (logs as any[])
