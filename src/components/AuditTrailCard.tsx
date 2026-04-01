@@ -15,6 +15,8 @@ interface TrailEntry {
   action: string;
   actor: string;
   details: string;
+  integrityHash?: string;
+  hashSequence?: number;
 }
 
 export function AuditTrailCard({ violationId }: AuditTrailCardProps) {
