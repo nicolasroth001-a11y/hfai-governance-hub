@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card as ShadcnCard } from "@/components/ui/card";
 import { fetchReviews, fetchAuditLogs } from "@/lib/api";
 import { format, formatDistanceToNow } from "date-fns";
-import { History, CheckCircle, XCircle, Clock, MessageSquare, Activity } from "lucide-react";
+import { History, CheckCircle, XCircle, Clock, MessageSquare, Activity, Shield } from "lucide-react";
 
 interface AuditTrailCardProps {
   violationId: string | number;
