@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SubscriptionGate } from "@/components/SubscriptionGate";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -18,6 +19,7 @@ interface AISystem {
 }
 
 export default function CustomerCertificates() {
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,9 +46,9 @@ export default function CustomerCertificates() {
       a.download = `hfai-compliance-certificate-${systemId.slice(0, 8)}.json`;
       a.click();
       URL.revokeObjectURL(url);
-      toast({ title: "Certificate generated", description: "Your compliance attestation has been downloaded." });
+      toast({ title: t("customerCertificates.certificateGenerated"), description: t("customerCertificates.certificateGeneratedDesc") });
     } catch {
-      toast({ title: "Error", description: "Could not generate certificate.", variant: "destructive" });
+      toast({ title: t("customerCertificates.generateError"), description: t("customerCertificates.generateErrorDesc"), variant: "destructive" });
     } finally {
       setGenerating(null);
     }
@@ -54,13 +56,13 @@ export default function CustomerCertificates() {
 
   return (
     <SubscriptionGate feature="Compliance Certificates">
-      <SectionHeader title="Compliance Certificates" description="Generate verifiable EU AI Act compliance attestations for each AI system." />
+      <SectionHeader title={t("customerCertificates.title")} description={t("customerCertificates.description")} />
 
       <div className="grid gap-4 mt-6">
         {loading ? (
-          <Card><CardContent className="p-8 text-center text-muted-foreground">Loading AI systems…</CardContent></Card>
+          <Card><CardContent className="p-8 text-center text-muted-foreground">{t("customerCertificates.loading")}</CardContent></Card>
         ) : systems.length === 0 ? (
-          <Card><CardContent className="p-8 text-center text-muted-foreground">No AI systems registered. Add one to generate certificates.</CardContent></Card>
+          <Card><CardContent className="p-8 text-center text-muted-foreground">{t("customerCertificates.noSystems")}</CardContent></Card>
         ) : systems.map((sys) => (
           <Card key={sys.id} className="rounded-[16px]">
             <CardContent className="p-6 flex items-center justify-between gap-4">
@@ -78,7 +80,7 @@ export default function CustomerCertificates() {
               </div>
               <Button size="sm" onClick={() => handleGenerate(sys.id)} disabled={generating === sys.id}>
                 {generating === sys.id ? <Clock className="h-4 w-4 animate-spin mr-1" /> : <Download className="h-4 w-4 mr-1" />}
-                {generating === sys.id ? "Generating…" : "Generate Certificate"}
+                {generating === sys.id ? t("customerCertificates.generating") : t("customerCertificates.generateCertificate")}
               </Button>
             </CardContent>
           </Card>
@@ -91,27 +93,27 @@ export default function CustomerCertificates() {
             <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
               <Shield className="h-5 w-5 text-primary" />
             </div>
-            <CardTitle className="text-sm">Cryptographically Signed</CardTitle>
+            <CardTitle className="text-sm">{t("customerCertificates.cryptoSigned")}</CardTitle>
           </CardHeader>
-          <CardContent><CardDescription>Each certificate includes a verifiable signature and timestamp for regulatory submission.</CardDescription></CardContent>
+          <CardContent><CardDescription>{t("customerCertificates.cryptoSignedDesc")}</CardDescription></CardContent>
         </Card>
         <Card className="rounded-[16px]">
           <CardHeader className="pb-2">
             <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
               <CheckCircle className="h-5 w-5 text-primary" />
             </div>
-            <CardTitle className="text-sm">Article-Level Coverage</CardTitle>
+            <CardTitle className="text-sm">{t("customerCertificates.articleCoverage")}</CardTitle>
           </CardHeader>
-          <CardContent><CardDescription>Maps your governance posture to specific EU AI Act articles (9, 12, 14, 15).</CardDescription></CardContent>
+          <CardContent><CardDescription>{t("customerCertificates.articleCoverageDesc")}</CardDescription></CardContent>
         </Card>
         <Card className="rounded-[16px]">
           <CardHeader className="pb-2">
             <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
               <FileText className="h-5 w-5 text-primary" />
             </div>
-            <CardTitle className="text-sm">Regulator-Ready</CardTitle>
+            <CardTitle className="text-sm">{t("customerCertificates.regulatorReady")}</CardTitle>
           </CardHeader>
-          <CardContent><CardDescription>Formatted for submission to EU notified bodies and national competent authorities.</CardDescription></CardContent>
+          <CardContent><CardDescription>{t("customerCertificates.regulatorReadyDesc")}</CardDescription></CardContent>
         </Card>
       </div>
     </SubscriptionGate>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { SeverityBadge } from "@/components/SeverityBadge";
@@ -24,26 +25,27 @@ const templates = [
 ];
 
 export default function CustomerRuleTemplates() {
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const [enabling, setEnabling] = useState<string | null>(null);
   const [enabled, setEnabled] = useState<string[]>([]);
 
-  const handleEnable = async (t: typeof templates[0]) => {
-    setEnabling(t.name);
+  const handleEnable = async (tpl: typeof templates[0]) => {
+    setEnabling(tpl.name);
     try {
       await createRule({
-        name: t.name,
-        description: t.description,
-        severity: t.severity,
-        category: t.category,
-        condition: t.condition,
+        name: tpl.name,
+        description: tpl.description,
+        severity: tpl.severity,
+        category: tpl.category,
+        condition: tpl.condition,
         enabled: true,
         org_id: profile?.org_id || undefined,
       });
-      setEnabled((prev) => [...prev, t.name]);
-      toast({ title: "Rule enabled", description: `"${t.name}" is now active.` });
+      setEnabled((prev) => [...prev, tpl.name]);
+      toast({ title: t("customerRuleTemplates.ruleEnabled"), description: t("customerRuleTemplates.ruleEnabledDesc", { name: tpl.name }) });
     } catch {
-      toast({ title: "Failed to enable rule", variant: "destructive" });
+      toast({ title: t("customerRuleTemplates.enableFailed"), variant: "destructive" });
     } finally {
       setEnabling(null);
     }
@@ -51,21 +53,21 @@ export default function CustomerRuleTemplates() {
 
   return (
     <div className="space-y-section">
-      <SectionHeader title="Rule Templates" description="Enable prebuilt governance rules for your AI systems" />
+      <SectionHeader title={t("customerRuleTemplates.title")} description={t("customerRuleTemplates.description")} />
       <div className="grid gap-4">
-        {templates.map((t) => (
-          <ContentCard key={t.name} icon={ShieldCheck} title={t.name}>
+        {templates.map((tpl) => (
+          <ContentCard key={tpl.name} icon={ShieldCheck} title={tpl.name}>
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-2">
-                <p className="text-sm text-card-foreground/70">{t.description}</p>
-                <SeverityBadge severity={t.severity} />
+                <p className="text-sm text-card-foreground/70">{tpl.description}</p>
+                <SeverityBadge severity={tpl.severity} />
               </div>
               <Button
                 size="sm"
-                disabled={enabling === t.name || enabled.includes(t.name)}
-                onClick={() => handleEnable(t)}
+                disabled={enabling === tpl.name || enabled.includes(tpl.name)}
+                onClick={() => handleEnable(tpl)}
               >
-                {enabled.includes(t.name) ? "Enabled ✓" : enabling === t.name ? "Enabling…" : "Enable Rule"}
+                {enabled.includes(tpl.name) ? t("customerRuleTemplates.enabled") : enabling === tpl.name ? t("customerRuleTemplates.enabling") : t("customerRuleTemplates.enableRule")}
               </Button>
             </div>
           </ContentCard>
