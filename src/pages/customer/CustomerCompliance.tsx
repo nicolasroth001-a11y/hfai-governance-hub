@@ -129,18 +129,18 @@ export default function CustomerCompliance() {
     }
   };
 
-  if (loading) return <p className="text-sm text-muted-foreground py-10 text-center">Loading compliance data…</p>;
+  if (loading) return <p className="text-sm text-muted-foreground py-10 text-center">{t("customerCompliance.loading")}</p>;
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <SectionHeader
-          title="EU AI Act Compliance"
-          description="Monitor and manage your organization's compliance with the EU AI Act"
+          title={t("customerCompliance.title")}
+          description={t("customerCompliance.description")}
         />
         <Button onClick={handleExportReport} disabled={exporting} className="gap-2">
           <Download className="h-4 w-4" />
-          {exporting ? "Exporting…" : "Export Report"}
+          {exporting ? t("customerCompliance.exporting") : t("customerCompliance.exportReport")}
         </Button>
       </div>
 
