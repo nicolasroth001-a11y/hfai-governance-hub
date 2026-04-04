@@ -152,7 +152,7 @@ export default function CustomerBiasAuditing() {
             <Progress value={passRate} className="mt-2 h-1.5" />
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Pending</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.pending")}</p>
             <p className="text-2xl font-bold text-warning mt-1">{pendingCount}</p>
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
