@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { fetchViolation } from "@/lib/api";
 import { ContentCard } from "@/components/ContentCard";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
@@ -13,6 +14,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ArrowLeft, Gavel, StickyNote } from "lucide-react";
 
 export default function ReviewerViolationDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [v, setV] = useState<any>(null);
   const [status, setStatus] = useState("open");
@@ -36,11 +38,11 @@ export default function ReviewerViolationDetail() {
     refreshAudit();
   }, [refreshAudit]);
 
-  if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
+  if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">{t("reviewerViolationDetail.loading")}</p>;
   if (error || !v) return (
     <div className="text-center py-20 text-muted-foreground">
-      {error || "Violation not found."}{" "}
-      <Link to="/reviewer/violations" className="text-primary hover:underline">Back to violations</Link>
+      {error || t("reviewerViolationDetail.notFound")}{" "}
+      <Link to="/reviewer/violations" className="text-primary hover:underline">{t("reviewerViolationDetail.backToViolations")}</Link>
     </div>
   );
 
@@ -48,9 +50,9 @@ export default function ReviewerViolationDetail() {
     <div className="space-y-section">
       <div className="space-y-base">
         <Link to="/reviewer/violations" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Back to Violations
+          <ArrowLeft className="h-4 w-4" /> {t("reviewerViolationDetail.backToViolations")}
         </Link>
-        <SectionHeader title={`Violation #${typeof v.id === "string" ? v.id.slice(0, 8) : v.id}`} description="Review and take action" />
+        <SectionHeader title={t("reviewerViolationDetail.violationTitle", { id: typeof v.id === "string" ? v.id.slice(0, 8) : v.id })} description={t("reviewerViolationDetail.description")} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
@@ -66,10 +68,10 @@ export default function ReviewerViolationDetail() {
           <EventPayloadCard data={v} />
         </div>
         <div className="lg:col-span-2 space-y-base">
-          <ContentCard icon={Gavel} title="Review Actions">
+          <ContentCard icon={Gavel} title={t("reviewerViolationDetail.reviewActions")}>
             <ReviewActions violationId={String(v.id)} onDecision={handleDecision} />
           </ContentCard>
-          <ContentCard icon={StickyNote} title="Reviewer Notes">
+          <ContentCard icon={StickyNote} title={t("reviewerViolationDetail.reviewerNotes")}>
             <ReviewerNotesInput violationId={String(v.id)} onSubmit={refreshAudit} />
           </ContentCard>
         </div>
