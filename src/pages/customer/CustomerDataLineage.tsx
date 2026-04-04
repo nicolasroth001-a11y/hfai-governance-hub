@@ -63,6 +63,7 @@ const CONSENT_BASES = [
 
 export default function CustomerDataLineage() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [records, setRecords] = useState<LineageRecord[]>([]);
   const [loading, setLoading] = useState(true);
