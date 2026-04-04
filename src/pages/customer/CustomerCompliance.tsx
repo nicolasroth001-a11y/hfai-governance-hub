@@ -54,6 +54,7 @@ const HFAI_COVERAGE: Record<string, { covered: boolean; feature: string }> = {
 };
 
 export default function CustomerCompliance() {
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const [systems, setSystems] = useState<any[]>([]);
   const [violations, setViolations] = useState<any[]>([]);
