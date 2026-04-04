@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
@@ -14,20 +15,11 @@ import { Cpu, Plus, X, Search } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { fetchAISystems, createAISystem } from "@/lib/api";
 
-
 const riskVariant = (level: string) =>
   level === "critical" ? "destructive" : level === "high" ? "destructive" : level === "medium" ? "secondary" : "outline";
 
-const columns: DataTableColumn<any>[] = [
-  { key: "id", header: "ID", render: (s) => <Link to={`/customer/ai-systems/${s.id}`} className="text-primary font-medium hover:underline text-xs font-mono">{typeof s.id === 'string' ? s.id.slice(0, 8) : s.id}</Link> },
-  { key: "name", header: "Name", render: (s) => <Link to={`/customer/ai-systems/${s.id}`} className="text-sm font-medium text-card-foreground hover:underline">{s.name}</Link> },
-  { key: "model_type", header: "Model", render: (s) => <span className="text-xs text-card-foreground/60 font-mono">{s.model_type || "—"}</span> },
-  { key: "risk_level", header: "Risk", render: (s) => <Badge variant={riskVariant(s.risk_level)} className="capitalize text-xs">{s.risk_level || "—"}</Badge> },
-  { key: "provider", header: "Provider", render: (s) => <span className="text-xs text-card-foreground/60">{s.provider || "—"}</span> },
-  { key: "owner_team", header: "Owner", render: (s) => <span className="text-xs text-card-foreground/60">{s.owner_team || "—"}</span> },
-];
-
 export default function CustomerAISystems() {
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ name: "", description: "", model_type: "", provider: "", version: "", risk_level: "", owner_team: "" });
@@ -41,6 +33,15 @@ export default function CustomerAISystems() {
       .catch(() => setSystems([]))
       .finally(() => setLoading(false));
   }, []);
+
+  const columns: DataTableColumn<any>[] = [
+    { key: "id", header: t("customerAISystems.id"), render: (s) => <Link to={`/customer/ai-systems/${s.id}`} className="text-primary font-medium hover:underline text-xs font-mono">{typeof s.id === 'string' ? s.id.slice(0, 8) : s.id}</Link> },
+    { key: "name", header: t("customerAISystems.name"), render: (s) => <Link to={`/customer/ai-systems/${s.id}`} className="text-sm font-medium text-card-foreground hover:underline">{s.name}</Link> },
+    { key: "model_type", header: t("customerAISystems.model"), render: (s) => <span className="text-xs text-card-foreground/60 font-mono">{s.model_type || "—"}</span> },
+    { key: "risk_level", header: t("customerAISystems.risk"), render: (s) => <Badge variant={riskVariant(s.risk_level)} className="capitalize text-xs">{s.risk_level || "—"}</Badge> },
+    { key: "provider", header: t("customerAISystems.provider"), render: (s) => <span className="text-xs text-card-foreground/60">{s.provider || "—"}</span> },
+    { key: "owner_team", header: t("customerAISystems.owner"), render: (s) => <span className="text-xs text-card-foreground/60">{s.owner_team || "—"}</span> },
+  ];
 
   const filtered = systems.filter((s) => {
     if (!search) return true;
@@ -57,66 +58,66 @@ export default function CustomerAISystems() {
     e.preventDefault();
     try {
       const result = await createAISystem({ ...form, org_id: profile?.org_id || "" });
-      toast({ title: "AI System created", description: `System "${result.name}" registered` });
+      toast({ title: t("customerAISystems.systemCreated"), description: t("customerAISystems.systemCreatedDesc", { name: result.name }) });
       setSystems((prev) => [result, ...prev]);
       setShowCreate(false);
       setForm({ name: "", description: "", model_type: "", provider: "", version: "", risk_level: "", owner_team: "" });
     } catch (err: any) {
-      toast({ title: "Error creating system", description: err.message, variant: "destructive" });
+      toast({ title: t("customerAISystems.createError"), description: err.message, variant: "destructive" });
     }
   };
 
   return (
     <div className="space-y-section">
       <div className="flex items-center justify-between">
-        <SectionHeader title="AI Systems" description="Manage your registered AI systems" />
+        <SectionHeader title={t("customerAISystems.title")} description={t("customerAISystems.description")} />
         <Button onClick={() => setShowCreate(!showCreate)} variant={showCreate ? "secondary" : "default"} className="gap-2">
           {showCreate ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-          {showCreate ? "Cancel" : "Add New System"}
+          {showCreate ? t("customerAISystems.cancel") : t("customerAISystems.addNew")}
         </Button>
       </div>
 
       {showCreate && (
-        <ContentCard icon={Cpu} title="Register New AI System">
+        <ContentCard icon={Cpu} title={t("customerAISystems.registerNew")}>
           <form onSubmit={handleCreate} className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label>System Name</Label>
+              <Label>{t("customerAISystems.systemName")}</Label>
               <Input placeholder="e.g. Customer Support Bot" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
             </div>
             <div className="space-y-2">
-              <Label>Model Type</Label>
+              <Label>{t("customerAISystems.modelType")}</Label>
               <Input placeholder="e.g. LLM, Vision, Custom" value={form.model_type} onChange={(e) => setForm({ ...form, model_type: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Provider</Label>
+              <Label>{t("customerAISystems.provider")}</Label>
               <Input placeholder="e.g. OpenAI, Anthropic" value={form.provider} onChange={(e) => setForm({ ...form, provider: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Version</Label>
+              <Label>{t("customerAISystems.version")}</Label>
               <Input placeholder="e.g. v1.0" value={form.version} onChange={(e) => setForm({ ...form, version: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Owner Team</Label>
+              <Label>{t("customerAISystems.ownerTeam")}</Label>
               <Input placeholder="e.g. ML Engineering" value={form.owner_team} onChange={(e) => setForm({ ...form, owner_team: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Risk Level</Label>
+              <Label>{t("customerAISystems.riskLevel")}</Label>
               <Select value={form.risk_level} onValueChange={(v) => setForm({ ...form, risk_level: v })}>
-                <SelectTrigger><SelectValue placeholder="Select risk level" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t("customerAISystems.riskLevel")} /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                  <SelectItem value="critical">Critical</SelectItem>
+                  <SelectItem value="low">{t("customerViolations.low")}</SelectItem>
+                  <SelectItem value="medium">{t("customerViolations.medium")}</SelectItem>
+                  <SelectItem value="high">{t("customerViolations.high")}</SelectItem>
+                  <SelectItem value="critical">{t("customerViolations.critical")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2 sm:col-span-2">
-              <Label>Description</Label>
+              <Label>{t("customerAISystems.descriptionLabel")}</Label>
               <Textarea placeholder="Describe this AI system…" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
             </div>
             <div className="sm:col-span-2 flex justify-end">
-              <Button type="submit">Register System</Button>
+              <Button type="submit">{t("customerAISystems.registerBtn")}</Button>
             </div>
           </form>
         </ContentCard>
@@ -125,14 +126,14 @@ export default function CustomerAISystems() {
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search systems…"
+          placeholder={t("customerAISystems.searchSystems")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-9"
         />
       </div>
 
-      <DataTable columns={columns} data={filtered} rowKey={(s) => s.id} loading={loading} emptyMessage="No AI systems registered" />
+      <DataTable columns={columns} data={filtered} rowKey={(s) => s.id} loading={loading} emptyMessage={t("customerAISystems.noSystems")} />
     </div>
   );
 }

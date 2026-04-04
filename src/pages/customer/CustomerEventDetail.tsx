@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { fetchAIEvent, fetchReviews, submitReview } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -15,14 +16,8 @@ import { ArrowLeft, FileText, MessageSquare, Code, PlusCircle } from "lucide-rea
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 
-const reviewColumns: DataTableColumn<any>[] = [
-  { key: "decision", header: "Decision", render: (r) => <Badge variant={r.decision === "approved" ? "default" : "destructive"} className="capitalize text-xs">{r.decision}</Badge> },
-  { key: "reviewer_name", header: "Reviewer", render: (r) => <span className="text-sm">{r.reviewer_name || "—"}</span> },
-  { key: "comments", header: "Notes", render: (r) => <span className="text-sm text-card-foreground/60">{r.comments || "—"}</span> },
-  { key: "created_at", header: "Time", render: (r) => <span className="text-xs text-card-foreground/50">{formatDistanceToNow(new Date(r.created_at), { addSuffix: true })}</span> },
-];
-
 export default function CustomerEventDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { profile } = useAuth();
   const [event, setEvent] = useState<any>(null);
@@ -31,6 +26,13 @@ export default function CustomerEventDetail() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reviewForm, setReviewForm] = useState({ decision: "approved", comments: "" });
   const [submitting, setSubmitting] = useState(false);
+
+  const reviewColumns: DataTableColumn<any>[] = [
+    { key: "decision", header: t("customerEventDetail.decision"), render: (r) => <Badge variant={r.decision === "approved" ? "default" : "destructive"} className="capitalize text-xs">{r.decision}</Badge> },
+    { key: "reviewer_name", header: t("customerEventDetail.reviewer"), render: (r) => <span className="text-sm">{r.reviewer_name || "—"}</span> },
+    { key: "comments", header: t("customerEventDetail.notes"), render: (r) => <span className="text-sm text-card-foreground/60">{r.comments || "—"}</span> },
+    { key: "created_at", header: t("customerEvents.time"), render: (r) => <span className="text-xs text-card-foreground/50">{formatDistanceToNow(new Date(r.created_at), { addSuffix: true })}</span> },
+  ];
 
   const loadData = async () => {
     if (!id) return;
@@ -50,25 +52,25 @@ export default function CustomerEventDetail() {
     setSubmitting(true);
     try {
       await submitReview({
-        violation_id: event.id, // link to the event context
+        violation_id: event.id,
         reviewer_name: profile?.name || "Reviewer",
         decision: reviewForm.decision,
         comments: reviewForm.comments,
         reviewer_id: profile?.id,
       });
-      toast({ title: "Review submitted", description: `Decision: ${reviewForm.decision}` });
+      toast({ title: t("customerEventDetail.reviewSubmitted"), description: t("customerEventDetail.decisionLabel", { decision: reviewForm.decision }) });
       setDialogOpen(false);
       setReviewForm({ decision: "approved", comments: "" });
       await loadData();
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      toast({ title: t("common.errorTitle"), description: err.message, variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
-  if (!event) return <p className="text-sm text-destructive py-10 text-center">Event not found.</p>;
+  if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">{t("customerEventDetail.loadingText")}</p>;
+  if (!event) return <p className="text-sm text-destructive py-10 text-center">{t("customerEventDetail.eventNotFound")}</p>;
 
   const metadata = event.metadata || (typeof event.payload === "object" ? event.payload : null);
 
@@ -78,60 +80,60 @@ export default function CustomerEventDetail() {
         <Link to="/customer/events" className="text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" />
         </Link>
-        <SectionHeader title="Event Detail" description={`Event ${event.id.slice(0, 8)}`} />
+        <SectionHeader title={t("customerEventDetail.title")} description={`${t("customerEventDetail.event")} ${event.id.slice(0, 8)}`} />
         <Badge variant="outline" className="ml-auto capitalize">{event.event_type}</Badge>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <ContentCard icon={MessageSquare} title="Input">
+        <ContentCard icon={MessageSquare} title={t("customerEventDetail.input")}>
           <p className="text-sm text-card-foreground whitespace-pre-wrap">
-            {event.input_text || (typeof event.payload === "string" ? event.payload : "No input recorded")}
+            {event.input_text || (typeof event.payload === "string" ? event.payload : t("customerEventDetail.noInput"))}
           </p>
         </ContentCard>
-        <ContentCard icon={FileText} title="Output">
+        <ContentCard icon={FileText} title={t("customerEventDetail.output")}>
           <p className="text-sm text-card-foreground whitespace-pre-wrap">
-            {event.output_text || "No output recorded"}
+            {event.output_text || t("customerEventDetail.noOutput")}
           </p>
         </ContentCard>
       </div>
 
       {metadata && (
-        <ContentCard icon={Code} title="Metadata">
+        <ContentCard icon={Code} title={t("customerEventDetail.metadata")}>
           <pre className="text-xs text-card-foreground/70 font-mono bg-secondary/30 rounded-lg p-4 overflow-x-auto">
             {JSON.stringify(metadata, null, 2)}
           </pre>
         </ContentCard>
       )}
 
-      <ContentCard title="Linked Reviews">
+      <ContentCard title={t("customerEventDetail.linkedReviews")}>
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-card-foreground/60">{reviews.length} review(s)</p>
+          <p className="text-sm text-card-foreground/60">{t("customerEventDetail.reviews", { count: reviews.length })}</p>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button size="sm" className="gap-2">
-                <PlusCircle className="h-4 w-4" /> Create Review
+                <PlusCircle className="h-4 w-4" /> {t("customerEventDetail.createReview")}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create Human Review</DialogTitle>
+                <DialogTitle>{t("customerEventDetail.createHumanReview")}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 pt-2">
                 <div className="space-y-2">
-                  <Label>Decision</Label>
+                  <Label>{t("customerEventDetail.decision")}</Label>
                   <Select value={reviewForm.decision} onValueChange={(v) => setReviewForm({ ...reviewForm, decision: v })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="approved">Approved</SelectItem>
-                      <SelectItem value="rejected">Rejected</SelectItem>
-                      <SelectItem value="escalated">Escalated</SelectItem>
+                      <SelectItem value="approved">{t("customerEventDetail.approved")}</SelectItem>
+                      <SelectItem value="rejected">{t("customerEventDetail.rejected")}</SelectItem>
+                      <SelectItem value="escalated">{t("customerEventDetail.escalated")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Notes</Label>
+                  <Label>{t("customerEventDetail.notes")}</Label>
                   <Textarea
-                    placeholder="Review notes…"
+                    placeholder={t("customerEventDetail.reviewNotes")}
                     value={reviewForm.comments}
                     onChange={(e) => setReviewForm({ ...reviewForm, comments: e.target.value })}
                     rows={3}
@@ -139,14 +141,14 @@ export default function CustomerEventDetail() {
                 </div>
                 <div className="flex justify-end">
                   <Button onClick={handleCreateReview} disabled={submitting}>
-                    {submitting ? "Submitting…" : "Submit Review"}
+                    {submitting ? t("customerEventDetail.submitting") : t("customerEventDetail.submitReview")}
                   </Button>
                 </div>
               </div>
             </DialogContent>
           </Dialog>
         </div>
-        <DataTable columns={reviewColumns} data={reviews} rowKey={(r) => r.id} emptyMessage="No reviews linked to this event" />
+        <DataTable columns={reviewColumns} data={reviews} rowKey={(r) => r.id} emptyMessage={t("customerEventDetail.noReviews")} />
       </ContentCard>
     </div>
   );

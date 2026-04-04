@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { AlertTriangle, CheckCircle, Send, ShieldAlert, Cpu, UserCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
@@ -24,6 +25,7 @@ const RISK_COLORS: Record<string, string> = {
 const REALTIME_TABLES = ["violations", "ai_events", "audit_logs"];
 
 export default function CustomerDashboard() {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({ totalViolations: 0, openViolations: 0, totalSystems: 0, pendingReviews: 0, resolvedToday: 0 });
   const [riskData, setRiskData] = useState<{ name: string; value: number }[]>([]);
   const [activity, setActivity] = useState<any[]>([]);
@@ -31,7 +33,6 @@ export default function CustomerDashboard() {
   const [loading, setLoading] = useState(true);
   const { completedAt, progress: onboardingProgress, loading: onboardingLoading } = useOnboardingProgress();
 
-  // Realtime subscription
   const handleRealtimeEvent = useCallback(() => {
     loadData();
   }, []);
@@ -40,12 +41,9 @@ export default function CustomerDashboard() {
     onEvent: handleRealtimeEvent,
   });
 
-  // Safety: if onboarding loading gets stuck, force it after 5s
   useEffect(() => {
     if (onboardingLoading) {
-      const timeout = setTimeout(() => {
-        // If still loading after 5s, proceed with dashboard
-      }, 5000);
+      const timeout = setTimeout(() => {}, 5000);
       return () => clearTimeout(timeout);
     }
   }, [onboardingLoading]);
@@ -92,7 +90,6 @@ export default function CustomerDashboard() {
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  // Show onboarding wizard for brand-new users
   const isNewUser = !onboardingLoading && !completedAt && onboardingProgress === 0;
   if (isNewUser) {
     return <OnboardingWelcome />;
@@ -101,30 +98,28 @@ export default function CustomerDashboard() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <SectionHeader title="Dashboard" description="Clarity and control over your AI governance" />
+        <SectionHeader title={t("customerDashboard.title")} description={t("customerDashboard.description")} />
         <Button onClick={() => setTestOpen(true)} size="sm" className="gap-2 h-9 w-full sm:w-auto">
-          <Send className="h-3.5 w-3.5" /> Send Test Event
+          <Send className="h-3.5 w-3.5" /> {t("customerDashboard.sendTestEvent")}
         </Button>
       </div>
 
-      {/* Realtime stats strip */}
       <RealtimeStats events={events} />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        <StatCard title="AI Systems" value={stats.totalSystems} icon={Cpu} />
-        <StatCard title="Open Violations" value={stats.openViolations} icon={AlertTriangle} subtitle="Requires attention" />
-        <StatCard title="Total Violations" value={stats.totalViolations} icon={ShieldAlert} />
-        <StatCard title="Pending Reviews" value={stats.pendingReviews} icon={UserCheck} />
-        <StatCard title="Resolved" value={stats.resolvedToday} icon={CheckCircle} />
+        <StatCard title={t("customerDashboard.aiSystems")} value={stats.totalSystems} icon={Cpu} />
+        <StatCard title={t("customerDashboard.openViolations")} value={stats.openViolations} icon={AlertTriangle} subtitle={t("customerDashboard.requiresAttention")} />
+        <StatCard title={t("customerDashboard.totalViolations")} value={stats.totalViolations} icon={ShieldAlert} />
+        <StatCard title={t("customerDashboard.pendingReviews")} value={stats.pendingReviews} icon={UserCheck} />
+        <StatCard title={t("customerDashboard.resolved")} value={stats.resolvedToday} icon={CheckCircle} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Live Event Feed */}
         <LiveEventFeed events={events} connected={connected} onClear={clearEvents} />
 
-        <ContentCard title="Risk Distribution">
+        <ContentCard title={t("customerDashboard.riskDistribution")}>
           {riskData.length === 0 ? (
-            <p className="text-sm text-card-foreground/50 py-8 text-center">No AI systems registered yet</p>
+            <p className="text-sm text-card-foreground/50 py-8 text-center">{t("customerDashboard.noSystemsYet")}</p>
           ) : (
             <ResponsiveContainer width="100%" height={240}>
               <PieChart>
@@ -141,11 +136,11 @@ export default function CustomerDashboard() {
         </ContentCard>
       </div>
 
-      <ContentCard title="Recent Activity">
+      <ContentCard title={t("customerDashboard.recentActivity")}>
         {loading ? (
-          <p className="text-sm text-card-foreground/50">Loading…</p>
+          <p className="text-sm text-card-foreground/50">{t("customerDashboard.loading")}</p>
         ) : activity.length === 0 ? (
-          <p className="text-sm text-card-foreground/50">No recent activity.</p>
+          <p className="text-sm text-card-foreground/50">{t("customerDashboard.noActivity")}</p>
         ) : (
           <div className="space-y-4">
             {activity.map((item) => (
