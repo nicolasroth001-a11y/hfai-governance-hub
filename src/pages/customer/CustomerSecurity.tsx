@@ -201,13 +201,13 @@ export default function CustomerSecurity() {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Remove MFA?</AlertDialogTitle>
+                         <AlertDialogTitle>{t("customerSecurity.removeMFA")}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            This will disable two-factor authentication on your account. You can re-enable it later.
+                            {t("customerSecurity.removeMFADesc")}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>{t("customerSecurity.cancel")}</AlertDialogCancel>
                           <AlertDialogAction onClick={() => handleUnenroll(f.id)} className="bg-destructive text-destructive-foreground">
                             Remove
                           </AlertDialogAction>
