@@ -264,7 +264,7 @@ console.log(await response.json());`;
                           </div>
                         </div>
                         <Button variant="outline" size="sm" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => handleDisconnect(cp.id, config?.label || cp.provider)}>
-                          <Trash2 className="h-3 w-3 mr-1" /> Disconnect
+                          <Trash2 className="h-3 w-3 mr-1" /> {t("customerConnect.disconnect")}
                         </Button>
                       </div>
                     </CardContent>
