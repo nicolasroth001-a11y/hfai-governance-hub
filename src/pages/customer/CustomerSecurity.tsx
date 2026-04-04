@@ -113,9 +113,9 @@ export default function CustomerSecurity() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-lg">Two-Factor Authentication</CardTitle>
+              <CardTitle className="text-lg">{t("customerSecurity.twoFactor")}</CardTitle>
               <CardDescription>
-                Add an extra layer of security using an authenticator app like Google Authenticator or Authy
+                {t("customerSecurity.twoFactorDesc")}
               </CardDescription>
             </div>
             {hasActiveFactor ? (
