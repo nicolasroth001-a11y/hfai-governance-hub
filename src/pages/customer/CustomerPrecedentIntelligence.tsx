@@ -19,6 +19,7 @@ interface PrecedentInsight {
 
 export default function CustomerPrecedentIntelligence() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [violations, setViolations] = useState<any[]>([]);
   const [patterns, setPatterns] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
