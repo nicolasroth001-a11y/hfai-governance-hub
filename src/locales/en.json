@@ -1016,5 +1016,43 @@
     "title": "Rule Detail",
     "description": "Not available",
     "noBackend": "No rules route exists in the backend yet."
+  },
+  "reviewerDashboard": {
+    "title": "Review Queue",
+    "description": "Your assigned violations and unassigned items",
+    "assignedToMe": "Assigned to Me",
+    "myPending": "My Pending",
+    "unassigned": "Unassigned",
+    "resolved": "Resolved",
+    "myQueue": "My Queue",
+    "loading": "Loading…",
+    "noPending": "No pending violations. All clear!",
+    "assigned": "Assigned"
+  },
+  "reviewerViolations": {
+    "title": "All Violations",
+    "description": "Violations available for review",
+    "id": "ID",
+    "descriptionCol": "Description",
+    "severity": "Severity",
+    "detected": "Detected",
+    "status": "Status",
+    "critical": "Critical",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "open": "Open",
+    "underReview": "Under Review",
+    "resolved": "Resolved",
+    "noViolations": "No violations found"
+  },
+  "reviewerViolationDetail": {
+    "loading": "Loading…",
+    "notFound": "Violation not found.",
+    "backToViolations": "Back to Violations",
+    "violationTitle": "Violation #{{id}}",
+    "description": "Review and take action",
+    "reviewActions": "Review Actions",
+    "reviewerNotes": "Reviewer Notes"
   }
 }

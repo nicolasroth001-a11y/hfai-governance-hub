@@ -1016,5 +1016,43 @@
     "title": "Detalle de regla",
     "description": "No disponible",
     "noBackend": "Aún no existe una ruta de reglas en el backend."
+  },
+  "reviewerDashboard": {
+    "title": "Cola de revisión",
+    "description": "Sus violaciones asignadas y elementos sin asignar",
+    "assignedToMe": "Asignados a mí",
+    "myPending": "Mis pendientes",
+    "unassigned": "Sin asignar",
+    "resolved": "Resueltos",
+    "myQueue": "Mi cola",
+    "loading": "Cargando…",
+    "noPending": "No hay violaciones pendientes. ¡Todo limpio!",
+    "assigned": "Asignado"
+  },
+  "reviewerViolations": {
+    "title": "Todas las violaciones",
+    "description": "Violaciones disponibles para revisión",
+    "id": "ID",
+    "descriptionCol": "Descripción",
+    "severity": "Severidad",
+    "detected": "Detectada",
+    "status": "Estado",
+    "critical": "Crítica",
+    "high": "Alta",
+    "medium": "Media",
+    "low": "Baja",
+    "open": "Abierta",
+    "underReview": "En revisión",
+    "resolved": "Resuelta",
+    "noViolations": "No se encontraron violaciones"
+  },
+  "reviewerViolationDetail": {
+    "loading": "Cargando…",
+    "notFound": "Violación no encontrada.",
+    "backToViolations": "Volver a violaciones",
+    "violationTitle": "Violación #{{id}}",
+    "description": "Revisar y tomar acción",
+    "reviewActions": "Acciones de revisión",
+    "reviewerNotes": "Notas del revisor"
   }
 }

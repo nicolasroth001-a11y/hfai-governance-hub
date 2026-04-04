@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { AlertTriangle, CheckCircle, Clock, Timer, UserCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { AlertTriangle, CheckCircle, Clock, UserCheck } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
@@ -11,6 +12,7 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
 export default function ReviewerDashboard() {
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const [violations, setViolations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,20 +37,20 @@ export default function ReviewerDashboard() {
 
   return (
     <div className="space-y-8">
-      <SectionHeader title="Review Queue" description="Your assigned violations and unassigned items" />
+      <SectionHeader title={t("reviewerDashboard.title")} description={t("reviewerDashboard.description")} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Assigned to Me" value={stats.assignedToMe} icon={UserCheck} />
-        <StatCard title="My Pending" value={stats.pendingReview} icon={Clock} />
-        <StatCard title="Unassigned" value={stats.unassigned} icon={AlertTriangle} />
-        <StatCard title="Resolved" value={stats.resolved} icon={CheckCircle} />
+        <StatCard title={t("reviewerDashboard.assignedToMe")} value={stats.assignedToMe} icon={UserCheck} />
+        <StatCard title={t("reviewerDashboard.myPending")} value={stats.pendingReview} icon={Clock} />
+        <StatCard title={t("reviewerDashboard.unassigned")} value={stats.unassigned} icon={AlertTriangle} />
+        <StatCard title={t("reviewerDashboard.resolved")} value={stats.resolved} icon={CheckCircle} />
       </div>
 
-      <ContentCard title="My Queue">
+      <ContentCard title={t("reviewerDashboard.myQueue")}>
         {loading ? (
-          <p className="text-sm text-card-foreground/50">Loading…</p>
+          <p className="text-sm text-card-foreground/50">{t("reviewerDashboard.loading")}</p>
         ) : pending.length === 0 ? (
-          <p className="text-sm text-card-foreground/50">No pending violations. All clear!</p>
+          <p className="text-sm text-card-foreground/50">{t("reviewerDashboard.noPending")}</p>
         ) : (
           <div className="space-y-1">
             {pending.map((v) => (
@@ -59,7 +61,7 @@ export default function ReviewerDashboard() {
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   {v.assigned_reviewer_id === profile?.id && (
-                    <span className="text-[10px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">Assigned</span>
+                    <span className="text-[10px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">{t("reviewerDashboard.assigned")}</span>
                   )}
                   <SeverityBadge severity={v.severity} />
                   <StatusBadge status={v.status || "open"} />
