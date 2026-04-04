@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "docs": "Docs",
+    "blog": "Blog",
+    "pricing": "Preise",
+    "signIn": "Anmelden",
+    "startFree": "Kostenlos starten",
+    "resources": "Ressourcen",
+    "framework": "Rahmenwerk",
+    "freePilot": "Kostenloses Pilot",
+    "admin": "Admin"
+  },
+  "hero": {
+    "badge": "Nicht KI-Sicherheit. KI-Compliance. · EU AI Act GPAI-Regeln aktiv ab August 2026",
+    "title1": "Die",
+    "title2": "EU AI Act Compliance-Schicht",
+    "subtitle": "Enterprise-KI-Sicherheitstools schützen Daten. HFAI beweist die regulatorische Compliance. Echtzeit-Überwachung, Audit-Trails und menschliche Prüfung — entwickelt für den EU AI Act.",
+    "cta": "Kostenloses Konto erstellen",
+    "demo": "Live-Demo testen",
+    "pilot": "Pilotprojekt anfragen"
+  },
+  "trust": {
+    "encryption": "Enterprise-grade Verschlüsselung",
+    "soc2": "SOC 2 konforme Praktiken",
+    "setup": "2-Minuten-Setup, keine Code-Änderungen",
+    "ready": "Bereit für EU AI Act + NIST AI RMF"
+  },
+  "values": {
+    "sectionTitle": "Compliance, nicht nur Sicherheit",
+    "sectionDesc": "KI-Sicherheitstools stoppen Bedrohungen. HFAI beweist den Regulierungsbehörden, dass Ihre KI ordnungsgemäß verwaltet wird.",
+    "monitoring": {
+      "title": "Echtzeit-Überwachung",
+      "description": "Zwei Integrationswege: Proxy (ohne Code für OpenAI) oder REST-API (jeder KI-Anbieter). Volle Sichtbarkeit in beiden Fällen.",
+      "highlight": "Sichtbarkeit"
+    },
+    "detection": {
+      "title": "Sofortige Erkennung",
+      "description": "Automatisierte Regelauswertung meldet Richtlinienverstöße im Moment ihres Auftretens — ohne Verzögerung.",
+      "highlight": "Erkennung"
+    },
+    "oversight": {
+      "title": "Menschliche Aufsicht",
+      "description": "Geschulte Prüfer genehmigen oder lehnen markierte Ereignisse ab und behalten die Kontrolle über jede Entscheidung.",
+      "highlight": "Kontrolle"
+    },
+    "rca": {
+      "title": "Ursachenanalyse",
+      "description": "KI-gestützte Diagnose identifiziert, warum Verstöße auftreten, und erstellt Behebungspläne.",
+      "highlight": "Diagnose"
+    }
+  },
+  "differentiation": {
+    "badge": "Warum HFAI",
+    "title": "Anderes Problem, anderes Tool",
+    "desc": "Enterprise-KI-Sicherheitsplattformen schützen Ihre Daten vor KI-Agenten. HFAI beweist den <em>Regulierungsbehörden</em>, dass Ihre KI-Systeme ordnungsgemäß verwaltet werden.",
+    "security": "Enterprise KI-Sicherheit",
+    "securityItems": [
+      "Sichert den Agentenzugriff auf Unternehmensdaten",
+      "Käufer: CISO / Sicherheitsteams",
+      "Fokus: Datenschutz und Bedrohungsprävention",
+      "Nur Enterprise-Preise (100K$+)"
+    ],
+    "compliance": "HFAI — Compliance-Schicht",
+    "complianceItems": [
+      "Beweist regulatorische Compliance (EU AI Act, NIST)",
+      "Käufer: Compliance-Beauftragte, DSB, Rechtsabteilung",
+      "Fokus: Audit-Trails, menschliche Aufsicht, Konformität",
+      "Startup-freundliche Preise, 30-Tage-Testversion"
+    ],
+    "footer": "Sie brauchen beides. Sicherheit stoppt Bedrohungen. Compliance beweist Governance. HFAI ist die Compliance-Schicht."
+  },
+  "useCases": {
+    "badge": "Praxisszenarien",
+    "title": "HFAI in Aktion",
+    "desc": "Sehen Sie, wie Teams in regulierten Branchen HFAI nutzen, um KI an der Entscheidungsgrenze zu steuern.",
+    "cta": "Erstellen Sie Ihre eigene Governance-Konfiguration",
+    "fintech": {
+      "industry": "Fintech",
+      "title": "Überwachung von Kreditentscheidungen",
+      "scenario": "Ein mittelgroßer Kreditgeber verwendet GPT-4 zur Vorprüfung von Kreditanträgen. HFAI überwacht jede Entscheidung auf Bias, PII-Exposition und regulatorische Compliance.",
+      "results": [
+        "47 Bias-Verstöße in den ersten 30 Tagen erkannt",
+        "Menschliche Prüfer überstimmen 12% der KI-Ablehnungen",
+        "Vollständiger Audit-Trail für CFPB-Prüfungsbereitschaft"
+      ],
+      "systems": "3 KI-Systeme · 12 Governance-Regeln · 2 Prüfer",
+      "framework": "NIST AI RMF + ECOA-Compliance"
+    },
+    "healthtech": {
+      "industry": "Healthtech",
+      "title": "Überwachung der klinischen Triage-KI",
+      "scenario": "Eine Telemedizin-Plattform leitet die Patientenaufnahme über ein KI-Triagesystem. HFAI stellt sicher, dass keine unaufgeforderten Diagnosen oder Behandlungsempfehlungen ohne menschliche Freigabe durchkommen.",
+      "results": [
+        "23 medizinische Beratungsverstöße vor der Bereitstellung gemeldet",
+        "100% der hochgradigen Ausgaben zur klinischen Prüfung weitergeleitet",
+        "EU AI Act Art. 14 Dokumentation der menschlichen Aufsicht bereit"
+      ],
+      "systems": "1 KI-System · 8 Governance-Regeln · 4 Prüfer",
+      "framework": "EU AI Act (Hochrisiko) + MDR-Ausrichtung"
+    },
+    "legaltech": {
+      "industry": "Legaltech",
+      "title": "KI-Governance für Vertragsprüfung",
+      "scenario": "Eine rechtliche KI-Plattform analysiert Verträge und markiert Risikoklauseln. HFAI überwacht halluzinierte Rechtszitate, Vertraulichkeitsverletzungen und Genauigkeitsabweichungen.",
+      "results": [
+        "31 halluzinierte Fallzitate in 60 Tagen erkannt",
+        "Vertraulichkeitsverletzungsrate um 89% gesunken",
+        "Wöchentliche Compliance-Berichte automatisch für Partner erstellt"
+      ],
+      "systems": "2 KI-Systeme · 15 Governance-Regeln · 3 Prüfer",
+      "framework": "NIST AI RMF GOVERN + MEASURE"
+    }
+  },
+  "compliance": {
+    "badge": "Doppelte Compliance integriert",
+    "title": "Bereit für EU AI Act + NIST AI RMF",
+    "desc": "Eine Plattform. Zwei regulatorische Rahmenwerke. Vollständige Abdeckung für US- und EU-KI-Governance-Anforderungen.",
+    "euLabel": "EU AI Act",
+    "euSubtext": "— GPAI-Regeln Aug. 2026 · Hochrisiko Dez. 2027 (Omnibus VII)",
+    "nistLabel": "NIST KI-Risikomanagement-Rahmenwerk",
+    "nistSubtext": "— Referenziert von FTC, SEC, CFPB",
+    "euDetails": "EU AI Act Details",
+    "nistDetails": "NIST AI RMF Details",
+    "articles": {
+      "art9": { "label": "Risikomanagement", "desc": "Konfigurierbarer Regelmotor mit Schweregrad-Klassifizierung" },
+      "art12": { "label": "Aufzeichnung", "desc": "Jedes KI-Ereignis mit vollständigen Ein-/Ausgabe-Metadaten erfasst" },
+      "art13": { "label": "Transparenz", "desc": "Vollständiger Audit-Trail mit exportierbaren Compliance-Berichten" },
+      "art14": { "label": "Menschliche Aufsicht", "desc": "Prüfer-Workflows mit Genehmigen/Ablehnen/Eskalieren" },
+      "art15": { "label": "Genauigkeitsüberwachung", "desc": "Echtzeit-Anomalieerkennung und Musteranalyse" },
+      "art61": { "label": "Post-Market-Überwachung", "desc": "Kontinuierliche Ereignisüberwachung und Verstoßerkennung" }
+    },
+    "nistFunctions": {
+      "govern": "Rollenbasierter Zugriff, Human-First-Doktrin, vollständige Audit-Trails",
+      "map": "KI-Systemregister mit Risikostufen, Modellkarten und Daten-Governance",
+      "measure": "Echtzeit-Überwachung, Regelmotor, Verstoßmuster-Erkennung",
+      "manage": "Menschliche Aufsichtsprüfungen, RCA, Behebungsmaßnahmen, Benachrichtigungen"
+    }
+  },
+  "calculator": {
+    "badge": "Interaktives Tool",
+    "title": "Sind Sie auf Kurs für die Compliance?",
+    "desc": "Wählen Sie Ihre aktuelle Governance-Phase, um Ihr Zeitplanrisiko zu sehen.",
+    "sectionTitle": "Sind Sie bereit?",
+    "sectionDesc": "Prüfen Sie Ihren Compliance-Zeitplan gegen kommende regulatorische Fristen.",
+    "stages": {
+      "not_started": "Noch nicht begonnen",
+      "early": "Frühe Recherche / Planung",
+      "in_progress": "Richtlinien werden umgesetzt",
+      "advanced": "Laufzeit-Governance vorhanden"
+    },
+    "monthsRemaining": "~{{months}} Monate Arbeit verbleibend",
+    "behind": "Sie laufen Gefahr, Fristen zu verpassen",
+    "tight": "Der Zeitplan ist eng — beginnen Sie jetzt, um auf Kurs zu bleiben",
+    "safe": "Sie sind in einer starken Position — weiter aufbauen",
+    "monthsLeft": "{{months}} Monate übrig",
+    "monthsNeeded": "{{months}} Monate benötigt",
+    "buffer": "+{{months}} Monate Puffer",
+    "short": "{{months}} Monate zu kurz",
+    "cta": "Jetzt anfangen — Es ist kostenlos",
+    "deadlines": {
+      "gpai": "GPAI-Modellregeln",
+      "highRiskStandalone": "Hochrisiko-KI (eigenständig)",
+      "highRiskEmbedded": "Hochrisiko-KI (eingebettet)"
+    }
+  },
+  "howItWorks": {
+    "title": "So funktioniert es",
+    "desc": "Vier Schritte von der KI-Ausgabe zur menschlichen Verantwortlichkeit.",
+    "steps": {
+      "connect": { "label": "Verbinden", "desc": "Proxy oder REST-API" },
+      "evaluate": { "label": "Bewerten", "desc": "Regeln geprüft in <200ms" },
+      "detect": { "label": "Erkennen", "desc": "Verstöße gemeldet" },
+      "review": { "label": "Prüfen", "desc": "Menschen entscheiden" }
+    }
+  },
+  "demo": {
+    "badge": "Live-Demo",
+    "title": "HFAI in Aktion sehen",
+    "desc": "Durchlaufen Sie einen echten Governance-Workflow — von der Ereignisaufnahme bis zur menschlichen Prüfung.",
+    "previous": "← Zurück",
+    "next": "Weiter →",
+    "steps": {
+      "ingest": { "label": "KI-Ereignis aufgenommen", "desc": "Ereignisse kommen über Proxy (ohne Code) oder REST-API (jeder Anbieter)", "title": "user_message-Ereignis empfangen" },
+      "evaluate": { "label": "Regeln ausgewertet", "desc": "HFAI wertet 12 Governance-Regeln gegen das Ereignis aus", "title": "3 Regeln ausgelöst" },
+      "violation": { "label": "Verstoß erstellt", "desc": "Ein kritischer Verstoß wird automatisch generiert", "title": "VIO-2847 erstellt" },
+      "review": { "label": "Menschliche Prüfung", "desc": "Ein geschulter Prüfer untersucht den Verstoß und entscheidet", "title": "Prüfer-Entscheidung" }
+    }
+  },
+  "postDemo": {
+    "title": "Gefällt Ihnen, was Sie sehen? Starten Sie die Governance in Minuten.",
+    "desc": "Erstellen Sie ein kostenloses Konto — keine Kreditkarte, kein Verkaufsgespräch. Verbinden Sie Ihr erstes KI-System in unter 2 Minuten.",
+    "cta": "Kostenloses Konto erstellen",
+    "plans": "Pläne ansehen",
+    "noCreditCard": "Keine Kreditkarte",
+    "freeTier": "Dauerhaft kostenlose Stufe",
+    "twoMinSetup": "2-Min-Setup"
+  },
+  "pilot": {
+    "badge": "30-Tage-Testversion",
+    "title": "Sehen Sie Governance an <1>Ihren</1> KI-Systemen arbeiten",
+    "desc": "Keine Kreditkarte. Keine Verpflichtung. Voller Plattformzugang mit dediziertem Onboarding-Support.",
+    "cta": "Kostenlos starten — Keine Karte nötig",
+    "whiteGlove": "Begleitetes Pilotprojekt anfragen",
+    "whiteGloveTitle": "Begleitetes Setup",
+    "whiteGloveDesc": "Wir helfen Ihnen bei Integration und Konfiguration — ohne Aufwand für Sie",
+    "includes": {
+      "systems": "Unbegrenzte KI-Systeme für 30 Tage",
+      "compliance": "EU AI Act + NIST AI RMF Compliance",
+      "onboarding": "Dedizierter Onboarding-Support",
+      "report": "Governance-Bericht am Ende der Testphase"
+    }
+  },
+  "leadCapture": {
+    "badge": "Kostenlose Ressource",
+    "title": "KI-Compliance-Bereitschafts-Checkliste",
+    "desc": "Alles, was Sie brauchen, um sich auf die EU AI Act und NIST AI RMF Compliance vorzubereiten — in einer umsetzbaren Checkliste.",
+    "cta": "Checkliste erhalten",
+    "noSpam": "Kein Spam. Jederzeit abbestellbar.",
+    "successTitle": "Checkliste unterwegs!",
+    "successDesc": "Prüfen Sie <1>{{email}}</1> für Ihre KI-Compliance-Bereitschafts-Checkliste.",
+    "toastTitle": "Checkliste gesendet!",
+    "toastDesc": "Prüfen Sie Ihren Posteingang für die KI-Compliance-Checkliste.",
+    "items": [
+      "EU AI Act Pflichten-Zeitplan (aktualisiert für Omnibus VII)",
+      "NIST AI RMF Funktionszuordnungs-Checkliste",
+      "Leitfaden zur Identifikation von Hochrisiko-KI-Systemen",
+      "Vorlage für den Workflow menschlicher Aufsicht",
+      "Anforderungen an die Compliance-Dokumentation"
+    ]
+  },
+  "newsletter": {
+    "title": "Bleiben Sie der KI-Regulierung voraus",
+    "desc": "Monatliche Einblicke zum EU AI Act, NIST AI RMF und praktische Governance-Strategien.",
+    "gdprConsent": "Ich stimme zu, KI-Governance-Updates von HFAI zu erhalten. Sie können sich jederzeit abmelden. Wir verarbeiten Ihre Daten gemäß der DSGVO.",
+    "subscribe": "Abonnieren",
+    "successTitle": "Sie sind dabei!",
+    "successDesc": "Achten Sie auf Ihren Posteingang für KI-Governance-Einblicke.",
+    "toastTitle": "Abonniert!",
+    "toastDesc": "Sie erhalten KI-Governance-Einblicke und regulatorische Updates."
+  },
+  "bookDemo": {
+    "title": "HFAI in Ihrer Umgebung sehen",
+    "desc": "Buchen Sie eine 30-minütige Vorführung. Wir zeigen Ihnen, wie HFAI zu Ihrem KI-Stack und Ihren Compliance-Anforderungen passt — ohne Druck, ohne Verkaufsgespräch.",
+    "cta": "Demo buchen",
+    "footer": "30 Min · Ohne Verpflichtung · Auf Ihren Anwendungsfall zugeschnitten"
+  },
+  "founder": {
+    "badge": "Vom Gründer",
+    "quote": "Ich habe HFAI gegründet, nachdem ich eine Lücke zwischen dem gesehen habe, was Organisationen über KI-Governance sagen, und dem, was tatsächlich im Moment der Entscheidung passiert. Meine Arbeit konzentriert sich auf die Gestaltung praktischer, menschenzentrierter Governance-Systeme, die Teams helfen, KI in Echtzeit zu verstehen, zu überwachen und zu kontrollieren.",
+    "bio": "Er bringt einen praxisnahen, operativen Ansatz zu einem der schwierigsten Probleme des Feldes: Verantwortlichkeit aufbauen, ohne Überwachung zu schaffen.",
+    "name": "Nicolas Roth",
+    "role": "Gründer, HFAI"
+  },
+  "faq": {
+    "title": "Fragen und Antworten",
+    "items": [
+      {
+        "q": "Wie integriert sich HFAI in meine KI-Systeme?",
+        "a": "HFAI bietet zwei Integrationsmethoden. Der Proxy (ohne Code) ermöglicht es Ihnen, Ihre OpenAI-Basis-URL auf den HFAI-Endpunkt zu wechseln — jeder Aufruf wird automatisch ohne Code-Änderungen überwacht. Die REST-API funktioniert mit jedem KI-Anbieter (Anthropic, Google, Open-Source usw.) — Sie senden Ereignisse an HFAI, nachdem Ihre KI geantwortet hat, und behalten Ihren Datenfluss vollständig unter Ihrer Kontrolle."
+      },
+      {
+        "q": "Was ist der Unterschied zwischen Proxy und REST-API?",
+        "a": "Der Proxy fängt KI-Traffic in Echtzeit ab — Ihre Anfragen fließen durch HFAI und bieten volle Sichtbarkeit der Ein- und Ausgaben ohne Code-Änderungen. Die REST-API hält Ihren KI-Traffic privat zwischen Ihnen und Ihrem Anbieter — nur Ereignis-Metadaten werden zur Überwachung an HFAI gesendet. Wählen Sie Proxy für sofortige Einrichtung, REST-API für maximale Datenkontrolle."
+      },
+      {
+        "q": "Welche Arten von KI-Verstößen kann HFAI erkennen?",
+        "a": "Verstöße gegen die Inhaltssicherheit, Bias-Erkennung, PII-Exposition, Halluzinationsmuster, unbefugter Datenzugriff, Prompt-Injection-Versuche und benutzerdefinierte Regeln, die Sie für Ihren spezifischen Anwendungsfall definieren."
+      },
+      {
+        "q": "Bekomme ich automatisierte Compliance-Berichte?",
+        "a": "Ja — HFAI erstellt und liefert jeden Montag eine Wöchentliche KI-Governance-Zusammenfassung in Ihren Posteingang. Jeder Bericht umfasst Ihre gesamten KI-Systeme, Hochrisiko-Klassifizierungen, offene und gelöste Verstöße, aktive Governance-Regeln und menschliche Prüfungsaktivitäten. Kein manueller Aufwand — volle EU AI Act Compliance-Sichtbarkeit auf Autopilot."
+      },
+      {
+        "q": "Was ist die Ursachenanalyse?",
+        "a": "Unser KI-gestützter RCA-Motor diagnostiziert, warum Verstöße auftreten, schlägt Regeländerungen vor, identifiziert wiederkehrende Muster und erstellt Behebungs-Checklisten — alles von menschlichen Prüfern validiert."
+      },
+      {
+        "q": "Sind meine Daten sicher?",
+        "a": "Absolut. Alle Daten werden im Ruhezustand und bei der Übertragung verschlüsselt. Wir folgen SOC 2 konformen Praktiken. Bei der REST-API-Integration verlässt Ihr KI-Traffic niemals Ihre Umgebung — nur Ereignis-Metadaten werden an HFAI gesendet. Beim Proxy wird der Traffic Ende-zu-Ende verschlüsselt und in Echtzeit verarbeitet."
+      }
+    ]
+  },
+  "finalCta": {
+    "title1": "Ihre KI trifft gerade Entscheidungen.",
+    "title2": "Wer schaut zu?",
+    "desc": "Starten Sie Ihre kostenlose 30-Tage-Testversion. Keine Kreditkarte. Keine Verpflichtung. Voller Plattformzugang.",
+    "cta": "Kostenloses Konto erstellen",
+    "pricing": "Preise ansehen"
+  },
+  "blogCta": {
+    "title": "KI-Governance-Einblicke und Leitfäden",
+    "desc": "Praktische Artikel über KI-Compliance, den EU AI Act, NIST AI RMF und die Aufrechterhaltung menschlicher Kontrolle.",
+    "cta": "Blog lesen"
+  },
+  "footer": {
+    "tagline": "Human-First KI-Governance — Menschen in Kontrolle jeder KI-Entscheidung.",
+    "copyright": "© {{year}} HFAI — Alle Rechte vorbehalten"
+  },
+  "countdown": {
+    "badge": "EU AI Act — GPAI-Regeln-Frist",
+    "days": "Tage",
+    "hours": "Stunden",
+    "min": "Min",
+    "sec": "Sek",
+    "footer": "Die Regeln für KI-Modelle für allgemeine Zwecke treten am <1>1. August 2026</1> in Kraft. Hochrisiko-Verpflichtungen folgen im Dezember 2027."
+  },
+  "stats": {
+    "uptime": "Verfügbarkeits-SLA",
+    "speed": "Erkennungsgeschwindigkeit",
+    "coverage": "Audit-Abdeckung",
+    "review": "Menschliche Prüfung"
+  },
+  "common": {
+    "errorTitle": "Etwas ist schiefgelaufen",
+    "errorDesc": "Bitte versuchen Sie es erneut.",
+    "mobilePilot": "Pilot"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "de": "Deutsch"
+  }
+}

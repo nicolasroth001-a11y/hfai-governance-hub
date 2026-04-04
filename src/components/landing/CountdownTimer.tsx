@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, Clock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const GPAI_DEADLINE = new Date("2026-08-01T00:00:00Z");
 
@@ -29,6 +30,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 }
 
 export function CountdownTimer() {
+  const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState(() => calcTimeLeft(GPAI_DEADLINE));
 
   useEffect(() => {
@@ -63,24 +65,25 @@ export function CountdownTimer() {
             <Clock className="h-4 w-4 text-primary" />
           )}
           <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-primary">
-            EU AI Act — GPAI Rules Deadline
+            {t("countdown.badge")}
           </span>
         </div>
 
         <div className="flex items-center justify-center gap-4 sm:gap-6">
-          <TimeBlock value={timeLeft.days} label="Days" />
+          <TimeBlock value={timeLeft.days} label={t("countdown.days")} />
           <span className="text-xl font-bold text-muted-foreground/40 mt-[-12px]">:</span>
-          <TimeBlock value={timeLeft.hours} label="Hours" />
+          <TimeBlock value={timeLeft.hours} label={t("countdown.hours")} />
           <span className="text-xl font-bold text-muted-foreground/40 mt-[-12px]">:</span>
-          <TimeBlock value={timeLeft.minutes} label="Min" />
+          <TimeBlock value={timeLeft.minutes} label={t("countdown.min")} />
           <span className="text-xl font-bold text-muted-foreground/40 mt-[-12px]">:</span>
-          <TimeBlock value={timeLeft.seconds} label="Sec" />
+          <TimeBlock value={timeLeft.seconds} label={t("countdown.sec")} />
         </div>
 
-        <p className="mt-4 text-xs text-muted-foreground">
-          General-purpose AI model rules take effect <strong className="text-foreground">1 August 2026</strong>. 
-          High-risk obligations follow December 2027.
-        </p>
+        <p className="mt-4 text-xs text-muted-foreground"
+          dangerouslySetInnerHTML={{
+            __html: t("countdown.footer").replace(/<1>(.*?)<\/1>/g, '<strong class="text-foreground">$1</strong>')
+          }}
+        />
       </div>
     </motion.div>
   );

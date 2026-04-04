@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "docs": "Docs",
+    "blog": "Blog",
+    "pricing": "Pricing",
+    "signIn": "Sign In",
+    "startFree": "Start Free",
+    "resources": "Resources",
+    "framework": "Framework",
+    "freePilot": "Free Pilot",
+    "admin": "Admin"
+  },
+  "hero": {
+    "badge": "Not AI security. AI compliance. · EU AI Act GPAI rules active Aug 2026",
+    "title1": "The EU AI Act",
+    "title2": "Compliance Layer",
+    "subtitle": "Enterprise AI security tools protect data. HFAI proves regulatory compliance. Real-time oversight, audit trails, and human review — purpose-built for the EU AI Act.",
+    "cta": "Create Free Account",
+    "demo": "Try Live Demo",
+    "pilot": "Request Pilot"
+  },
+  "trust": {
+    "encryption": "Enterprise-grade encryption",
+    "soc2": "SOC 2 aligned practices",
+    "setup": "2-minute setup, zero code changes",
+    "ready": "EU AI Act + NIST AI RMF ready"
+  },
+  "values": {
+    "sectionTitle": "Compliance, Not Just Security",
+    "sectionDesc": "AI security tools stop threats. HFAI proves to regulators that your AI is governed.",
+    "monitoring": {
+      "title": "Real-time Monitoring",
+      "description": "Two integration paths: Proxy (zero-code for OpenAI) or REST API (any AI provider). Full visibility either way.",
+      "highlight": "Visibility"
+    },
+    "detection": {
+      "title": "Instant Detection",
+      "description": "Automated rule evaluation flags policy violations the moment they occur — zero delay.",
+      "highlight": "Detection"
+    },
+    "oversight": {
+      "title": "Human Oversight",
+      "description": "Trained reviewers approve or reject flagged events, keeping humans in control of every decision.",
+      "highlight": "Control"
+    },
+    "rca": {
+      "title": "Root Cause Analysis",
+      "description": "AI-powered diagnosis identifies why violations happen and generates remediation playbooks.",
+      "highlight": "Diagnosis"
+    }
+  },
+  "differentiation": {
+    "badge": "Why HFAI",
+    "title": "Different Problem, Different Tool",
+    "desc": "Enterprise AI security platforms protect your data from AI agents. HFAI proves to <em>regulators</em> that your AI systems are governed.",
+    "security": "Enterprise AI Security",
+    "securityItems": [
+      "Secures agent access to enterprise data",
+      "Buyer: CISO / Security teams",
+      "Focus: data protection & threat prevention",
+      "Enterprise-only pricing ($100K+)"
+    ],
+    "compliance": "HFAI — Compliance Layer",
+    "complianceItems": [
+      "Proves regulatory compliance (EU AI Act, NIST)",
+      "Buyer: Compliance officers, DPOs, Legal",
+      "Focus: audit trails, human oversight, conformity",
+      "Startup-friendly pricing, free 30-day trial"
+    ],
+    "footer": "You need both. Security stops threats. Compliance proves governance. HFAI is the compliance layer."
+  },
+  "useCases": {
+    "badge": "Real-World Scenarios",
+    "title": "HFAI in Action",
+    "desc": "See how teams in regulated industries use HFAI to govern AI at the decision boundary.",
+    "cta": "Build Your Own Governance Setup",
+    "fintech": {
+      "industry": "Fintech",
+      "title": "Lending Decision Oversight",
+      "scenario": "A mid-size lender uses GPT-4 to pre-screen loan applications. HFAI monitors every decision for bias, PII exposure, and regulatory compliance.",
+      "results": [
+        "47 bias violations caught in first 30 days",
+        "Human reviewers override 12% of AI rejections",
+        "Full audit trail for CFPB examination readiness"
+      ],
+      "systems": "3 AI systems · 12 governance rules · 2 reviewers",
+      "framework": "NIST AI RMF + ECOA compliance"
+    },
+    "healthtech": {
+      "industry": "Healthtech",
+      "title": "Clinical Triage AI Monitoring",
+      "scenario": "A telehealth platform routes patient intake through an AI triage system. HFAI ensures no unsolicited diagnoses or treatment recommendations escape without human sign-off.",
+      "results": [
+        "23 medical advice violations flagged pre-deployment",
+        "100% of high-severity outputs routed to clinical review",
+        "EU AI Act Art. 14 human oversight documentation ready"
+      ],
+      "systems": "1 AI system · 8 governance rules · 4 reviewers",
+      "framework": "EU AI Act (high-risk) + MDR alignment"
+    },
+    "legaltech": {
+      "industry": "Legaltech",
+      "title": "Contract Review AI Governance",
+      "scenario": "A legal AI platform analyzes contracts and flags risk clauses. HFAI monitors for hallucinated legal citations, confidentiality breaches, and accuracy drift.",
+      "results": [
+        "31 hallucinated case citations caught in 60 days",
+        "Confidentiality violation rate dropped 89%",
+        "Weekly compliance reports auto-generated for partners"
+      ],
+      "systems": "2 AI systems · 15 governance rules · 3 reviewers",
+      "framework": "NIST AI RMF GOVERN + MEASURE"
+    }
+  },
+  "compliance": {
+    "badge": "Dual Compliance Built-In",
+    "title": "EU AI Act + NIST AI RMF Ready",
+    "desc": "One platform. Two regulatory frameworks. Full coverage for both US and EU AI governance requirements.",
+    "euLabel": "EU AI Act",
+    "euSubtext": "— GPAI rules Aug 2026 · High-risk Dec 2027 (Omnibus VII)",
+    "nistLabel": "NIST AI Risk Management Framework",
+    "nistSubtext": "— Referenced by FTC, SEC, CFPB",
+    "euDetails": "EU AI Act Details",
+    "nistDetails": "NIST AI RMF Details",
+    "articles": {
+      "art9": { "label": "Risk Management", "desc": "Configurable rule engine with severity classification" },
+      "art12": { "label": "Record Keeping", "desc": "Every AI event captured with full input/output metadata" },
+      "art13": { "label": "Transparency", "desc": "Complete audit trail with exportable compliance reports" },
+      "art14": { "label": "Human Oversight", "desc": "Reviewer workflows with approve/reject/escalate" },
+      "art15": { "label": "Accuracy Monitoring", "desc": "Real-time anomaly detection and pattern analysis" },
+      "art61": { "label": "Post-Market Monitoring", "desc": "Continuous event monitoring and violation detection" }
+    },
+    "nistFunctions": {
+      "govern": "Role-based access, Human-First doctrine, full audit trails",
+      "map": "AI system registry with risk tiers, model cards, and data governance",
+      "measure": "Real-time monitoring, rule engine, violation pattern detection",
+      "manage": "Human oversight reviews, RCA, remediation actions, alerts"
+    }
+  },
+  "calculator": {
+    "badge": "Interactive Tool",
+    "title": "Are you on track for compliance?",
+    "desc": "Select your current governance stage to see your timeline risk.",
+    "sectionTitle": "Are You Ready?",
+    "sectionDesc": "Check your compliance timeline against upcoming regulatory deadlines.",
+    "stages": {
+      "not_started": "Haven't started",
+      "early": "Early research / planning",
+      "in_progress": "Implementing policies",
+      "advanced": "Runtime governance in place"
+    },
+    "monthsRemaining": "~{{months}} months of work remaining",
+    "behind": "You're at risk of missing deadlines",
+    "tight": "Timeline is tight — start now to stay on track",
+    "safe": "You're in a strong position — keep building",
+    "monthsLeft": "{{months}}mo left",
+    "monthsNeeded": "{{months}}mo needed",
+    "buffer": "+{{months}}mo buffer",
+    "short": "{{months}}mo short",
+    "cta": "Start Building Now — It's Free",
+    "deadlines": {
+      "gpai": "GPAI model rules",
+      "highRiskStandalone": "High-risk AI (standalone)",
+      "highRiskEmbedded": "High-risk AI (embedded)"
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "desc": "Four steps from AI output to human accountability.",
+    "steps": {
+      "connect": { "label": "Connect", "desc": "Proxy or REST API" },
+      "evaluate": { "label": "Evaluate", "desc": "Rules checked in <200ms" },
+      "detect": { "label": "Detect", "desc": "Violations flagged" },
+      "review": { "label": "Review", "desc": "Humans decide" }
+    }
+  },
+  "demo": {
+    "badge": "Live Demo",
+    "title": "See HFAI in Action",
+    "desc": "Walk through a real governance workflow — from event ingestion to human review.",
+    "previous": "← Previous",
+    "next": "Next →",
+    "steps": {
+      "ingest": { "label": "AI Event Ingested", "desc": "Events arrive via Proxy (zero-code) or REST API (any provider)", "title": "user_message event received" },
+      "evaluate": { "label": "Rules Evaluated", "desc": "HFAI evaluates 12 governance rules against the event", "title": "3 rules triggered" },
+      "violation": { "label": "Violation Created", "desc": "A critical violation is automatically generated", "title": "VIO-2847 created" },
+      "review": { "label": "Human Review", "desc": "A trained reviewer examines the violation and decides", "title": "Reviewer decision" }
+    }
+  },
+  "postDemo": {
+    "title": "Like what you see? Start governing in minutes.",
+    "desc": "Create a free account — no credit card, no sales call. Connect your first AI system in under 2 minutes.",
+    "cta": "Create Free Account",
+    "plans": "View Plans",
+    "noCreditCard": "No credit card",
+    "freeTier": "Free forever tier",
+    "twoMinSetup": "2-min setup"
+  },
+  "pilot": {
+    "badge": "Free 30-Day Trial",
+    "title": "See governance working on <1>your</1> AI systems",
+    "desc": "No credit card. No commitment. Full platform access with dedicated onboarding support.",
+    "cta": "Start Free — No Card Required",
+    "whiteGlove": "Request White-Glove Pilot",
+    "whiteGloveTitle": "White-Glove Setup",
+    "whiteGloveDesc": "We help you integrate and configure — zero effort on your end",
+    "includes": {
+      "systems": "Unlimited AI systems for 30 days",
+      "compliance": "EU AI Act + NIST AI RMF compliance",
+      "onboarding": "Dedicated onboarding support",
+      "report": "Governance report at end of trial"
+    }
+  },
+  "leadCapture": {
+    "badge": "Free Resource",
+    "title": "AI Compliance Readiness Checklist",
+    "desc": "Everything you need to prepare for EU AI Act and NIST AI RMF compliance — in one actionable checklist.",
+    "cta": "Get the Checklist",
+    "noSpam": "No spam. Unsubscribe anytime.",
+    "successTitle": "Checklist on its way!",
+    "successDesc": "Check <1>{{email}}</1> for your AI compliance readiness checklist.",
+    "toastTitle": "Checklist sent!",
+    "toastDesc": "Check your inbox for the AI compliance checklist.",
+    "items": [
+      "EU AI Act obligation timeline (updated for Omnibus VII)",
+      "NIST AI RMF function mapping checklist",
+      "High-risk AI system identification guide",
+      "Human oversight workflow template",
+      "Compliance documentation requirements"
+    ]
+  },
+  "newsletter": {
+    "title": "Stay Ahead of AI Regulation",
+    "desc": "Monthly insights on EU AI Act, NIST AI RMF, and practical governance strategies.",
+    "gdprConsent": "I agree to receive AI governance updates from HFAI. You can unsubscribe at any time. We process your data in accordance with GDPR.",
+    "subscribe": "Subscribe",
+    "successTitle": "You're in!",
+    "successDesc": "Watch your inbox for AI governance insights.",
+    "toastTitle": "You're subscribed!",
+    "toastDesc": "You'll receive AI governance insights and regulatory updates."
+  },
+  "bookDemo": {
+    "title": "See HFAI in Your Environment",
+    "desc": "Book a 30-minute walkthrough. We'll show you how HFAI maps to your AI stack and compliance requirements — no pressure, no pitch.",
+    "cta": "Book a Demo",
+    "footer": "30 min · No commitment · Tailored to your use case"
+  },
+  "founder": {
+    "badge": "From the Founder",
+    "quote": "I founded HFAI after seeing a gap between what organizations say about AI governance and what actually happens at the moment of decision. My work focuses on designing practical, human-first governance systems that help teams understand, monitor, and control AI in real time.",
+    "bio": "He brings a hands-on, operational approach to one of the hardest problems in the field: building accountability without creating surveillance.",
+    "name": "Nicolas Roth",
+    "role": "Founder, HFAI"
+  },
+  "faq": {
+    "title": "Questions & Answers",
+    "items": [
+      {
+        "q": "How does HFAI integrate with my AI systems?",
+        "a": "HFAI offers two integration methods. The Proxy (Zero-Code) lets you swap your OpenAI base URL to the HFAI endpoint — every call is monitored automatically with no code changes. The REST API works with any AI provider (Anthropic, Google, open-source, etc.) — you send events to HFAI after your AI responds, keeping your data flow entirely under your control."
+      },
+      {
+        "q": "What's the difference between Proxy and REST API?",
+        "a": "The Proxy intercepts AI traffic in real time — your requests flow through HFAI, giving full visibility into inputs and outputs with zero code changes. The REST API keeps your AI traffic private between you and your provider — only event metadata is sent to HFAI for monitoring. Choose Proxy for instant setup, REST API for maximum data control."
+      },
+      {
+        "q": "What types of AI violations can HFAI detect?",
+        "a": "Content safety violations, bias detection, PII exposure, hallucination patterns, unauthorized data access, prompt injection attempts, and custom rules you define for your specific use case."
+      },
+      {
+        "q": "Do I get automated compliance reports?",
+        "a": "Yes — HFAI generates and delivers a Weekly AI Governance Summary to your inbox every Monday. Each report includes your total AI systems, high-risk classifications, open and resolved violations, active governance rules, and human review activity. No manual work required — full EU AI Act compliance visibility on autopilot."
+      },
+      {
+        "q": "What is Root Cause Analysis?",
+        "a": "Our AI-powered RCA engine diagnoses why violations occur, suggests rule changes, identifies recurring patterns, and generates remediation checklists — all validated by human reviewers."
+      },
+      {
+        "q": "Is my data secure?",
+        "a": "Absolutely. All data is encrypted at rest and in transit. We follow SOC 2 aligned practices. With the REST API integration, your AI traffic never leaves your environment — only event metadata is sent to HFAI. With the Proxy, traffic is encrypted end-to-end and processed in real time."
+      }
+    ]
+  },
+  "finalCta": {
+    "title1": "Your AI is making decisions right now.",
+    "title2": "Who's watching?",
+    "desc": "Start your free 30-day trial. No credit card. No commitment. Full platform access.",
+    "cta": "Create Free Account",
+    "pricing": "View Pricing"
+  },
+  "blogCta": {
+    "title": "AI Governance Insights & Guides",
+    "desc": "Practical articles on AI compliance, the EU AI Act, NIST AI RMF, and keeping humans in control.",
+    "cta": "Read the Blog"
+  },
+  "footer": {
+    "tagline": "Human-First AI Governance — keeping humans in control of every AI decision.",
+    "copyright": "© {{year}} HFAI — All rights reserved"
+  },
+  "countdown": {
+    "badge": "EU AI Act — GPAI Rules Deadline",
+    "days": "Days",
+    "hours": "Hours",
+    "min": "Min",
+    "sec": "Sec",
+    "footer": "General-purpose AI model rules take effect <1>1 August 2026</1>. High-risk obligations follow December 2027."
+  },
+  "stats": {
+    "uptime": "Uptime SLA",
+    "speed": "Detection Speed",
+    "coverage": "Audit Coverage",
+    "review": "Human Review"
+  },
+  "common": {
+    "errorTitle": "Something went wrong",
+    "errorDesc": "Please try again.",
+    "mobilePilot": "Pilot"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "de": "Deutsch"
+  }
+}

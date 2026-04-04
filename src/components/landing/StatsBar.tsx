@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
-
-const stats = [
-  { value: "99.9%", label: "Uptime SLA" },
-  { value: "<200ms", label: "Detection Speed" },
-  { value: "100%", label: "Audit Coverage" },
-  { value: "24/7", label: "Human Review" },
-];
+import { useTranslation } from "react-i18next";
 
 export function StatsBar() {
+  const { t } = useTranslation();
+  const stats = [
+    { value: "99.9%", label: t("stats.uptime") },
+    { value: "<200ms", label: t("stats.speed") },
+    { value: "100%", label: t("stats.coverage") },
+    { value: "24/7", label: t("stats.review") },
+  ];
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
       {stats.map((stat, i) => (
