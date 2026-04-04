@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Button } from "@/components/ui/button";
@@ -10,20 +11,13 @@ import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 
 interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  status: string;
-  featured: boolean;
-  tags: string[];
-  created_at: string;
-  published_at: string | null;
-  author_name: string | null;
-  submitter_email: string | null;
+  id: string; title: string; slug: string; excerpt: string; status: string;
+  featured: boolean; tags: string[]; created_at: string; published_at: string | null;
+  author_name: string | null; submitter_email: string | null;
 }
 
 export default function AdminBlogPosts() {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -44,9 +38,9 @@ export default function AdminBlogPosts() {
     if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
     const { error } = await supabase.from("blog_posts").delete().eq("id", id);
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: t("adminBlogPosts.error"), description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Deleted", description: "Post deleted." });
+      toast({ title: t("adminBlogPosts.deleted"), description: t("adminBlogPosts.deletedDesc") });
       loadPosts();
     }
   };
@@ -55,9 +49,9 @@ export default function AdminBlogPosts() {
     if (action === "reject") {
       const { error } = await supabase.from("blog_posts").delete().eq("id", id);
       if (error) {
-        toast({ title: "Error", description: error.message, variant: "destructive" });
+        toast({ title: t("adminBlogPosts.error"), description: error.message, variant: "destructive" });
       } else {
-        toast({ title: "Rejected", description: "Submission removed." });
+        toast({ title: t("adminBlogPosts.rejected"), description: t("adminBlogPosts.rejectedDesc") });
         loadPosts();
       }
     } else {
@@ -66,9 +60,9 @@ export default function AdminBlogPosts() {
         .update({ status: "published", published_at: new Date().toISOString() } as any)
         .eq("id", id);
       if (error) {
-        toast({ title: "Error", description: error.message, variant: "destructive" });
+        toast({ title: t("adminBlogPosts.error"), description: error.message, variant: "destructive" });
       } else {
-        toast({ title: "Published!", description: "Post is now live." });
+        toast({ title: t("adminBlogPosts.published"), description: t("adminBlogPosts.publishedDesc") });
         loadPosts();
       }
     }
@@ -84,7 +78,7 @@ export default function AdminBlogPosts() {
   };
 
   const statusLabel = (status: string) => {
-    if (status === "pending_review") return "Pending Review";
+    if (status === "pending_review") return t("adminBlogPosts.pendingReviewLabel");
     return status;
   };
 
@@ -93,16 +87,12 @@ export default function AdminBlogPosts() {
       <CardContent className="p-4 flex items-center justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <Badge variant={statusVariant(post.status)} className="text-[10px]">
-              {statusLabel(post.status)}
-            </Badge>
-            {post.featured && <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">Featured</Badge>}
-            {post.tags.map((tag) => (
-              <span key={tag} className="text-[10px] text-muted-foreground">{tag}</span>
-            ))}
+            <Badge variant={statusVariant(post.status)} className="text-[10px]">{statusLabel(post.status)}</Badge>
+            {post.featured && <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">{t("adminBlogPosts.featured")}</Badge>}
+            {post.tags.map((tag) => <span key={tag} className="text-[10px] text-muted-foreground">{tag}</span>)}
           </div>
           <h3 className="text-sm font-semibold text-foreground truncate">{post.title}</h3>
-          <p className="text-xs text-muted-foreground truncate mt-0.5">{post.excerpt || "No excerpt"}</p>
+          <p className="text-xs text-muted-foreground truncate mt-0.5">{post.excerpt || t("adminBlogPosts.noExcerpt")}</p>
           <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground/60">
             {post.author_name && <span>by {post.author_name}</span>}
             {post.submitter_email && <span>({post.submitter_email})</span>}
@@ -115,22 +105,10 @@ export default function AdminBlogPosts() {
         <div className="flex items-center gap-1 shrink-0">
           {showReviewActions && (
             <>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
-                onClick={() => handleQuickAction(post.id, "publish")}
-                title="Approve & Publish"
-              >
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50" onClick={() => handleQuickAction(post.id, "publish")} title="Approve & Publish">
                 <CheckCircle className="h-4 w-4" />
               </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 text-destructive"
-                onClick={() => handleQuickAction(post.id, "reject")}
-                title="Reject & Delete"
-              >
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleQuickAction(post.id, "reject")} title="Reject & Delete">
                 <XCircle className="h-4 w-4" />
               </Button>
             </>
@@ -154,24 +132,21 @@ export default function AdminBlogPosts() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <SectionHeader title="Blog Posts" description="Create and manage your blog content" />
+        <SectionHeader title={t("adminBlogPosts.title")} description={t("adminBlogPosts.description")} />
         <Button className="gap-2" onClick={() => navigate("/admin/blog/new")}>
-          <Plus className="h-4 w-4" /> New Post
+          <Plus className="h-4 w-4" /> {t("adminBlogPosts.newPost")}
         </Button>
       </div>
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading...</p>
+        <p className="text-sm text-muted-foreground">{t("adminBlogPosts.loading")}</p>
       ) : (
         <>
-          {/* Pending Review Section */}
           {pendingPosts.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 text-destructive" />
-                <h2 className="text-sm font-semibold text-foreground">
-                  Pending Review ({pendingPosts.length})
-                </h2>
+                <h2 className="text-sm font-semibold text-foreground">{t("adminBlogPosts.pendingReview")} ({pendingPosts.length})</h2>
               </div>
               <div className="space-y-2 p-4 rounded-lg border-2 border-destructive/20 bg-destructive/5">
                 {pendingPosts.map((post) => renderPostCard(post, true))}
@@ -179,20 +154,19 @@ export default function AdminBlogPosts() {
             </div>
           )}
 
-          {/* All Other Posts */}
           {otherPosts.length === 0 && pendingPosts.length === 0 ? (
             <Card className="border-dashed">
               <CardContent className="p-12 text-center">
-                <p className="text-muted-foreground text-sm">No blog posts yet.</p>
+                <p className="text-muted-foreground text-sm">{t("adminBlogPosts.noPosts")}</p>
                 <Button className="mt-4 gap-2" onClick={() => navigate("/admin/blog/new")}>
-                  <Plus className="h-4 w-4" /> Write Your First Post
+                  <Plus className="h-4 w-4" /> {t("adminBlogPosts.writeFirst")}
                 </Button>
               </CardContent>
             </Card>
           ) : (
             <div className="space-y-3">
               {otherPosts.length > 0 && pendingPosts.length > 0 && (
-                <h2 className="text-sm font-semibold text-foreground">All Posts</h2>
+                <h2 className="text-sm font-semibold text-foreground">{t("adminBlogPosts.allPosts")}</h2>
               )}
               {otherPosts.map((post) => renderPostCard(post))}
             </div>

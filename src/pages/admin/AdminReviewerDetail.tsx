@@ -1,17 +1,19 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ArrowLeft } from "lucide-react";
 
 export default function AdminReviewerDetail() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-section">
       <div className="space-y-base">
         <Link to="/admin/reviewers" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Back to Reviewers
+          <ArrowLeft className="h-4 w-4" /> {t("adminReviewerDetail.backToReviewers")}
         </Link>
-        <SectionHeader title="Reviewer Detail" description="Not available" />
+        <SectionHeader title={t("adminReviewerDetail.title")} description={t("adminReviewerDetail.description")} />
       </div>
-      <p className="text-sm text-card-foreground/50">No dedicated reviewer management route exists in the backend yet.</p>
+      <p className="text-sm text-card-foreground/50">{t("adminReviewerDetail.noRoute")}</p>
     </div>
   );
 }
