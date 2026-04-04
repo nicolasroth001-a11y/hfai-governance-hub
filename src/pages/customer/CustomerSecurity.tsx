@@ -105,8 +105,8 @@ export default function CustomerSecurity() {
   return (
     <div className="space-y-6">
       <SectionHeader
-        title="Security Settings"
-        description="Manage two-factor authentication for your account"
+        title={t("customerSecurity.title")}
+        description={t("customerSecurity.description")}
       />
 
       <Card>
