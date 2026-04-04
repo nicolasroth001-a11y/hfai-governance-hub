@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { Shield, ArrowLeft, ArrowRight, Calendar, Clock, Tag, User, ExternalLink } from "lucide-react";
@@ -36,6 +37,7 @@ function renderMarkdown(content: string): string {
 
 export default function BlogPostPage() {
   const { slug } = useParams();
+  const { t } = useTranslation();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   usePageView(`/blog/${slug}`);
@@ -56,7 +58,6 @@ export default function BlogPostPage() {
           const desc = data.meta_description || data.excerpt;
           document.title = title + " | HFAI";
           
-          // Update OG meta tags for social sharing
           const setMeta = (prop: string, content: string, attr = "property") => {
             let el = document.querySelector(`meta[${attr}="${prop}"]`);
             if (!el) {
@@ -75,18 +76,17 @@ export default function BlogPostPage() {
           setMeta("twitter:description", desc, "name");
           setMeta("description", desc, "name");
           
-          // Set canonical
           let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
           if (canonical) canonical.href = url;
         }
       });
   }, [slug]);
 
-  if (loading) return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-muted-foreground text-sm">Loading...</p></div>;
+  if (loading) return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-muted-foreground text-sm">{t("blogPost.loading")}</p></div>;
   if (!post) return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
-      <p className="text-muted-foreground">Post not found.</p>
-      <Button asChild><Link to="/blog">Back to Blog</Link></Button>
+      <p className="text-muted-foreground">{t("blogPost.notFound")}</p>
+      <Button asChild><Link to="/blog">{t("blogPost.backToBlog")}</Link></Button>
     </div>
   );
 
@@ -100,10 +100,10 @@ export default function BlogPostPage() {
           </Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="text-xs" asChild>
-              <Link to="/blog">Resources</Link>
+              <Link to="/blog">{t("blogPost.resources")}</Link>
             </Button>
             <Button size="sm" className="text-xs gap-1" asChild>
-              <Link to="/pilot">Free Pilot <ArrowRight className="h-3 w-3" /></Link>
+              <Link to="/pilot">{t("blogPost.freePilot")} <ArrowRight className="h-3 w-3" /></Link>
             </Button>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function BlogPostPage() {
       <article className="pt-28 pb-16 px-6 flex-1">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl">
           <Button variant="ghost" size="sm" className="gap-1 mb-6 -ml-2 text-xs" asChild>
-            <Link to="/blog"><ArrowLeft className="h-3 w-3" /> All Posts</Link>
+            <Link to="/blog"><ArrowLeft className="h-3 w-3" /> {t("blogPost.allPosts")}</Link>
           </Button>
 
           <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -144,10 +144,10 @@ export default function BlogPostPage() {
             dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
           />
 
-          {(post as any).source_url && (
+          {post.source_url && (
             <div className="mt-8 pt-6 border-t border-border/30">
-              <a href={(post as any).source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-primary hover:underline">
-                <ExternalLink className="h-3 w-3" /> View Source / Reference
+              <a href={post.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-primary hover:underline">
+                <ExternalLink className="h-3 w-3" /> {t("blogPost.viewSource")}
               </a>
             </div>
           )}
@@ -156,16 +156,16 @@ export default function BlogPostPage() {
 
       <section className="px-6 pb-16">
         <div className="mx-auto max-w-3xl text-center rounded-2xl border border-primary/20 bg-primary/5 p-10">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Ready to govern your AI?</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Start your free 30-day trial — no credit card required.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">{t("blogPost.ctaTitle")}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{t("blogPost.ctaDesc")}</p>
           <Button size="lg" className="mt-6 gap-2" asChild>
-            <Link to="/pilot">Start Free Pilot <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/pilot">{t("blogPost.ctaButton")} <ArrowRight className="h-4 w-4" /></Link>
           </Button>
         </div>
       </section>
 
       <footer className="border-t border-border/30 py-8 px-6 text-center">
-        <p className="text-[11px] text-muted-foreground/40">© {new Date().getFullYear()} HFAI — All rights reserved</p>
+        <p className="text-[11px] text-muted-foreground/40">{t("blogPost.copyright", { year: new Date().getFullYear() })}</p>
       </footer>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Shield, ArrowRight, Calendar, Clock, Tag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,6 +20,7 @@ interface BlogPost {
 
 export default function BlogIndex() {
   usePageView("/blog");
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,13 +46,13 @@ export default function BlogIndex() {
           </Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="text-xs" asChild>
-              <Link to="/blog/submit">Submit a Post</Link>
+              <Link to="/blog/submit">{t("blogIndex.submitPost")}</Link>
             </Button>
             <Button variant="ghost" size="sm" className="text-xs" asChild>
-              <Link to="/pricing/contact">Pricing</Link>
+              <Link to="/pricing/contact">{t("blogIndex.pricing")}</Link>
             </Button>
             <Button size="sm" className="text-xs gap-1" asChild>
-              <Link to="/pilot">Free Pilot <ArrowRight className="h-3 w-3" /></Link>
+              <Link to="/pilot">{t("blogIndex.freePilot")} <ArrowRight className="h-3 w-3" /></Link>
             </Button>
           </div>
         </div>
@@ -58,12 +60,12 @@ export default function BlogIndex() {
 
       <section className="pt-32 pb-16 px-6 text-center">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-3">Resources</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-3">{t("blogIndex.badge")}</p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tracking-tight max-w-3xl mx-auto">
-            AI Governance Insights & Guides
+            {t("blogIndex.title")}
           </h1>
           <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-            Practical guides on AI compliance, governance platforms, and keeping humans in control of AI decisions.
+            {t("blogIndex.subtitle")}
           </p>
         </motion.div>
       </section>
@@ -71,9 +73,9 @@ export default function BlogIndex() {
       <section className="px-6 pb-24 flex-1">
         <div className="mx-auto max-w-4xl grid gap-6">
           {loading ? (
-            <p className="text-sm text-muted-foreground text-center py-12">Loading posts...</p>
+            <p className="text-sm text-muted-foreground text-center py-12">{t("blogIndex.loading")}</p>
           ) : posts.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-12">No posts yet — check back soon!</p>
+            <p className="text-sm text-muted-foreground text-center py-12">{t("blogIndex.noPosts")}</p>
           ) : (
             posts.map((article, i) => (
               <motion.div
@@ -119,16 +121,16 @@ export default function BlogIndex() {
 
       <section className="px-6 pb-24">
         <div className="mx-auto max-w-3xl text-center rounded-2xl border border-primary/20 bg-primary/5 p-10">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Ready to govern your AI?</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Start your free 30-day trial — no credit card required.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">{t("blogIndex.ctaTitle")}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{t("blogIndex.ctaDesc")}</p>
           <Button size="lg" className="mt-6 gap-2" asChild>
-            <Link to="/pilot">Start Free Pilot <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/pilot">{t("blogIndex.ctaButton")} <ArrowRight className="h-4 w-4" /></Link>
           </Button>
         </div>
       </section>
 
       <footer className="border-t border-border/30 py-8 px-6 text-center">
-        <p className="text-[11px] text-muted-foreground/40">© {new Date().getFullYear()} HFAI — All rights reserved</p>
+        <p className="text-[11px] text-muted-foreground/40">{t("blogIndex.copyright", { year: new Date().getFullYear() })}</p>
       </footer>
     </div>
   );
