@@ -27,6 +27,7 @@ type ProviderType = typeof PROVIDERS[number]["value"];
 
 export default function CustomerConnect() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   usePageView("/customer/connect");
 
   const [apiKey, setApiKey] = useState("");
