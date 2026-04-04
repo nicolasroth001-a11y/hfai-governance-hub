@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Shield, Plug, Copy, Check, Eye, EyeOff, Loader2, Trash2, ExternalLink, Key, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ type ProviderType = typeof PROVIDERS[number]["value"];
 
 export default function CustomerConnect() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   usePageView("/customer/connect");
 
   const [apiKey, setApiKey] = useState("");
@@ -199,17 +201,17 @@ console.log(await response.json());`;
   return (
     <div className="space-y-6">
       <SectionHeader
-        title="Connect & Monitor"
-        description="Two ways to monitor your AI — choose the best fit for your setup."
+        title={t("customerConnect.title")}
+        description={t("customerConnect.description")}
       />
 
       <Tabs defaultValue="proxy" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="proxy" className="gap-2 text-sm">
-            <Plug className="h-4 w-4" /> Proxy (Zero-Code)
+            <Plug className="h-4 w-4" /> {t("customerConnect.proxyTab")}
           </TabsTrigger>
           <TabsTrigger value="rest" className="gap-2 text-sm">
-            <Key className="h-4 w-4" /> REST API (Any AI)
+            <Key className="h-4 w-4" /> {t("customerConnect.restTab")}
           </TabsTrigger>
         </TabsList>
 
@@ -262,7 +264,7 @@ console.log(await response.json());`;
                           </div>
                         </div>
                         <Button variant="outline" size="sm" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => handleDisconnect(cp.id, config?.label || cp.provider)}>
-                          <Trash2 className="h-3 w-3 mr-1" /> Disconnect
+                          <Trash2 className="h-3 w-3 mr-1" /> {t("customerConnect.disconnect")}
                         </Button>
                       </div>
                     </CardContent>
@@ -273,7 +275,7 @@ console.log(await response.json());`;
           )}
 
           {/* Add new provider */}
-          <ContentCard title="Connect a Provider" icon={Plug}>
+          <ContentCard title={t("customerConnect.connectProvider")} icon={Plug}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Select your AI provider and paste your API key. HFAI creates a proxy endpoint that monitors all requests automatically.
@@ -298,7 +300,7 @@ console.log(await response.json());`;
                 />
                 <Button onClick={handleConnect} disabled={saving || !apiKey}>
                   {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Plug className="h-4 w-4 mr-1" />}
-                  Connect
+                  {t("customerConnect.connect")}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -308,7 +310,7 @@ console.log(await response.json());`;
           </ContentCard>
 
           {/* Proxy integration snippets */}
-          <ContentCard title="Proxy Integration — 2 minute setup" icon={ExternalLink}>
+          <ContentCard title={t("customerConnect.proxyIntegration")} icon={ExternalLink}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Swap your AI provider's base URL and use your proxy token as the API key. That's it — your existing code works unchanged.
@@ -356,7 +358,7 @@ console.log(await response.json());`;
             </CardContent>
           </Card>
 
-          <ContentCard title="Your REST API Key" icon={Key}>
+          <ContentCard title={t("customerConnect.yourRestApiKey")} icon={Key}>
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
                 Use this key in the <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">x-api-key</code> header to authenticate event ingestion requests.
@@ -368,7 +370,7 @@ console.log(await response.json());`;
             </div>
           </ContentCard>
 
-          <ContentCard title="REST API Integration" icon={ExternalLink}>
+          <ContentCard title={t("customerConnect.restIntegration")} icon={ExternalLink}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 After your AI generates a response, send the event to HFAI for governance monitoring. Add a few lines after your existing AI call.

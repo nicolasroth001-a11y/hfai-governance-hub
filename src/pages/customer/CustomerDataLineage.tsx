@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -62,6 +63,7 @@ const CONSENT_BASES = [
 
 export default function CustomerDataLineage() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [records, setRecords] = useState<LineageRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -140,7 +142,7 @@ export default function CustomerDataLineage() {
   return (
     <SubscriptionGate feature="Data Lineage">
       <div className="space-y-6">
-        <SectionHeader title="Data Lineage & Provenance" description="Track training data sources and GDPR legal basis — EU AI Act Art. 10" />
+        <SectionHeader title={t("customerDataLineage.title")} description={t("customerDataLineage.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">

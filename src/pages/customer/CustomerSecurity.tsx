@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ import {
 type Factor = { id: string; friendly_name?: string; status: string };
 
 export default function CustomerSecurity() {
+  const { t } = useTranslation();
   const [factors, setFactors] = useState<Factor[]>([]);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
@@ -48,7 +50,7 @@ export default function CustomerSecurity() {
       friendlyName: "Authenticator App",
     });
     if (error) {
-      toast({ title: "Enrollment failed", description: error.message, variant: "destructive" });
+      toast({ title: t("customerSecurity.enrollFailed"), description: error.message, variant: "destructive" });
       setEnrolling(false);
       return;
     }
@@ -62,7 +64,7 @@ export default function CustomerSecurity() {
     setVerifying(true);
     const { data: challenge, error: challengeErr } = await supabase.auth.mfa.challenge({ factorId });
     if (challengeErr) {
-      toast({ title: "Challenge failed", description: challengeErr.message, variant: "destructive" });
+      toast({ title: t("customerSecurity.challengeFailed"), description: challengeErr.message, variant: "destructive" });
       setVerifying(false);
       return;
     }
@@ -73,11 +75,11 @@ export default function CustomerSecurity() {
     });
     setVerifying(false);
     if (verifyErr) {
-      toast({ title: "Invalid code", description: "Please try again.", variant: "destructive" });
+      toast({ title: t("customerSecurity.invalidCode"), description: t("customerSecurity.tryAgain"), variant: "destructive" });
       setVerifyCode("");
       return;
     }
-    toast({ title: "MFA enabled!", description: "Two-factor authentication is now active on your account." });
+    toast({ title: t("customerSecurity.mfaEnabled"), description: t("customerSecurity.mfaEnabledDesc") });
     setQrUri(null);
     setFactorId(null);
     setVerifyCode("");
@@ -87,10 +89,10 @@ export default function CustomerSecurity() {
   const handleUnenroll = async (fId: string) => {
     const { error } = await supabase.auth.mfa.unenroll({ factorId: fId });
     if (error) {
-      toast({ title: "Failed to remove MFA", description: error.message, variant: "destructive" });
+      toast({ title: t("customerSecurity.failedRemove"), description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "MFA disabled", description: "Two-factor authentication has been removed." });
+    toast({ title: t("customerSecurity.mfaDisabled"), description: t("customerSecurity.mfaDisabledDesc") });
     loadFactors();
   };
 
@@ -103,28 +105,28 @@ export default function CustomerSecurity() {
   return (
     <div className="space-y-6">
       <SectionHeader
-        title="Security Settings"
-        description="Manage two-factor authentication for your account"
+        title={t("customerSecurity.title")}
+        description={t("customerSecurity.description")}
       />
 
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-lg">Two-Factor Authentication</CardTitle>
+              <CardTitle className="text-lg">{t("customerSecurity.twoFactor")}</CardTitle>
               <CardDescription>
-                Add an extra layer of security using an authenticator app like Google Authenticator or Authy
+                {t("customerSecurity.twoFactorDesc")}
               </CardDescription>
             </div>
             {hasActiveFactor ? (
               <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
                 <ShieldCheck className="h-3.5 w-3.5 mr-1" />
-                Enabled
+                {t("customerSecurity.enabled")}
               </Badge>
             ) : (
               <Badge variant="outline" className="text-muted-foreground">
                 <ShieldOff className="h-3.5 w-3.5 mr-1" />
-                Disabled
+                {t("customerSecurity.disabled")}
               </Badge>
             )}
           </div>
@@ -139,7 +141,7 @@ export default function CustomerSecurity() {
             <div className="space-y-6">
               <div className="text-center space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Scan this QR code with your authenticator app, then enter the 6-digit code below:
+                  {t("customerSecurity.scanQR")}
                 </p>
                 <div className="flex justify-center">
                   <div className="bg-white p-4 rounded-xl inline-block">
@@ -168,11 +170,11 @@ export default function CustomerSecurity() {
                     }}
                     disabled={verifying}
                   >
-                    Cancel
+                    {t("customerSecurity.cancel")}
                   </Button>
                   <Button onClick={handleVerifyEnrollment} disabled={verifying || verifyCode.length !== 6} className="gap-2">
                     {verifying && <Loader2 className="h-4 w-4 animate-spin" />}
-                    Verify & Enable
+                    {t("customerSecurity.verifyEnable")}
                   </Button>
                 </div>
               </div>
@@ -188,7 +190,7 @@ export default function CustomerSecurity() {
                       <QrCode className="h-5 w-5 text-muted-foreground" />
                       <div>
                         <p className="text-sm font-medium">{f.friendly_name || "Authenticator App"}</p>
-                        <p className="text-xs text-muted-foreground">TOTP · Active</p>
+                        <p className="text-xs text-muted-foreground">{t("customerSecurity.totpActive")}</p>
                       </div>
                     </div>
                     <AlertDialog>
@@ -199,15 +201,15 @@ export default function CustomerSecurity() {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Remove MFA?</AlertDialogTitle>
+                         <AlertDialogTitle>{t("customerSecurity.removeMFA")}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            This will disable two-factor authentication on your account. You can re-enable it later.
+                            {t("customerSecurity.removeMFADesc")}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>{t("customerSecurity.cancel")}</AlertDialogCancel>
                           <AlertDialogAction onClick={() => handleUnenroll(f.id)} className="bg-destructive text-destructive-foreground">
-                            Remove
+                            {t("customerSecurity.remove")}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -220,7 +222,7 @@ export default function CustomerSecurity() {
             <div className="text-center py-4">
               <Button onClick={handleEnroll} disabled={enrolling} className="gap-2">
                 {enrolling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Shield className="h-4 w-4" />}
-                Set Up Two-Factor Authentication
+                {t("customerSecurity.setUp")}
               </Button>
             </div>
           )}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { CodeSnippetBlock } from "@/components/CodeSnippetBlock";
@@ -33,6 +34,7 @@ const REST_STEPS = [
 export default function CustomerOnboarding() {
   const [testOpen, setTestOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const { steps, progress, completedAt, completeStep } = useOnboardingProgress();
   usePageView("/customer/onboarding");
@@ -99,11 +101,11 @@ const response = await fetch("${INGEST_BASE}", {
     <div className="space-y-section">
       <div className="flex items-center justify-between">
         <SectionHeader
-          title="Onboarding"
-          description="Two ways to monitor your AI — pick the best fit for your setup"
+          title={t("customerOnboarding.title")}
+          description={t("customerOnboarding.description")}
         />
         <Button variant="outline" onClick={() => navigate("/customer/dashboard")} className="gap-2 shrink-0">
-          <SkipForward className="h-4 w-4" /> Skip to Dashboard
+          <SkipForward className="h-4 w-4" /> {t("customerOnboarding.skipToDashboard")}
         </Button>
       </div>
 
@@ -111,9 +113,9 @@ const response = await fetch("${INGEST_BASE}", {
       <Card className="border-primary/20 bg-primary/5">
         <CardContent className="p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-foreground">Setup Progress</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("customerOnboarding.setupProgress")}</h3>
             <span className="text-xs text-muted-foreground">
-              {completedAt ? "✅ Complete!" : `${Math.round(progress * 100)}%`}
+              {completedAt ? `✅ ${t("customerOnboarding.completeLabel")}` : `${Math.round(progress * 100)}%`}
             </span>
           </div>
           <Progress value={progress * 100} className="h-2" />
@@ -138,16 +140,16 @@ const response = await fetch("${INGEST_BASE}", {
       <Tabs defaultValue="proxy" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="proxy" className="gap-2 text-sm">
-            <Plug className="h-4 w-4" /> Proxy (Zero-Code)
+            <Plug className="h-4 w-4" /> {t("customerOnboarding.proxyTab")}
           </TabsTrigger>
           <TabsTrigger value="rest" className="gap-2 text-sm">
-            <Key className="h-4 w-4" /> REST API (Any AI)
+            <Key className="h-4 w-4" /> {t("customerOnboarding.restTab")}
           </TabsTrigger>
         </TabsList>
 
         {/* ── PROXY TAB ── */}
         <TabsContent value="proxy" className="space-y-6">
-          <ContentCard icon={Plug} title="How the Proxy Works">
+          <ContentCard icon={Plug} title={t("customerOnboarding.howProxyWorks")}>
             <p className="text-sm text-card-foreground/70 mb-2">
               <strong>Best for OpenAI users.</strong> Swap your base URL — HFAI intercepts every AI call automatically. Your traffic flows through the HFAI proxy, giving full visibility into inputs and outputs with <strong>zero code changes</strong>.
             </p>
@@ -165,7 +167,7 @@ const response = await fetch("${INGEST_BASE}", {
             </div>
           </ContentCard>
 
-          <ContentCard icon={BookOpen} title="Proxy Code Examples">
+          <ContentCard icon={BookOpen} title={t("customerOnboarding.proxyCodeExamples")}>
             <div className="space-y-4">
               <p className="text-sm text-card-foreground/70">
                 Replace <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">YOUR_PROXY_TOKEN</code> with the token from your <button onClick={() => navigate("/customer/connect")} className="text-primary hover:underline">Connect page</button>.
@@ -178,7 +180,7 @@ const response = await fetch("${INGEST_BASE}", {
 
         {/* ── REST API TAB ── */}
         <TabsContent value="rest" className="space-y-6">
-          <ContentCard icon={Key} title="How the REST API Works">
+          <ContentCard icon={Key} title={t("customerOnboarding.howRestWorks")}>
             <p className="text-sm text-card-foreground/70 mb-2">
               <strong>Best for any AI provider.</strong> Works with OpenAI, Anthropic, Google, open-source, or custom models. Your AI traffic stays between you and your provider — only event metadata is sent to HFAI. <strong>Maximum data control.</strong>
             </p>
@@ -196,7 +198,7 @@ const response = await fetch("${INGEST_BASE}", {
             </div>
           </ContentCard>
 
-          <ContentCard icon={BookOpen} title="REST API Code Examples">
+          <ContentCard icon={BookOpen} title={t("customerOnboarding.restCodeExamples")}>
             <div className="space-y-4">
               <p className="text-sm text-card-foreground/70">
                 Replace <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">YOUR_API_KEY</code> with the key from your <button onClick={() => navigate("/customer/connect")} className="text-primary hover:underline">Connect page</button>.
@@ -210,24 +212,24 @@ const response = await fetch("${INGEST_BASE}", {
 
       {/* ── CTAs ── */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <ContentCard icon={Plug} title="Set Up Integration">
+        <ContentCard icon={Plug} title={t("customerOnboarding.setUpIntegration")}>
           <div className="space-y-4">
             <p className="text-sm text-card-foreground/70">
-              Configure your Proxy or REST API connection and get your tokens.
+              {t("customerOnboarding.setUpIntegration")}
             </p>
             <Button size="lg" onClick={() => navigate("/customer/connect")} className="w-full gap-2 text-base">
-              <Plug className="h-4 w-4" /> Go to Connect Page <ArrowRight className="h-4 w-4 ml-auto" />
+              <Plug className="h-4 w-4" /> {t("customerOnboarding.goToConnect")} <ArrowRight className="h-4 w-4 ml-auto" />
             </Button>
           </div>
         </ContentCard>
 
-        <ContentCard icon={Zap} title="Quick Test">
+        <ContentCard icon={Zap} title={t("customerOnboarding.quickTest")}>
           <div className="flex flex-col justify-between h-full gap-4">
             <p className="text-sm text-card-foreground/70">
-              Send a test event to see HFAI evaluate it against your rules and flag any violations.
+              {t("customerOnboarding.quickTest")}
             </p>
             <Button size="lg" onClick={() => setTestOpen(true)} className="w-full gap-2 text-base">
-              <Send className="h-4 w-4" /> Send Test Event <ArrowRight className="h-4 w-4 ml-auto" />
+              <Send className="h-4 w-4" /> {t("customerOnboarding.sendTestEvent")} <ArrowRight className="h-4 w-4 ml-auto" />
             </Button>
           </div>
         </ContentCard>

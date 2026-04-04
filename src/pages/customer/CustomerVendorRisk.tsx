@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -52,6 +53,7 @@ const RISK_LABELS: Record<number, { label: string; color: string }> = {
 
 export default function CustomerVendorRisk() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [assessments, setAssessments] = useState<VendorAssessment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -127,7 +129,7 @@ export default function CustomerVendorRisk() {
   return (
     <SubscriptionGate feature="Vendor Risk Assessment">
       <div className="space-y-6">
-        <SectionHeader title="Third-Party Vendor Risk" description="Assess and track AI supply chain risks — EU AI Act Art. 25 compliance" />
+        <SectionHeader title={t("customerVendorRisk.title")} description={t("customerVendorRisk.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">

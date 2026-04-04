@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SubscriptionGate } from "@/components/SubscriptionGate";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -18,6 +19,7 @@ interface PrecedentInsight {
 
 export default function CustomerPrecedentIntelligence() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [violations, setViolations] = useState<any[]>([]);
   const [patterns, setPatterns] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,7 +81,7 @@ export default function CustomerPrecedentIntelligence() {
 
   return (
     <SubscriptionGate feature="Precedent Intelligence">
-      <SectionHeader title="Precedent Intelligence" description="Anonymized cross-platform insights and regulatory intelligence to strengthen your compliance posture." />
+      <SectionHeader title={t("customerPrecedentIntelligence.title")} description={t("customerPrecedentIntelligence.description")} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         <Card className="rounded-[16px]">

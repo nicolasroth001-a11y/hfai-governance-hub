@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -48,6 +49,7 @@ const AUDIT_TYPES = [
 
 export default function CustomerScheduledAudits() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [audits, setAudits] = useState<ScheduledAudit[]>([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +134,7 @@ export default function CustomerScheduledAudits() {
   return (
     <SubscriptionGate feature="Scheduled Audits">
       <div className="space-y-6">
-        <SectionHeader title="Scheduled Recurring Audits" description="Set periodic governance reviews per AI system with automated tracking" />
+        <SectionHeader title={t("customerScheduledAudits.title")} description={t("customerScheduledAudits.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">

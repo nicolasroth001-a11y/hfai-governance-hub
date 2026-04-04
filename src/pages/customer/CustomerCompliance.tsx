@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
@@ -53,6 +54,7 @@ const HFAI_COVERAGE: Record<string, { covered: boolean; feature: string }> = {
 };
 
 export default function CustomerCompliance() {
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const [systems, setSystems] = useState<any[]>([]);
   const [violations, setViolations] = useState<any[]>([]);
@@ -119,26 +121,26 @@ export default function CustomerCompliance() {
       a.click();
       URL.revokeObjectURL(url);
 
-      toast({ title: "Report exported", description: "Compliance report downloaded successfully." });
+      toast({ title: t("customerCompliance.reportExported"), description: t("customerCompliance.reportExportedDesc") });
     } catch (err: any) {
-      toast({ title: "Export failed", description: err.message, variant: "destructive" });
+      toast({ title: t("customerCompliance.exportFailed"), description: err.message, variant: "destructive" });
     } finally {
       setExporting(false);
     }
   };
 
-  if (loading) return <p className="text-sm text-muted-foreground py-10 text-center">Loading compliance data…</p>;
+  if (loading) return <p className="text-sm text-muted-foreground py-10 text-center">{t("customerCompliance.loading")}</p>;
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <SectionHeader
-          title="EU AI Act Compliance"
-          description="Monitor and manage your organization's compliance with the EU AI Act"
+          title={t("customerCompliance.title")}
+          description={t("customerCompliance.description")}
         />
         <Button onClick={handleExportReport} disabled={exporting} className="gap-2">
           <Download className="h-4 w-4" />
-          {exporting ? "Exporting…" : "Export Report"}
+          {exporting ? t("customerCompliance.exporting") : t("customerCompliance.exportReport")}
         </Button>
       </div>
 
@@ -152,7 +154,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{systems.length}</p>
-                <p className="text-xs text-muted-foreground">AI Systems</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.aiSystems")}</p>
               </div>
             </div>
           </CardContent>
@@ -165,7 +167,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{highRiskSystems.length}</p>
-                <p className="text-xs text-muted-foreground">High-Risk Systems</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.highRiskSystems")}</p>
               </div>
             </div>
           </CardContent>
@@ -178,7 +180,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{classifiedSystems.length}/{systems.length}</p>
-                <p className="text-xs text-muted-foreground">Systems Classified</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.systemsClassified")}</p>
               </div>
             </div>
           </CardContent>
@@ -191,7 +193,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{completionPct}%</p>
-                <p className="text-xs text-muted-foreground">Conformity Score</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.conformityScore")}</p>
               </div>
             </div>
           </CardContent>
@@ -200,10 +202,10 @@ export default function CustomerCompliance() {
 
       <Tabs defaultValue="classification" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="classification">Risk Classification</TabsTrigger>
-          <TabsTrigger value="conformity">Conformity Checklist</TabsTrigger>
-          <TabsTrigger value="coverage">HFAI Coverage</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
+          <TabsTrigger value="classification">{t("customerCompliance.riskClassification")}</TabsTrigger>
+          <TabsTrigger value="conformity">{t("customerCompliance.conformityChecklist")}</TabsTrigger>
+          <TabsTrigger value="coverage">{t("customerCompliance.hfaiCoverage")}</TabsTrigger>
+          <TabsTrigger value="timeline">{t("customerCompliance.timeline")}</TabsTrigger>
         </TabsList>
 
         {/* Risk Classification Tab */}

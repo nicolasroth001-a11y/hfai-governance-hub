@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -37,6 +38,7 @@ interface VersionRecord {
 
 export default function CustomerModelVersions() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [versions, setVersions] = useState<VersionRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +87,7 @@ export default function CustomerModelVersions() {
   return (
     <SubscriptionGate feature="Model Version History">
       <div className="space-y-6">
-        <SectionHeader title="Model Version History" description="Track every change to your AI systems with diffs, timestamps, and approval status" />
+        <SectionHeader title={t("customerModelVersions.title")} description={t("customerModelVersions.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">

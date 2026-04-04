@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -54,6 +55,7 @@ const METRIC_TYPES = [
 
 export default function CustomerBiasAuditing() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [audits, setAudits] = useState<BiasAudit[]>([]);
   const [loading, setLoading] = useState(true);
@@ -136,25 +138,25 @@ export default function CustomerBiasAuditing() {
   return (
     <SubscriptionGate feature="Bias & Fairness Auditing">
       <div className="space-y-6">
-        <SectionHeader title="Bias & Fairness Auditing" description="Monitor fairness metrics across AI systems — EU AI Act Art. 10 compliance" />
+        <SectionHeader title={t("customerBiasAuditing.title")} description={t("customerBiasAuditing.description")} />
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Total Audits</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.totalAudits")}</p>
             <p className="text-2xl font-bold text-card-foreground mt-1">{filtered.length}</p>
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Pass Rate</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.passRate")}</p>
             <p className="text-2xl font-bold text-card-foreground mt-1">{passRate}%</p>
             <Progress value={passRate} className="mt-2 h-1.5" />
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Pending</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.pending")}</p>
             <p className="text-2xl font-bold text-warning mt-1">{pendingCount}</p>
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Failed</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.failed")}</p>
             <p className="text-2xl font-bold text-destructive mt-1">{failedCount}</p>
           </div>
         </div>
@@ -166,12 +168,12 @@ export default function CustomerBiasAuditing() {
               <SelectValue placeholder="Filter by system" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Systems</SelectItem>
+              <SelectItem value="all">{t("customerBiasAuditing.allSystems")}</SelectItem>
               {systems.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
             </SelectContent>
           </Select>
           <Button onClick={() => setShowForm(!showForm)} size="sm">
-            <Plus className="h-4 w-4 mr-1" /> Record Audit
+            <Plus className="h-4 w-4 mr-1" /> {t("customerBiasAuditing.recordAudit")}
           </Button>
         </div>
 
