@@ -5,8 +5,10 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { fetchViolations, fetchAuditLogs } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({ totalViolations: 0, openViolations: 0, totalRules: 0, resolvedToday: 0 });
   const [activity, setActivity] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,20 +40,20 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <SectionHeader title="Dashboard" description="AI governance overview" />
+      <SectionHeader title={t("dashboard.title")} description={t("dashboard.description")} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Violations" value={stats.totalViolations} icon={ShieldAlert} />
-        <StatCard title="Open Violations" value={stats.openViolations} icon={AlertTriangle} subtitle="Requires attention" />
-        <StatCard title="Active Rules" value={stats.totalRules} icon={BookOpen} />
-        <StatCard title="Resolved Today" value={stats.resolvedToday} icon={CheckCircle} />
+        <StatCard title={t("dashboard.totalViolations")} value={stats.totalViolations} icon={ShieldAlert} />
+        <StatCard title={t("dashboard.openViolations")} value={stats.openViolations} icon={AlertTriangle} subtitle={t("dashboard.requiresAttention")} />
+        <StatCard title={t("dashboard.activeRules")} value={stats.totalRules} icon={BookOpen} />
+        <StatCard title={t("dashboard.resolvedToday")} value={stats.resolvedToday} icon={CheckCircle} />
       </div>
 
-      <ContentCard title="Recent Activity">
+      <ContentCard title={t("dashboard.recentActivity")}>
         {loading ? (
-          <p className="text-sm text-card-foreground/50">Loading…</p>
+          <p className="text-sm text-card-foreground/50">{t("dashboard.loading")}</p>
         ) : activity.length === 0 ? (
-          <p className="text-sm text-card-foreground/50">No recent activity.</p>
+          <p className="text-sm text-card-foreground/50">{t("dashboard.noActivity")}</p>
         ) : (
           <div className="space-y-4">
             {activity.map((item) => (

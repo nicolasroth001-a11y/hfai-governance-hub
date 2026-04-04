@@ -8,18 +8,20 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { trackFunnelEvent } from "@/lib/funnel";
+import { useTranslation } from "react-i18next";
 
 export default function CustomerSignup() {
   const navigate = useNavigate();
   const { signup } = useAuth();
+  const { t } = useTranslation();
   const [form, setForm] = useState({ company_name: "", name: "", email: "", password: "", confirm_password: "" });
   const [loading, setLoading] = useState(false);
 
   const passwordChecks = [
-    { label: "At least 8 characters", valid: form.password.length >= 8 },
-    { label: "Contains uppercase letter", valid: /[A-Z]/.test(form.password) },
-    { label: "Contains number", valid: /\d/.test(form.password) },
-    { label: "Passwords match", valid: form.password.length > 0 && form.password === form.confirm_password },
+    { label: t("auth.passwordChecks.minLength"), valid: form.password.length >= 8 },
+    { label: t("auth.passwordChecks.uppercase"), valid: /[A-Z]/.test(form.password) },
+    { label: t("auth.passwordChecks.number"), valid: /\d/.test(form.password) },
+    { label: t("auth.passwordChecks.match"), valid: form.password.length > 0 && form.password === form.confirm_password },
   ];
 
   const passwordStrong = passwordChecks.slice(0, 3).every((c) => c.valid);
@@ -28,7 +30,7 @@ export default function CustomerSignup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!allValid) {
-      toast({ title: "Please fix password issues", variant: "destructive" });
+      toast({ title: t("auth.fixPassword"), variant: "destructive" });
       return;
     }
     trackFunnelEvent("signup_started", { source: "customer_signup_page" });
@@ -44,12 +46,12 @@ export default function CustomerSignup() {
     if (result.success) {
       trackFunnelEvent("signup_completed", { source: "customer_signup_page", email: form.email });
       toast({
-        title: "Account created!",
-        description: "Welcome to HFAI. Redirecting to your dashboard…",
+        title: t("auth.accountCreated"),
+        description: t("auth.accountCreatedDesc"),
       });
       setTimeout(() => navigate("/customer/dashboard"), 1500);
     } else {
-      toast({ title: "Signup failed", description: result.error, variant: "destructive" });
+      toast({ title: t("auth.signupFailed"), description: result.error, variant: "destructive" });
     }
   };
 
@@ -58,36 +60,36 @@ export default function CustomerSignup() {
       <div className="w-full max-w-md space-y-4">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back to home
+          {t("auth.backToHome")}
         </Link>
       <Card className="w-full">
         <CardHeader className="text-center space-y-3">
           <div className="mx-auto h-12 w-12 rounded-xl bg-primary flex items-center justify-center">
             <Shield className="h-6 w-6 text-primary-foreground" />
           </div>
-          <CardTitle className="text-xl">Create Your Account</CardTitle>
-          <CardDescription>Start governing your AI systems with HFAI</CardDescription>
+          <CardTitle className="text-xl">{t("auth.createAccount")}</CardTitle>
+          <CardDescription>{t("auth.createAccountDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label>Company Name</Label>
+              <Label>{t("auth.companyName")}</Label>
               <Input placeholder="Acme Corp" value={form.company_name} onChange={(e) => setForm({ ...form, company_name: e.target.value })} required />
             </div>
             <div className="space-y-2">
-              <Label>Your Name</Label>
+              <Label>{t("auth.yourName")}</Label>
               <Input placeholder="John Doe" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Email</Label>
+              <Label>{t("auth.email")}</Label>
               <Input type="email" placeholder="admin@company.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
             </div>
             <div className="space-y-2">
-              <Label>Password</Label>
+              <Label>{t("auth.password")}</Label>
               <Input type="password" placeholder="••••••••" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
             </div>
             <div className="space-y-2">
-              <Label>Confirm Password</Label>
+              <Label>{t("auth.confirmPassword")}</Label>
               <Input type="password" placeholder="••••••••" value={form.confirm_password} onChange={(e) => setForm({ ...form, confirm_password: e.target.value })} required />
             </div>
             {form.password.length > 0 && (
@@ -100,10 +102,10 @@ export default function CustomerSignup() {
                 ))}
               </div>
             )}
-            <Button type="submit" className="w-full" disabled={loading || !allValid}>{loading ? "Creating…" : "Create Account"}</Button>
+            <Button type="submit" className="w-full" disabled={loading || !allValid}>{loading ? t("auth.creating") : t("auth.createAccountBtn")}</Button>
             <p className="text-center text-xs text-card-foreground/50">
-              Already have an account?{" "}
-              <Link to="/login/customer" className="text-primary hover:underline">Log in</Link>
+              {t("auth.alreadyHaveAccount")}{" "}
+              <Link to="/login/customer" className="text-primary hover:underline">{t("auth.logInLink")}</Link>
             </p>
           </form>
         </CardContent>

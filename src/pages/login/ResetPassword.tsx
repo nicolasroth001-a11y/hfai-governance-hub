@@ -7,18 +7,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
 
   const passwordChecks = [
-    { label: "At least 8 characters", valid: password.length >= 8 },
-    { label: "Contains uppercase letter", valid: /[A-Z]/.test(password) },
-    { label: "Contains number", valid: /\d/.test(password) },
-    { label: "Passwords match", valid: password.length > 0 && password === confirm },
+    { label: t("auth.passwordChecks.minLength"), valid: password.length >= 8 },
+    { label: t("auth.passwordChecks.uppercase"), valid: /[A-Z]/.test(password) },
+    { label: t("auth.passwordChecks.number"), valid: /\d/.test(password) },
+    { label: t("auth.passwordChecks.match"), valid: password.length > 0 && password === confirm },
   ];
 
   const allValid = passwordChecks.every((c) => c.valid);
@@ -30,9 +32,9 @@ export default function ResetPassword() {
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: t("auth.error"), description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Password updated", description: "You can now sign in with your new password." });
+      toast({ title: t("auth.passwordUpdated"), description: t("auth.passwordUpdatedDesc") });
       navigate("/login/customer");
     }
   };
@@ -42,24 +44,24 @@ export default function ResetPassword() {
       <div className="w-full max-w-md space-y-4">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back to home
+          {t("auth.backToHome")}
         </Link>
       <Card className="w-full">
         <CardHeader className="text-center space-y-3">
           <div className="mx-auto h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">
             <Shield className="h-6 w-6 text-primary-foreground" />
           </div>
-          <CardTitle className="text-xl">Set New Password</CardTitle>
-          <CardDescription>Choose a strong password for your account</CardDescription>
+          <CardTitle className="text-xl">{t("auth.setNewPassword")}</CardTitle>
+          <CardDescription>{t("auth.setNewPasswordDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">New Password</Label>
+              <Label htmlFor="password">{t("auth.newPassword")}</Label>
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required className="bg-card border-card-foreground/10" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirm">Confirm Password</Label>
+              <Label htmlFor="confirm">{t("auth.confirmPassword")}</Label>
               <Input id="confirm" type="password" placeholder="••••••••" value={confirm} onChange={(e) => setConfirm(e.target.value)} required className="bg-card border-card-foreground/10" />
             </div>
             <div className="space-y-1.5 rounded-lg border border-border p-3">
@@ -71,7 +73,7 @@ export default function ResetPassword() {
               ))}
             </div>
             <Button type="submit" className="w-full" disabled={loading || !allValid}>
-              {loading ? "Updating…" : "Update Password"}
+              {loading ? t("auth.updating") : t("auth.updatePassword")}
             </Button>
           </form>
         </CardContent>

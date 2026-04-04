@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 interface TopBarProps {
   role: "customer" | "reviewer" | "admin";
@@ -18,6 +20,7 @@ const loginRoutes = {
 export function TopBar({ role, userName }: TopBarProps) {
   const navigate = useNavigate();
   const { profile, logout } = useAuth();
+  const { t } = useTranslation();
   const displayName = userName ?? profile?.email ?? "";
 
   const handleLogout = async () => {
@@ -30,6 +33,7 @@ export function TopBar({ role, userName }: TopBarProps) {
       <SidebarTrigger />
       <div className="ml-auto flex items-center gap-2 sm:gap-4">
         <span className="text-caption text-muted-foreground hidden sm:inline">{displayName}</span>
+        <LanguageSwitcher />
         <div className="h-4 w-px bg-border/60 hidden sm:block" />
         <Button
           variant="ghost"
@@ -38,7 +42,7 @@ export function TopBar({ role, userName }: TopBarProps) {
           onClick={handleLogout}
         >
           <LogOut className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Log out</span>
+          <span className="hidden sm:inline">{t("topbar.logOut")}</span>
         </Button>
       </div>
     </header>
