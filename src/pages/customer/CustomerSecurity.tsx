@@ -209,7 +209,7 @@ export default function CustomerSecurity() {
                         <AlertDialogFooter>
                           <AlertDialogCancel>{t("customerSecurity.cancel")}</AlertDialogCancel>
                           <AlertDialogAction onClick={() => handleUnenroll(f.id)} className="bg-destructive text-destructive-foreground">
-                            Remove
+                            {t("customerSecurity.remove")}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
