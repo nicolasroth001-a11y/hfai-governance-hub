@@ -113,9 +113,9 @@ const response = await fetch("${INGEST_BASE}", {
       <Card className="border-primary/20 bg-primary/5">
         <CardContent className="p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-foreground">Setup Progress</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("customerOnboarding.setupProgress")}</h3>
             <span className="text-xs text-muted-foreground">
-              {completedAt ? "✅ Complete!" : `${Math.round(progress * 100)}%`}
+              {completedAt ? `✅ ${t("customerOnboarding.completeLabel")}` : `${Math.round(progress * 100)}%`}
             </span>
           </div>
           <Progress value={progress * 100} className="h-2" />
