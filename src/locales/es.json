@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "docs": "Docs",
+    "blog": "Blog",
+    "pricing": "Precios",
+    "signIn": "Iniciar sesión",
+    "startFree": "Empezar gratis",
+    "resources": "Recursos",
+    "framework": "Marco",
+    "freePilot": "Piloto gratuito",
+    "admin": "Admin"
+  },
+  "hero": {
+    "badge": "No es seguridad de IA. Es cumplimiento de IA. · Normas GPAI del EU AI Act activas en agosto 2026",
+    "title1": "La capa de",
+    "title2": "cumplimiento del EU AI Act",
+    "subtitle": "Las herramientas de seguridad de IA empresarial protegen los datos. HFAI demuestra el cumplimiento normativo. Supervisión en tiempo real, registros de auditoría y revisión humana — diseñado para el EU AI Act.",
+    "cta": "Crear cuenta gratuita",
+    "demo": "Probar demo en vivo",
+    "pilot": "Solicitar piloto"
+  },
+  "trust": {
+    "encryption": "Cifrado de nivel empresarial",
+    "soc2": "Prácticas alineadas con SOC 2",
+    "setup": "Configuración en 2 minutos, sin cambios de código",
+    "ready": "Preparado para EU AI Act + NIST AI RMF"
+  },
+  "values": {
+    "sectionTitle": "Cumplimiento, no solo seguridad",
+    "sectionDesc": "Las herramientas de seguridad de IA detienen amenazas. HFAI demuestra ante los reguladores que su IA está gobernada.",
+    "monitoring": {
+      "title": "Monitoreo en tiempo real",
+      "description": "Dos vías de integración: Proxy (sin código para OpenAI) o API REST (cualquier proveedor de IA). Visibilidad completa en ambos casos.",
+      "highlight": "Visibilidad"
+    },
+    "detection": {
+      "title": "Detección instantánea",
+      "description": "La evaluación automatizada de reglas señala las infracciones de políticas en el momento en que ocurren — sin demora.",
+      "highlight": "Detección"
+    },
+    "oversight": {
+      "title": "Supervisión humana",
+      "description": "Revisores capacitados aprueban o rechazan eventos señalados, manteniendo a los humanos en control de cada decisión.",
+      "highlight": "Control"
+    },
+    "rca": {
+      "title": "Análisis de causa raíz",
+      "description": "Diagnóstico impulsado por IA que identifica por qué ocurren las infracciones y genera planes de remediación.",
+      "highlight": "Diagnóstico"
+    }
+  },
+  "differentiation": {
+    "badge": "Por qué HFAI",
+    "title": "Problema diferente, herramienta diferente",
+    "desc": "Las plataformas de seguridad de IA empresarial protegen sus datos de los agentes de IA. HFAI demuestra ante los <em>reguladores</em> que sus sistemas de IA están gobernados.",
+    "security": "Seguridad de IA empresarial",
+    "securityItems": [
+      "Protege el acceso de agentes a datos empresariales",
+      "Comprador: CISO / Equipos de seguridad",
+      "Enfoque: protección de datos y prevención de amenazas",
+      "Precios solo para empresas ($100K+)"
+    ],
+    "compliance": "HFAI — Capa de cumplimiento",
+    "complianceItems": [
+      "Demuestra cumplimiento normativo (EU AI Act, NIST)",
+      "Comprador: Oficiales de cumplimiento, DPOs, Legal",
+      "Enfoque: registros de auditoría, supervisión humana, conformidad",
+      "Precios accesibles, prueba gratuita de 30 días"
+    ],
+    "footer": "Necesitas ambos. La seguridad detiene amenazas. El cumplimiento demuestra gobernanza. HFAI es la capa de cumplimiento."
+  },
+  "useCases": {
+    "badge": "Escenarios reales",
+    "title": "HFAI en acción",
+    "desc": "Vea cómo equipos en industrias reguladas usan HFAI para gobernar la IA en el límite de decisión.",
+    "cta": "Construye tu propia configuración de gobernanza",
+    "fintech": {
+      "industry": "Fintech",
+      "title": "Supervisión de decisiones de préstamos",
+      "scenario": "Un prestamista mediano usa GPT-4 para pre-evaluar solicitudes de préstamos. HFAI monitorea cada decisión en busca de sesgo, exposición de PII y cumplimiento normativo.",
+      "results": [
+        "47 infracciones de sesgo detectadas en los primeros 30 días",
+        "Los revisores humanos anulan el 12% de los rechazos de IA",
+        "Registro de auditoría completo para la preparación de exámenes del CFPB"
+      ],
+      "systems": "3 sistemas de IA · 12 reglas de gobernanza · 2 revisores",
+      "framework": "NIST AI RMF + cumplimiento ECOA"
+    },
+    "healthtech": {
+      "industry": "Healthtech",
+      "title": "Monitoreo de IA de triaje clínico",
+      "scenario": "Una plataforma de telemedicina enruta la admisión de pacientes a través de un sistema de triaje con IA. HFAI asegura que ningún diagnóstico o recomendación de tratamiento no solicitado escape sin aprobación humana.",
+      "results": [
+        "23 infracciones de consejo médico señaladas antes del despliegue",
+        "100% de las salidas de alta gravedad enrutadas a revisión clínica",
+        "Documentación de supervisión humana del Art. 14 del EU AI Act lista"
+      ],
+      "systems": "1 sistema de IA · 8 reglas de gobernanza · 4 revisores",
+      "framework": "EU AI Act (alto riesgo) + alineación MDR"
+    },
+    "legaltech": {
+      "industry": "Legaltech",
+      "title": "Gobernanza de IA para revisión de contratos",
+      "scenario": "Una plataforma legal de IA analiza contratos y señala cláusulas de riesgo. HFAI monitorea citaciones legales alucinadas, violaciones de confidencialidad y deriva de precisión.",
+      "results": [
+        "31 citaciones de casos alucinadas detectadas en 60 días",
+        "La tasa de violación de confidencialidad cayó un 89%",
+        "Informes de cumplimiento semanales generados automáticamente para socios"
+      ],
+      "systems": "2 sistemas de IA · 15 reglas de gobernanza · 3 revisores",
+      "framework": "NIST AI RMF GOVERN + MEASURE"
+    }
+  },
+  "compliance": {
+    "badge": "Cumplimiento dual integrado",
+    "title": "Preparado para EU AI Act + NIST AI RMF",
+    "desc": "Una plataforma. Dos marcos regulatorios. Cobertura completa para los requisitos de gobernanza de IA de EE.UU. y la UE.",
+    "euLabel": "EU AI Act",
+    "euSubtext": "— Normas GPAI agosto 2026 · Alto riesgo diciembre 2027 (Omnibus VII)",
+    "nistLabel": "Marco de gestión de riesgos de IA del NIST",
+    "nistSubtext": "— Referenciado por FTC, SEC, CFPB",
+    "euDetails": "Detalles del EU AI Act",
+    "nistDetails": "Detalles del NIST AI RMF",
+    "articles": {
+      "art9": { "label": "Gestión de riesgos", "desc": "Motor de reglas configurable con clasificación de severidad" },
+      "art12": { "label": "Mantenimiento de registros", "desc": "Cada evento de IA capturado con metadatos completos de entrada/salida" },
+      "art13": { "label": "Transparencia", "desc": "Registro de auditoría completo con informes de cumplimiento exportables" },
+      "art14": { "label": "Supervisión humana", "desc": "Flujos de trabajo de revisión con aprobar/rechazar/escalar" },
+      "art15": { "label": "Monitoreo de precisión", "desc": "Detección de anomalías en tiempo real y análisis de patrones" },
+      "art61": { "label": "Monitoreo post-mercado", "desc": "Monitoreo continuo de eventos y detección de infracciones" }
+    },
+    "nistFunctions": {
+      "govern": "Acceso basado en roles, doctrina Human-First, registros de auditoría completos",
+      "map": "Registro de sistemas de IA con niveles de riesgo, tarjetas de modelo y gobernanza de datos",
+      "measure": "Monitoreo en tiempo real, motor de reglas, detección de patrones de infracciones",
+      "manage": "Revisiones de supervisión humana, RCA, acciones de remediación, alertas"
+    }
+  },
+  "calculator": {
+    "badge": "Herramienta interactiva",
+    "title": "¿Está usted en camino al cumplimiento?",
+    "desc": "Seleccione su etapa actual de gobernanza para ver su riesgo de cronograma.",
+    "sectionTitle": "¿Está listo?",
+    "sectionDesc": "Verifique su cronograma de cumplimiento contra los plazos regulatorios próximos.",
+    "stages": {
+      "not_started": "No he empezado",
+      "early": "Investigación / planificación temprana",
+      "in_progress": "Implementando políticas",
+      "advanced": "Gobernanza en tiempo de ejecución implementada"
+    },
+    "monthsRemaining": "~{{months}} meses de trabajo restantes",
+    "behind": "Está en riesgo de no cumplir los plazos",
+    "tight": "El cronograma es ajustado — comience ahora para mantenerse en camino",
+    "safe": "Está en una posición fuerte — siga construyendo",
+    "monthsLeft": "{{months}} meses restantes",
+    "monthsNeeded": "{{months}} meses necesarios",
+    "buffer": "+{{months}} meses de margen",
+    "short": "{{months}} meses corto",
+    "cta": "Comience a construir ahora — Es gratis",
+    "deadlines": {
+      "gpai": "Normas de modelos GPAI",
+      "highRiskStandalone": "IA de alto riesgo (independiente)",
+      "highRiskEmbedded": "IA de alto riesgo (integrada)"
+    }
+  },
+  "howItWorks": {
+    "title": "Cómo funciona",
+    "desc": "Cuatro pasos desde la salida de IA hasta la responsabilidad humana.",
+    "steps": {
+      "connect": { "label": "Conectar", "desc": "Proxy o API REST" },
+      "evaluate": { "label": "Evaluar", "desc": "Reglas verificadas en <200ms" },
+      "detect": { "label": "Detectar", "desc": "Infracciones señaladas" },
+      "review": { "label": "Revisar", "desc": "Los humanos deciden" }
+    }
+  },
+  "demo": {
+    "badge": "Demo en vivo",
+    "title": "Vea HFAI en acción",
+    "desc": "Recorra un flujo de trabajo de gobernanza real — desde la ingesta de eventos hasta la revisión humana.",
+    "previous": "← Anterior",
+    "next": "Siguiente →",
+    "steps": {
+      "ingest": { "label": "Evento de IA ingestado", "desc": "Los eventos llegan vía Proxy (sin código) o API REST (cualquier proveedor)", "title": "Evento user_message recibido" },
+      "evaluate": { "label": "Reglas evaluadas", "desc": "HFAI evalúa 12 reglas de gobernanza contra el evento", "title": "3 reglas activadas" },
+      "violation": { "label": "Infracción creada", "desc": "Una infracción crítica se genera automáticamente", "title": "VIO-2847 creada" },
+      "review": { "label": "Revisión humana", "desc": "Un revisor capacitado examina la infracción y decide", "title": "Decisión del revisor" }
+    }
+  },
+  "postDemo": {
+    "title": "¿Le gusta lo que ve? Comience a gobernar en minutos.",
+    "desc": "Cree una cuenta gratuita — sin tarjeta de crédito, sin llamada de ventas. Conecte su primer sistema de IA en menos de 2 minutos.",
+    "cta": "Crear cuenta gratuita",
+    "plans": "Ver planes",
+    "noCreditCard": "Sin tarjeta de crédito",
+    "freeTier": "Nivel gratuito para siempre",
+    "twoMinSetup": "Configuración en 2 min"
+  },
+  "pilot": {
+    "badge": "Prueba gratuita de 30 días",
+    "title": "Vea la gobernanza funcionando en <1>sus</1> sistemas de IA",
+    "desc": "Sin tarjeta de crédito. Sin compromiso. Acceso completo a la plataforma con soporte de incorporación dedicado.",
+    "cta": "Empezar gratis — Sin tarjeta requerida",
+    "whiteGlove": "Solicitar piloto guiado",
+    "whiteGloveTitle": "Configuración guiada",
+    "whiteGloveDesc": "Le ayudamos a integrar y configurar — sin esfuerzo de su parte",
+    "includes": {
+      "systems": "Sistemas de IA ilimitados por 30 días",
+      "compliance": "Cumplimiento EU AI Act + NIST AI RMF",
+      "onboarding": "Soporte de incorporación dedicado",
+      "report": "Informe de gobernanza al final de la prueba"
+    }
+  },
+  "leadCapture": {
+    "badge": "Recurso gratuito",
+    "title": "Lista de verificación de preparación para el cumplimiento de IA",
+    "desc": "Todo lo que necesita para prepararse para el cumplimiento del EU AI Act y NIST AI RMF — en una lista de verificación accionable.",
+    "cta": "Obtener la lista",
+    "noSpam": "Sin spam. Cancele en cualquier momento.",
+    "successTitle": "¡Lista en camino!",
+    "successDesc": "Revise <1>{{email}}</1> para su lista de verificación de preparación para el cumplimiento de IA.",
+    "toastTitle": "¡Lista enviada!",
+    "toastDesc": "Revise su bandeja de entrada para la lista de verificación de cumplimiento de IA.",
+    "items": [
+      "Cronograma de obligaciones del EU AI Act (actualizado para Omnibus VII)",
+      "Lista de verificación de mapeo de funciones NIST AI RMF",
+      "Guía de identificación de sistemas de IA de alto riesgo",
+      "Plantilla de flujo de trabajo de supervisión humana",
+      "Requisitos de documentación de cumplimiento"
+    ]
+  },
+  "newsletter": {
+    "title": "Adelántese a la regulación de IA",
+    "desc": "Perspectivas mensuales sobre EU AI Act, NIST AI RMF y estrategias prácticas de gobernanza.",
+    "gdprConsent": "Acepto recibir actualizaciones de gobernanza de IA de HFAI. Puede cancelar la suscripción en cualquier momento. Procesamos sus datos de acuerdo con el RGPD.",
+    "subscribe": "Suscribirse",
+    "successTitle": "¡Está dentro!",
+    "successDesc": "Revise su bandeja de entrada para perspectivas de gobernanza de IA.",
+    "toastTitle": "¡Suscrito!",
+    "toastDesc": "Recibirá perspectivas de gobernanza de IA y actualizaciones regulatorias."
+  },
+  "bookDemo": {
+    "title": "Vea HFAI en su entorno",
+    "desc": "Reserve una demostración de 30 minutos. Le mostraremos cómo HFAI se adapta a su stack de IA y requisitos de cumplimiento — sin presión, sin discurso de ventas.",
+    "cta": "Reservar una demo",
+    "footer": "30 min · Sin compromiso · Adaptado a su caso de uso"
+  },
+  "founder": {
+    "badge": "Del fundador",
+    "quote": "Fundé HFAI después de ver una brecha entre lo que las organizaciones dicen sobre la gobernanza de IA y lo que realmente sucede en el momento de la decisión. Mi trabajo se centra en diseñar sistemas de gobernanza prácticos y centrados en el humano que ayuden a los equipos a comprender, monitorear y controlar la IA en tiempo real.",
+    "bio": "Aporta un enfoque práctico y operativo a uno de los problemas más difíciles del campo: construir responsabilidad sin crear vigilancia.",
+    "name": "Nicolas Roth",
+    "role": "Fundador, HFAI"
+  },
+  "faq": {
+    "title": "Preguntas y respuestas",
+    "items": [
+      {
+        "q": "¿Cómo se integra HFAI con mis sistemas de IA?",
+        "a": "HFAI ofrece dos métodos de integración. El Proxy (Sin código) le permite cambiar su URL base de OpenAI al endpoint de HFAI — cada llamada se monitorea automáticamente sin cambios de código. La API REST funciona con cualquier proveedor de IA (Anthropic, Google, código abierto, etc.) — usted envía eventos a HFAI después de que su IA responde, manteniendo el flujo de datos completamente bajo su control."
+      },
+      {
+        "q": "¿Cuál es la diferencia entre Proxy y API REST?",
+        "a": "El Proxy intercepta el tráfico de IA en tiempo real — sus solicitudes fluyen a través de HFAI, brindando visibilidad completa de entradas y salidas sin cambios de código. La API REST mantiene su tráfico de IA privado entre usted y su proveedor — solo los metadatos de eventos se envían a HFAI para monitoreo. Elija Proxy para configuración instantánea, API REST para máximo control de datos."
+      },
+      {
+        "q": "¿Qué tipos de infracciones de IA puede detectar HFAI?",
+        "a": "Infracciones de seguridad de contenido, detección de sesgo, exposición de PII, patrones de alucinación, acceso no autorizado a datos, intentos de inyección de prompt y reglas personalizadas que defina para su caso de uso específico."
+      },
+      {
+        "q": "¿Obtengo informes de cumplimiento automatizados?",
+        "a": "Sí — HFAI genera y entrega un Resumen Semanal de Gobernanza de IA a su bandeja de entrada cada lunes. Cada informe incluye sus sistemas de IA totales, clasificaciones de alto riesgo, infracciones abiertas y resueltas, reglas de gobernanza activas y actividad de revisión humana. Sin trabajo manual — visibilidad completa del cumplimiento del EU AI Act en piloto automático."
+      },
+      {
+        "q": "¿Qué es el Análisis de Causa Raíz?",
+        "a": "Nuestro motor de RCA impulsado por IA diagnostica por qué ocurren las infracciones, sugiere cambios de reglas, identifica patrones recurrentes y genera listas de verificación de remediación — todo validado por revisores humanos."
+      },
+      {
+        "q": "¿Están seguros mis datos?",
+        "a": "Absolutamente. Todos los datos están cifrados en reposo y en tránsito. Seguimos prácticas alineadas con SOC 2. Con la integración de API REST, su tráfico de IA nunca sale de su entorno — solo los metadatos de eventos se envían a HFAI. Con el Proxy, el tráfico está cifrado de extremo a extremo y se procesa en tiempo real."
+      }
+    ]
+  },
+  "finalCta": {
+    "title1": "Su IA está tomando decisiones ahora mismo.",
+    "title2": "¿Quién está vigilando?",
+    "desc": "Comience su prueba gratuita de 30 días. Sin tarjeta de crédito. Sin compromiso. Acceso completo a la plataforma.",
+    "cta": "Crear cuenta gratuita",
+    "pricing": "Ver precios"
+  },
+  "blogCta": {
+    "title": "Perspectivas y guías de gobernanza de IA",
+    "desc": "Artículos prácticos sobre cumplimiento de IA, el EU AI Act, NIST AI RMF y mantener a los humanos en control.",
+    "cta": "Leer el blog"
+  },
+  "footer": {
+    "tagline": "Gobernanza de IA centrada en el humano — manteniendo a los humanos en control de cada decisión de IA.",
+    "copyright": "© {{year}} HFAI — Todos los derechos reservados"
+  },
+  "countdown": {
+    "badge": "EU AI Act — Plazo de normas GPAI",
+    "days": "Días",
+    "hours": "Horas",
+    "min": "Min",
+    "sec": "Seg",
+    "footer": "Las normas de modelos de IA de propósito general entran en vigor el <1>1 de agosto de 2026</1>. Las obligaciones de alto riesgo siguen en diciembre de 2027."
+  },
+  "stats": {
+    "uptime": "SLA de disponibilidad",
+    "speed": "Velocidad de detección",
+    "coverage": "Cobertura de auditoría",
+    "review": "Revisión humana"
+  },
+  "common": {
+    "errorTitle": "Algo salió mal",
+    "errorDesc": "Por favor intente de nuevo.",
+    "mobilePilot": "Piloto"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "de": "Deutsch"
+  }
+}
