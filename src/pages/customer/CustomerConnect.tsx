@@ -310,7 +310,7 @@ console.log(await response.json());`;
           </ContentCard>
 
           {/* Proxy integration snippets */}
-          <ContentCard title="Proxy Integration — 2 minute setup" icon={ExternalLink}>
+          <ContentCard title={t("customerConnect.proxyIntegration")} icon={ExternalLink}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Swap your AI provider's base URL and use your proxy token as the API key. That's it — your existing code works unchanged.
