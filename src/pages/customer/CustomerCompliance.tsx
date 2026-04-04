@@ -167,7 +167,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{highRiskSystems.length}</p>
-                <p className="text-xs text-muted-foreground">High-Risk Systems</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.highRiskSystems")}</p>
               </div>
             </div>
           </CardContent>
