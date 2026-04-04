@@ -222,7 +222,7 @@ export default function CustomerSecurity() {
             <div className="text-center py-4">
               <Button onClick={handleEnroll} disabled={enrolling} className="gap-2">
                 {enrolling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Shield className="h-4 w-4" />}
-                Set Up Two-Factor Authentication
+                {t("customerSecurity.setUp")}
               </Button>
             </div>
           )}

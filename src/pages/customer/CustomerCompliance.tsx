@@ -202,10 +202,10 @@ export default function CustomerCompliance() {
 
       <Tabs defaultValue="classification" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="classification">Risk Classification</TabsTrigger>
-          <TabsTrigger value="conformity">Conformity Checklist</TabsTrigger>
-          <TabsTrigger value="coverage">HFAI Coverage</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
+          <TabsTrigger value="classification">{t("customerCompliance.riskClassification")}</TabsTrigger>
+          <TabsTrigger value="conformity">{t("customerCompliance.conformityChecklist")}</TabsTrigger>
+          <TabsTrigger value="coverage">{t("customerCompliance.hfaiCoverage")}</TabsTrigger>
+          <TabsTrigger value="timeline">{t("customerCompliance.timeline")}</TabsTrigger>
         </TabsList>
 
         {/* Risk Classification Tab */}
