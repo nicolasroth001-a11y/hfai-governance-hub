@@ -101,11 +101,11 @@ const response = await fetch("${INGEST_BASE}", {
     <div className="space-y-section">
       <div className="flex items-center justify-between">
         <SectionHeader
-          title="Onboarding"
-          description="Two ways to monitor your AI — pick the best fit for your setup"
+          title={t("customerOnboarding.title")}
+          description={t("customerOnboarding.description")}
         />
         <Button variant="outline" onClick={() => navigate("/customer/dashboard")} className="gap-2 shrink-0">
-          <SkipForward className="h-4 w-4" /> Skip to Dashboard
+          <SkipForward className="h-4 w-4" /> {t("customerOnboarding.skipToDashboard")}
         </Button>
       </div>
 
