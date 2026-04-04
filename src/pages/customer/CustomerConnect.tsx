@@ -358,7 +358,7 @@ console.log(await response.json());`;
             </CardContent>
           </Card>
 
-          <ContentCard title="Your REST API Key" icon={Key}>
+          <ContentCard title={t("customerConnect.yourRestApiKey")} icon={Key}>
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
                 Use this key in the <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">x-api-key</code> header to authenticate event ingestion requests.
