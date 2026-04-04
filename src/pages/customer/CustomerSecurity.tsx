@@ -190,7 +190,7 @@ export default function CustomerSecurity() {
                       <QrCode className="h-5 w-5 text-muted-foreground" />
                       <div>
                         <p className="text-sm font-medium">{f.friendly_name || "Authenticator App"}</p>
-                        <p className="text-xs text-muted-foreground">TOTP · Active</p>
+                        <p className="text-xs text-muted-foreground">{t("customerSecurity.totpActive")}</p>
                       </div>
                     </div>
                     <AlertDialog>
