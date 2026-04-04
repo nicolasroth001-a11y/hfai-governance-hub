@@ -300,7 +300,7 @@ console.log(await response.json());`;
                 />
                 <Button onClick={handleConnect} disabled={saving || !apiKey}>
                   {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Plug className="h-4 w-4 mr-1" />}
-                  Connect
+                  {t("customerConnect.connect")}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
