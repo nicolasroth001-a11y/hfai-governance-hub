@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SubscriptionGate } from "@/components/SubscriptionGate";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, TrendingUp, Activity, CheckCircle, Clock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,6 +18,7 @@ interface DriftAlert {
 }
 
 export default function CustomerDriftDetection() {
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const [systems, setSystems] = useState<any[]>([]);
   const [violations, setViolations] = useState<any[]>([]);
@@ -34,7 +36,6 @@ export default function CustomerDriftDetection() {
     });
   }, [profile?.org_id]);
 
-  // Derive drift signals from data patterns
   const driftAlerts: DriftAlert[] = systems.map((sys) => {
     const sysViolations = violations.filter((v) => v.ai_system_id === sys.id);
     const recentCount = sysViolations.filter((v) => {
@@ -62,43 +63,43 @@ export default function CustomerDriftDetection() {
   const sevColor = (s: string) => s === "high" ? "destructive" : s === "medium" ? "default" : "secondary";
 
   return (
-    <SubscriptionGate feature="Drift Detection">
-      <SectionHeader title="Conformity Drift Detection" description="Continuous monitoring for changes that may invalidate your compliance posture." />
+    <SubscriptionGate feature={t("customerDrift.title")}>
+      <SectionHeader title={t("customerDrift.title")} description={t("customerDrift.description")} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         <Card className="rounded-[16px]">
           <CardContent className="p-6 text-center">
             <Activity className="h-8 w-8 text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold">{systems.length}</p>
-            <p className="text-xs text-muted-foreground">Systems Monitored</p>
+            <p className="text-xs text-muted-foreground">{t("customerDrift.systemsMonitored")}</p>
           </CardContent>
         </Card>
         <Card className="rounded-[16px]">
           <CardContent className="p-6 text-center">
             <AlertTriangle className="h-8 w-8 text-destructive mx-auto mb-2" />
             <p className="text-2xl font-bold">{driftAlerts.length}</p>
-            <p className="text-xs text-muted-foreground">Active Drift Alerts</p>
+            <p className="text-xs text-muted-foreground">{t("customerDrift.activeDriftAlerts")}</p>
           </CardContent>
         </Card>
         <Card className="rounded-[16px]">
           <CardContent className="p-6 text-center">
             <CheckCircle className="h-8 w-8 text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold">{systems.length - driftAlerts.length}</p>
-            <p className="text-xs text-muted-foreground">Systems Stable</p>
+            <p className="text-xs text-muted-foreground">{t("customerDrift.systemsStable")}</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="mt-8 space-y-3">
-        <h3 className="font-semibold text-lg">Drift Alerts</h3>
+        <h3 className="font-semibold text-lg">{t("customerDrift.driftAlerts")}</h3>
         {loading ? (
-          <Card><CardContent className="p-6 text-center text-muted-foreground">Analyzing systems…</CardContent></Card>
+          <Card><CardContent className="p-6 text-center text-muted-foreground">{t("customerDrift.analyzing")}</CardContent></Card>
         ) : driftAlerts.length === 0 ? (
           <Card className="rounded-[16px]">
             <CardContent className="p-8 text-center">
               <CheckCircle className="h-10 w-10 text-primary mx-auto mb-3" />
-              <p className="font-medium">All Systems Stable</p>
-              <p className="text-sm text-muted-foreground mt-1">No conformity drift detected across your AI systems.</p>
+              <p className="font-medium">{t("customerDrift.allStable")}</p>
+              <p className="text-sm text-muted-foreground mt-1">{t("customerDrift.allStableDesc")}</p>
             </CardContent>
           </Card>
         ) : driftAlerts.map((alert) => (
@@ -115,7 +116,7 @@ export default function CustomerDriftDetection() {
                 </div>
                 <p className="text-sm text-muted-foreground">{alert.message}</p>
                 <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                  <Clock className="h-3 w-3" /> Detected just now
+                  <Clock className="h-3 w-3" /> {t("customerDrift.detectedNow")}
                 </p>
               </div>
             </CardContent>
