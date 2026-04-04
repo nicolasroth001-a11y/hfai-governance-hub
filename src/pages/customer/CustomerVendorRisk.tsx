@@ -53,6 +53,7 @@ const RISK_LABELS: Record<number, { label: string; color: string }> = {
 
 export default function CustomerVendorRisk() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [assessments, setAssessments] = useState<VendorAssessment[]>([]);
   const [loading, setLoading] = useState(true);
