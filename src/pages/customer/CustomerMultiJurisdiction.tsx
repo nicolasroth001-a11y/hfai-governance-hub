@@ -76,6 +76,7 @@ const JURISDICTIONS: Jurisdiction[] = [
 
 export default function CustomerMultiJurisdiction() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<any[]>([]);
 
   useEffect(() => {
