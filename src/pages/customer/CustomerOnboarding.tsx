@@ -167,7 +167,7 @@ const response = await fetch("${INGEST_BASE}", {
             </div>
           </ContentCard>
 
-          <ContentCard icon={BookOpen} title="Proxy Code Examples">
+          <ContentCard icon={BookOpen} title={t("customerOnboarding.proxyCodeExamples")}>
             <div className="space-y-4">
               <p className="text-sm text-card-foreground/70">
                 Replace <code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">YOUR_PROXY_TOKEN</code> with the token from your <button onClick={() => navigate("/customer/connect")} className="text-primary hover:underline">Connect page</button>.
