@@ -138,7 +138,7 @@ export default function CustomerBiasAuditing() {
   return (
     <SubscriptionGate feature="Bias & Fairness Auditing">
       <div className="space-y-6">
-        <SectionHeader title="Bias & Fairness Auditing" description="Monitor fairness metrics across AI systems — EU AI Act Art. 10 compliance" />
+        <SectionHeader title={t("customerBiasAuditing.title")} description={t("customerBiasAuditing.description")} />
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
