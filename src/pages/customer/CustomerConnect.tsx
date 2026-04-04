@@ -201,8 +201,8 @@ console.log(await response.json());`;
   return (
     <div className="space-y-6">
       <SectionHeader
-        title="Connect & Monitor"
-        description="Two ways to monitor your AI — choose the best fit for your setup."
+        title={t("customerConnect.title")}
+        description={t("customerConnect.description")}
       />
 
       <Tabs defaultValue="proxy" className="w-full">
