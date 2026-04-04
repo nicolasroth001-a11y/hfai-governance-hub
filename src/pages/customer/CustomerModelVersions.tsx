@@ -38,6 +38,7 @@ interface VersionRecord {
 
 export default function CustomerModelVersions() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [versions, setVersions] = useState<VersionRecord[]>([]);
   const [loading, setLoading] = useState(true);
