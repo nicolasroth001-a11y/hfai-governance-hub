@@ -617,9 +617,9 @@
     "unknownModel": "Unknown model",
     "edit": "Edit",
     "notClassified": "Not Classified",
-    "unclassifiedWarning": "{{count}} system(s) not yet classified. Classify in AI System settings.",
+    "unclassifiedWarning": "system(s) not yet classified. Classify in AI System settings.",
     "conformitySelfAssessment": "Conformity Self-Assessment",
-    "complete": "{{completed}}/{{total}} complete",
+    "complete": "complete",
     "howHFAIMaps": "How HFAI Maps to EU AI Act Requirements",
     "covered": "Covered",
     "manual": "Manual",
@@ -635,20 +635,16 @@
     "exportFailed": "Export failed",
     "loadingCompliance": "Loading compliance data…",
     "actionRequired": "Action Required",
-    "riskTiers": {
-      "unacceptable": "Unacceptable Risk",
-      "high_risk": "High Risk",
-      "limited_risk": "Limited Risk",
-      "minimal_risk": "Minimal Risk",
-      "not_classified": "Not Classified"
-    },
+    "riskTiers": "EU AI Act Risk Tiers",
     "riskDescriptions": {
       "unacceptable": "Banned: social scoring, real-time biometric surveillance, manipulative AI",
       "high_risk": "Strict obligations: hiring, credit scoring, law enforcement, critical infrastructure",
       "limited_risk": "Transparency obligations: chatbots, deepfakes, emotion recognition",
       "minimal_risk": "No specific obligations: spam filters, AI games, recommendations",
       "not_classified": "Risk tier not yet determined"
-    }
+    },
+    "loading": "Loading compliance data…",
+    "noSystems": "No AI systems registered."
   },
   "customerNotifications": {
     "title": "Notifications",
@@ -707,7 +703,9 @@
     "invalidCodeDesc": "Please try again.",
     "removeFailed": "Failed to remove MFA",
     "authenticatorApp": "Authenticator App",
-    "totpActive": "TOTP · Active"
+    "totpActive": "TOTP · Active",
+    "tryAgain": "Please try again.",
+    "failedRemove": "Failed to remove MFA"
   },
   "customerOnboarding": {
     "title": "Onboarding",
@@ -728,7 +726,11 @@
     "goToConnect": "Go to Connect Page",
     "quickTest": "Quick Test",
     "quickTestDesc": "Send a test event to see HFAI evaluate it against your rules.",
-    "sendTestEvent": "Send Test Event"
+    "sendTestEvent": "Send Test Event",
+    "skipToDashboard": "Skip to Dashboard",
+    "completeLabel": "Complete!",
+    "proxyTab": "Proxy (Zero-Code)",
+    "restTab": "REST API (Any AI)"
   },
   "customerConnect": {
     "title": "Connect & Monitor",
@@ -741,7 +743,7 @@
     "connectProviderDesc": "Select your AI provider and paste your API key.",
     "connect": "Connect",
     "disconnect": "Disconnect",
-    "connected": "Connected",
+    "connected": "Connected!",
     "keyStored": "Your key is stored securely and only used to forward requests.",
     "proxyIntegration": "Proxy Integration — 2 minute setup",
     "proxyIntegrationDesc": "Swap your AI provider's base URL and use your proxy token as the API key.",
@@ -750,7 +752,10 @@
     "yourRestApiKey": "Your REST API Key",
     "restApiKeyDesc": "Use this key in the x-api-key header to authenticate event ingestion requests.",
     "restIntegration": "REST API Integration",
-    "restIntegrationDesc": "After your AI generates a response, send the event to HFAI for governance monitoring."
+    "restIntegrationDesc": "After your AI generates a response, send the event to HFAI for governance monitoring.",
+    "proxyTab": "Proxy (Zero-Code)",
+    "restTab": "REST API (Any AI)",
+    "disconnected": "Disconnected"
   },
   "customerBiasAuditing": {
     "title": "Bias & Fairness Auditing",
@@ -777,7 +782,8 @@
     "selectSystem": "Select an AI system",
     "loading": "Loading…",
     "error": "Error",
-    "failedLoad": "Failed to load data"
+    "failedLoad": "Failed to load data",
+    "noAuditsTitle": "No Audits Yet"
   },
   "customerDataLineage": {
     "title": "Data Lineage & Provenance",
@@ -790,7 +796,7 @@
     "addDataSource": "Add Data Source",
     "recordDataSource": "Record Data Source",
     "aiSystem": "AI System",
-    "sourceName": "Source Name",
+    "sourceName": "Source Name *",
     "sourceType": "Source Type",
     "gdprLegalBasis": "GDPR Legal Basis",
     "geographicOrigin": "Geographic Origin",
@@ -804,7 +810,9 @@
     "noDataSourcesDesc": "Document your AI training data sources and their provenance for Art. 10 compliance.",
     "fillRequired": "Fill required fields",
     "dataSourceRecorded": "Data source recorded",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "noRecordsTitle": "No Data Sources Recorded",
+    "noRecordsDesc": "Document your AI training data sources and their provenance for Art. 10 compliance."
   },
   "customerDeploymentReadiness": {
     "title": "Pre-Deployment Readiness",
@@ -820,10 +828,13 @@
     "ready": "Ready",
     "inProgress": "In Progress",
     "notStartedBadge": "Not Started",
-    "clearedForDeployment": "Cleared for deployment {{time}}",
+    "clearedForDeployment": "Cleared for deployment",
     "notesSaved": "Notes saved",
     "systemReady": "System Ready",
-    "systemReadyDesc": "All checklist items passed. This system is cleared for deployment."
+    "systemReadyDesc": "All checklist items passed. This system is cleared for deployment.",
+    "registerFirst": "Register an AI system first to begin a readiness assessment.",
+    "allChecklistPassed": "All checklist items passed. This system is cleared for deployment.",
+    "addEvidence": "Add evidence or notes..."
   },
   "customerModelVersions": {
     "title": "Model Version History",
@@ -837,7 +848,10 @@
     "noFieldChanges": "No field changes recorded",
     "loading": "Loading…",
     "error": "Error",
-    "failedLoad": "Failed to load data"
+    "failedLoad": "Failed to load data",
+    "noVersions": "No Version History",
+    "noVersionsDesc": "Changes to AI system configurations will appear here automatically.",
+    "configChange": "Configuration Change"
   },
   "customerMultiJurisdiction": {
     "title": "Multi‑Jurisdiction Engine",
@@ -860,7 +874,7 @@
     "detectedPatterns": "Detected Patterns",
     "intelligenceFeed": "Intelligence Feed",
     "analyzing": "Analyzing precedent data…",
-    "recommendation": "Recommendation"
+    "recommendation": "Recommendation:"
   },
   "customerScheduledAudits": {
     "title": "Scheduled Recurring Audits",
@@ -882,7 +896,9 @@
     "auditComplete": "Audit marked complete",
     "auditCompleteDesc": "Next due {{date}}",
     "selectSystem": "Select an AI system",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "noAuditsTitle": "No Scheduled Audits",
+    "noAuditsDesc": "Schedule recurring governance reviews to maintain continuous compliance."
   },
   "customerVendorRisk": {
     "title": "Third-Party Vendor Risk",
@@ -893,7 +909,7 @@
     "securityPassed": "Security Passed",
     "newAssessment": "New Assessment",
     "newVendorAssessment": "New Vendor Assessment",
-    "vendorName": "Vendor Name",
+    "vendorName": "Vendor Name *",
     "vendorContact": "Vendor Contact",
     "linkedAISystem": "Linked AI System",
     "riskScore": "Risk Score (1–5)",
@@ -907,7 +923,13 @@
     "vendorNameRequired": "Vendor name required",
     "vendorCreated": "Vendor assessment created",
     "loading": "Loading…",
-    "error": "Error"
+    "error": "Error",
+    "dpaSignedLabel": "DPA Signed",
+    "noAssessmentsTitle": "No Vendor Assessments",
+    "noAssessmentsDesc": "Add third-party AI vendor assessments to track supply chain governance.",
+    "vendorAssessmentCreated": "Vendor assessment created",
+    "noLinkedSystem": "No linked system",
+    "securityPending": "Security pending"
   },
   "customerReviews": {
     "title": "Human Reviews",
