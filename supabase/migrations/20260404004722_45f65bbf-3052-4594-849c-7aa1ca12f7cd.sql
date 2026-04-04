@@ -1,0 +1,1 @@
+ALTER TABLE public.rules ADD COLUMN enforcement_mode text NOT NULL DEFAULT 'monitor' CHECK (enforcement_mode IN ('monitor', 'warn', 'block'));
