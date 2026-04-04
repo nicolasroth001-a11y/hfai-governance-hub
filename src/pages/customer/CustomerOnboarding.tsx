@@ -212,13 +212,13 @@ const response = await fetch("${INGEST_BASE}", {
 
       {/* ── CTAs ── */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <ContentCard icon={Plug} title="Set Up Integration">
+        <ContentCard icon={Plug} title={t("customerOnboarding.setUpIntegration")}>
           <div className="space-y-4">
             <p className="text-sm text-card-foreground/70">
-              Configure your Proxy or REST API connection and get your tokens.
+              {t("customerOnboarding.setUpIntegration")}
             </p>
             <Button size="lg" onClick={() => navigate("/customer/connect")} className="w-full gap-2 text-base">
-              <Plug className="h-4 w-4" /> Go to Connect Page <ArrowRight className="h-4 w-4 ml-auto" />
+              <Plug className="h-4 w-4" /> {t("customerOnboarding.goToConnect")} <ArrowRight className="h-4 w-4 ml-auto" />
             </Button>
           </div>
         </ContentCard>
