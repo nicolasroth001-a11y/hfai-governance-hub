@@ -193,7 +193,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{completionPct}%</p>
-                <p className="text-xs text-muted-foreground">Conformity Score</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.conformityScore")}</p>
               </div>
             </div>
           </CardContent>
