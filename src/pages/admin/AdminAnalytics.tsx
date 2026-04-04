@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { BarChart3, Eye, Users, Globe, TrendingUp, Loader2 } from "lucide-react";
@@ -14,6 +15,7 @@ interface AnalyticsData {
 }
 
 export default function AdminAnalytics() {
+  const { t } = useTranslation();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,9 +46,9 @@ export default function AdminAnalytics() {
   if (error || !data) {
     return (
       <div className="space-y-8">
-        <SectionHeader title="Analytics" description="Site-wide traffic analytics" />
-        <ContentCard title="Error">
-          <p className="text-sm text-destructive">{error || "No data available"}</p>
+        <SectionHeader title={t("adminAnalytics.title")} description={t("adminAnalytics.description")} />
+        <ContentCard title={t("adminAnalytics.error")}>
+          <p className="text-sm text-destructive">{error || t("adminAnalytics.noData")}</p>
         </ContentCard>
       </div>
     );
@@ -54,7 +56,7 @@ export default function AdminAnalytics() {
 
   return (
     <div className="space-y-8">
-      <SectionHeader title="Analytics" description="Site-wide traffic analytics — admin only" />
+      <SectionHeader title={t("adminAnalytics.title")} description={t("adminAnalytics.description")} />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-lg border border-border bg-card p-5 flex items-center gap-4">
@@ -63,7 +65,7 @@ export default function AdminAnalytics() {
           </div>
           <div>
             <p className="text-2xl font-bold text-card-foreground">{data.totalViews.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground">Total Page Views</p>
+            <p className="text-xs text-muted-foreground">{t("adminAnalytics.totalPageViews")}</p>
           </div>
         </div>
         <div className="rounded-lg border border-border bg-card p-5 flex items-center gap-4">
@@ -72,7 +74,7 @@ export default function AdminAnalytics() {
           </div>
           <div>
             <p className="text-2xl font-bold text-card-foreground">{data.uniqueSessions.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground">Unique Sessions</p>
+            <p className="text-xs text-muted-foreground">{t("adminAnalytics.uniqueSessions")}</p>
           </div>
         </div>
         <div className="rounded-lg border border-border bg-card p-5 flex items-center gap-4">
@@ -81,14 +83,14 @@ export default function AdminAnalytics() {
           </div>
           <div>
             <p className="text-2xl font-bold text-card-foreground">{data.pages.length}</p>
-            <p className="text-xs text-muted-foreground">Pages Tracked</p>
+            <p className="text-xs text-muted-foreground">{t("adminAnalytics.pagesTracked")}</p>
           </div>
         </div>
       </div>
 
-      <ContentCard icon={TrendingUp} title="Traffic (Last 30 Days)">
+      <ContentCard icon={TrendingUp} title={t("adminAnalytics.trafficLast30")}>
         {data.traffic.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No traffic data yet.</p>
+          <p className="text-sm text-muted-foreground">{t("adminAnalytics.noTraffic")}</p>
         ) : (
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -104,14 +106,14 @@ export default function AdminAnalytics() {
         )}
       </ContentCard>
 
-      <ContentCard icon={BarChart3} title="Most Active Pages">
+      <ContentCard icon={BarChart3} title={t("adminAnalytics.mostActivePages")}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="py-2 pr-4 font-medium text-muted-foreground">Page</th>
-                <th className="py-2 pr-4 font-medium text-muted-foreground text-right">Views</th>
-                <th className="py-2 font-medium text-muted-foreground text-right">Unique</th>
+                <th className="py-2 pr-4 font-medium text-muted-foreground">{t("adminAnalytics.page")}</th>
+                <th className="py-2 pr-4 font-medium text-muted-foreground text-right">{t("adminAnalytics.views")}</th>
+                <th className="py-2 font-medium text-muted-foreground text-right">{t("adminAnalytics.unique")}</th>
               </tr>
             </thead>
             <tbody>
@@ -127,15 +129,15 @@ export default function AdminAnalytics() {
         </div>
       </ContentCard>
 
-      <ContentCard icon={Globe} title="Top Referrers">
+      <ContentCard icon={Globe} title={t("adminAnalytics.topReferrers")}>
         {data.referrers.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No referrer data yet.</p>
+          <p className="text-sm text-muted-foreground">{t("adminAnalytics.noReferrers")}</p>
         ) : (
           <div className="space-y-2">
             {data.referrers.slice(0, 10).map((r) => (
               <div key={r.referrer} className="flex items-center justify-between py-1.5">
                 <span className="text-xs text-card-foreground truncate max-w-[70%]">{r.referrer}</span>
-                <span className="text-xs font-medium text-muted-foreground">{r.count} views</span>
+                <span className="text-xs font-medium text-muted-foreground">{r.count} {t("adminAnalytics.viewsSuffix")}</span>
               </div>
             ))}
           </div>

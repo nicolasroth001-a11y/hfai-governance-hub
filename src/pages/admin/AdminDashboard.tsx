@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { AlertTriangle, BookOpen, Users, Building2, ShieldAlert, Clock } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -7,6 +8,7 @@ import { fetchAdminStats, fetchAuditLogs } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 
 export default function AdminDashboard() {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({ totalViolations: 0, openViolations: 0, totalReviews: 0, totalOrganizations: 0 });
   const [activity, setActivity] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,20 +36,20 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-8">
-      <SectionHeader title="Platform Control" description="System-wide oversight and structure" />
+      <SectionHeader title={t("adminDashboard.title")} description={t("adminDashboard.description")} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Violations" value={stats.totalViolations} icon={ShieldAlert} />
-        <StatCard title="Awaiting Review" value={stats.openViolations} icon={Clock} subtitle="Needs attention" />
-        <StatCard title="Organizations" value={stats.totalOrganizations} icon={Building2} />
-        <StatCard title="Human Reviews" value={stats.totalReviews} icon={Users} />
+        <StatCard title={t("adminDashboard.totalViolations")} value={stats.totalViolations} icon={ShieldAlert} />
+        <StatCard title={t("adminDashboard.awaitingReview")} value={stats.openViolations} icon={Clock} subtitle={t("adminDashboard.needsAttention")} />
+        <StatCard title={t("adminDashboard.organizations")} value={stats.totalOrganizations} icon={Building2} />
+        <StatCard title={t("adminDashboard.humanReviews")} value={stats.totalReviews} icon={Users} />
       </div>
 
-      <ContentCard title="Recent System Activity">
+      <ContentCard title={t("adminDashboard.recentActivity")}>
         {loading ? (
-          <p className="text-sm text-card-foreground/50">Loading…</p>
+          <p className="text-sm text-card-foreground/50">{t("adminDashboard.loading")}</p>
         ) : activity.length === 0 ? (
-          <p className="text-sm text-card-foreground/50">No recent activity.</p>
+          <p className="text-sm text-card-foreground/50">{t("adminDashboard.noActivity")}</p>
         ) : (
           <div className="space-y-4">
             {activity.map((item) => (

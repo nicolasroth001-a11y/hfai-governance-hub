@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { Building2 } from "lucide-react";
@@ -10,6 +11,7 @@ import { createOrganization } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 
 export default function AdminCreateCustomer() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", contact_email: "" });
   const [loading, setLoading] = useState(false);
@@ -19,29 +21,27 @@ export default function AdminCreateCustomer() {
     setLoading(true);
     try {
       await createOrganization({ name: form.name, contact_email: form.contact_email });
-      toast({ title: "Customer created" });
+      toast({ title: t("adminCreateCustomer.customerCreated") });
       navigate("/admin/customers");
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
+      toast({ title: t("adminCreateCustomer.error"), description: err.message, variant: "destructive" });
+    } finally { setLoading(false); }
   };
 
   return (
     <div className="space-y-section">
-      <SectionHeader title="Create Customer" description="Register a new customer organization" />
-      <ContentCard icon={Building2} title="New Customer" className="max-w-lg">
+      <SectionHeader title={t("adminCreateCustomer.title")} description={t("adminCreateCustomer.description")} />
+      <ContentCard icon={Building2} title={t("adminCreateCustomer.newCustomer")} className="max-w-lg">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label>Company Name</Label>
-            <Input placeholder="Acme Corp" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+            <Label>{t("adminCreateCustomer.companyName")}</Label>
+            <Input placeholder={t("adminCreateCustomer.companyPlaceholder")} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           </div>
           <div className="space-y-2">
-            <Label>Admin Email</Label>
-            <Input type="email" placeholder="admin@acme.com" value={form.contact_email} onChange={(e) => setForm({ ...form, contact_email: e.target.value })} required />
+            <Label>{t("adminCreateCustomer.adminEmail")}</Label>
+            <Input type="email" placeholder={t("adminCreateCustomer.emailPlaceholder")} value={form.contact_email} onChange={(e) => setForm({ ...form, contact_email: e.target.value })} required />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating…" : "Create Customer"}</Button>
+          <Button type="submit" className="w-full" disabled={loading}>{loading ? t("adminCreateCustomer.creating") : t("adminCreateCustomer.createCustomer")}</Button>
         </form>
       </ContentCard>
     </div>
