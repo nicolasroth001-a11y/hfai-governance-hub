@@ -154,7 +154,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{systems.length}</p>
-                <p className="text-xs text-muted-foreground">AI Systems</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.aiSystems")}</p>
               </div>
             </div>
           </CardContent>
