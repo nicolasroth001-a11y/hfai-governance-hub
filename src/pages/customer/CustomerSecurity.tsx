@@ -75,7 +75,7 @@ export default function CustomerSecurity() {
     });
     setVerifying(false);
     if (verifyErr) {
-      toast({ title: "Invalid code", description: "Please try again.", variant: "destructive" });
+      toast({ title: t("customerSecurity.invalidCode"), description: t("customerSecurity.tryAgain"), variant: "destructive" });
       setVerifyCode("");
       return;
     }
