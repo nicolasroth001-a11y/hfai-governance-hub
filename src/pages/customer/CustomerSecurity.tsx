@@ -141,7 +141,7 @@ export default function CustomerSecurity() {
             <div className="space-y-6">
               <div className="text-center space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Scan this QR code with your authenticator app, then enter the 6-digit code below:
+                  {t("customerSecurity.scanQR")}
                 </p>
                 <div className="flex justify-center">
                   <div className="bg-white p-4 rounded-xl inline-block">
