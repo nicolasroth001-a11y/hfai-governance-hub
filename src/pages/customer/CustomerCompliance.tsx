@@ -121,9 +121,9 @@ export default function CustomerCompliance() {
       a.click();
       URL.revokeObjectURL(url);
 
-      toast({ title: "Report exported", description: "Compliance report downloaded successfully." });
+      toast({ title: t("customerCompliance.reportExported"), description: t("customerCompliance.reportExportedDesc") });
     } catch (err: any) {
-      toast({ title: "Export failed", description: err.message, variant: "destructive" });
+      toast({ title: t("customerCompliance.exportFailed"), description: err.message, variant: "destructive" });
     } finally {
       setExporting(false);
     }
