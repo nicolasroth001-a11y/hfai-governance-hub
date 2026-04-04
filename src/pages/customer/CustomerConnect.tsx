@@ -275,7 +275,7 @@ console.log(await response.json());`;
           )}
 
           {/* Add new provider */}
-          <ContentCard title="Connect a Provider" icon={Plug}>
+          <ContentCard title={t("customerConnect.connectProvider")} icon={Plug}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Select your AI provider and paste your API key. HFAI creates a proxy endpoint that monitors all requests automatically.
