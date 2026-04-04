@@ -126,7 +126,7 @@ export default function CustomerSecurity() {
             ) : (
               <Badge variant="outline" className="text-muted-foreground">
                 <ShieldOff className="h-3.5 w-3.5 mr-1" />
-                Disabled
+                {t("customerSecurity.disabled")}
               </Badge>
             )}
           </div>
