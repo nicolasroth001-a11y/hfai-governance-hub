@@ -50,7 +50,7 @@ export default function CustomerSecurity() {
       friendlyName: "Authenticator App",
     });
     if (error) {
-      toast({ title: "Enrollment failed", description: error.message, variant: "destructive" });
+      toast({ title: t("customerSecurity.enrollFailed"), description: error.message, variant: "destructive" });
       setEnrolling(false);
       return;
     }
