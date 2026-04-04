@@ -92,7 +92,7 @@ export default function CustomerMultiJurisdiction() {
 
   return (
     <SubscriptionGate feature="Multi-Jurisdiction">
-      <SectionHeader title="Multi‑Jurisdiction Engine" description="One governance layer, multiple regulatory outputs. Map your AI governance to regulations worldwide." />
+      <SectionHeader title={t("customerMultiJurisdiction.title")} description={t("customerMultiJurisdiction.description")} />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
         <Card className="rounded-[16px]">

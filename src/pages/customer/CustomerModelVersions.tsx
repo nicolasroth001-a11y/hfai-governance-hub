@@ -87,7 +87,7 @@ export default function CustomerModelVersions() {
   return (
     <SubscriptionGate feature="Model Version History">
       <div className="space-y-6">
-        <SectionHeader title="Model Version History" description="Track every change to your AI systems with diffs, timestamps, and approval status" />
+        <SectionHeader title={t("customerModelVersions.title")} description={t("customerModelVersions.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">

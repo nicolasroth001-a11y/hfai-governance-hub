@@ -370,7 +370,7 @@ console.log(await response.json());`;
             </div>
           </ContentCard>
 
-          <ContentCard title="REST API Integration" icon={ExternalLink}>
+          <ContentCard title={t("customerConnect.restIntegration")} icon={ExternalLink}>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 After your AI generates a response, send the event to HFAI for governance monitoring. Add a few lines after your existing AI call.

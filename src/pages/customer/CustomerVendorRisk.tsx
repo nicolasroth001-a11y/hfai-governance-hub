@@ -129,7 +129,7 @@ export default function CustomerVendorRisk() {
   return (
     <SubscriptionGate feature="Vendor Risk Assessment">
       <div className="space-y-6">
-        <SectionHeader title="Third-Party Vendor Risk" description="Assess and track AI supply chain risks — EU AI Act Art. 25 compliance" />
+        <SectionHeader title={t("customerVendorRisk.title")} description={t("customerVendorRisk.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">

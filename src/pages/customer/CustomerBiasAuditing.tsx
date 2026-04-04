@@ -173,7 +173,7 @@ export default function CustomerBiasAuditing() {
             </SelectContent>
           </Select>
           <Button onClick={() => setShowForm(!showForm)} size="sm">
-            <Plus className="h-4 w-4 mr-1" /> Record Audit
+            <Plus className="h-4 w-4 mr-1" /> {t("customerBiasAuditing.recordAudit")}
           </Button>
         </div>
 

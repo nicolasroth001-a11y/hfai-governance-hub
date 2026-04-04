@@ -223,13 +223,13 @@ const response = await fetch("${INGEST_BASE}", {
           </div>
         </ContentCard>
 
-        <ContentCard icon={Zap} title="Quick Test">
+        <ContentCard icon={Zap} title={t("customerOnboarding.quickTest")}>
           <div className="flex flex-col justify-between h-full gap-4">
             <p className="text-sm text-card-foreground/70">
-              Send a test event to see HFAI evaluate it against your rules and flag any violations.
+              {t("customerOnboarding.quickTest")}
             </p>
             <Button size="lg" onClick={() => setTestOpen(true)} className="w-full gap-2 text-base">
-              <Send className="h-4 w-4" /> Send Test Event <ArrowRight className="h-4 w-4 ml-auto" />
+              <Send className="h-4 w-4" /> {t("customerOnboarding.sendTestEvent")} <ArrowRight className="h-4 w-4 ml-auto" />
             </Button>
           </div>
         </ContentCard>

@@ -258,8 +258,8 @@ export default function CustomerDeploymentReadiness() {
   return (
     <div className="space-y-8">
       <SectionHeader
-        title="Pre-Deployment Readiness"
-        description="Gate AI systems from going active until they pass a structured governance checklist"
+        title={t("customerDeploymentReadiness.title")}
+        description={t("customerDeploymentReadiness.description")}
       />
 
       {/* KPI Cards */}

@@ -142,7 +142,7 @@ export default function CustomerDataLineage() {
   return (
     <SubscriptionGate feature="Data Lineage">
       <div className="space-y-6">
-        <SectionHeader title="Data Lineage & Provenance" description="Track training data sources and GDPR legal basis — EU AI Act Art. 10" />
+        <SectionHeader title={t("customerDataLineage.title")} description={t("customerDataLineage.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">

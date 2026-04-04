@@ -81,7 +81,7 @@ export default function CustomerPrecedentIntelligence() {
 
   return (
     <SubscriptionGate feature="Precedent Intelligence">
-      <SectionHeader title="Precedent Intelligence" description="Anonymized cross-platform insights and regulatory intelligence to strengthen your compliance posture." />
+      <SectionHeader title={t("customerPrecedentIntelligence.title")} description={t("customerPrecedentIntelligence.description")} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         <Card className="rounded-[16px]">

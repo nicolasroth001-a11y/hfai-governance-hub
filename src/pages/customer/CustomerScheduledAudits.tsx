@@ -134,7 +134,7 @@ export default function CustomerScheduledAudits() {
   return (
     <SubscriptionGate feature="Scheduled Audits">
       <div className="space-y-6">
-        <SectionHeader title="Scheduled Recurring Audits" description="Set periodic governance reviews per AI system with automated tracking" />
+        <SectionHeader title={t("customerScheduledAudits.title")} description={t("customerScheduledAudits.description")} />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
