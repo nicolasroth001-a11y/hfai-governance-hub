@@ -180,7 +180,7 @@ export default function CustomerCompliance() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{classifiedSystems.length}/{systems.length}</p>
-                <p className="text-xs text-muted-foreground">Systems Classified</p>
+                <p className="text-xs text-muted-foreground">{t("customerCompliance.systemsClassified")}</p>
               </div>
             </div>
           </CardContent>
