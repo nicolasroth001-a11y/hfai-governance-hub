@@ -79,7 +79,7 @@ export default function CustomerSecurity() {
       setVerifyCode("");
       return;
     }
-    toast({ title: "MFA enabled!", description: "Two-factor authentication is now active on your account." });
+    toast({ title: t("customerSecurity.mfaEnabled"), description: t("customerSecurity.mfaEnabledDesc") });
     setQrUri(null);
     setFactorId(null);
     setVerifyCode("");
