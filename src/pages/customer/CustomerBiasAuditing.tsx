@@ -156,7 +156,7 @@ export default function CustomerBiasAuditing() {
             <p className="text-2xl font-bold text-warning mt-1">{pendingCount}</p>
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Failed</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.failed")}</p>
             <p className="text-2xl font-bold text-destructive mt-1">{failedCount}</p>
           </div>
         </div>
