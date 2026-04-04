@@ -147,7 +147,7 @@ export default function CustomerBiasAuditing() {
             <p className="text-2xl font-bold text-card-foreground mt-1">{filtered.length}</p>
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Pass Rate</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.passRate")}</p>
             <p className="text-2xl font-bold text-card-foreground mt-1">{passRate}%</p>
             <Progress value={passRate} className="mt-2 h-1.5" />
           </div>
