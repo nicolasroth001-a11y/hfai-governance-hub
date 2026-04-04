@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { fetchViolation, updateViolation } from "@/lib/api";
 import { ViolationSummaryCard } from "@/components/ViolationSummaryCard";
 import { AISystemInfoCard } from "@/components/AISystemInfoCard";
@@ -18,6 +19,7 @@ import { ArrowLeft, Save, Gavel, StickyNote } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 export default function CustomerViolationDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [v, setV] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +50,7 @@ export default function CustomerViolationDetail() {
     try {
       const updated = await updateViolation(id, { status, resolution_notes: resolutionNotes });
       setV(updated);
-      toast({ title: "Updated", description: `Violation status set to "${status}"` });
+      toast({ title: t("customerViolationDetail.updated"), description: t("customerViolationDetail.updatedDesc", { status }) });
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {
@@ -61,11 +63,11 @@ export default function CustomerViolationDetail() {
     refreshAudit();
   }, [refreshAudit]);
 
-  if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">Loading…</p>;
+  if (loading) return <p className="text-sm text-card-foreground/50 py-10 text-center">{t("customerViolationDetail.loading")}</p>;
   if (error || !v) return (
     <div className="text-center py-20 text-muted-foreground">
-      {error || "Violation not found."}{" "}
-      <Link to="/customer/violations" className="text-primary hover:underline">Back to violations</Link>
+      {error || t("customerViolationDetail.notFound")}{" "}
+      <Link to="/customer/violations" className="text-primary hover:underline">{t("customerViolationDetail.backLink")}</Link>
     </div>
   );
 
@@ -73,68 +75,53 @@ export default function CustomerViolationDetail() {
     <div className="space-y-section">
       <div className="space-y-base">
         <Link to="/customer/violations" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Back to Violations
+          <ArrowLeft className="h-4 w-4" /> {t("customerViolationDetail.backToViolations")}
         </Link>
-        <SectionHeader title={`Violation #${typeof v.id === "string" ? v.id.slice(0, 8) : v.id}`} description="Review violation details and resolve" />
+        <SectionHeader title={t("customerViolationDetail.title", { id: typeof v.id === "string" ? v.id.slice(0, 8) : v.id })} description={t("customerViolationDetail.description")} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
-        <ViolationSummaryCard
-          id={v.id}
-          description={v.description}
-          severity={v.severity}
-          rule_id={v.rule_id}
-          detected_at={v.detected_at}
-          status={v.status || "open"}
-        />
+        <ViolationSummaryCard id={v.id} description={v.description} severity={v.severity} rule_id={v.rule_id} detected_at={v.detected_at} status={v.status || "open"} />
         <AISystemInfoCard aiSystemId={v.ai_system_id} />
       </div>
 
       <EventPayloadCard data={v} />
 
-      {/* Resolution Workflow */}
-      <ContentCard title="Resolution Workflow">
+      <ContentCard title={t("customerViolationDetail.resolutionWorkflow")}>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label>Status</Label>
+            <Label>{t("customerViolationDetail.status")}</Label>
             <Select value={status} onValueChange={setStatus}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="open">Open</SelectItem>
-                <SelectItem value="investigating">Investigating</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
+                <SelectItem value="open">{t("customerViolationDetail.open")}</SelectItem>
+                <SelectItem value="investigating">{t("customerViolationDetail.investigating")}</SelectItem>
+                <SelectItem value="resolved">{t("customerViolationDetail.resolved")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label>Resolution Notes</Label>
-            <Textarea
-              placeholder="Describe how this violation was investigated and resolved…"
-              value={resolutionNotes}
-              onChange={(e) => setResolutionNotes(e.target.value)}
-              rows={4}
-            />
+            <Label>{t("customerViolationDetail.resolutionNotes")}</Label>
+            <Textarea placeholder={t("customerViolationDetail.resolutionNotesPlaceholder")} value={resolutionNotes} onChange={(e) => setResolutionNotes(e.target.value)} rows={4} />
           </div>
           <div className="sm:col-span-2 flex justify-end">
             <Button onClick={handleSaveResolution} disabled={saving} className="gap-2">
-              <Save className="h-4 w-4" /> {saving ? "Saving…" : "Update Status"}
+              <Save className="h-4 w-4" /> {saving ? t("customerViolationDetail.saving") : t("customerViolationDetail.updateStatus")}
             </Button>
           </div>
         </div>
       </ContentCard>
 
-      {/* Customer QA Review */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
-        <ContentCard icon={Gavel} title="Internal QA Review">
+        <ContentCard icon={Gavel} title={t("customerViolationDetail.internalQA")}>
           <ReviewActions violationId={String(v.id)} onDecision={handleDecision} />
         </ContentCard>
-        <ContentCard icon={StickyNote} title="QA Notes">
+        <ContentCard icon={StickyNote} title={t("customerViolationDetail.qaNotes")}>
           <ReviewerNotesInput violationId={String(v.id)} onSubmit={refreshAudit} />
         </ContentCard>
       </div>
 
       <RCASection violationId={String(v.id)} canEdit />
-
       <AuditTrailCard key={auditKey} violationId={v.id} />
     </div>
   );
