@@ -55,6 +55,7 @@ const METRIC_TYPES = [
 
 export default function CustomerBiasAuditing() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [audits, setAudits] = useState<BiasAudit[]>([]);
   const [loading, setLoading] = useState(true);
