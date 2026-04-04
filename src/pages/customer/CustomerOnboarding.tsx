@@ -140,10 +140,10 @@ const response = await fetch("${INGEST_BASE}", {
       <Tabs defaultValue="proxy" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="proxy" className="gap-2 text-sm">
-            <Plug className="h-4 w-4" /> Proxy (Zero-Code)
+            <Plug className="h-4 w-4" /> {t("customerOnboarding.proxyTab")}
           </TabsTrigger>
           <TabsTrigger value="rest" className="gap-2 text-sm">
-            <Key className="h-4 w-4" /> REST API (Any AI)
+            <Key className="h-4 w-4" /> {t("customerOnboarding.restTab")}
           </TabsTrigger>
         </TabsList>
 
