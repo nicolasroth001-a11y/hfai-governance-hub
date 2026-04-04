@@ -1016,5 +1016,43 @@
     "title": "Détail de la règle",
     "description": "Non disponible",
     "noBackend": "Aucune route de règles n'existe encore dans le backend."
+  },
+  "reviewerDashboard": {
+    "title": "File de révision",
+    "description": "Vos violations assignées et éléments non assignés",
+    "assignedToMe": "Assignés à moi",
+    "myPending": "Mes en attente",
+    "unassigned": "Non assignés",
+    "resolved": "Résolus",
+    "myQueue": "Ma file",
+    "loading": "Chargement…",
+    "noPending": "Aucune violation en attente. Tout est clair !",
+    "assigned": "Assigné"
+  },
+  "reviewerViolations": {
+    "title": "Toutes les violations",
+    "description": "Violations disponibles pour révision",
+    "id": "ID",
+    "descriptionCol": "Description",
+    "severity": "Sévérité",
+    "detected": "Détectée",
+    "status": "Statut",
+    "critical": "Critique",
+    "high": "Élevée",
+    "medium": "Moyenne",
+    "low": "Faible",
+    "open": "Ouverte",
+    "underReview": "En révision",
+    "resolved": "Résolue",
+    "noViolations": "Aucune violation trouvée"
+  },
+  "reviewerViolationDetail": {
+    "loading": "Chargement…",
+    "notFound": "Violation non trouvée.",
+    "backToViolations": "Retour aux violations",
+    "violationTitle": "Violation #{{id}}",
+    "description": "Examiner et agir",
+    "reviewActions": "Actions de révision",
+    "reviewerNotes": "Notes du réviseur"
   }
 }

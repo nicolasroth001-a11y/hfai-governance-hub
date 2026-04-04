@@ -1016,5 +1016,43 @@
     "title": "Regeldetail",
     "description": "Nicht verfügbar",
     "noBackend": "Es gibt noch keine Regel-Route im Backend."
+  },
+  "reviewerDashboard": {
+    "title": "Prüfwarteschlange",
+    "description": "Ihre zugewiesenen Verstöße und nicht zugewiesene Elemente",
+    "assignedToMe": "Mir zugewiesen",
+    "myPending": "Meine Ausstehenden",
+    "unassigned": "Nicht zugewiesen",
+    "resolved": "Gelöst",
+    "myQueue": "Meine Warteschlange",
+    "loading": "Laden…",
+    "noPending": "Keine ausstehenden Verstöße. Alles klar!",
+    "assigned": "Zugewiesen"
+  },
+  "reviewerViolations": {
+    "title": "Alle Verstöße",
+    "description": "Verstöße zur Überprüfung verfügbar",
+    "id": "ID",
+    "descriptionCol": "Beschreibung",
+    "severity": "Schweregrad",
+    "detected": "Erkannt",
+    "status": "Status",
+    "critical": "Kritisch",
+    "high": "Hoch",
+    "medium": "Mittel",
+    "low": "Niedrig",
+    "open": "Offen",
+    "underReview": "In Prüfung",
+    "resolved": "Gelöst",
+    "noViolations": "Keine Verstöße gefunden"
+  },
+  "reviewerViolationDetail": {
+    "loading": "Laden…",
+    "notFound": "Verstoß nicht gefunden.",
+    "backToViolations": "Zurück zu Verstößen",
+    "violationTitle": "Verstoß #{{id}}",
+    "description": "Überprüfen und handeln",
+    "reviewActions": "Prüfaktionen",
+    "reviewerNotes": "Prüfernotizen"
   }
 }
