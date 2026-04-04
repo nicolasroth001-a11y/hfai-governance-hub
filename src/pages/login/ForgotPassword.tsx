@@ -52,8 +52,8 @@ export default function ForgotPassword() {
                 <Mail className="h-6 w-6 text-primary" />
               </div>
               <p className="text-sm text-card-foreground/70">
-                <Trans i18nKey="auth.resetEmailMessage" values={{ email }}>
-                  If an account exists for <span className="font-medium text-foreground">{{email}}</span>, you'll receive a reset link shortly.
+                <Trans i18nKey="auth.resetEmailMessage" values={{ email }} components={{ 1: <span className="font-medium text-foreground" /> }}>
+                  {`If an account exists for <1>${email}</1>, you'll receive a reset link shortly.`}
                 </Trans>
               </p>
               <Link to="/login/customer" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
