@@ -168,7 +168,7 @@ export default function CustomerBiasAuditing() {
               <SelectValue placeholder="Filter by system" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Systems</SelectItem>
+              <SelectItem value="all">{t("customerBiasAuditing.allSystems")}</SelectItem>
               {systems.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
             </SelectContent>
           </Select>
