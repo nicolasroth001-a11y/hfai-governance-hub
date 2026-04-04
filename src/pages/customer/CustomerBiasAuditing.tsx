@@ -143,7 +143,7 @@ export default function CustomerBiasAuditing() {
         {/* KPI Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
-            <p className="text-xs text-card-foreground/50 font-medium">Total Audits</p>
+            <p className="text-xs text-card-foreground/50 font-medium">{t("customerBiasAuditing.totalAudits")}</p>
             <p className="text-2xl font-bold text-card-foreground mt-1">{filtered.length}</p>
           </div>
           <div className="bg-card rounded-xl p-4 border border-card-foreground/5">
