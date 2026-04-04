@@ -64,7 +64,7 @@ export default function CustomerSecurity() {
     setVerifying(true);
     const { data: challenge, error: challengeErr } = await supabase.auth.mfa.challenge({ factorId });
     if (challengeErr) {
-      toast({ title: "Challenge failed", description: challengeErr.message, variant: "destructive" });
+      toast({ title: t("customerSecurity.challengeFailed"), description: challengeErr.message, variant: "destructive" });
       setVerifying(false);
       return;
     }
