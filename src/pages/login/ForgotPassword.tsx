@@ -7,11 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useTranslation, Trans } from "react-i18next";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,10 +23,10 @@ export default function ForgotPassword() {
     });
     setLoading(false);
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: t("auth.error"), description: error.message, variant: "destructive" });
     } else {
       setSent(true);
-      toast({ title: "Check your email", description: "We've sent you a password reset link." });
+      toast({ title: t("auth.checkEmail"), description: t("auth.resetLinkSent") });
     }
   };
 
@@ -33,15 +35,15 @@ export default function ForgotPassword() {
       <div className="w-full max-w-md space-y-4">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back to home
+          {t("auth.backToHome")}
         </Link>
       <Card className="w-full">
         <CardHeader className="text-center space-y-3">
           <div className="mx-auto h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">
             <Shield className="h-6 w-6 text-primary-foreground" />
           </div>
-          <CardTitle className="text-xl">Reset Password</CardTitle>
-          <CardDescription>Enter your email to receive a password reset link</CardDescription>
+          <CardTitle className="text-xl">{t("auth.resetPassword")}</CardTitle>
+          <CardDescription>{t("auth.resetPasswordDesc")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {sent ? (
@@ -50,28 +52,30 @@ export default function ForgotPassword() {
                 <Mail className="h-6 w-6 text-primary" />
               </div>
               <p className="text-sm text-card-foreground/70">
-                If an account exists for <span className="font-medium text-foreground">{email}</span>, you'll receive a reset link shortly.
+                <Trans i18nKey="auth.resetEmailMessage" values={{ email }} components={{ 1: <span className="font-medium text-foreground" /> }}>
+                  {`If an account exists for <1>${email}</1>, you'll receive a reset link shortly.`}
+                </Trans>
               </p>
               <Link to="/login/customer" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
                 <ArrowLeft className="h-3.5 w-3.5" />
-                Back to login
+                {t("auth.backToLogin")}
               </Link>
             </div>
           ) : (
             <>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t("auth.email")}</Label>
                   <Input id="email" type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="bg-card border-card-foreground/10" />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Sending…" : "Send Reset Link"}
+                  {loading ? t("auth.sending") : t("auth.sendResetLink")}
                 </Button>
               </form>
               <p className="text-center">
                 <Link to="/login/customer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary">
                   <ArrowLeft className="h-3 w-3" />
-                  Back to login
+                  {t("auth.backToLogin")}
                 </Link>
               </p>
             </>
