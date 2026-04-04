@@ -149,7 +149,7 @@ const response = await fetch("${INGEST_BASE}", {
 
         {/* ── PROXY TAB ── */}
         <TabsContent value="proxy" className="space-y-6">
-          <ContentCard icon={Plug} title="How the Proxy Works">
+          <ContentCard icon={Plug} title={t("customerOnboarding.howProxyWorks")}>
             <p className="text-sm text-card-foreground/70 mb-2">
               <strong>Best for OpenAI users.</strong> Swap your base URL — HFAI intercepts every AI call automatically. Your traffic flows through the HFAI proxy, giving full visibility into inputs and outputs with <strong>zero code changes</strong>.
             </p>
