@@ -170,11 +170,11 @@ export default function CustomerSecurity() {
                     }}
                     disabled={verifying}
                   >
-                    Cancel
+                    {t("customerSecurity.cancel")}
                   </Button>
                   <Button onClick={handleVerifyEnrollment} disabled={verifying || verifyCode.length !== 6} className="gap-2">
                     {verifying && <Loader2 className="h-4 w-4 animate-spin" />}
-                    Verify & Enable
+                    {t("customerSecurity.verifyEnable")}
                   </Button>
                 </div>
               </div>
