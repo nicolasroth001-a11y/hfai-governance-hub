@@ -49,6 +49,7 @@ const AUDIT_TYPES = [
 
 export default function CustomerScheduledAudits() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [audits, setAudits] = useState<ScheduledAudit[]>([]);
   const [loading, setLoading] = useState(true);
