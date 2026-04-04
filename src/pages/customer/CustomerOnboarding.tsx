@@ -180,7 +180,7 @@ const response = await fetch("${INGEST_BASE}", {
 
         {/* ── REST API TAB ── */}
         <TabsContent value="rest" className="space-y-6">
-          <ContentCard icon={Key} title="How the REST API Works">
+          <ContentCard icon={Key} title={t("customerOnboarding.howRestWorks")}>
             <p className="text-sm text-card-foreground/70 mb-2">
               <strong>Best for any AI provider.</strong> Works with OpenAI, Anthropic, Google, open-source, or custom models. Your AI traffic stays between you and your provider — only event metadata is sent to HFAI. <strong>Maximum data control.</strong>
             </p>
