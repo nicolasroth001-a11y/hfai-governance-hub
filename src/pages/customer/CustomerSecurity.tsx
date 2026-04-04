@@ -92,7 +92,7 @@ export default function CustomerSecurity() {
       toast({ title: t("customerSecurity.failedRemove"), description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "MFA disabled", description: "Two-factor authentication has been removed." });
+    toast({ title: t("customerSecurity.mfaDisabled"), description: t("customerSecurity.mfaDisabledDesc") });
     loadFactors();
   };
 
