@@ -34,6 +34,7 @@ const REST_STEPS = [
 export default function CustomerOnboarding() {
   const [testOpen, setTestOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const { steps, progress, completedAt, completeStep } = useOnboardingProgress();
   usePageView("/customer/onboarding");
