@@ -28,7 +28,6 @@ serve(async (req) => {
     let aiSystemId: string | null = null;
 
     if (apiKey) {
-      // Hash the key and look up the org via organizations.api_key
       const { data: org, error } = await supabase
         .from("organizations")
         .select("id, api_key")
@@ -45,7 +44,6 @@ serve(async (req) => {
       orgId = org.id;
       log("Authenticated via API key", { orgId });
     } else if (authHeader) {
-      // Frontend call — resolve user's org from profile
       const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
       const userClient = createClient(supabaseUrl, anonKey, {
         global: { headers: { Authorization: authHeader } },
@@ -120,7 +118,8 @@ serve(async (req) => {
       .eq("enabled", true);
 
     const violations: unknown[] = [];
-    const keywordMatched: string[] = []; // rule IDs matched by keywords
+    const blockedRules: { ruleId: string; ruleName: string; description: string; severity: string }[] = [];
+    const keywordMatched: string[] = [];
 
     if (rules && rules.length > 0) {
       // Phase 1: Fast keyword pre-filter
@@ -139,7 +138,7 @@ serve(async (req) => {
         }
       }
 
-      // Phase 2: AI classification for ambiguous content (when no keyword match but content exists)
+      // Phase 2: AI classification for ambiguous content
       let aiClassifiedRuleIds: string[] = [];
       const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
       if (keywordMatched.length === 0 && inputText && inputText.length > 10 && lovableApiKey) {
@@ -171,7 +170,6 @@ serve(async (req) => {
           if (classifyRes.ok) {
             const classifyData = await classifyRes.json();
             const raw = classifyData.choices?.[0]?.message?.content || "[]";
-            // Extract JSON array from response
             const match = raw.match(/\[.*?\]/s);
             if (match) {
               const parsed = JSON.parse(match[0]);
@@ -191,12 +189,24 @@ serve(async (req) => {
         if (!violatedRuleIds.has(rule.id)) continue;
 
         const detectionMethod = keywordMatched.includes(rule.id) ? "keyword" : "ai_classification";
+        const enforcementMode = rule.enforcement_mode || "monitor";
+
+        // Track blocked rules for response
+        if (enforcementMode === "block") {
+          blockedRules.push({
+            ruleId: rule.id,
+            ruleName: rule.name,
+            description: rule.description || "This content violates our governance policy.",
+            severity: rule.severity || "medium",
+          });
+        }
+
         const { data: violation } = await supabase
           .from("violations")
           .insert({
             ai_system_id: aiSystemId,
             rule_id: rule.id,
-            description: `Rule violated: ${rule.name} – ${rule.description || ""} [detected via ${detectionMethod}]`,
+            description: `Rule violated: ${rule.name} – ${rule.description || ""} [detected via ${detectionMethod}, enforcement: ${enforcementMode}]`,
             severity: rule.severity || "medium",
             ai_event_id: userEvent.id,
             org_id: orgId,
@@ -207,18 +217,42 @@ serve(async (req) => {
         if (violation) {
           violations.push(violation);
           await supabase.from("audit_logs").insert({
-            action: "violation_created",
+            action: enforcementMode === "block" ? "violation_blocked" : "violation_created",
             entity_type: "violation",
             entity_id: violation.id,
-            details: `Auto-detected (${detectionMethod}): ${rule.name}`,
+            details: `Auto-detected (${detectionMethod}, ${enforcementMode}): ${rule.name}`,
             org_id: orgId,
           });
         }
-        log("Violation created", { ruleId: rule.id, violationId: violation?.id, detectionMethod });
+        log("Violation created", { ruleId: rule.id, violationId: violation?.id, detectionMethod, enforcementMode });
       }
     }
 
-    // 3. Generate AI response for user messages
+    // If any rule triggered a BLOCK, return 451 with explanation
+    if (blockedRules.length > 0) {
+      log("Response BLOCKED", { blockedRules: blockedRules.map(r => r.ruleName) });
+
+      const explanations = blockedRules.map(r =>
+        `• ${r.ruleName}: ${r.description}`
+      ).join("\n");
+
+      return new Response(
+        JSON.stringify({
+          blocked: true,
+          message: "This request was blocked by your organization's AI governance policy.",
+          explanation: `The following governance rules were triggered:\n${explanations}`,
+          blocked_rules: blockedRules,
+          violations,
+          userEvent,
+        }),
+        {
+          status: 451, // Unavailable For Legal Reasons
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    // 3. Generate AI response for user messages (only if not blocked)
     let assistantEvent = null;
     if (event_type === "user_message" && inputText) {
       try {
@@ -269,8 +303,6 @@ serve(async (req) => {
 
     // 4. Trigger webhook delivery for violations (fire-and-forget)
     if (violations.length > 0) {
-      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-      const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
       for (const v of violations as any[]) {
         try {
           fetch(`${supabaseUrl}/functions/v1/deliver-webhook`, {
@@ -280,14 +312,14 @@ serve(async (req) => {
               Authorization: `Bearer ${serviceKey}`,
             },
             body: JSON.stringify({ violation_id: v.id, event_type: "violation.created" }),
-          }).catch(() => {}); // fire-and-forget
+          }).catch(() => {});
         } catch { /* non-blocking */ }
       }
       log("Webhook delivery triggered", { count: violations.length });
     }
 
     return new Response(
-      JSON.stringify({ userEvent, assistantEvent, violations }),
+      JSON.stringify({ blocked: false, userEvent, assistantEvent, violations }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {

@@ -1083,6 +1083,7 @@ export type Database = {
           created_at: string
           description: string | null
           enabled: boolean | null
+          enforcement_mode: string
           id: string
           name: string
           org_id: string | null
@@ -1094,6 +1095,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           enabled?: boolean | null
+          enforcement_mode?: string
           id?: string
           name: string
           org_id?: string | null
@@ -1105,6 +1107,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           enabled?: boolean | null
+          enforcement_mode?: string
           id?: string
           name?: string
           org_id?: string | null
