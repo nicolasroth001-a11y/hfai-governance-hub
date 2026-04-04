@@ -113,6 +113,7 @@ type NotesKey = typeof CHECKLIST_ITEMS[number]["notesKey"];
 
 export default function CustomerDeploymentReadiness() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [systems, setSystems] = useState<AISystem[]>([]);
   const [readinessMap, setReadinessMap] = useState<Record<string, ReadinessRecord>>({});
   const [loading, setLoading] = useState(true);
