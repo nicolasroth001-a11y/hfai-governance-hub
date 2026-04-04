@@ -89,7 +89,7 @@ export default function CustomerSecurity() {
   const handleUnenroll = async (fId: string) => {
     const { error } = await supabase.auth.mfa.unenroll({ factorId: fId });
     if (error) {
-      toast({ title: "Failed to remove MFA", description: error.message, variant: "destructive" });
+      toast({ title: t("customerSecurity.failedRemove"), description: error.message, variant: "destructive" });
       return;
     }
     toast({ title: "MFA disabled", description: "Two-factor authentication has been removed." });
