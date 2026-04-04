@@ -121,7 +121,7 @@ export default function CustomerSecurity() {
             {hasActiveFactor ? (
               <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
                 <ShieldCheck className="h-3.5 w-3.5 mr-1" />
-                Enabled
+                {t("customerSecurity.enabled")}
               </Badge>
             ) : (
               <Badge variant="outline" className="text-muted-foreground">
