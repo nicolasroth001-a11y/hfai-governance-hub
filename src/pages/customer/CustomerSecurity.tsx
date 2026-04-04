@@ -23,6 +23,7 @@ import {
 type Factor = { id: string; friendly_name?: string; status: string };
 
 export default function CustomerSecurity() {
+  const { t } = useTranslation();
   const [factors, setFactors] = useState<Factor[]>([]);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
