@@ -572,11 +572,11 @@ export default function LandingPage() {
             {t("postDemo.desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-6 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("postDemo.cta")} <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> {t("bookDemo.cta")} <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="ghost" className="text-base h-12 gap-2" onClick={() => navigate("/pricing/contact")}>
-              {t("postDemo.plans")}
+            <Button size="lg" variant="ghost" className="text-base h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              {t("postDemo.cta")}
             </Button>
           </div>
           <div className="flex items-center justify-center gap-4 mt-4">
@@ -641,11 +641,11 @@ export default function LandingPage() {
             {t("finalCta.desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("finalCta.cta")} <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> {t("bookDemo.cta")} <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/pricing/contact")}>
-              {t("finalCta.pricing")}
+            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/signup/customer")}>
+              {t("finalCta.cta")}
             </Button>
           </div>
         </motion.div>
