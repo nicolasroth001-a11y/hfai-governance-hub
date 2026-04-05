@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, Activity, AlertTriangle, UserCheck, ChevronRight,
-  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, Star, BookOpen,
+  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, Star, BookOpen, Calendar,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
@@ -20,6 +20,8 @@ import { CountdownTimer } from "@/components/landing/CountdownTimer";
 import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
 import { BookDemoCTA } from "@/components/landing/BookDemoCTA";
 import { FounderSection } from "@/components/landing/FounderSection";
+import { StickyDemoCTA } from "@/components/landing/StickyDemoCTA";
+import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
@@ -103,8 +105,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               {t("nav.signIn")}
             </Button>
-            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/signup/customer")}>
-              {t("nav.startFree")} <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-3 w-3" /> {t("bookDemo.cta")}
             </Button>
             <LanguageSwitcher />
           </div>
@@ -155,14 +157,14 @@ export default function LandingPage() {
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 mt-8 justify-center items-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("hero.cta")} <ChevronRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> {t("bookDemo.cta")} <ChevronRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> {t("hero.demo")}
             </Button>
-            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
-              <Clock className="h-4 w-4" /> {t("hero.pilot")}
+            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              {t("hero.cta")}
             </Button>
           </motion.div>
 
@@ -213,6 +215,11 @@ export default function LandingPage() {
         <div className="mx-auto max-w-3xl">
           <StatsBar />
         </div>
+      </section>
+
+      {/* ── Credibility Signals ── */}
+      <section className="px-6 pb-24">
+        <CredibilitySignals />
       </section>
 
       {/* ── Pilot CTA ── */}
@@ -565,11 +572,11 @@ export default function LandingPage() {
             {t("postDemo.desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-6 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("postDemo.cta")} <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> {t("bookDemo.cta")} <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="ghost" className="text-base h-12 gap-2" onClick={() => navigate("/pricing/contact")}>
-              {t("postDemo.plans")}
+            <Button size="lg" variant="ghost" className="text-base h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              {t("postDemo.cta")}
             </Button>
           </div>
           <div className="flex items-center justify-center gap-4 mt-4">
@@ -634,11 +641,11 @@ export default function LandingPage() {
             {t("finalCta.desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("finalCta.cta")} <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> {t("bookDemo.cta")} <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/pricing/contact")}>
-              {t("finalCta.pricing")}
+            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/signup/customer")}>
+              {t("finalCta.cta")}
             </Button>
           </div>
         </motion.div>
@@ -696,17 +703,15 @@ export default function LandingPage() {
         </div>
       </footer>
       <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
+      <StickyDemoCTA />
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
-        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/signup/customer")}>
-          {t("nav.startFree")} <ArrowRight className="h-3.5 w-3.5" />
+        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+          <Calendar className="h-3.5 w-3.5" /> {t("bookDemo.cta")}
         </Button>
-        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/pilot")}>
-          {t("common.mobilePilot")}
-        </Button>
-        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/pricing/contact")}>
-          {t("nav.pricing")}
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/signup/customer")}>
+          {t("nav.startFree")}
         </Button>
       </div>
     </div>
