@@ -217,6 +217,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Credibility Signals ── */}
+      <section className="px-6 pb-24">
+        <CredibilitySignals />
+      </section>
+
       {/* ── Pilot CTA ── */}
       <section className="px-6 pb-24">
         <motion.div
