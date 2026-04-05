@@ -1395,5 +1395,22 @@
     "backToBlogBtn": "Retour au Blog",
     "startPilot": "Démarrer le Pilote Gratuit",
     "copyright": "© {{year}} HFAI — Tous droits réservés"
+  },
+  "stickyDemo": {
+    "title": "Voir HFAI en action",
+    "desc": "Démo de 15 min. Sans engagement.",
+    "cta": "Réserver une démo"
+  },
+  "credibility": {
+    "badge": "Conçu pour la conformité",
+    "title": "Niveau Entreprise Dès le Premier Jour",
+    "signals": {
+      "euAiAct": { "title": "Prêt pour l'EU AI Act", "desc": "Couverture Art. 9, 12, 13, 14, 15, 61" },
+      "nistRmf": { "title": "Aligné NIST AI RMF", "desc": "Gouverner, Cartographier, Mesurer, Gérer" },
+      "encryption": { "title": "Chiffrement AES-256", "desc": "Données chiffrées au repos et en transit" },
+      "soc2": { "title": "Aligné SOC 2", "desc": "Contrôles de sécurité et d'audit" },
+      "gdpr": { "title": "Conforme RGPD", "desc": "Résidence des données UE et consentement" },
+      "runtime": { "title": "Application en Temps Réel", "desc": "Piste d'audit inviolable par chaîne de hachage" }
+    }
   }
 }
