@@ -1395,5 +1395,40 @@
     "backToBlogBtn": "Back to Blog",
     "startPilot": "Start Free Pilot",
     "copyright": "© {{year}} HFAI — All rights reserved"
+  },
+  "stickyDemo": {
+    "title": "See HFAI in action",
+    "desc": "15-min walkthrough. No commitment.",
+    "cta": "Book a Demo"
+  },
+  "credibility": {
+    "badge": "Built for compliance",
+    "title": "Enterprise-Grade from Day One",
+    "signals": {
+      "euAiAct": {
+        "title": "EU AI Act Ready",
+        "desc": "Art. 9, 12, 13, 14, 15, 61 coverage"
+      },
+      "nistRmf": {
+        "title": "NIST AI RMF Aligned",
+        "desc": "Govern, Map, Measure, Manage"
+      },
+      "encryption": {
+        "title": "AES-256 Encryption",
+        "desc": "Data encrypted at rest & in transit"
+      },
+      "soc2": {
+        "title": "SOC 2 Aligned",
+        "desc": "Security controls & audit practices"
+      },
+      "gdpr": {
+        "title": "GDPR Compliant",
+        "desc": "EU data residency & consent"
+      },
+      "runtime": {
+        "title": "Runtime Enforcement",
+        "desc": "Hash-chained tamper-proof audit trail"
+      }
+    }
   }
 }
