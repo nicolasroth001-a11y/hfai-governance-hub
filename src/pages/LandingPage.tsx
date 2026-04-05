@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, Activity, AlertTriangle, UserCheck, ChevronRight,
-  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, Star, BookOpen,
+  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, Star, BookOpen, Calendar,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
@@ -157,14 +157,14 @@ export default function LandingPage() {
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 mt-8 justify-center items-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("hero.cta")} <ChevronRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> {t("bookDemo.cta")} <ChevronRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> {t("hero.demo")}
             </Button>
-            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/pilot")}>
-              <Clock className="h-4 w-4" /> {t("hero.pilot")}
+            <Button size="lg" variant="ghost" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              {t("hero.cta")}
             </Button>
           </motion.div>
 
