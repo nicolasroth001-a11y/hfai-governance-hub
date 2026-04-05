@@ -105,8 +105,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               {t("nav.signIn")}
             </Button>
-            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => navigate("/signup/customer")}>
-              {t("nav.startFree")} <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1 bg-primary hover:bg-primary/90 hidden sm:inline-flex" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-3 w-3" /> {t("bookDemo.cta")}
             </Button>
             <LanguageSwitcher />
           </div>
