@@ -20,6 +20,8 @@ import { CountdownTimer } from "@/components/landing/CountdownTimer";
 import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
 import { BookDemoCTA } from "@/components/landing/BookDemoCTA";
 import { FounderSection } from "@/components/landing/FounderSection";
+import { StickyDemoCTA } from "@/components/landing/StickyDemoCTA";
+import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
