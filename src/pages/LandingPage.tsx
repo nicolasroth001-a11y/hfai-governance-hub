@@ -68,7 +68,7 @@ export default function LandingPage() {
               {t("nav.signIn")}
             </Button>
             <Button size="sm" className="text-xs gap-1" onClick={() => navigate("/signup/customer")}>
-              Start Free <ArrowRight className="h-3 w-3" />
+              {t("nav.startFree")} <ArrowRight className="h-3 w-3" />
             </Button>
             <LanguageSwitcher />
           </div>
