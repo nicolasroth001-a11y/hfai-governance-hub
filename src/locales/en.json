@@ -1430,5 +1430,56 @@
         "desc": "Hash-chained tamper-proof audit trail"
       }
     }
+  },
+  "landing": {
+    "heroTitle1": "Your AI is making decisions.",
+    "heroTitle2": "Can you prove it's governed?",
+    "heroSubtitle": "The EU AI Act takes effect August 2026. Fines up to <strong>$35M</strong>. HFAI gives you audit trails, human oversight, and regulator-ready docs — in minutes, not months.",
+    "heroCta": "Start Free 30-Day Pilot",
+    "heroDemo": "See It in Action",
+    "trustNoCc": "No credit card required",
+    "trust2Min": "2-minute setup",
+    "trustNoCode": "No code changes",
+    "trustFrameworks": "EU AI Act + NIST",
+    "screenshotAlt": "HFAI Dashboard — AI governance monitoring with violation alerts, analytics, and human review queue",
+    "screenshotCaption": "Real-time violation monitoring • Human review queue • Audit-ready logs",
+    "exposureBadge": "60-second assessment",
+    "exposureTitle": "Are you exposed?",
+    "exposureDesc": "Three questions. Find out if your AI systems are compliant — or if you're one audit away from a regulatory investigation.",
+    "fixBadge": "The fix",
+    "fixTitle": "Compliance in 4 steps. Not 4 months.",
+    "fixDesc": "Go from zero governance to regulator-ready in under 10 minutes.",
+    "finalCtaTitle": "The EU AI Act doesn't care if you're not ready.",
+    "finalCtaDesc": "Join 12+ companies already building compliant AI. Free 30-day pilot. 2-minute setup. Full audit trail from day one.",
+    "finalCtaCta": "Start Free Pilot",
+    "finalCtaDemo": "Or Book a Demo"
+  },
+  "socialProof": {
+    "pilots": "Pilot companies onboarded",
+    "setup": "Average setup time",
+    "decisions": "AI decisions audited",
+    "coverage": "Audit trail coverage",
+    "footer": "Metrics from active pilot programs • Updated April 2026"
+  },
+  "pricingPreview": {
+    "badge": "Transparent pricing",
+    "title": "Start free. Scale when ready.",
+    "desc": "No credit card required for the pilot. Cancel anytime.",
+    "freeName": "Free Pilot",
+    "freePrice": "$0",
+    "freePeriod": "30 days",
+    "freeF1": "Up to 3 AI systems",
+    "freeF2": "Full audit trail",
+    "freeF3": "Human review queue",
+    "freeF4": "EU AI Act mapping",
+    "freeCta": "Start Free Pilot",
+    "proName": "Pro",
+    "proPrice": "$49.99",
+    "proPeriod": "/month",
+    "proF1": "Unlimited AI systems",
+    "proF2": "Custom rules engine",
+    "proF3": "Webhook integrations",
+    "proF4": "Priority support",
+    "proCta": "Talk to Sales"
   }
 }
