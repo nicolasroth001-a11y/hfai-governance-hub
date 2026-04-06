@@ -67,7 +67,7 @@ export default function BlogPostPage() {
             }
             el.setAttribute("content", content);
           };
-          const url = `https://www.hfa-i.org/blog/${data.slug}`;
+          const url = `https://hfa-i.org/blog/${data.slug}`;
           setMeta("og:title", title + " | HFAI");
           setMeta("og:description", desc);
           setMeta("og:url", url);
