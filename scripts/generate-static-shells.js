@@ -96,7 +96,7 @@ function generateShell(rootHtml, route, meta) {
     )
     .replace(
       /<meta property="og:url" content="[^"]*"\s*\/?>/,
-      `<meta property="og:url" content="https://www.hfa-i.org${route}" />`
+      `<meta property="og:url" content="https://hfa-i.org${route}" />`
     )
     .replace(
       /<meta name="twitter:title" content="[^"]*"\s*\/?>/,
@@ -108,7 +108,7 @@ function generateShell(rootHtml, route, meta) {
     )
     .replace(
       /<link rel="canonical" href="[^"]*"\s*\/?>/,
-      `<link rel="canonical" href="https://www.hfa-i.org${route}" />`
+      `<link rel="canonical" href="https://hfa-i.org${route}" />`
     );
 
   // Add og:type article for blog posts
