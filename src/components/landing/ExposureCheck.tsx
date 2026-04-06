@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, CheckCircle, ArrowRight, Calendar, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle, ArrowRight, Calendar, XCircle, Mail, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const QUESTIONS = [
   {
@@ -28,6 +31,9 @@ export function ExposureCheck() {
   const [answers, setAnswers] = useState<Answer[]>([null, null, null]);
   const [currentQ, setCurrentQ] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [email, setEmail] = useState("");
+  const [sendingReport, setSendingReport] = useState(false);
+  const [reportSent, setReportSent] = useState(false);
   const navigate = useNavigate();
 
   const handleAnswer = (answer: Answer) => {
@@ -44,9 +50,9 @@ export function ExposureCheck() {
 
   const riskScore = (() => {
     let score = 0;
-    if (answers[0] === "yes") score++; // Makes decisions affecting people
-    if (answers[1] === "no") score++;  // Can't produce audit trail
-    if (answers[2] === "no") score++;  // No human review
+    if (answers[0] === "yes") score++;
+    if (answers[1] === "no") score++;
+    if (answers[2] === "no") score++;
     return score;
   })();
 
@@ -54,6 +60,29 @@ export function ExposureCheck() {
     setAnswers([null, null, null]);
     setCurrentQ(0);
     setShowResult(false);
+    setEmail("");
+    setReportSent(false);
+  };
+
+  const handleSendReport = async () => {
+    if (!email || !email.includes("@")) {
+      toast({ title: "Please enter a valid email", variant: "destructive" });
+      return;
+    }
+    setSendingReport(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-risk-report", {
+        body: { email, answers },
+      });
+      if (error) throw error;
+      setReportSent(true);
+      toast({ title: "Report sent!", description: "Check your inbox for your personalized compliance report." });
+    } catch (e) {
+      console.error("Risk report error:", e);
+      toast({ title: "Failed to generate report", description: "Please try again in a moment.", variant: "destructive" });
+    } finally {
+      setSendingReport(false);
+    }
   };
 
   return (
@@ -130,78 +159,134 @@ export function ExposureCheck() {
                 transition={{ duration: 0.4 }}
                 className="w-full text-center space-y-4"
               >
-                {riskScore >= 2 ? (
-                  <>
-                    <div className="h-14 w-14 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto">
-                      <AlertTriangle className="h-7 w-7 text-destructive" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold text-foreground">
-                        You have {riskScore} compliance gap{riskScore > 1 ? "s" : ""}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Under the EU AI Act (effective Aug 2026), these gaps could result in fines up to <span className="text-destructive font-semibold">€35M or 7% of global revenue</span>.
-                      </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      <Button className="gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-                        <Calendar className="h-4 w-4" /> Fix This Now <ArrowRight className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" onClick={reset}>
-                        Retake
-                      </Button>
-                    </div>
-                  </>
-                ) : riskScore === 1 ? (
-                  <>
-                    <div className="h-14 w-14 rounded-2xl bg-warning/10 flex items-center justify-center mx-auto">
-                      <AlertTriangle className="h-7 w-7 text-warning" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold text-foreground">
-                        You're partially exposed
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        You've got some governance in place, but there's still a gap. HFAI can close it in under 10 minutes.
-                      </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      <Button className="gap-2" onClick={() => navigate("/signup/customer")}>
-                        Close the Gap <ArrowRight className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" onClick={reset}>
-                        Retake
+                <ResultHeader riskScore={riskScore} />
+                
+                {/* AI Report CTA */}
+                {!reportSent ? (
+                  <div className="bg-secondary/30 rounded-xl p-4 text-left space-y-3">
+                    <p className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-primary" />
+                      Get your free AI-personalized risk report
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Our AI will analyze your specific gaps and email you a detailed compliance action plan with article references.
+                    </p>
+                    <div className="flex gap-2">
+                      <Input
+                        type="email"
+                        placeholder="your@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="flex-1 h-9 text-sm"
+                        onKeyDown={(e) => e.key === "Enter" && handleSendReport()}
+                      />
+                      <Button
+                        size="sm"
+                        className="gap-1.5 h-9"
+                        onClick={handleSendReport}
+                        disabled={sendingReport}
+                      >
+                        {sendingReport ? (
+                          <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generating…</>
+                        ) : (
+                          <>Send Report <ArrowRight className="h-3.5 w-3.5" /></>
+                        )}
                       </Button>
                     </div>
-                  </>
+                  </div>
                 ) : (
-                  <>
-                    <div className="h-14 w-14 rounded-2xl bg-success/10 flex items-center justify-center mx-auto">
-                      <CheckCircle className="h-7 w-7 text-success" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold text-foreground">
-                        You're in good shape
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        But can you prove it to a regulator? HFAI creates the evidence trail that turns your practices into certified compliance.
-                      </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      <Button variant="outline" className="gap-2" onClick={() => navigate("/signup/customer")}>
-                        Certify Your Compliance <ArrowRight className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" onClick={reset}>
-                        Retake
-                      </Button>
-                    </div>
-                  </>
+                  <div className="bg-success/10 rounded-xl p-4 text-center">
+                    <CheckCircle className="h-6 w-6 text-success mx-auto mb-2" />
+                    <p className="text-sm font-medium text-foreground">Report sent to {email}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Check your inbox for your personalized compliance analysis.</p>
+                  </div>
                 )}
+
+                <ResultActions riskScore={riskScore} navigate={navigate} reset={reset} />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
+    </div>
+  );
+}
+
+function ResultHeader({ riskScore }: { riskScore: number }) {
+  if (riskScore >= 2) {
+    return (
+      <>
+        <div className="h-14 w-14 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto">
+          <AlertTriangle className="h-7 w-7 text-destructive" />
+        </div>
+        <div>
+          <p className="text-lg font-bold text-foreground">
+            You have {riskScore} compliance gap{riskScore > 1 ? "s" : ""}
+          </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Under the EU AI Act (effective Aug 2026), these gaps could result in fines up to <span className="text-destructive font-semibold">€35M or 7% of global revenue</span>.
+          </p>
+        </div>
+      </>
+    );
+  }
+  if (riskScore === 1) {
+    return (
+      <>
+        <div className="h-14 w-14 rounded-2xl bg-warning/10 flex items-center justify-center mx-auto">
+          <AlertTriangle className="h-7 w-7 text-warning" />
+        </div>
+        <div>
+          <p className="text-lg font-bold text-foreground">You're partially exposed</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            You've got some governance in place, but there's still a gap. HFAI can close it in under 10 minutes.
+          </p>
+        </div>
+      </>
+    );
+  }
+  return (
+    <>
+      <div className="h-14 w-14 rounded-2xl bg-success/10 flex items-center justify-center mx-auto">
+        <CheckCircle className="h-7 w-7 text-success" />
+      </div>
+      <div>
+        <p className="text-lg font-bold text-foreground">You're in good shape</p>
+        <p className="text-sm text-muted-foreground mt-1">
+          But can you prove it to a regulator? HFAI creates the evidence trail that turns your practices into certified compliance.
+        </p>
+      </div>
+    </>
+  );
+}
+
+function ResultActions({ riskScore, navigate, reset }: { riskScore: number; navigate: ReturnType<typeof useNavigate>; reset: () => void }) {
+  if (riskScore >= 2) {
+    return (
+      <div className="flex flex-col sm:flex-row gap-2 justify-center">
+        <Button className="gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+          <Calendar className="h-4 w-4" /> Fix This Now <ArrowRight className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="sm" onClick={reset}>Retake</Button>
+      </div>
+    );
+  }
+  if (riskScore === 1) {
+    return (
+      <div className="flex flex-col sm:flex-row gap-2 justify-center">
+        <Button className="gap-2" onClick={() => navigate("/signup/customer")}>
+          Close the Gap <ArrowRight className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="sm" onClick={reset}>Retake</Button>
+      </div>
+    );
+  }
+  return (
+    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+      <Button variant="outline" className="gap-2" onClick={() => navigate("/signup/customer")}>
+        Certify Your Compliance <ArrowRight className="h-4 w-4" />
+      </Button>
+      <Button variant="ghost" size="sm" onClick={reset}>Retake</Button>
     </div>
   );
 }
