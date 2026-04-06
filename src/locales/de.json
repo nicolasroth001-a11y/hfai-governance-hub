@@ -1405,12 +1405,81 @@
     "badge": "Für Compliance gebaut",
     "title": "Enterprise-Niveau vom Ersten Tag",
     "signals": {
-      "euAiAct": { "title": "EU AI Act Ready", "desc": "Art. 9, 12, 13, 14, 15, 61 Abdeckung" },
-      "nistRmf": { "title": "NIST AI RMF Konform", "desc": "Govern, Map, Measure, Manage" },
-      "encryption": { "title": "AES-256-Verschlüsselung", "desc": "Daten verschlüsselt im Ruhezustand & Transit" },
-      "soc2": { "title": "SOC 2 Ausgerichtet", "desc": "Sicherheitskontrollen & Audit-Praktiken" },
-      "gdpr": { "title": "DSGVO-Konform", "desc": "EU-Datenresidenz & Einwilligung" },
-      "runtime": { "title": "Laufzeit-Durchsetzung", "desc": "Hash-verketteter manipulationssicherer Audit-Trail" }
+      "euAiAct": {
+        "title": "EU AI Act Ready",
+        "desc": "Art. 9, 12, 13, 14, 15, 61 Abdeckung"
+      },
+      "nistRmf": {
+        "title": "NIST AI RMF Konform",
+        "desc": "Govern, Map, Measure, Manage"
+      },
+      "encryption": {
+        "title": "AES-256-Verschlüsselung",
+        "desc": "Daten verschlüsselt im Ruhezustand & Transit"
+      },
+      "soc2": {
+        "title": "SOC 2 Ausgerichtet",
+        "desc": "Sicherheitskontrollen & Audit-Praktiken"
+      },
+      "gdpr": {
+        "title": "DSGVO-Konform",
+        "desc": "EU-Datenresidenz & Einwilligung"
+      },
+      "runtime": {
+        "title": "Laufzeit-Durchsetzung",
+        "desc": "Hash-verketteter manipulationssicherer Audit-Trail"
+      }
     }
+  },
+  "landing": {
+    "heroTitle1": "Ihre KI trifft Entscheidungen.",
+    "heroTitle2": "Können Sie beweisen, dass sie gesteuert wird?",
+    "heroSubtitle": "Der EU AI Act tritt im August 2026 in Kraft. Bußgelder bis zu <strong>35 Mio. €</strong>. HFAI bietet Ihnen Audit-Trails, menschliche Aufsicht und regulierungskonforme Dokumente — in Minuten, nicht Monaten.",
+    "heroCta": "Kostenloses 30-Tage-Pilotprojekt starten",
+    "heroDemo": "In Aktion sehen",
+    "trustNoCc": "Keine Kreditkarte erforderlich",
+    "trust2Min": "Einrichtung in 2 Minuten",
+    "trustNoCode": "Keine Codeänderungen",
+    "trustFrameworks": "EU AI Act + NIST",
+    "screenshotAlt": "HFAI-Dashboard — KI-Governance-Überwachung mit Verstoßwarnungen, Analysen und menschlicher Überprüfungswarteschlange",
+    "screenshotCaption": "Echtzeit-Verstoßüberwachung • Menschliche Überprüfungswarteschlange • Audit-fertige Protokolle",
+    "exposureBadge": "60-Sekunden-Bewertung",
+    "exposureTitle": "Sind Sie gefährdet?",
+    "exposureDesc": "Drei Fragen. Finden Sie heraus, ob Ihre KI-Systeme konform sind — oder ob Sie nur eine Prüfung von einer behördlichen Untersuchung entfernt sind.",
+    "fixBadge": "Die Lösung",
+    "fixTitle": "Compliance in 4 Schritten. Nicht 4 Monaten.",
+    "fixDesc": "Von null Governance zu regulierungsbereit in unter 10 Minuten.",
+    "finalCtaTitle": "Dem EU AI Act ist es egal, ob Sie nicht bereit sind.",
+    "finalCtaDesc": "Schließen Sie sich 12+ Unternehmen an, die konforme KI aufbauen. Kostenloses 30-Tage-Pilotprojekt. Einrichtung in 2 Minuten. Vollständiger Audit-Trail ab dem ersten Tag.",
+    "finalCtaCta": "Kostenloses Pilotprojekt starten",
+    "finalCtaDemo": "Oder Demo buchen"
+  },
+  "socialProof": {
+    "pilots": "Pilotunternehmen eingebunden",
+    "setup": "Durchschnittliche Einrichtungszeit",
+    "decisions": "KI-Entscheidungen geprüft",
+    "coverage": "Audit-Trail-Abdeckung",
+    "footer": "Metriken aus aktiven Pilotprogrammen • Aktualisiert April 2026"
+  },
+  "pricingPreview": {
+    "badge": "Transparente Preisgestaltung",
+    "title": "Starten Sie kostenlos. Skalieren Sie bei Bedarf.",
+    "desc": "Keine Kreditkarte für das Pilotprojekt erforderlich. Jederzeit kündbar.",
+    "freeName": "Kostenloses Pilotprojekt",
+    "freePrice": "$0",
+    "freePeriod": "30 Tage",
+    "freeF1": "Bis zu 3 KI-Systeme",
+    "freeF2": "Vollständiger Audit-Trail",
+    "freeF3": "Menschliche Überprüfungswarteschlange",
+    "freeF4": "EU AI Act-Mapping",
+    "freeCta": "Kostenloses Pilotprojekt starten",
+    "proName": "Pro",
+    "proPrice": "$49.99",
+    "proPeriod": "/Monat",
+    "proF1": "Unbegrenzte KI-Systeme",
+    "proF2": "Benutzerdefinierte Regel-Engine",
+    "proF3": "Webhook-Integrationen",
+    "proF4": "Prioritäts-Support",
+    "proCta": "Mit dem Vertrieb sprechen"
   }
 }

@@ -1405,12 +1405,81 @@
     "badge": "Diseñado para cumplimiento",
     "title": "Nivel Empresarial Desde el Primer Día",
     "signals": {
-      "euAiAct": { "title": "Listo para EU AI Act", "desc": "Cobertura Art. 9, 12, 13, 14, 15, 61" },
-      "nistRmf": { "title": "Alineado con NIST AI RMF", "desc": "Gobernar, Mapear, Medir, Gestionar" },
-      "encryption": { "title": "Cifrado AES-256", "desc": "Datos cifrados en reposo y en tránsito" },
-      "soc2": { "title": "Alineado con SOC 2", "desc": "Controles de seguridad y auditoría" },
-      "gdpr": { "title": "Compatible con GDPR", "desc": "Residencia de datos UE y consentimiento" },
-      "runtime": { "title": "Aplicación en Tiempo Real", "desc": "Pista de auditoría a prueba de manipulaciones" }
+      "euAiAct": {
+        "title": "Listo para EU AI Act",
+        "desc": "Cobertura Art. 9, 12, 13, 14, 15, 61"
+      },
+      "nistRmf": {
+        "title": "Alineado con NIST AI RMF",
+        "desc": "Gobernar, Mapear, Medir, Gestionar"
+      },
+      "encryption": {
+        "title": "Cifrado AES-256",
+        "desc": "Datos cifrados en reposo y en tránsito"
+      },
+      "soc2": {
+        "title": "Alineado con SOC 2",
+        "desc": "Controles de seguridad y auditoría"
+      },
+      "gdpr": {
+        "title": "Compatible con GDPR",
+        "desc": "Residencia de datos UE y consentimiento"
+      },
+      "runtime": {
+        "title": "Aplicación en Tiempo Real",
+        "desc": "Pista de auditoría a prueba de manipulaciones"
+      }
     }
+  },
+  "landing": {
+    "heroTitle1": "Tu IA está tomando decisiones.",
+    "heroTitle2": "¿Puedes demostrar que está gobernada?",
+    "heroSubtitle": "El EU AI Act entra en vigor en agosto de 2026. Multas de hasta <strong>35M€</strong>. HFAI te da auditorías, supervisión humana y documentación regulatoria — en minutos, no meses.",
+    "heroCta": "Comienza piloto gratis de 30 días",
+    "heroDemo": "Verlo en acción",
+    "trustNoCc": "Sin tarjeta de crédito",
+    "trust2Min": "Configuración en 2 minutos",
+    "trustNoCode": "Sin cambios de código",
+    "trustFrameworks": "EU AI Act + NIST",
+    "screenshotAlt": "Panel de HFAI — Monitoreo de gobernanza de IA con alertas de violaciones, análisis y cola de revisión humana",
+    "screenshotCaption": "Monitoreo de violaciones en tiempo real • Cola de revisión humana • Registros listos para auditoría",
+    "exposureBadge": "Evaluación de 60 segundos",
+    "exposureTitle": "¿Estás expuesto?",
+    "exposureDesc": "Tres preguntas. Descubre si tus sistemas de IA cumplen — o si estás a una auditoría de una investigación regulatoria.",
+    "fixBadge": "La solución",
+    "fixTitle": "Cumplimiento en 4 pasos. No 4 meses.",
+    "fixDesc": "Pasa de cero gobernanza a listo para reguladores en menos de 10 minutos.",
+    "finalCtaTitle": "Al EU AI Act no le importa si no estás listo.",
+    "finalCtaDesc": "Únete a más de 12 empresas construyendo IA compatible. Piloto gratuito de 30 días. Configuración de 2 minutos. Auditoría completa desde el primer día.",
+    "finalCtaCta": "Comenzar piloto gratuito",
+    "finalCtaDemo": "O reservar una demo"
+  },
+  "socialProof": {
+    "pilots": "Empresas piloto incorporadas",
+    "setup": "Tiempo medio de configuración",
+    "decisions": "Decisiones de IA auditadas",
+    "coverage": "Cobertura de auditoría",
+    "footer": "Métricas de programas piloto activos • Actualizado abril 2026"
+  },
+  "pricingPreview": {
+    "badge": "Precios transparentes",
+    "title": "Empieza gratis. Escala cuando estés listo.",
+    "desc": "Sin tarjeta de crédito para el piloto. Cancela en cualquier momento.",
+    "freeName": "Piloto gratuito",
+    "freePrice": "$0",
+    "freePeriod": "30 días",
+    "freeF1": "Hasta 3 sistemas de IA",
+    "freeF2": "Auditoría completa",
+    "freeF3": "Cola de revisión humana",
+    "freeF4": "Mapeo del EU AI Act",
+    "freeCta": "Comenzar piloto gratuito",
+    "proName": "Pro",
+    "proPrice": "$49.99",
+    "proPeriod": "/mes",
+    "proF1": "Sistemas de IA ilimitados",
+    "proF2": "Motor de reglas personalizado",
+    "proF3": "Integraciones webhook",
+    "proF4": "Soporte prioritario",
+    "proCta": "Hablar con ventas"
   }
 }

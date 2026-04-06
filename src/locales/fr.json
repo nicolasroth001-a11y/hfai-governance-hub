@@ -1405,12 +1405,81 @@
     "badge": "Conçu pour la conformité",
     "title": "Niveau Entreprise Dès le Premier Jour",
     "signals": {
-      "euAiAct": { "title": "Prêt pour l'EU AI Act", "desc": "Couverture Art. 9, 12, 13, 14, 15, 61" },
-      "nistRmf": { "title": "Aligné NIST AI RMF", "desc": "Gouverner, Cartographier, Mesurer, Gérer" },
-      "encryption": { "title": "Chiffrement AES-256", "desc": "Données chiffrées au repos et en transit" },
-      "soc2": { "title": "Aligné SOC 2", "desc": "Contrôles de sécurité et d'audit" },
-      "gdpr": { "title": "Conforme RGPD", "desc": "Résidence des données UE et consentement" },
-      "runtime": { "title": "Application en Temps Réel", "desc": "Piste d'audit inviolable par chaîne de hachage" }
+      "euAiAct": {
+        "title": "Prêt pour l'EU AI Act",
+        "desc": "Couverture Art. 9, 12, 13, 14, 15, 61"
+      },
+      "nistRmf": {
+        "title": "Aligné NIST AI RMF",
+        "desc": "Gouverner, Cartographier, Mesurer, Gérer"
+      },
+      "encryption": {
+        "title": "Chiffrement AES-256",
+        "desc": "Données chiffrées au repos et en transit"
+      },
+      "soc2": {
+        "title": "Aligné SOC 2",
+        "desc": "Contrôles de sécurité et d'audit"
+      },
+      "gdpr": {
+        "title": "Conforme RGPD",
+        "desc": "Résidence des données UE et consentement"
+      },
+      "runtime": {
+        "title": "Application en Temps Réel",
+        "desc": "Piste d'audit inviolable par chaîne de hachage"
+      }
     }
+  },
+  "landing": {
+    "heroTitle1": "Votre IA prend des décisions.",
+    "heroTitle2": "Pouvez-vous prouver qu'elle est gouvernée ?",
+    "heroSubtitle": "Le EU AI Act entre en vigueur en août 2026. Amendes jusqu'à <strong>35M€</strong>. HFAI vous fournit des pistes d'audit, une supervision humaine et des documents réglementaires — en minutes, pas en mois.",
+    "heroCta": "Démarrer un pilote gratuit de 30 jours",
+    "heroDemo": "Voir en action",
+    "trustNoCc": "Aucune carte de crédit requise",
+    "trust2Min": "Configuration en 2 minutes",
+    "trustNoCode": "Aucun changement de code",
+    "trustFrameworks": "EU AI Act + NIST",
+    "screenshotAlt": "Tableau de bord HFAI — Surveillance de la gouvernance IA avec alertes de violations, analyses et file d'attente de révision humaine",
+    "screenshotCaption": "Surveillance des violations en temps réel • File de révision humaine • Journaux prêts pour l'audit",
+    "exposureBadge": "Évaluation en 60 secondes",
+    "exposureTitle": "Êtes-vous exposé ?",
+    "exposureDesc": "Trois questions. Découvrez si vos systèmes IA sont conformes — ou si vous êtes à un audit d'une enquête réglementaire.",
+    "fixBadge": "La solution",
+    "fixTitle": "Conformité en 4 étapes. Pas 4 mois.",
+    "fixDesc": "Passez de zéro gouvernance à prêt pour les régulateurs en moins de 10 minutes.",
+    "finalCtaTitle": "Le EU AI Act se moque que vous ne soyez pas prêt.",
+    "finalCtaDesc": "Rejoignez plus de 12 entreprises qui construisent une IA conforme. Pilote gratuit de 30 jours. Configuration en 2 minutes. Piste d'audit complète dès le premier jour.",
+    "finalCtaCta": "Démarrer le pilote gratuit",
+    "finalCtaDemo": "Ou réserver une démo"
+  },
+  "socialProof": {
+    "pilots": "Entreprises pilotes intégrées",
+    "setup": "Temps moyen de configuration",
+    "decisions": "Décisions IA auditées",
+    "coverage": "Couverture d'audit",
+    "footer": "Métriques des programmes pilotes actifs • Mis à jour avril 2026"
+  },
+  "pricingPreview": {
+    "badge": "Tarification transparente",
+    "title": "Commencez gratuitement. Évoluez quand vous êtes prêt.",
+    "desc": "Aucune carte de crédit requise pour le pilote. Annulez à tout moment.",
+    "freeName": "Pilote gratuit",
+    "freePrice": "$0",
+    "freePeriod": "30 jours",
+    "freeF1": "Jusqu'à 3 systèmes IA",
+    "freeF2": "Piste d'audit complète",
+    "freeF3": "File de révision humaine",
+    "freeF4": "Cartographie EU AI Act",
+    "freeCta": "Démarrer le pilote gratuit",
+    "proName": "Pro",
+    "proPrice": "$49.99",
+    "proPeriod": "/mois",
+    "proF1": "Systèmes IA illimités",
+    "proF2": "Moteur de règles personnalisé",
+    "proF3": "Intégrations webhook",
+    "proF4": "Support prioritaire",
+    "proCta": "Parler aux ventes"
   }
 }
