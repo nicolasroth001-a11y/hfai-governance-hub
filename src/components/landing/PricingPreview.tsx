@@ -6,14 +6,14 @@ import { CheckCircle, ArrowRight } from "lucide-react";
 const tiers = [
   {
     name: "Free Pilot",
-    price: "€0",
+    price: "$0",
     period: "30 days",
     highlight: true,
     features: ["Up to 3 AI systems", "Full audit trail", "Human review queue", "EU AI Act mapping"],
   },
   {
     name: "Pro",
-    price: "€490",
+    price: "$49.99",
     period: "/month",
     highlight: false,
     features: ["Unlimited AI systems", "Custom rules engine", "Webhook integrations", "Priority support"],
