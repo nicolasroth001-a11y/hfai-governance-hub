@@ -90,9 +90,9 @@ export default function LandingPage() {
           </motion.div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground max-w-4xl leading-[1.1] mx-auto">
-            Your AI is making decisions.
+            {t("landing.heroTitle1")}
             <br />
-            <span className="text-primary">Can you prove it's governed?</span>
+            <span className="text-primary">{t("landing.heroTitle2")}</span>
           </h1>
 
           <motion.p
@@ -100,10 +100,8 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
-          >
-            The EU AI Act takes effect August 2026. Fines up to <span className="text-destructive font-semibold">€35M</span>.
-            HFAI gives you audit trails, human oversight, and regulator-ready docs — in minutes, not months.
-          </motion.p>
+            dangerouslySetInnerHTML={{ __html: t("landing.heroSubtitle") }}
+          />
 
           <motion.div
             initial={{ opacity: 0, y: 8 }}
@@ -112,10 +110,10 @@ export default function LandingPage() {
             className="flex flex-col sm:flex-row gap-3 justify-center items-center"
           >
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              Start Free 30-Day Pilot <ArrowRight className="h-4 w-4" />
+              {t("landing.heroCta")} <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
-              <Eye className="h-4 w-4" /> See It in Action
+              <Eye className="h-4 w-4" /> {t("landing.heroDemo")}
             </Button>
           </motion.div>
 
@@ -125,10 +123,10 @@ export default function LandingPage() {
             transition={{ delay: 0.6 }}
             className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
           >
-            {["No credit card required", "2-minute setup", "No code changes", "EU AI Act + NIST"].map((point) => (
-              <div key={point} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
+            {(["landing.trustNoCc", "landing.trust2Min", "landing.trustNoCode", "landing.trustFrameworks"] as const).map((key) => (
+              <div key={key} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
                 <CheckCircle className="h-3 w-3 text-primary/70" />
-                <span>{point}</span>
+                <span>{t(key)}</span>
               </div>
             ))}
           </motion.div>
@@ -153,13 +151,13 @@ export default function LandingPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 pointer-events-none" />
             <img
               src={dashboardPreview}
-              alt="HFAI Dashboard — AI governance monitoring with violation alerts, analytics, and human review queue"
+              alt={t("landing.screenshotAlt")}
               className="w-full h-auto"
               loading="lazy"
             />
           </div>
           <p className="text-center text-xs text-muted-foreground/60 mt-3">
-            Real-time violation monitoring • Human review queue • Audit-ready logs
+            {t("landing.screenshotCaption")}
           </p>
         </motion.div>
       </section>
@@ -178,13 +176,13 @@ export default function LandingPage() {
           className="text-center mb-8"
         >
           <span className="text-[10px] uppercase tracking-[0.2em] text-destructive font-semibold">
-            60-second assessment
+            {t("landing.exposureBadge")}
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight mt-2">
-            Are you exposed?
+            {t("landing.exposureTitle")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-            Three questions. Find out if your AI systems are compliant — or if you're one audit away from a regulatory investigation.
+            {t("landing.exposureDesc")}
           </p>
         </motion.div>
         <ExposureCheck />
@@ -199,13 +197,13 @@ export default function LandingPage() {
           className="text-center mb-12"
         >
           <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">
-            The fix
+            {t("landing.fixBadge")}
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight mt-2">
-            Compliance in 4 steps. Not 4 months.
+            {t("landing.fixTitle")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Go from zero governance to regulator-ready in under 10 minutes.
+            {t("landing.fixDesc")}
           </p>
         </motion.div>
 
@@ -337,17 +335,17 @@ export default function LandingPage() {
           className="mx-auto max-w-3xl text-center rounded-2xl border border-primary/20 bg-primary/5 p-10 sm:p-14"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-            The EU AI Act doesn't care if you're not ready.
+            {t("landing.finalCtaTitle")}
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-            Join 12+ companies already building compliant AI. Free 30-day pilot. 2-minute setup. Full audit trail from day one.
+            {t("landing.finalCtaDesc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
             <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              Start Free Pilot <ArrowRight className="h-4 w-4" />
+              {t("landing.finalCtaCta")} <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-              <Calendar className="h-4 w-4" /> Or Book a Demo
+              <Calendar className="h-4 w-4" /> {t("landing.finalCtaDemo")}
             </Button>
           </div>
         </motion.div>
@@ -415,7 +413,7 @@ export default function LandingPage() {
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
         <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/signup/customer")}>
-          Start Free Pilot <ArrowRight className="h-3.5 w-3.5" />
+          {t("landing.finalCtaCta")} <ArrowRight className="h-3.5 w-3.5" />
         </Button>
         <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => setDemoOpen(true)}>
           Demo
