@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Shield, Activity, AlertTriangle, UserCheck, ChevronRight,
-  Cpu, Zap, Eye, CheckCircle, Brain, ArrowRight, Scale, Clock, BookOpen, Calendar,
+  Shield, AlertTriangle, UserCheck, ChevronRight,
+  Cpu, Zap, Eye, CheckCircle, Scale, Clock, ArrowRight, Calendar,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
@@ -15,13 +15,13 @@ import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
 import { LeadCapture } from "@/components/landing/LeadCapture";
 import { CountdownTimer } from "@/components/landing/CountdownTimer";
 import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
-import { BookDemoCTA } from "@/components/landing/BookDemoCTA";
 import { FounderSection } from "@/components/landing/FounderSection";
 import { StickyDemoCTA } from "@/components/landing/StickyDemoCTA";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { RiskTicker } from "@/components/landing/RiskTicker";
 import { ExposureCheck } from "@/components/landing/ExposureCheck";
-import { NightmareScenario } from "@/components/landing/NightmareScenario";
+import { SocialProof } from "@/components/landing/SocialProof";
+import { PricingPreview } from "@/components/landing/PricingPreview";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
@@ -58,7 +58,7 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/docs/sdk")}>
               {t("nav.docs")}
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/blog")}>
+            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/blog")}>
               {t("nav.blog")}
             </Button>
             <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/pricing/contact")}>
@@ -67,15 +67,15 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               {t("nav.signIn")}
             </Button>
-            <Button size="sm" className="text-xs gap-1 hidden sm:inline-flex" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-              <Calendar className="h-3 w-3" /> {t("bookDemo.cta")}
+            <Button size="sm" className="text-xs gap-1" onClick={() => navigate("/signup/customer")}>
+              Start Free <ArrowRight className="h-3 w-3" />
             </Button>
             <LanguageSwitcher />
           </div>
         </div>
       </nav>
 
-      {/* ── Hero: Lead with fear, close with solution ── */}
+      {/* ── Hero ── */}
       <section className="relative flex flex-col items-center justify-center text-center px-6 pt-28 sm:pt-36 pb-10 sm:pb-16">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -85,12 +85,7 @@ export default function LandingPage() {
           transition={{ duration: 0.5 }}
           className="relative space-y-6"
         >
-          {/* Risk ticker — establishes urgency immediately */}
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <RiskTicker />
           </motion.div>
 
@@ -106,8 +101,8 @@ export default function LandingPage() {
             transition={{ delay: 0.3 }}
             className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
           >
-            The EU AI Act takes effect August 2026. Fines up to <span className="text-destructive font-semibold">€35M</span>. 
-            HFAI is the compliance layer that gives you audit trails, human oversight, and regulator-ready documentation — in minutes.
+            The EU AI Act takes effect August 2026. Fines up to <span className="text-destructive font-semibold">€35M</span>.
+            HFAI gives you audit trails, human oversight, and regulator-ready docs — in minutes, not months.
           </motion.p>
 
           <motion.div
@@ -116,11 +111,11 @@ export default function LandingPage() {
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 justify-center items-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-              <Calendar className="h-4 w-4" /> Book a Demo <ChevronRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              Start Free 30-Day Pilot <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
-              <Eye className="h-4 w-4" /> Try Live Demo
+              <Eye className="h-4 w-4" /> See It in Action
             </Button>
           </motion.div>
 
@@ -130,7 +125,7 @@ export default function LandingPage() {
             transition={{ delay: 0.6 }}
             className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
           >
-            {["Free 30-day pilot", "2-minute setup", "No code changes", "EU AI Act + NIST"].map((point) => (
+            {["No credit card required", "2-minute setup", "No code changes", "EU AI Act + NIST"].map((point) => (
               <div key={point} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
                 <CheckCircle className="h-3 w-3 text-primary/70" />
                 <span>{point}</span>
@@ -138,6 +133,11 @@ export default function LandingPage() {
             ))}
           </motion.div>
         </motion.div>
+      </section>
+
+      {/* ── Social Proof ── */}
+      <section className="px-6 pb-14 sm:pb-20">
+        <SocialProof />
       </section>
 
       {/* ── Product Screenshot ── */}
@@ -164,6 +164,11 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Countdown Timer ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <CountdownTimer />
+      </section>
+
       {/* ── "Are You Exposed?" Check ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
@@ -179,20 +184,10 @@ export default function LandingPage() {
             Are you exposed?
           </h2>
           <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-            Three questions. Find out if your AI systems are compliant — or if you're one complaint away from a regulatory investigation.
+            Three questions. Find out if your AI systems are compliant — or if you're one audit away from a regulatory investigation.
           </p>
         </motion.div>
         <ExposureCheck />
-      </section>
-
-      {/* ── Nightmare Scenario ── */}
-      <section className="px-6 pb-20 sm:pb-24">
-        <NightmareScenario />
-      </section>
-
-      {/* ── Countdown Timer ── */}
-      <section className="px-6 pb-20 sm:pb-24">
-        <CountdownTimer />
       </section>
 
       {/* ── How HFAI Fixes This ── */}
@@ -242,7 +237,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Differentiation (compact) ── */}
+      {/* ── Differentiation ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -328,7 +323,12 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* ── Final CTA — urgency close ── */}
+      {/* ── Pricing Preview ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <PricingPreview />
+      </section>
+
+      {/* ── Final CTA ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -338,18 +338,16 @@ export default function LandingPage() {
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             The EU AI Act doesn't care if you're not ready.
-            <br />
-            <span className="text-primary">But HFAI can get you there.</span>
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-            Free 30-day pilot. 2-minute setup. Full audit trail from day one.
+            Join 12+ companies already building compliant AI. Free 30-day pilot. 2-minute setup. Full audit trail from day one.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-              <Calendar className="h-4 w-4" /> Book a Demo <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
+              Start Free Pilot <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12" onClick={() => navigate("/signup/customer")}>
-              Start Free Pilot
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> Or Book a Demo
             </Button>
           </div>
         </motion.div>
@@ -416,11 +414,11 @@ export default function LandingPage() {
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
-        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-          <Calendar className="h-3.5 w-3.5" /> {t("bookDemo.cta")}
+        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/signup/customer")}>
+          Start Free Pilot <ArrowRight className="h-3.5 w-3.5" />
         </Button>
-        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/signup/customer")}>
-          {t("nav.startFree")}
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => setDemoOpen(true)}>
+          Demo
         </Button>
       </div>
     </div>
