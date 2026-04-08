@@ -1428,6 +1428,10 @@
       "runtime": {
         "title": "Aplicación en Tiempo Real",
         "desc": "Pista de auditoría a prueba de manipulaciones"
+      },
+      "iso42001": {
+        "title": "ISO 42001 Mapeado",
+        "desc": "Cobertura completa Anexo A"
       }
     }
   },
