@@ -66,6 +66,11 @@ import CustomerModelVersions from "./pages/customer/CustomerModelVersions";
 import CustomerScheduledAudits from "./pages/customer/CustomerScheduledAudits";
 import CustomerVendorRisk from "./pages/customer/CustomerVendorRisk";
 import CustomerDataLineage from "./pages/customer/CustomerDataLineage";
+import CustomerAILiteracy from "./pages/customer/CustomerAILiteracy";
+import CustomerProhibitedPractices from "./pages/customer/CustomerProhibitedPractices";
+import CustomerTechnicalDocs from "./pages/customer/CustomerTechnicalDocs";
+import CustomerIncidentReporting from "./pages/customer/CustomerIncidentReporting";
+import CustomerEUDatabase from "./pages/customer/CustomerEUDatabase";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -169,6 +174,11 @@ const App = () => {
             <Route path="precedent-intelligence" element={<CustomerPrecedentIntelligence />} />
             <Route path="multi-jurisdiction" element={<CustomerMultiJurisdiction />} />
             <Route path="blog-submit" element={<CustomerBlogSubmit />} />
+            <Route path="ai-literacy" element={<CustomerAILiteracy />} />
+            <Route path="prohibited-practices" element={<CustomerProhibitedPractices />} />
+            <Route path="technical-docs" element={<CustomerTechnicalDocs />} />
+            <Route path="incident-reporting" element={<CustomerIncidentReporting />} />
+            <Route path="eu-database" element={<CustomerEUDatabase />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
