@@ -1444,7 +1444,7 @@
     "trustNoCc": "No credit card required",
     "trust2Min": "2-minute setup",
     "trustNoCode": "No code changes",
-    "trustFrameworks": "EU AI Act + NIST",
+    "trustFrameworks": "EU AI Act + NIST + ISO 42001",
     "screenshotAlt": "HFAI Dashboard — AI governance monitoring with violation alerts, analytics, and human review queue",
     "screenshotCaption": "Real-time violation monitoring • Human review queue • Audit-ready logs",
     "exposureBadge": "60-second assessment",

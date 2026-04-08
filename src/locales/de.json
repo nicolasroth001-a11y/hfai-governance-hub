@@ -1444,7 +1444,7 @@
     "trustNoCc": "Keine Kreditkarte erforderlich",
     "trust2Min": "Einrichtung in 2 Minuten",
     "trustNoCode": "Keine Codeänderungen",
-    "trustFrameworks": "EU AI Act + NIST",
+    "trustFrameworks": "EU AI Act + NIST + ISO 42001",
     "screenshotAlt": "HFAI-Dashboard — KI-Governance-Überwachung mit Verstoßwarnungen, Analysen und menschlicher Überprüfungswarteschlange",
     "screenshotCaption": "Echtzeit-Verstoßüberwachung • Menschliche Überprüfungswarteschlange • Audit-fertige Protokolle",
     "exposureBadge": "60-Sekunden-Bewertung",

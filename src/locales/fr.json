@@ -1444,7 +1444,7 @@
     "trustNoCc": "Aucune carte de crédit requise",
     "trust2Min": "Configuration en 2 minutes",
     "trustNoCode": "Aucun changement de code",
-    "trustFrameworks": "EU AI Act + NIST",
+    "trustFrameworks": "EU AI Act + NIST + ISO 42001",
     "screenshotAlt": "Tableau de bord HFAI — Surveillance de la gouvernance IA avec alertes de violations, analyses et file d'attente de révision humaine",
     "screenshotCaption": "Surveillance des violations en temps réel • File de révision humaine • Journaux prêts pour l'audit",
     "exposureBadge": "Évaluation en 60 secondes",
