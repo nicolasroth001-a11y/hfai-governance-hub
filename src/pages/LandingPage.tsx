@@ -22,6 +22,7 @@ import { RiskTicker } from "@/components/landing/RiskTicker";
 import { ExposureCheck } from "@/components/landing/ExposureCheck";
 import { SocialProof } from "@/components/landing/SocialProof";
 import { PricingPreview } from "@/components/landing/PricingPreview";
+import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
