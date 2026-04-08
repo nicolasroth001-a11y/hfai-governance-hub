@@ -30,9 +30,9 @@ export default function CustomerTechnicalDocs() {
 
   useEffect(() => {
     if (!profile?.org_id) return;
-    supabase.from("ai_systems").select("*").eq("org_id", profile.org_id)
-      .then(({ data }) => { setSystems(data || []); setLoading(false); })
-      .catch(() => setLoading(false));
+    Promise.resolve(supabase.from("ai_systems").select("*").eq("org_id", profile.org_id))
+      .then(({ data }) => setSystems(data || []))
+      .finally(() => setLoading(false));
   }, [profile?.org_id]);
 
   const handleGenerateDoc = async (system: any) => {
