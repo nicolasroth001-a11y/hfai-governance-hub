@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { RoleSidebar, NavItem } from "@/components/RoleSidebar";
 import { TopBar } from "@/components/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp, Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2, Database, GraduationCap, ShieldAlert, FileArchive, FileWarning, Globe2 } from "lucide-react";
+import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Rocket, Cpu, FileText, Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp, Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2, Database, GraduationCap, ShieldAlert, FileArchive, FileWarning, Globe2, Fingerprint, Target, FileSpreadsheet } from "lucide-react";
 
 export default function CustomerLayout() {
   const { t } = useTranslation();
@@ -28,6 +28,9 @@ export default function CustomerLayout() {
     { title: "Technical Docs", url: "/customer/technical-docs", icon: FileArchive },
     { title: "Incident Reporting", url: "/customer/incident-reporting", icon: FileWarning },
     { title: "EU Database", url: "/customer/eu-database", icon: Globe2 },
+    { title: "ISO 42001 Controls", url: "/customer/iso42001-controls", icon: Fingerprint },
+    { title: "AI Impact Assessment", url: "/customer/ai-impact-assessment", icon: Target },
+    { title: "Statement of Applicability", url: "/customer/statement-of-applicability", icon: FileSpreadsheet },
     { title: t("sidebar.certificates"), url: "/customer/certificates", icon: Award },
     { title: t("sidebar.driftDetection"), url: "/customer/drift-detection", icon: TrendingUp },
     { title: t("sidebar.precedentIntel"), url: "/customer/precedent-intelligence", icon: Brain },
