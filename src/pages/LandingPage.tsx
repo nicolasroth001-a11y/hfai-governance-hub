@@ -22,6 +22,7 @@ import { RiskTicker } from "@/components/landing/RiskTicker";
 import { ExposureCheck } from "@/components/landing/ExposureCheck";
 import { SocialProof } from "@/components/landing/SocialProof";
 import { PricingPreview } from "@/components/landing/PricingPreview";
+import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
@@ -136,6 +137,11 @@ export default function LandingPage() {
       {/* ── Social Proof ── */}
       <section className="px-6 pb-14 sm:pb-20">
         <SocialProof />
+      </section>
+
+      {/* ── Credibility Signals ── */}
+      <section className="px-6 pb-16 sm:pb-24">
+        <CredibilitySignals />
       </section>
 
       {/* ── Product Screenshot ── */}
