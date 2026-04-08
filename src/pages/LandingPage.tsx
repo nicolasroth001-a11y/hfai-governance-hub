@@ -138,6 +138,11 @@ export default function LandingPage() {
         <SocialProof />
       </section>
 
+      {/* ── Credibility Signals ── */}
+      <section className="px-6 pb-16 sm:pb-24">
+        <CredibilitySignals />
+      </section>
+
       {/* ── Product Screenshot ── */}
       <section className="px-6 pb-16 sm:pb-24">
         <motion.div
