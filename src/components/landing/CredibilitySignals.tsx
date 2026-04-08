@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Lock, FileCheck, Award, Globe, Cpu } from "lucide-react";
+import { Shield, Lock, FileCheck, Award, Globe, Cpu, Fingerprint } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export function CredibilitySignals() {
@@ -8,6 +8,7 @@ export function CredibilitySignals() {
   const signals = [
     { icon: Shield, key: "euAiAct" as const },
     { icon: FileCheck, key: "nistRmf" as const },
+    { icon: Fingerprint, key: "iso42001" as const },
     { icon: Lock, key: "encryption" as const },
     { icon: Award, key: "soc2" as const },
     { icon: Globe, key: "gdpr" as const },
