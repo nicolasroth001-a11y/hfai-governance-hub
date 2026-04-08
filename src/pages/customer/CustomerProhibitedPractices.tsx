@@ -29,7 +29,7 @@ export default function CustomerProhibitedPractices() {
 
   useEffect(() => {
     if (!profile?.org_id) return;
-    supabase.from("rules").select("*").or(`org_id.eq.${profile.org_id},org_id.is.null`)
+    Promise.resolve(supabase.from("rules").select("*").or(`org_id.eq.${profile.org_id},org_id.is.null`))
       .then(({ data }) => {
         setRules(data || []);
         // Check if any prohibited-practice rules have enforcement_mode = "block"
