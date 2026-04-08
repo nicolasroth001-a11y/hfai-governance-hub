@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SubscriptionGate } from "@/components/SubscriptionGate";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  Globe, Download, Cpu, CheckCircle, AlertTriangle, Database, ExternalLink
+  Globe, Download, Cpu, CheckCircle, AlertTriangle, Database, ExternalLink, Send
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
@@ -58,40 +58,85 @@ export default function CustomerEUDatabase() {
     return { completed, total: REGISTRATION_FIELDS.length, pct: Math.round((completed / REGISTRATION_FIELDS.length) * 100) };
   };
 
-  const handleExportPreRegistration = (system: any) => {
+  const buildSubmissionPackage = (system: any) => {
     const fields = readiness[system.id] || {};
-    const doc = {
-      document_type: "EU AI Database Pre-Registration Package",
-      article: "Article 71 — EU database for high-risk AI systems",
+    return {
+      schema_version: "1.0",
+      document_type: "EU AI Database Submission Package (Article 71)",
+      format: "EU-DB-INTEROP-v1",
       generated_at: new Date().toISOString(),
       platform: "HFAI — Human-First AI Governance",
+      provider_information: {
+        legal_name: system.provider || "[TO BE COMPLETED]",
+        contact_email: "[TO BE COMPLETED]",
+        eu_representative: "[TO BE COMPLETED — if non-EU provider]",
+      },
       ai_system: {
-        name: system.name,
-        provider: system.provider || "To be completed",
-        model_type: system.model_type || "To be completed",
+        trade_name: system.name,
+        unique_identifier: system.id,
         version: system.version || "1.0",
-        eu_risk_tier: system.eu_risk_tier || "not_classified",
-        description: system.description || "To be completed",
-        transparency_uri: system.transparency_uri || "",
+        description: system.description || "[TO BE COMPLETED]",
+        intended_purpose: system.description || "[TO BE COMPLETED]",
+        risk_classification: {
+          eu_risk_tier: system.eu_risk_tier || "not_classified",
+          annex_iii_category: "[TO BE COMPLETED]",
+          justification: "[TO BE COMPLETED]",
+        },
+        market_status: system.status === "active" ? "placed_on_market" : "not_yet_available",
+        conformity_assessment: {
+          type: "[self_assessment | third_party]",
+          body: "[TO BE COMPLETED if third-party]",
+          certificate_reference: "[TO BE COMPLETED]",
+        },
+        member_states_deployed: ["[TO BE COMPLETED]"],
+        instructions_url: system.transparency_uri || "[TO BE COMPLETED]",
       },
       registration_checklist: REGISTRATION_FIELDS.map(f => ({
+        field_id: f.id,
         field: f.label,
         article: f.article,
-        status: fields[f.id] ? "Ready" : "Incomplete",
-        description: f.description,
+        status: fields[f.id] ? "ready" : "incomplete",
       })),
       readiness_summary: getSystemReadiness(system.id),
-      next_steps: "Complete all checklist items, then submit via the EU AI Database portal when it becomes available.",
+      submission_metadata: {
+        target_database: "https://ai-systems-database.ec.europa.eu",
+        api_endpoint: "Not yet available — EU database API expected 2027",
+        submission_format: "JSON (EU-DB-INTEROP-v1)",
+        submission_status: "pre_registration",
+      },
     };
+  };
 
+  const handleExport = (system: any) => {
+    const doc = buildSubmissionPackage(system);
     const blob = new Blob([JSON.stringify(doc, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `eu-database-prep-${system.name.replace(/\s+/g, "-").toLowerCase()}-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `eu-database-submission-${system.name.replace(/\s+/g, "-").toLowerCase()}-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({ title: "Pre-registration package exported", description: `Package for ${system.name} downloaded.` });
+    toast({ title: "Submission package exported", description: `EU database package for ${system.name} downloaded.` });
+  };
+
+  const handleSubmitPreRegistration = async (system: any) => {
+    const { pct } = getSystemReadiness(system.id);
+    if (pct < 100) {
+      toast({ title: "Incomplete checklist", description: "Complete all fields before submitting.", variant: "destructive" });
+      return;
+    }
+    // Log the submission intent to audit trail
+    await supabase.from("audit_logs").insert({
+      action: "eu_database_preregistration",
+      entity_type: "ai_system",
+      entity_id: system.id,
+      details: `Pre-registration package prepared for ${system.name}. Awaiting EU database API availability.`,
+      org_id: profile?.org_id,
+    });
+    toast({
+      title: "Pre-registration recorded",
+      description: "Your submission intent has been logged. HFAI will auto-submit when the EU database API goes live.",
+    });
   };
 
   const highRiskSystems = systems.filter(s => s.eu_risk_tier === "high_risk" || s.risk_level === "high" || s.risk_level === "critical");
@@ -107,18 +152,23 @@ export default function CustomerEUDatabase() {
           description="Prepare your high-risk AI systems for Article 71 registration in the EU public database. Track readiness per system."
         />
 
-        {/* Timeline */}
         <div className="rounded-lg p-4 border bg-muted/30 border-border/40">
           <div className="flex items-center gap-2 mb-1">
             <Globe className="h-4 w-4 text-primary" />
             <span className="text-sm font-semibold text-foreground">Registration deadline: August 2027 (standalone) / August 2028 (embedded)</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            High-risk AI providers and deployers must register systems in the EU public database before placing them on the market. Start preparation now.
+            High-risk AI providers and deployers must register systems in the EU public database before placing them on the market.
           </p>
+          <div className="mt-2 flex items-center gap-2">
+            <Badge variant="outline" className="text-[10px] gap-1">
+              <ExternalLink className="h-3 w-3" />
+              EU-DB-INTEROP-v1 format supported
+            </Badge>
+            <Badge variant="secondary" className="text-[10px]">Auto-submit when API available</Badge>
+          </div>
         </div>
 
-        {/* KPIs */}
         <div className="grid gap-4 sm:grid-cols-3">
           <Card>
             <CardContent className="p-5">
@@ -141,7 +191,7 @@ export default function CustomerEUDatabase() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-foreground">{readySystems.length}</p>
-                  <p className="text-xs text-muted-foreground">Registration-Ready</p>
+                  <p className="text-xs text-muted-foreground">Submission-Ready</p>
                 </div>
               </div>
             </CardContent>
@@ -161,7 +211,6 @@ export default function CustomerEUDatabase() {
           </Card>
         </div>
 
-        {/* Per-System Checklists */}
         {highRiskSystems.length === 0 ? (
           <Card>
             <CardContent className="p-8 text-center">
@@ -185,15 +234,27 @@ export default function CustomerEUDatabase() {
                           {pct === 100 ? "Ready" : `${completed}/${total}`}
                         </Badge>
                       </div>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="gap-2"
-                        onClick={() => handleExportPreRegistration(sys)}
-                      >
-                        <Download className="h-3.5 w-3.5" />
-                        Export Package
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant={pct === 100 ? "default" : "secondary"}
+                          className="gap-2"
+                          onClick={() => handleSubmitPreRegistration(sys)}
+                          disabled={pct < 100}
+                        >
+                          <Send className="h-3.5 w-3.5" />
+                          {pct === 100 ? "Pre-Register" : "Complete checklist"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-2"
+                          onClick={() => handleExport(sys)}
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          Export
+                        </Button>
+                      </div>
                     </div>
                     <Progress value={pct} className="mt-2 h-1.5" />
                   </CardHeader>

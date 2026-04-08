@@ -81,6 +81,55 @@ async function evaluateGovernanceRules(
     return { blocked: false, blockedRules: [], violations: [] };
   }
 
+  // Built-in Art. 5 prohibited practice classifiers (always active, pre-rule)
+  const PROHIBITED_PRACTICE_PATTERNS = [
+    { pattern: /subliminal|manipulat(?:e|ion|ive)|coerci(?:on|ve)/i, label: "Art.5(1)(a) Subliminal Manipulation", severity: "critical" },
+    { pattern: /exploit.*(?:vulnerab|elderly|disabled|child|minor|age)/i, label: "Art.5(1)(a) Exploitation of Vulnerabilities", severity: "critical" },
+    { pattern: /social.?scor(?:e|ing)|citizen.?score|social.?credit/i, label: "Art.5(1)(c) Social Scoring", severity: "critical" },
+    { pattern: /predictive.?polic|crime.?predict|criminal.?profil/i, label: "Art.5(1)(d) Predictive Policing", severity: "critical" },
+    { pattern: /facial.?scrap|face.?databas|biometric.?scrap|scrape.*face/i, label: "Art.5(1)(e) Untargeted Facial Scraping", severity: "critical" },
+    { pattern: /emotion.?recogni|emotion.?detect|sentiment.*(?:workplace|school|employee)/i, label: "Art.5(1)(f) Workplace Emotion Recognition", severity: "high" },
+    { pattern: /biometric.?categori|race.?detect|biometric.?classif/i, label: "Art.5(1)(g) Biometric Categorisation", severity: "critical" },
+    { pattern: /real.?time.*biometric|remote.*identif.*public|facial.*recognition.*public/i, label: "Art.5(1)(h) Real-time Remote Biometric ID", severity: "critical" },
+  ];
+
+  const art5Matches = PROHIBITED_PRACTICE_PATTERNS.filter(p => p.pattern.test(inputText));
+  const art5Blocked: any[] = [];
+  const art5Violations: any[] = [];
+
+  for (const match of art5Matches) {
+    const { data: violation } = await supabase
+      .from("violations")
+      .insert({
+        description: `Prohibited practice detected: ${match.label} [proxy pre-flight, Art.5 classifier]`,
+        severity: match.severity,
+        org_id: orgId,
+      })
+      .select()
+      .single();
+
+    if (violation) {
+      art5Violations.push(violation);
+      art5Blocked.push({
+        ruleId: `art5-${match.label}`,
+        ruleName: match.label,
+        description: `EU AI Act Article 5 prohibits this practice. Fines up to €35M or 7% of global turnover.`,
+        severity: match.severity,
+      });
+      await supabase.from("audit_logs").insert({
+        action: "prohibited_practice_blocked",
+        entity_type: "violation",
+        entity_id: violation.id,
+        details: `Art. 5 prohibited practice detected in proxy: ${match.label}`,
+        org_id: orgId,
+      });
+    }
+  }
+
+  if (art5Blocked.length > 0) {
+    return { blocked: true, blockedRules: art5Blocked, violations: art5Violations };
+  }
+
   // Only check rules that can block (enforcement_mode = 'block' or 'warn')
   const enforcementRules = rules.filter((r: any) =>
     r.enforcement_mode === "block" || r.enforcement_mode === "warn"
