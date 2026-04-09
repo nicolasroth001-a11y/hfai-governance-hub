@@ -35,12 +35,10 @@ export interface NavSection {
 }
 
 interface RoleSidebarProps {
-  sections: NavSection[];
+  sections?: NavSection[];
   roleLabel: string;
   roleDescription: string;
-  /** @deprecated Use sections instead */
   items?: NavItem[];
-  /** @deprecated Use sections instead */
   extraSections?: { label: string; items: NavItem[] }[];
 }
 
