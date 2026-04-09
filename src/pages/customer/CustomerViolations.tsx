@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
@@ -27,9 +27,9 @@ export default function CustomerViolations() {
 
   const columns: DataTableColumn<any>[] = [
     { key: "id", header: t("customerViolations.id"), render: (v) => <Link to={`/customer/violations/${v.id}`} className="text-primary font-medium hover:underline text-xs font-mono">{typeof v.id === "string" ? v.id.slice(0, 8) : v.id}</Link> },
-    { key: "description", header: t("customerViolations.descriptionCol"), render: (v) => <span className="text-sm text-card-foreground line-clamp-1">{v.description}</span> },
+    { key: "description", header: t("customerViolations.descriptionCol"), render: (v) => <span className="text-sm text-card-foreground line-clamp-1">{v.description}</span>, hideOnMobile: true },
     { key: "severity", header: t("customerViolations.severity"), render: (v) => <SeverityBadge severity={v.severity} /> },
-    { key: "detected_at", header: t("customerViolations.detected"), render: (v) => <span className="text-xs text-card-foreground/50">{v.detected_at ? formatDistanceToNow(new Date(v.detected_at), { addSuffix: true }) : "—"}</span> },
+    { key: "detected_at", header: t("customerViolations.detected"), render: (v) => <span className="text-xs text-card-foreground/50">{v.detected_at ? formatDistanceToNow(new Date(v.detected_at), { addSuffix: true }) : "—"}</span>, hideOnMobile: true },
     { key: "status", header: t("customerViolations.status"), render: (v) => <StatusBadge status={v.status || "open"} /> },
   ];
 
@@ -39,7 +39,7 @@ export default function CustomerViolations() {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <SectionHeader title={t("customerViolations.title")} description={t("customerViolations.description")} />
       <FilterBar filters={[
         { key: "severity", label: t("customerViolations.severity"), value: severityFilter, onChange: setSeverityFilter, options: [{ label: t("customerViolations.critical"), value: "critical" }, { label: t("customerViolations.high"), value: "high" }, { label: t("customerViolations.medium"), value: "medium" }, { label: t("customerViolations.low"), value: "low" }] },
@@ -50,6 +50,19 @@ export default function CustomerViolations() {
         data={filtered}
         rowKey={(v) => v.id}
         loading={loading}
+        mobileCard={(v) => (
+          <Link to={`/customer/violations/${v.id}`} className="block space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-mono text-primary font-medium">{typeof v.id === "string" ? v.id.slice(0, 8) : v.id}</span>
+              <StatusBadge status={v.status || "open"} />
+            </div>
+            <p className="text-sm text-card-foreground line-clamp-2">{v.description}</p>
+            <div className="flex items-center justify-between">
+              <SeverityBadge severity={v.severity} />
+              <span className="text-[11px] text-card-foreground/40">{v.detected_at ? formatDistanceToNow(new Date(v.detected_at), { addSuffix: true }) : "—"}</span>
+            </div>
+          </Link>
+        )}
         emptyContent={
           <>
             <ShieldCheck className="h-10 w-10 text-muted-foreground/40" />
