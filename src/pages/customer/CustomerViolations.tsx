@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SectionHeader } from "@/components/SectionHeader";
 import { DataTable, DataTableColumn } from "@/components/DataTable";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { FilterBar } from "@/components/FilterBar";
+import { Button } from "@/components/ui/button";
 import { fetchViolations } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
+import { ShieldCheck, Plug } from "lucide-react";
 
 export default function CustomerViolations() {
   const { t } = useTranslation();
@@ -43,7 +45,21 @@ export default function CustomerViolations() {
         { key: "severity", label: t("customerViolations.severity"), value: severityFilter, onChange: setSeverityFilter, options: [{ label: t("customerViolations.critical"), value: "critical" }, { label: t("customerViolations.high"), value: "high" }, { label: t("customerViolations.medium"), value: "medium" }, { label: t("customerViolations.low"), value: "low" }] },
         { key: "status", label: t("customerViolations.status"), value: statusFilter, onChange: setStatusFilter, options: [{ label: t("customerViolations.open"), value: "open" }, { label: t("customerViolations.investigating"), value: "investigating" }, { label: t("customerViolations.resolved"), value: "resolved" }] },
       ]} />
-      <DataTable columns={columns} data={filtered} rowKey={(v) => v.id} loading={loading} emptyMessage={t("customerViolations.noViolations")} />
+      <DataTable
+        columns={columns}
+        data={filtered}
+        rowKey={(v) => v.id}
+        loading={loading}
+        emptyContent={
+          <>
+            <ShieldCheck className="h-10 w-10 text-muted-foreground/40" />
+            <p className="text-sm text-card-foreground/60 max-w-xs">No violations detected yet. Connect an AI system and send events to start monitoring.</p>
+            <Button variant="outline" size="sm" asChild className="gap-2">
+              <Link to="/customer/connect"><Plug className="h-3.5 w-3.5" /> Connect AI System</Link>
+            </Button>
+          </>
+        }
+      />
     </div>
   );
 }
