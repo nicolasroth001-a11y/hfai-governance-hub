@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
+import { ComplianceScore } from "@/components/ComplianceScore";
 import { Button } from "@/components/ui/button";
 import { TestEventModal } from "@/components/TestEventModal";
 import { LiveEventFeed } from "@/components/LiveEventFeed";
@@ -97,17 +98,25 @@ export default function CustomerDashboard() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <SectionHeader title={t("customerDashboard.title")} description={t("customerDashboard.description")} />
         <Button onClick={() => setTestOpen(true)} size="sm" className="gap-2 h-9 w-full sm:w-auto">
           <Send className="h-3.5 w-3.5" /> {t("customerDashboard.sendTestEvent")}
         </Button>
       </div>
 
+      {/* Compliance Score — the #1 thing a user wants to know */}
+      <ComplianceScore
+        totalSystems={stats.totalSystems}
+        openViolations={stats.openViolations}
+        resolvedViolations={stats.resolvedToday}
+        totalViolations={stats.totalViolations}
+      />
+
       <RealtimeStats events={events} />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
         <StatCard title={t("customerDashboard.aiSystems")} value={stats.totalSystems} icon={Cpu} />
         <StatCard title={t("customerDashboard.openViolations")} value={stats.openViolations} icon={AlertTriangle} subtitle={t("customerDashboard.requiresAttention")} />
         <StatCard title={t("customerDashboard.totalViolations")} value={stats.totalViolations} icon={ShieldAlert} />
@@ -115,7 +124,7 @@ export default function CustomerDashboard() {
         <StatCard title={t("customerDashboard.resolved")} value={stats.resolvedToday} icon={CheckCircle} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <LiveEventFeed events={events} connected={connected} onClear={clearEvents} />
 
         <ContentCard title={t("customerDashboard.riskDistribution")}>
@@ -156,14 +165,14 @@ export default function CustomerDashboard() {
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {activity.map((item) => (
               <div key={item.id} className="flex items-start gap-3">
                 <div className={`mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 ${
                   item.type === "violation" ? "bg-destructive" : item.type === "resolution" ? "bg-success" : "bg-primary"
                 }`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-body text-card-foreground">{item.message}</p>
+                  <p className="text-sm text-card-foreground line-clamp-2">{item.message}</p>
                   <p className="text-[11px] text-card-foreground/35 mt-0.5">
                     {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
                   </p>

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Plug, Layers, Zap, BookOpen, ArrowRight, CheckCircle, Rocket } from "lucide-react";
+import { Shield, Plug, Layers, Zap, ArrowRight, CheckCircle, Send, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOnboardingProgress } from "@/hooks/useOnboardingProgress";
 import { trackFunnelEvent } from "@/lib/funnel";
@@ -14,50 +13,38 @@ const WIZARD_STEPS = [
     id: "welcome",
     icon: Shield,
     title: "Welcome to HFAI",
-    description: "Your AI governance platform is ready. Let's get you set up in under 2 minutes.",
-    bullets: [
-      "Connect your AI provider (OpenAI, Anthropic, etc.)",
-      "Configure governance rules",
-      "Monitor events and violations in real-time",
-    ],
-    cta: "Let's Get Started",
+    subtitle: "Your AI governance platform is ready.",
+    description: "Get set up in 3 simple steps. You'll have real-time AI monitoring running in under 2 minutes.",
+    visual: "🛡️",
+    cta: "Let's Go",
   },
   {
     id: "connect",
     icon: Plug,
-    title: "Connect Your AI",
-    description: "Choose how to integrate — zero-code proxy or flexible REST API.",
-    bullets: [
-      "Proxy: Swap your base URL — HFAI monitors automatically",
-      "REST API: Works with any AI provider",
-      "Takes less than 30 seconds",
-    ],
-    cta: "Go to Connect Page",
+    title: "Step 1: Connect Your AI",
+    subtitle: "One line of code. That's it.",
+    description: "Swap your OpenAI base URL to the HFAI proxy — or use our REST API for any provider. Your existing code keeps working, HFAI just watches.",
+    visual: "🔌",
+    cta: "Connect Now",
     route: "/customer/connect",
   },
   {
-    id: "rules",
-    icon: Layers,
-    title: "Set Your First Rule",
-    description: "Rules define what your AI can and can't do. Start with a template or create your own.",
-    bullets: [
-      "Choose from 10+ pre-built rule templates",
-      "Customize severity levels and categories",
-      "Rules evaluate every AI event automatically",
-    ],
-    cta: "Browse Rule Templates",
-    route: "/customer/rule-templates",
+    id: "test",
+    icon: Send,
+    title: "Step 2: Send a Test Event",
+    subtitle: "See HFAI catch a violation in real-time.",
+    description: "Send a test AI event and watch HFAI evaluate it against governance rules instantly. This is the \"aha\" moment.",
+    visual: "⚡",
+    cta: "Send Test Event",
+    route: "/customer/onboarding",
   },
   {
     id: "monitor",
-    icon: Zap,
-    title: "You're All Set!",
-    description: "Your dashboard is ready. Send a test event or explore your governance tools.",
-    bullets: [
-      "Send a test event to see HFAI in action",
-      "View real-time violations on your dashboard",
-      "Check the SDK docs for advanced integration",
-    ],
+    icon: Eye,
+    title: "Step 3: You're Live!",
+    subtitle: "Your dashboard is ready.",
+    description: "Every AI call is now monitored. Violations are flagged, audit trails are built, and reviewers can take action — all automatically.",
+    visual: "🎉",
     cta: "Go to Dashboard",
     route: "/customer/dashboard",
   },
@@ -67,7 +54,7 @@ export function OnboardingWelcome() {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { completeStep, skipAll } = useOnboardingProgress();
+  const { skipAll } = useOnboardingProgress();
   const current = WIZARD_STEPS[step];
   const progress = ((step + 1) / WIZARD_STEPS.length) * 100;
 
@@ -76,17 +63,20 @@ export function OnboardingWelcome() {
 
     if (step === 0) {
       trackFunnelEvent("onboarding_started", { name: profile?.name });
+      setStep(1);
+      return;
+    }
+
+    if (step === WIZARD_STEPS.length - 1) {
+      trackFunnelEvent("onboarding_completed", {});
+      await skipAll();
+      window.location.replace("/customer/dashboard");
+      return;
     }
 
     if (current.route) {
-      if (step === WIZARD_STEPS.length - 1) {
-        trackFunnelEvent("onboarding_completed", {});
-        await skipAll();
-        window.location.replace(current.route);
-        return;
-      }
       navigate(current.route);
-    } else if (step < WIZARD_STEPS.length - 1) {
+    } else {
       setStep(step + 1);
     }
   };
@@ -98,63 +88,84 @@ export function OnboardingWelcome() {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center p-6">
-      <div className="w-full max-w-lg space-y-4">
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>Step {step + 1} of {WIZARD_STEPS.length}</span>
-          <button onClick={handleSkip} className="hover:text-foreground transition-colors">
-            Skip setup →
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-6">
+      <div className="w-full max-w-md space-y-4">
+        {/* Progress dots */}
+        <div className="flex items-center justify-between">
+          <div className="flex gap-1.5">
+            {WIZARD_STEPS.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i <= step ? "w-6 bg-primary" : "w-1.5 bg-muted-foreground/20"
+                }`}
+              />
+            ))}
+          </div>
+          <button onClick={handleSkip} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+            Skip →
           </button>
         </div>
-        <Progress value={progress} className="h-1.5" />
 
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.25 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.2 }}
           >
-            <Card className="border-primary/20">
-              <CardContent className="p-6 sm:p-8 space-y-5">
-                <div className="flex items-center gap-3">
-                  <div className="h-11 w-11 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <current.icon className="h-5 w-5 text-primary" />
-                  </div>
+            <Card className="border-primary/15 overflow-hidden">
+              <CardContent className="p-0">
+                {/* Visual header */}
+                <div className="bg-primary/5 py-8 flex items-center justify-center">
+                  <span className="text-5xl">{current.visual}</span>
+                </div>
+
+                <div className="p-5 sm:p-6 space-y-4">
                   <div>
                     <h2 className="text-lg font-bold text-card-foreground">{current.title}</h2>
+                    <p className="text-sm text-primary font-medium mt-0.5">{current.subtitle}</p>
                   </div>
-                </div>
 
-                <p className="text-sm text-card-foreground/70 leading-relaxed">
-                  {current.description}
-                </p>
+                  <p className="text-sm text-card-foreground/65 leading-relaxed">
+                    {current.description}
+                  </p>
 
-                <div className="space-y-2.5">
-                  {current.bullets.map((b) => (
-                    <div key={b} className="flex items-start gap-2.5 text-sm">
-                      <CheckCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                      <span className="text-card-foreground/80">{b}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex gap-3 pt-2">
-                  <Button onClick={handleNext} className="flex-1 gap-2">
-                    {current.cta}
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                  {step > 0 && (
-                    <Button variant="outline" onClick={() => setStep(step - 1)}>
-                      Back
+                  <div className="flex gap-2 pt-1">
+                    <Button onClick={handleNext} className="flex-1 gap-2">
+                      {current.cta}
+                      <ArrowRight className="h-4 w-4" />
                     </Button>
-                  )}
+                    {step > 0 && (
+                      <Button variant="outline" size="icon" onClick={() => setStep(step - 1)}>
+                        ←
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
         </AnimatePresence>
+
+        {/* What you'll get */}
+        {step === 0 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+            <div className="grid grid-cols-3 gap-2 text-center">
+              {[
+                { icon: "🔒", label: "Audit trails" },
+                { icon: "⚡", label: "Real-time alerts" },
+                { icon: "📋", label: "EU AI Act ready" },
+              ].map((item) => (
+                <div key={item.label} className="rounded-lg border border-border/50 bg-card p-3 space-y-1">
+                  <span className="text-lg">{item.icon}</span>
+                  <p className="text-[10px] text-muted-foreground font-medium">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
