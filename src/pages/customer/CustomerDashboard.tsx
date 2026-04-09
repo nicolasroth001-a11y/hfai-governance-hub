@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { AlertTriangle, CheckCircle, Send, ShieldAlert, Cpu, UserCheck } from "lucide-react";
+import { Link } from "react-router-dom";
+import { AlertTriangle, CheckCircle, Send, ShieldAlert, Cpu, UserCheck, Plug, BookOpen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -140,7 +141,20 @@ export default function CustomerDashboard() {
         {loading ? (
           <p className="text-sm text-card-foreground/50">{t("customerDashboard.loading")}</p>
         ) : activity.length === 0 ? (
-          <p className="text-sm text-card-foreground/50">{t("customerDashboard.noActivity")}</p>
+          <div className="flex flex-col items-center gap-3 py-8">
+            <BookOpen className="h-10 w-10 text-muted-foreground/40" />
+            <p className="text-sm text-card-foreground/60 max-w-xs text-center">
+              No activity yet. Connect an AI system and send your first event to see governance activity here.
+            </p>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" asChild className="gap-2">
+                <Link to="/customer/connect"><Plug className="h-3.5 w-3.5" /> Connect</Link>
+              </Button>
+              <Button size="sm" onClick={() => setTestOpen(true)} className="gap-2">
+                <Send className="h-3.5 w-3.5" /> Send Test Event
+              </Button>
+            </div>
+          </div>
         ) : (
           <div className="space-y-4">
             {activity.map((item) => (

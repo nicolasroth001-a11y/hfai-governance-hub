@@ -133,7 +133,21 @@ export default function CustomerAISystems() {
         />
       </div>
 
-      <DataTable columns={columns} data={filtered} rowKey={(s) => s.id} loading={loading} emptyMessage={t("customerAISystems.noSystems")} />
+      <DataTable
+        columns={columns}
+        data={filtered}
+        rowKey={(s) => s.id}
+        loading={loading}
+        emptyContent={
+          <>
+            <Cpu className="h-10 w-10 text-muted-foreground/40" />
+            <p className="text-sm text-card-foreground/60 max-w-xs">No AI systems registered yet. Add your first system to start tracking governance and compliance.</p>
+            <Button variant="outline" size="sm" onClick={() => setShowCreate(true)} className="gap-2">
+              <Plus className="h-3.5 w-3.5" /> Register AI System
+            </Button>
+          </>
+        }
+      />
     </div>
   );
 }
