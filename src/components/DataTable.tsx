@@ -17,11 +17,12 @@ interface DataTableProps<T> {
   data: T[];
   rowKey: (row: T) => string;
   emptyMessage?: string;
+  emptyContent?: ReactNode;
   loading?: boolean;
   pageSize?: number;
 }
 
-export function DataTable<T>({ columns, data, rowKey, emptyMessage = "No results found", loading = false, pageSize = 15 }: DataTableProps<T>) {
+export function DataTable<T>({ columns, data, rowKey, emptyMessage = "No results found", emptyContent, loading = false, pageSize = 15 }: DataTableProps<T>) {
   const [page, setPage] = useState(0);
   const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
   const paged = data.slice(page * pageSize, (page + 1) * pageSize);
