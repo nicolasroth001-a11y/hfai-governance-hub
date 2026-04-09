@@ -64,8 +64,12 @@ export function DataTable<T>({ columns, data, rowKey, emptyMessage = "No results
               ))}
               {data.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="text-center text-card-foreground/40 py-16 text-body">
-                    {emptyMessage}
+                  <TableCell colSpan={columns.length} className="text-center py-16">
+                    {emptyContent ? (
+                      <div className="flex flex-col items-center gap-3">{emptyContent}</div>
+                    ) : (
+                      <span className="text-card-foreground/40 text-body">{emptyMessage}</span>
+                    )}
                   </TableCell>
                 </TableRow>
               )}
