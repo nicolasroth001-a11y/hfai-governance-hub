@@ -104,7 +104,7 @@ function CollapsibleSection({ section, currentTier }: { section: NavSection; cur
   );
 }
 
-export function RoleSidebar({ sections, roleLabel, roleDescription, items, extraSections }: RoleSidebarProps) {
+export function RoleSidebar({ sections = [], roleLabel, roleDescription, items, extraSections }: RoleSidebarProps) {
   const { subscription } = useAuth();
   const currentTier: TierKey = subscription?.tier ?? "free";
 
