@@ -139,7 +139,7 @@ export default function PilotSignup() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Demo overlay */}
-      {showDemo && <FullDemoExperience onClose={() => setShowDemo(false)} />}
+      <FullDemoExperience open={showDemo} onClose={() => setShowDemo(false)} />
 
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 bg-background/80 backdrop-blur-xl">
