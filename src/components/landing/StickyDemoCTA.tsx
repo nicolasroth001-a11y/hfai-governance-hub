@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, X } from "lucide-react";
+import { BarChart3, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-const CALENDLY_URL = "https://calendly.com/nicolasroth001/hfai-demo";
 
 export function StickyDemoCTA() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show after scrolling 600px
       setVisible(window.scrollY > 600);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -39,21 +38,21 @@ export function StickyDemoCTA() {
           </button>
           <div className="flex items-start gap-3">
             <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <Calendar className="h-4 w-4 text-primary" />
+              <BarChart3 className="h-4 w-4 text-primary" />
             </div>
             <div className="space-y-1.5">
               <p className="text-xs font-semibold text-foreground leading-tight">
-                {t("stickyDemo.title")}
+                {t("stickyDemo.title", { defaultValue: "Are you EU AI Act ready?" })}
               </p>
               <p className="text-[10px] text-muted-foreground leading-snug">
-                {t("stickyDemo.desc")}
+                {t("stickyDemo.desc", { defaultValue: "2-min assessment. Instant score + free PDF report." })}
               </p>
               <Button
                 size="sm"
                 className="h-7 text-[11px] gap-1 w-full"
-                onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}
+                onClick={() => navigate("/readiness-assessment")}
               >
-                <Calendar className="h-3 w-3" /> {t("stickyDemo.cta")}
+                <BarChart3 className="h-3 w-3" /> Check Readiness <ArrowRight className="h-3 w-3" />
               </Button>
             </div>
           </div>
