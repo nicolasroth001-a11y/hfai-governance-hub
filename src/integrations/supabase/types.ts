@@ -1515,7 +1515,63 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_blog_posts: {
+        Row: {
+          author_name: string | null
+          content: string | null
+          created_at: string | null
+          excerpt: string | null
+          featured: boolean | null
+          id: string | null
+          meta_description: string | null
+          meta_title: string | null
+          published_at: string | null
+          read_time: string | null
+          slug: string | null
+          source_url: string | null
+          status: string | null
+          tags: string[] | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          author_name?: string | null
+          content?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          read_time?: string | null
+          slug?: string | null
+          source_url?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          author_name?: string | null
+          content?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          read_time?: string | null
+          slug?: string | null
+          source_url?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       delete_email: {
