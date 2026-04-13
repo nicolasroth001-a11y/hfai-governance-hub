@@ -30,7 +30,7 @@ serve(async (req) => {
     }
 
     // Resend free tier only allows sending to the account owner's email
-    const RECIPIENT = 'nicolasroth@hfai.org';
+    const RECIPIENT = 'nicolasroth@hfa-i.org';
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
