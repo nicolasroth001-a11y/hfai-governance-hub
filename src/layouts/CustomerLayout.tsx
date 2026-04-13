@@ -8,7 +8,7 @@ import {
   Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp,
   Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2,
   Database, GraduationCap, ShieldAlert, FileArchive, FileWarning, Globe2,
-  Fingerprint, Target, FileSpreadsheet,
+  Fingerprint, Target, FileSpreadsheet, Radar, FileOutput,
 } from "lucide-react";
 
 export default function CustomerLayout() {
@@ -38,6 +38,8 @@ export default function CustomerLayout() {
         { title: t("sidebar.scheduledAudits"), url: "/customer/scheduled-audits", icon: CalendarClock },
         { title: t("sidebar.vendorRisk"), url: "/customer/vendor-risk", icon: Building2 },
         { title: t("sidebar.dataLineage"), url: "/customer/data-lineage", icon: Database },
+        { title: "Shadow AI Discovery", url: "/customer/shadow-ai-discovery", icon: Radar },
+        { title: "Evidence Synthesis", url: "/customer/evidence-synthesis", icon: FileOutput },
       ],
     },
     {
