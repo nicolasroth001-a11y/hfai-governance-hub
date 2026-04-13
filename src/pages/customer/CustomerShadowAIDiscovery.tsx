@@ -381,19 +381,58 @@ export default function CustomerShadowAIDiscovery() {
           </div>
         )}
 
+        {/* What is Shadow AI */}
+        <Card className="border-primary/10">
+          <CardHeader>
+            <CardTitle className="text-sm flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-primary" />
+              What is Shadow AI?
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <strong className="text-foreground">Shadow AI</strong> refers to AI systems, models, or services being used
+              within your organization that haven't been formally registered in your governance inventory. This is a major
+              compliance risk — under the <strong className="text-foreground">EU AI Act (Article 9)</strong>, all high-risk
+              AI systems must be inventoried, risk-classified, and subject to oversight.
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Shadow AI typically emerges when teams adopt AI tools (like ChatGPT, Copilot, or custom models) without
+              going through formal approval processes. Without visibility, these systems operate outside your compliance
+              boundary, creating regulatory exposure.
+            </p>
+          </CardContent>
+        </Card>
+
         {/* How it works */}
         <Card>
           <CardHeader>
             <CardTitle className="text-sm">How Shadow AI Discovery Works</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              This tool automatically scans your event telemetry to find AI systems that are generating events but
+              aren't in your registered inventory. Here's the process:
+            </p>
             <div className="grid sm:grid-cols-3 gap-4">
               {[
-                { icon: Activity, title: "Telemetry Scan", desc: "Analyzes all AI events for unique system identifiers, providers, and models." },
-                { icon: Radar, title: "Cross-Reference", desc: "Compares detected systems against your registered AI inventory to find gaps." },
-                { icon: Shield, title: "One-Click Register", desc: "Instantly add discovered systems to your inventory and bring them under governance." },
+                {
+                  icon: Activity,
+                  title: "1. Telemetry Scan",
+                  desc: "We analyze all AI events flowing through your integration, extracting unique system identifiers, provider names, and model types from event metadata.",
+                },
+                {
+                  icon: Radar,
+                  title: "2. Cross-Reference",
+                  desc: "Each detected system is compared against your registered AI inventory. Systems that don't match any registered entry are flagged as 'Shadow AI'.",
+                },
+                {
+                  icon: Shield,
+                  title: "3. One-Click Register",
+                  desc: "Shadow systems can be instantly added to your AI inventory with a single click, bringing them under full governance and compliance coverage.",
+                },
               ].map((step) => (
-                <div key={step.title} className="flex items-start gap-3">
+                <div key={step.title} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
                   <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <step.icon className="h-4 w-4 text-primary" />
                   </div>
@@ -404,6 +443,9 @@ export default function CustomerShadowAIDiscovery() {
                 </div>
               ))}
             </div>
+            <p className="text-[11px] text-muted-foreground italic">
+              💡 Tip: Run a scan regularly (we recommend weekly) to catch newly adopted AI tools before they create compliance gaps.
+            </p>
           </CardContent>
         </Card>
       </div>

@@ -420,23 +420,50 @@ export default function CustomerEvidenceSynthesis() {
           </div>
         )}
 
-        {/* Info cards */}
+        {/* What is Evidence Synthesis */}
+        <Card className="border-primary/10">
+          <CardHeader>
+            <CardTitle className="text-sm flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-primary" />
+              What is Evidence Synthesis?
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              When regulators or auditors assess your AI compliance, they need <strong className="text-foreground">documented proof</strong> that
+              your governance controls are actually working — not just that policies exist on paper. This is called an
+              <strong className="text-foreground"> evidence package</strong>.
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Traditionally, compiling this evidence takes weeks of manual work: pulling logs, gathering review records,
+              cross-referencing regulations. <strong className="text-foreground">Evidence Synthesis automates this entirely</strong> by
+              aggregating data from 9 live governance sources and mapping each to the specific regulatory articles that require it
+              (EU AI Act, NIST AI RMF, ISO 42001).
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              The exported PDF or JSON package is ready to hand directly to auditors, legal counsel, or regulatory bodies
+              as proof of your compliance posture.
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* How it works */}
         <div className="grid sm:grid-cols-3 gap-4">
           {[
             {
               icon: Activity,
               title: "Telemetry-Driven",
-              desc: "Evidence is collected from live platform data — not manual attestation or self-reported forms.",
+              desc: "Evidence is collected from live platform data — not manual attestation or self-reported forms. Every record is backed by real system activity.",
             },
             {
               icon: Shield,
               title: "Regulator-Ready",
-              desc: "Maps directly to EU AI Act articles, NIST AI RMF functions, and ISO 42001 clauses.",
+              desc: "Each evidence category maps directly to specific EU AI Act articles, NIST AI RMF functions, and ISO 42001 clauses — so auditors see exactly what they need.",
             },
             {
               icon: RefreshCw,
               title: "Always Current",
-              desc: "Re-generate at any time to capture the latest compliance posture. No stale evidence.",
+              desc: "Re-generate at any time to capture the latest compliance posture. Unlike static reports, your evidence package is never stale.",
             },
           ].map((card) => (
             <Card key={card.title}>
