@@ -37,6 +37,7 @@ import BlogPostPage from "./pages/blog/BlogPostPage";
 import BlogSubmit from "./pages/blog/BlogSubmit";
 import EUAIActOmnibusVII from "./pages/blog/EUAIActOmnibusVII";
 import Unsubscribe from "./pages/Unsubscribe";
+import ReadinessAssessment from "./pages/ReadinessAssessment";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CustomerViolations from "./pages/customer/CustomerViolations";
