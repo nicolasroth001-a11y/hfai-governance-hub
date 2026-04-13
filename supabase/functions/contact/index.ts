@@ -39,7 +39,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'HFAI Contact Form <onboarding@resend.dev>',
+        from: 'HFAI Team <noreply@hfa-i.org>',
         to: [RECIPIENT],
         reply_to: email,
         subject: `New inquiry from ${name} (${company || 'N/A'})`,

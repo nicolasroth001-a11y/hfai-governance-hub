@@ -4,7 +4,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2'
 import { TEMPLATES } from '../_shared/transactional-email-templates/registry.ts'
 
 // Configuration baked in at scaffold time
-const SITE_NAME = "HFAI Governance Hub"
+const SITE_NAME = "HFAI Team"
 const SENDER_DOMAIN = "notify.hfa-i.org"
 const FROM_DOMAIN = "hfa-i.org"
 
