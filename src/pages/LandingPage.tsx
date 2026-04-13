@@ -12,8 +12,6 @@ import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
-import { LeadCapture } from "@/components/landing/LeadCapture";
-import { CountdownTimer } from "@/components/landing/CountdownTimer";
 import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
 import { FounderSection } from "@/components/landing/FounderSection";
 import { StickyDemoCTA } from "@/components/landing/StickyDemoCTA";
@@ -23,6 +21,8 @@ import { ExposureCheck } from "@/components/landing/ExposureCheck";
 import { SocialProof } from "@/components/landing/SocialProof";
 import { PricingPreview } from "@/components/landing/PricingPreview";
 import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
+import { CountdownTimer } from "@/components/landing/CountdownTimer";
+import { ExitIntentCapture } from "@/components/landing/ExitIntentCapture";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const fadeUp = {
@@ -68,8 +68,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               {t("nav.signIn")}
             </Button>
-            <Button size="sm" className="text-xs gap-1" onClick={() => navigate("/signup/customer")}>
-              {t("nav.startFree")} <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1" onClick={() => navigate("/readiness-assessment")}>
+              Check Readiness <ArrowRight className="h-3 w-3" />
             </Button>
             <LanguageSwitcher />
           </div>
@@ -104,14 +104,15 @@ export default function LandingPage() {
             dangerouslySetInnerHTML={{ __html: t("landing.heroSubtitle") }}
           />
 
+          {/* Primary CTA: Readiness Assessment (micro-commitment with immediate value) */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 justify-center items-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("landing.heroCta")} <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
+              <BarChart3 className="h-4 w-4" /> Check Your AI Readiness <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
               <Eye className="h-4 w-4" /> {t("landing.heroDemo")}
@@ -124,10 +125,15 @@ export default function LandingPage() {
             transition={{ delay: 0.6 }}
             className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
           >
-            {(["landing.trustNoCc", "landing.trust2Min", "landing.trustNoCode", "landing.trustFrameworks"] as const).map((key) => (
-              <div key={key} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
+            {[
+              "2-minute assessment",
+              "Instant compliance score", 
+              "Free PDF report",
+              "No account required",
+            ].map((text) => (
+              <div key={text} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
                 <CheckCircle className="h-3 w-3 text-primary/70" />
-                <span>{t(key)}</span>
+                <span>{text}</span>
               </div>
             ))}
           </motion.div>
@@ -142,6 +148,11 @@ export default function LandingPage() {
       {/* ── Credibility Signals ── */}
       <section className="px-6 pb-16 sm:pb-24">
         <CredibilitySignals />
+      </section>
+
+      {/* ── Countdown Timer (urgency) ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <CountdownTimer />
       </section>
 
       {/* ── Product Screenshot ── */}
@@ -166,11 +177,6 @@ export default function LandingPage() {
             {t("landing.screenshotCaption")}
           </p>
         </motion.div>
-      </section>
-
-      {/* ── Countdown Timer ── */}
-      <section className="px-6 pb-20 sm:pb-24">
-        <CountdownTimer />
       </section>
 
       {/* ── "Are You Exposed?" Check ── */}
@@ -350,7 +356,7 @@ export default function LandingPage() {
         <PricingPreview />
       </section>
 
-      {/* ── Final CTA ── */}
+      {/* ── Final CTA — focused on assessment ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -365,20 +371,20 @@ export default function LandingPage() {
             {t("landing.finalCtaDesc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/signup/customer")}>
-              {t("landing.finalCtaCta")} <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
+              <BarChart3 className="h-4 w-4" /> Check Your Readiness <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
               <Calendar className="h-4 w-4" /> {t("landing.finalCtaDemo")}
             </Button>
           </div>
+          <p className="text-[11px] text-muted-foreground/50 mt-4">
+            Already assessed? <button className="text-primary hover:underline" onClick={() => navigate("/signup/customer")}>Create your free account →</button>
+          </p>
         </motion.div>
       </section>
 
-      {/* ── Lead Capture + Newsletter ── */}
-      <section className="px-6 pb-20 sm:pb-24">
-        <LeadCapture />
-      </section>
+      {/* ── Newsletter ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <NewsletterSignup />
       </section>
@@ -433,11 +439,12 @@ export default function LandingPage() {
       </footer>
       <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
       <StickyDemoCTA />
+      <ExitIntentCapture />
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
-        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/signup/customer")}>
-          {t("landing.finalCtaCta")} <ArrowRight className="h-3.5 w-3.5" />
+        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/readiness-assessment")}>
+          <BarChart3 className="h-3.5 w-3.5" /> Check Readiness <ArrowRight className="h-3.5 w-3.5" />
         </Button>
         <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => setDemoOpen(true)}>
           Demo
