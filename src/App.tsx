@@ -75,6 +75,8 @@ import CustomerEUDatabase from "./pages/customer/CustomerEUDatabase";
 import CustomerISO42001Controls from "./pages/customer/CustomerISO42001Controls";
 import CustomerAIImpactAssessment from "./pages/customer/CustomerAIImpactAssessment";
 import CustomerStatementOfApplicability from "./pages/customer/CustomerStatementOfApplicability";
+import CustomerShadowAIDiscovery from "./pages/customer/CustomerShadowAIDiscovery";
+import CustomerEvidenceSynthesis from "./pages/customer/CustomerEvidenceSynthesis";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -187,6 +189,8 @@ const App = () => {
             <Route path="iso42001-controls" element={<CustomerISO42001Controls />} />
             <Route path="ai-impact-assessment" element={<CustomerAIImpactAssessment />} />
             <Route path="statement-of-applicability" element={<CustomerStatementOfApplicability />} />
+            <Route path="shadow-ai-discovery" element={<CustomerShadowAIDiscovery />} />
+            <Route path="evidence-synthesis" element={<CustomerEvidenceSynthesis />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
