@@ -39,7 +39,7 @@ export const template = {
   component: ContactInquiryEmail,
   subject: (data: Record<string, any>) =>
     `New inquiry from ${data.name || 'someone'} (${data.company || 'N/A'})`,
-  to: 'nicolasroth@hfa-i.org',
+  to: Deno.env.get('CONTACT_EMAIL') || 'nicolasroth001@gmail.com',
   displayName: 'Contact form inquiry (to admin)',
   previewData: { name: 'Jane Doe', company: 'Acme Inc.', email: 'jane@acme.com', message: 'I would like to learn more about your AI governance platform.' },
 } satisfies TemplateEntry
