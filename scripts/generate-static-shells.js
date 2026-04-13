@@ -74,6 +74,10 @@ const routeMeta = {
     title: "Unsubscribe — HFAI",
     description: "Manage your HFAI email preferences.",
   },
+  "/readiness-assessment": {
+    title: "AI Governance Readiness Assessment — HFAI",
+    description: "Free 2-minute assessment: check your AI governance readiness against the EU AI Act. Get an instant score and personalized compliance report.",
+  },
 };
 
 function generateShell(rootHtml, route, meta) {
