@@ -37,6 +37,7 @@ import BlogPostPage from "./pages/blog/BlogPostPage";
 import BlogSubmit from "./pages/blog/BlogSubmit";
 import EUAIActOmnibusVII from "./pages/blog/EUAIActOmnibusVII";
 import Unsubscribe from "./pages/Unsubscribe";
+import ReadinessAssessment from "./pages/ReadinessAssessment";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CustomerViolations from "./pages/customer/CustomerViolations";
@@ -137,6 +138,7 @@ const App = () => {
           <Route path="/blog/eu-ai-act-omnibus-vii-timeline-update" element={<EUAIActOmnibusVII />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
+          <Route path="/readiness-assessment" element={<ReadinessAssessment />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, AlertTriangle, UserCheck, ChevronRight,
-  Cpu, Zap, Eye, CheckCircle, Scale, Clock, ArrowRight, Calendar,
+  Cpu, Zap, Eye, CheckCircle, Scale, Clock, ArrowRight, Calendar, BarChart3,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
@@ -192,6 +192,24 @@ export default function LandingPage() {
           </p>
         </motion.div>
         <ExposureCheck />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-8 text-center"
+        >
+          <p className="text-sm text-muted-foreground mb-3">Want a deeper analysis?</p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs gap-2"
+            onClick={() => navigate("/readiness-assessment")}
+          >
+            <BarChart3 className="h-3.5 w-3.5" />
+            Take the Full Readiness Assessment
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
+        </motion.div>
       </section>
 
       {/* ── How HFAI Fixes This ── */}
