@@ -138,6 +138,7 @@ const App = () => {
           <Route path="/blog/eu-ai-act-omnibus-vii-timeline-update" element={<EUAIActOmnibusVII />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
+          <Route path="/readiness-assessment" element={<ReadinessAssessment />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login/customer" element={<CustomerLogin />} />
