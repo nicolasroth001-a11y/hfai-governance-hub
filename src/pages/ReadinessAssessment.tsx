@@ -189,6 +189,25 @@ export default function ReadinessAssessment() {
           assessment_type: "readiness",
         },
       });
+      // Update the most recent assessment result with the email
+      const categories = [...new Set(QUESTIONS.map(q => q.category))];
+      const catScores: Record<string, number> = {};
+      categories.forEach(cat => {
+        const qs = QUESTIONS.filter(q => q.category === cat);
+        const catTotal = qs.reduce((s, q) => s + (answers[q.id] || 0), 0);
+        catScores[cat] = Math.round((catTotal / (qs.length * 2)) * 100);
+      });
+      await supabase.from("assessment_results" as any).insert({
+        email,
+        company_name: companyName || null,
+        assessment_type: "readiness",
+        score: totalScore,
+        max_score: MAX_SCORE,
+        answers,
+        category_scores: catScores,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent,
+      });
       setReportSent(true);
       toast({ title: "Report sent!", description: "Check your inbox for your personalized governance readiness report." });
     } catch {
