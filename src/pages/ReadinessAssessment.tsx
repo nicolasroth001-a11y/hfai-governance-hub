@@ -142,10 +142,34 @@ export default function ReadinessAssessment() {
   const progress = step === 0 ? 0 : step > QUESTIONS.length ? 100 : Math.round((step / QUESTIONS.length) * 100);
 
   const handleAnswer = (questionId: string, value: number) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }));
+    const newAnswers = { ...answers, [questionId]: value };
+    setAnswers(newAnswers);
+
+    const isLastQuestion = step >= QUESTIONS.length;
     setTimeout(() => {
-      if (step < QUESTIONS.length) setStep(step + 1);
-      else setStep(QUESTIONS.length + 1);
+      if (!isLastQuestion) {
+        setStep(step + 1);
+      } else {
+        setStep(QUESTIONS.length + 1);
+        // Persist completed assessment
+        const finalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
+        const categories = [...new Set(QUESTIONS.map(q => q.category))];
+        const catScores: Record<string, number> = {};
+        categories.forEach(cat => {
+          const qs = QUESTIONS.filter(q => q.category === cat);
+          const catTotal = qs.reduce((s, q) => s + (newAnswers[q.id] || 0), 0);
+          catScores[cat] = Math.round((catTotal / (qs.length * 2)) * 100);
+        });
+        supabase.from("assessment_results" as any).insert({
+          assessment_type: "readiness",
+          score: finalScore,
+          max_score: MAX_SCORE,
+          answers: newAnswers,
+          category_scores: catScores,
+          referrer: document.referrer || null,
+          user_agent: navigator.userAgent,
+        }).then(() => {});
+      }
     }, 300);
   };
 
@@ -164,6 +188,25 @@ export default function ReadinessAssessment() {
           score: pct,
           assessment_type: "readiness",
         },
+      });
+      // Update the most recent assessment result with the email
+      const categories = [...new Set(QUESTIONS.map(q => q.category))];
+      const catScores: Record<string, number> = {};
+      categories.forEach(cat => {
+        const qs = QUESTIONS.filter(q => q.category === cat);
+        const catTotal = qs.reduce((s, q) => s + (answers[q.id] || 0), 0);
+        catScores[cat] = Math.round((catTotal / (qs.length * 2)) * 100);
+      });
+      await supabase.from("assessment_results" as any).insert({
+        email,
+        company_name: companyName || null,
+        assessment_type: "readiness",
+        score: totalScore,
+        max_score: MAX_SCORE,
+        answers,
+        category_scores: catScores,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent,
       });
       setReportSent(true);
       toast({ title: "Report sent!", description: "Check your inbox for your personalized governance readiness report." });

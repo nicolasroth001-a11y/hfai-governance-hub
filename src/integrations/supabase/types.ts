@@ -214,6 +214,51 @@ export type Database = {
         }
         Relationships: []
       }
+      assessment_results: {
+        Row: {
+          answers: Json | null
+          assessment_type: string
+          category_scores: Json | null
+          company_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          max_score: number
+          referrer: string | null
+          score: number
+          score_percentage: number | null
+          user_agent: string | null
+        }
+        Insert: {
+          answers?: Json | null
+          assessment_type?: string
+          category_scores?: Json | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          max_score?: number
+          referrer?: string | null
+          score?: number
+          score_percentage?: number | null
+          user_agent?: string | null
+        }
+        Update: {
+          answers?: Json | null
+          assessment_type?: string
+          category_scores?: Json | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          max_score?: number
+          referrer?: string | null
+          score?: number
+          score_percentage?: number | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
