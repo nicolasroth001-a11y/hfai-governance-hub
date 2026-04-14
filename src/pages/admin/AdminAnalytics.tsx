@@ -45,6 +45,17 @@ interface NewsletterSub {
   created_at: string;
 }
 
+interface AssessmentEntry {
+  id: string;
+  email: string | null;
+  company_name: string | null;
+  score: number;
+  max_score: number;
+  score_percentage: number | null;
+  category_scores: Record<string, number> | null;
+  created_at: string;
+}
+
 interface FunnelStep {
   label: string;
   value: number;
@@ -67,6 +78,7 @@ export default function AdminAnalytics() {
   const [newsletterSubs, setNewsletterSubs] = useState<NewsletterSub[]>([]);
   const [funnel, setFunnel] = useState<FunnelStep[]>([]);
   const [assessmentCount, setAssessmentCount] = useState(0);
+  const [assessmentResults, setAssessmentResults] = useState<AssessmentEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,6 +93,7 @@ export default function AdminAnalytics() {
           newsletterResult,
           pageViewsResult,
           orgsResult,
+          assessmentResultsResult,
         ] = await Promise.all([
           supabase.functions.invoke("analytics-data"),
           supabase.from("profiles").select("id, email, name, role, created_at, org_id").order("created_at", { ascending: false }),
@@ -88,6 +101,7 @@ export default function AdminAnalytics() {
           supabase.from("newsletter_subscribers").select("email, status, created_at").order("created_at", { ascending: false }),
           supabase.from("page_views").select("page, created_at").order("created_at", { ascending: false }),
           supabase.from("organizations").select("id, name"),
+          supabase.from("assessment_results").select("id, email, company_name, score, max_score, score_percentage, category_scores, created_at").order("created_at", { ascending: false }),
         ]);
 
         // Analytics data
@@ -130,6 +144,7 @@ export default function AdminAnalytics() {
 
         // Newsletter
         setNewsletterSubs(newsletterResult.data ?? []);
+        setAssessmentResults((assessmentResultsResult.data ?? []) as AssessmentEntry[]);
 
         // Assessment count from page_views
         const assessments = (pageViewsResult.data ?? []).filter((pv: any) =>
@@ -398,7 +413,49 @@ export default function AdminAnalytics() {
         )}
       </ContentCard>
 
-      {/* ── Row 7: Top Pages + Referrers ──────────────────── */}
+      {/* ── Row 7: Assessment Results ─────────────────────── */}
+      <ContentCard icon={FileCheck} title={`Assessment Results (${assessmentResults.length} completed)`}>
+        {assessmentResults.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No assessments completed yet</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-left">
+                  <th className="py-2 pr-4 font-medium text-muted-foreground">Email</th>
+                  <th className="py-2 pr-4 font-medium text-muted-foreground">Company</th>
+                  <th className="py-2 pr-4 font-medium text-muted-foreground text-right">Score</th>
+                  <th className="py-2 pr-4 font-medium text-muted-foreground text-right">%</th>
+                  <th className="py-2 font-medium text-muted-foreground text-right">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {assessmentResults.map((a) => {
+                  const pct = a.score_percentage ?? (a.max_score > 0 ? Math.round((a.score / a.max_score) * 100) : 0);
+                  return (
+                    <tr key={a.id} className="border-b border-border/50">
+                      <td className="py-2 pr-4 font-mono text-xs text-card-foreground">{a.email || "—"}</td>
+                      <td className="py-2 pr-4 text-xs text-card-foreground">{a.company_name || "—"}</td>
+                      <td className="py-2 pr-4 text-right text-card-foreground text-xs">{a.score}/{a.max_score}</td>
+                      <td className="py-2 pr-4 text-right">
+                        <Badge variant="outline" className={`text-[10px] ${pct >= 65 ? "text-emerald-600" : pct >= 35 ? "text-yellow-600" : "text-destructive"}`}>
+                          {pct}%
+                        </Badge>
+                      </td>
+                      <td className="py-2 text-right text-xs text-muted-foreground">
+                        {format(new Date(a.created_at), "MMM d, yyyy")}
+                        <span className="block text-[10px]">{formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </ContentCard>
+
+      {/* ── Row 8: Top Pages + Referrers ──────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ContentCard icon={BarChart3} title="Top Pages">
           <div className="overflow-x-auto">
