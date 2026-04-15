@@ -12,6 +12,7 @@ export interface TierConfig {
   trial_days: number;
   features: string[];
   highlighted?: boolean;
+  coupon?: string;
 }
 
 export const TIERS: Record<TierKey, TierConfig> = {

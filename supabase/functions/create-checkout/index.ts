@@ -47,17 +47,21 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated", { email: user.email });
 
-    // Get requested price from body (default to Starter)
+    // Get requested price and coupon from body (default to Starter)
     let priceId = "price_1T86TdL0paaPta3ZTOMYma2o";
+    let couponCode: string | undefined;
     try {
       const body = await req.json();
       if (body?.price_id && VALID_PRICES.has(body.price_id)) {
         priceId = body.price_id;
       }
+      if (body?.coupon && typeof body.coupon === "string") {
+        couponCode = body.coupon.trim();
+      }
     } catch {
       // No body or invalid JSON — use default
     }
-    logStep("Price selected", { priceId });
+    logStep("Price selected", { priceId, couponCode });
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
 
@@ -70,17 +74,24 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "http://localhost:5173";
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams: any = {
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
-      subscription_data: {
-        trial_period_days: 30,
-      },
       success_url: `${origin}/customer/dashboard?checkout=success`,
       cancel_url: `${origin}/pricing/contact?checkout=cancelled`,
-    });
+    };
+
+    // Apply coupon if provided; skip trial when coupon covers the initial period
+    if (couponCode) {
+      sessionParams.discounts = [{ coupon: couponCode }];
+      logStep("Coupon applied", { couponCode });
+    } else {
+      sessionParams.subscription_data = { trial_period_days: 30 };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     logStep("Checkout session created", { sessionId: session.id });
 
