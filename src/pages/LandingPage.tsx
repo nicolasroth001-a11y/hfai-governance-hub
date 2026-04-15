@@ -370,7 +370,7 @@ export default function LandingPage() {
         <PricingPreview />
       </section>
 
-      {/* ── Final CTA — focused on assessment ── */}
+      {/* ── Final CTA — Book Demo focused ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -379,21 +379,21 @@ export default function LandingPage() {
           className="mx-auto max-w-3xl text-center rounded-2xl border border-primary/20 bg-primary/5 p-10 sm:p-14"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-            {t("landing.finalCtaTitle")}
+            Ready to Be Audit-Ready in 14 Days?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-            {t("landing.finalCtaDesc")}
+            Talk to our team. We'll map your AI systems to EU AI Act requirements and show you exactly what compliance looks like for your organization.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
-              <BarChart3 className="h-4 w-4" /> Check Your Readiness <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> Book Your Demo <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-              <Calendar className="h-4 w-4" /> {t("landing.finalCtaDemo")}
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
+              <BarChart3 className="h-4 w-4" /> Check Readiness First
             </Button>
           </div>
           <p className="text-[11px] text-muted-foreground/50 mt-4">
-            Already assessed? <button className="text-primary hover:underline" onClick={() => navigate("/signup/customer")}>Create your free account →</button>
+            Or <button className="text-primary hover:underline" onClick={() => navigate("/signup/customer")}>start your free pilot →</button> — no credit card required
           </p>
         </motion.div>
       </section>
