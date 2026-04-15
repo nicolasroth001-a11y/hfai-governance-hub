@@ -1061,6 +1061,117 @@ export type Database = {
           },
         ]
       }
+      reviewer_overrides: {
+        Row: {
+          created_at: string
+          id: string
+          org_id: string
+          original_decision: string | null
+          original_review_id: string
+          override_decision: string
+          override_reason: string
+          override_reviewer_id: string
+          violation_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          org_id: string
+          original_decision?: string | null
+          original_review_id: string
+          override_decision: string
+          override_reason?: string
+          override_reviewer_id: string
+          violation_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          org_id?: string
+          original_decision?: string | null
+          original_review_id?: string
+          override_decision?: string
+          override_reason?: string
+          override_reviewer_id?: string
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviewer_overrides_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviewer_overrides_original_review_id_fkey"
+            columns: ["original_review_id"]
+            isOneToOne: false
+            referencedRelation: "human_reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviewer_overrides_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviewer_permissions: {
+        Row: {
+          can_approve_deployments: boolean
+          can_manage_rules: boolean
+          can_manage_systems: boolean
+          can_override_decisions: boolean
+          can_review_violations: boolean
+          created_at: string
+          id: string
+          is_backup_reviewer: boolean
+          org_id: string
+          reviewer_id: string
+          reviewer_type: Database["public"]["Enums"]["reviewer_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          can_approve_deployments?: boolean
+          can_manage_rules?: boolean
+          can_manage_systems?: boolean
+          can_override_decisions?: boolean
+          can_review_violations?: boolean
+          created_at?: string
+          id?: string
+          is_backup_reviewer?: boolean
+          org_id: string
+          reviewer_id: string
+          reviewer_type?: Database["public"]["Enums"]["reviewer_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          can_approve_deployments?: boolean
+          can_manage_rules?: boolean
+          can_manage_systems?: boolean
+          can_override_decisions?: boolean
+          can_review_violations?: boolean
+          created_at?: string
+          id?: string
+          is_backup_reviewer?: boolean
+          org_id?: string
+          reviewer_id?: string
+          reviewer_type?: Database["public"]["Enums"]["reviewer_type"]
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviewer_permissions_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       root_cause_analyses: {
         Row: {
           ai_diagnosis: string | null
@@ -1664,6 +1775,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "reviewer" | "customer"
+      reviewer_type: "company_assigned" | "hfai_appointed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1792,6 +1904,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "reviewer", "customer"],
+      reviewer_type: ["company_assigned", "hfai_appointed"],
     },
   },
 } as const
