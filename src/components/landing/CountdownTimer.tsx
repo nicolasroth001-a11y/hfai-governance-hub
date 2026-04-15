@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { AlertTriangle, Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const GPAI_DEADLINE = new Date("2026-08-01T00:00:00Z");
+const GPAI_DEADLINE = new Date("2026-08-02T00:00:00Z");
 
 function calcTimeLeft(target: Date) {
   const now = new Date();

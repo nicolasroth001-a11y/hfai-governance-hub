@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const DEADLINES = [
-  { key: "gpai" as const, date: new Date("2026-08-01"), tag: "EU AI Act" },
-  { key: "highRiskStandalone" as const, date: new Date("2027-12-01"), tag: "EU AI Act" },
-  { key: "highRiskEmbedded" as const, date: new Date("2028-08-01"), tag: "EU AI Act" },
+  { key: "gpai" as const, date: new Date("2026-08-02"), tag: "EU AI Act" },
+  { key: "highRiskStandalone" as const, date: new Date("2027-12-02"), tag: "EU AI Act" },
+  { key: "highRiskEmbedded" as const, date: new Date("2028-08-02"), tag: "EU AI Act" },
 ];
 
 type Stage = "not_started" | "early" | "in_progress" | "advanced";
