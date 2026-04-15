@@ -210,6 +210,44 @@ const response = await fetch("${INGEST_BASE}", {
         </TabsContent>
       </Tabs>
 
+      {/* ── Reviewer Setup Guide ── */}
+      <ContentCard icon={UserCheck} title="Set Up Human Reviewers">
+        <div className="space-y-4">
+          <p className="text-sm text-card-foreground/70">
+            Human reviewers are essential for EU AI Act Article 14 compliance. They approve, reject, or escalate violations flagged by your governance rules.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-lg border border-border bg-background/40 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-semibold text-primary">1</span>
+                <Users className="h-4 w-4 text-primary/70" />
+              </div>
+              <span className="text-sm font-medium text-card-foreground">Admin Assigns Reviewer</span>
+              <span className="text-xs text-card-foreground/55 leading-relaxed block">Your HFAI administrator creates and assigns a reviewer to your organization.</span>
+            </div>
+            <div className="rounded-lg border border-border bg-background/40 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-semibold text-primary">2</span>
+                <Shield className="h-4 w-4 text-primary/70" />
+              </div>
+              <span className="text-sm font-medium text-card-foreground">Configure Permissions</span>
+              <span className="text-xs text-card-foreground/55 leading-relaxed block">You decide what your reviewers can do — manage rules, AI systems, or approve deployments.</span>
+            </div>
+            <div className="rounded-lg border border-border bg-background/40 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-semibold text-primary">3</span>
+                <UserCheck className="h-4 w-4 text-primary/70" />
+              </div>
+              <span className="text-sm font-medium text-card-foreground">Violations Get Reviewed</span>
+              <span className="text-xs text-card-foreground/55 leading-relaxed block">Critical violations are routed to reviewers with full context for human-in-the-loop oversight.</span>
+            </div>
+          </div>
+          <Button variant="outline" onClick={() => navigate("/customer/reviewer-settings")} className="w-full gap-2">
+            <Users className="h-4 w-4" /> Go to Reviewer Permissions <ArrowRight className="h-4 w-4 ml-auto" />
+          </Button>
+        </div>
+      </ContentCard>
+
       {/* ── CTAs ── */}
       <div className="grid gap-6 lg:grid-cols-2">
         <ContentCard icon={Plug} title={t("customerOnboarding.setUpIntegration")}>
