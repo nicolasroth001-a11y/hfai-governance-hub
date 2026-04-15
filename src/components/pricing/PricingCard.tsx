@@ -28,7 +28,7 @@ export function PricingCard({ tier, tierKey, isAuthenticated, isCurrentPlan, sub
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: { price_id: tier.price_id },
+        body: { price_id: tier.price_id, coupon: tier.coupon },
       });
       if (error) throw error;
       if (data?.url) window.open(data.url, "_blank");
