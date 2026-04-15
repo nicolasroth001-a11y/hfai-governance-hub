@@ -77,6 +77,7 @@ import CustomerAIImpactAssessment from "./pages/customer/CustomerAIImpactAssessm
 import CustomerStatementOfApplicability from "./pages/customer/CustomerStatementOfApplicability";
 import CustomerShadowAIDiscovery from "./pages/customer/CustomerShadowAIDiscovery";
 import CustomerEvidenceSynthesis from "./pages/customer/CustomerEvidenceSynthesis";
+import CustomerReviewerSettings from "./pages/customer/CustomerReviewerSettings";
 
 // Reviewer pages
 import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
@@ -191,6 +192,7 @@ const App = () => {
             <Route path="statement-of-applicability" element={<CustomerStatementOfApplicability />} />
             <Route path="shadow-ai-discovery" element={<CustomerShadowAIDiscovery />} />
             <Route path="evidence-synthesis" element={<CustomerEvidenceSynthesis />} />
+            <Route path="reviewer-settings" element={<CustomerReviewerSettings />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
