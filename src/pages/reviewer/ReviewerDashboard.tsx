@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { AlertTriangle, CheckCircle, Clock, UserCheck } from "lucide-react";
+import { AlertTriangle, CheckCircle, Clock, UserCheck, ShieldAlert, BookOpen, Settings2 } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ContentCard } from "@/components/ContentCard";
 import { SeverityBadge } from "@/components/SeverityBadge";
 import { StatusBadge } from "@/components/StatusBadge";
+import { Badge } from "@/components/ui/badge";
 import { fetchViolations } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { useReviewerPermissions } from "@/hooks/useReviewerPermissions";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
 export default function ReviewerDashboard() {
   const { t } = useTranslation();
   const { profile } = useAuth();
+  const { permissions, can, isHFAI, isBackup } = useReviewerPermissions();
   const [violations, setViolations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +41,21 @@ export default function ReviewerDashboard() {
   return (
     <div className="space-y-8">
       <SectionHeader title={t("reviewerDashboard.title")} description={t("reviewerDashboard.description")} />
+
+      {/* Permission Summary */}
+      {permissions && (
+        <ContentCard title="Your Permissions">
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="default" className="text-xs">Review Violations</Badge>
+            {can("can_manage_rules") && <Badge variant="secondary" className="text-xs">Manage Rules</Badge>}
+            {can("can_manage_systems") && <Badge variant="secondary" className="text-xs">Manage AI Systems</Badge>}
+            {can("can_approve_deployments") && <Badge variant="secondary" className="text-xs">Approve Deployments</Badge>}
+            {can("can_override_decisions") && (
+              <Badge variant="outline" className="text-xs border-amber-500/30 text-amber-500">Override Authority</Badge>
+            )}
+          </div>
+        </ContentCard>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title={t("reviewerDashboard.assignedToMe")} value={stats.assignedToMe} icon={UserCheck} />

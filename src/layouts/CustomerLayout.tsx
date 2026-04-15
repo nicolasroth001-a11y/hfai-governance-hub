@@ -8,7 +8,7 @@ import {
   Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp,
   Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2,
   Database, GraduationCap, ShieldAlert, FileArchive, FileWarning, Globe2,
-  Fingerprint, Target, FileSpreadsheet, Radar, FileOutput,
+  Fingerprint, Target, FileSpreadsheet, Radar, FileOutput, Users,
 } from "lucide-react";
 
 export default function CustomerLayout() {
@@ -73,6 +73,7 @@ export default function CustomerLayout() {
     {
       label: t("sidebar.settingsGroup", "Settings"),
       items: [
+        { title: "Reviewer Permissions", url: "/customer/reviewer-settings", icon: Users },
         { title: t("sidebar.notifications"), url: "/customer/notifications", icon: Bell, requiredTier: "starter" },
         { title: t("sidebar.auditLogs"), url: "/customer/logs", icon: ClipboardList, requiredTier: "pro" },
         { title: t("sidebar.security"), url: "/customer/security", icon: ShieldCheck },
