@@ -9,7 +9,7 @@ import { TestEventModal } from "@/components/TestEventModal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, BookOpen, Plug, Layers, Send, Zap, SkipForward, Key, Shield, CheckCircle, Circle } from "lucide-react";
+import { ArrowRight, BookOpen, Plug, Layers, Send, Zap, SkipForward, Key, Shield, CheckCircle, Circle, UserCheck, Users } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOnboardingProgress } from "@/hooks/useOnboardingProgress";
