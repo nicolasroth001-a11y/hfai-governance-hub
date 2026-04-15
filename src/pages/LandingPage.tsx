@@ -72,8 +72,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               {t("nav.signIn")}
             </Button>
-            <Button size="sm" className="text-xs gap-1" onClick={() => navigate("/readiness-assessment")}>
-              Check Readiness <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-3 w-3" /> Book Demo
             </Button>
             <LanguageSwitcher />
           </div>
@@ -108,18 +108,18 @@ export default function LandingPage() {
             dangerouslySetInnerHTML={{ __html: t("landing.heroSubtitle") }}
           />
 
-          {/* Primary CTA: Readiness Assessment (micro-commitment with immediate value) */}
+          {/* Primary CTA: Book Demo (high-touch enterprise sale) */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 justify-center items-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
-              <BarChart3 className="h-4 w-4" /> Check Your AI Readiness <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> Book a Demo <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
-              <Eye className="h-4 w-4" /> {t("landing.heroDemo")}
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
+              <BarChart3 className="h-4 w-4" /> Am I Required to Comply?
             </Button>
           </motion.div>
 
@@ -130,10 +130,10 @@ export default function LandingPage() {
             className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
           >
             {[
-              "2-minute assessment",
-              "Instant compliance score", 
-              "Free PDF report",
-              "No account required",
+              "Audit-ready in 14 days",
+              "5-minute integration",
+              "No code changes required",
+              "Free compliance assessment",
             ].map((text) => (
               <div key={text} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
                 <CheckCircle className="h-3 w-3 text-primary/70" />
