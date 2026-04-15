@@ -269,6 +269,16 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Time to Value ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <TimeToValue />
+      </section>
+
+      {/* ── ROI Calculator ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <ROICalculator />
+      </section>
+
       {/* ── Differentiation ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
