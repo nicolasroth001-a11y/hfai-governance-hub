@@ -23,7 +23,11 @@ import { PricingPreview } from "@/components/landing/PricingPreview";
 import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
 import { CountdownTimer } from "@/components/landing/CountdownTimer";
 import { ExitIntentCapture } from "@/components/landing/ExitIntentCapture";
+import { ROICalculator } from "@/components/landing/ROICalculator";
+import { TimeToValue } from "@/components/landing/TimeToValue";
 import dashboardPreview from "@/assets/dashboard-preview.png";
+
+const CALENDLY_URL = "https://calendly.com/nicolasroth001/hfai-demo";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -68,8 +72,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
               {t("nav.signIn")}
             </Button>
-            <Button size="sm" className="text-xs gap-1" onClick={() => navigate("/readiness-assessment")}>
-              Check Readiness <ArrowRight className="h-3 w-3" />
+            <Button size="sm" className="text-xs gap-1" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-3 w-3" /> Book Demo
             </Button>
             <LanguageSwitcher />
           </div>
@@ -104,18 +108,18 @@ export default function LandingPage() {
             dangerouslySetInnerHTML={{ __html: t("landing.heroSubtitle") }}
           />
 
-          {/* Primary CTA: Readiness Assessment (micro-commitment with immediate value) */}
+          {/* Primary CTA: Book Demo (high-touch enterprise sale) */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 justify-center items-center"
           >
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
-              <BarChart3 className="h-4 w-4" /> Check Your AI Readiness <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> Book a Demo <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => setDemoOpen(true)}>
-              <Eye className="h-4 w-4" /> {t("landing.heroDemo")}
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
+              <BarChart3 className="h-4 w-4" /> Am I Required to Comply?
             </Button>
           </motion.div>
 
@@ -126,10 +130,10 @@ export default function LandingPage() {
             className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
           >
             {[
-              "2-minute assessment",
-              "Instant compliance score", 
-              "Free PDF report",
-              "No account required",
+              "Audit-ready in 14 days",
+              "5-minute integration",
+              "No code changes required",
+              "Free compliance assessment",
             ].map((text) => (
               <div key={text} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
                 <CheckCircle className="h-3 w-3 text-primary/70" />
@@ -265,6 +269,16 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Time to Value ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <TimeToValue />
+      </section>
+
+      {/* ── ROI Calculator ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <ROICalculator />
+      </section>
+
       {/* ── Differentiation ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
@@ -356,7 +370,7 @@ export default function LandingPage() {
         <PricingPreview />
       </section>
 
-      {/* ── Final CTA — focused on assessment ── */}
+      {/* ── Final CTA — Book Demo focused ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -365,21 +379,21 @@ export default function LandingPage() {
           className="mx-auto max-w-3xl text-center rounded-2xl border border-primary/20 bg-primary/5 p-10 sm:p-14"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-            {t("landing.finalCtaTitle")}
+            Ready to Be Audit-Ready in 14 Days?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-            {t("landing.finalCtaDesc")}
+            Talk to our team. We'll map your AI systems to EU AI Act requirements and show you exactly what compliance looks like for your organization.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
-              <BarChart3 className="h-4 w-4" /> Check Your Readiness <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="text-base px-8 h-12 gap-2" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-4 w-4" /> Book Your Demo <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => window.open("https://calendly.com/nicolasroth001/hfai-demo", "_blank", "noopener,noreferrer")}>
-              <Calendar className="h-4 w-4" /> {t("landing.finalCtaDemo")}
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
+              <BarChart3 className="h-4 w-4" /> Check Readiness First
             </Button>
           </div>
           <p className="text-[11px] text-muted-foreground/50 mt-4">
-            Already assessed? <button className="text-primary hover:underline" onClick={() => navigate("/signup/customer")}>Create your free account →</button>
+            Or <button className="text-primary hover:underline" onClick={() => navigate("/signup/customer")}>start your free pilot →</button> — no credit card required
           </p>
         </motion.div>
       </section>
@@ -443,11 +457,11 @@ export default function LandingPage() {
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
-        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/readiness-assessment")}>
-          <BarChart3 className="h-3.5 w-3.5" /> Check Readiness <ArrowRight className="h-3.5 w-3.5" />
+        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+          <Calendar className="h-3.5 w-3.5" /> Book Demo
         </Button>
-        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => setDemoOpen(true)}>
-          Demo
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/readiness-assessment")}>
+          Am I Required?
         </Button>
       </div>
     </div>
