@@ -457,11 +457,11 @@ export default function LandingPage() {
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
-        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => navigate("/readiness-assessment")}>
-          <BarChart3 className="h-3.5 w-3.5" /> Check Readiness <ArrowRight className="h-3.5 w-3.5" />
+        <Button className="flex-1 text-sm h-10 gap-1.5" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+          <Calendar className="h-3.5 w-3.5" /> Book Demo
         </Button>
-        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => setDemoOpen(true)}>
-          Demo
+        <Button variant="outline" size="sm" className="text-xs h-10 px-3" onClick={() => navigate("/readiness-assessment")}>
+          Am I Required?
         </Button>
       </div>
     </div>
