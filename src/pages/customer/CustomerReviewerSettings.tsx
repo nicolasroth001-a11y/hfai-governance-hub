@@ -75,9 +75,32 @@ export default function CustomerReviewerSettings() {
           </ContentCard>
         ) : reviewers.length === 0 ? (
           <ContentCard icon={Users} title="No Reviewers Assigned">
-            <p className="text-sm text-muted-foreground">
-              No reviewers have been assigned to your organization yet. Contact your administrator to assign a reviewer.
-            </p>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                No reviewers have been assigned to your organization yet. Here's how reviewer assignment works:
+              </p>
+              <div className="rounded-lg border border-border/50 bg-background/40 p-4 space-y-3">
+                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-primary" /> How Reviewers Get Assigned
+                </h4>
+                <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
+                  <li><strong>HFAI Admin creates a reviewer account</strong> — Your HFAI administrator provisions a reviewer through the Admin portal.</li>
+                  <li><strong>Reviewer is linked to your organization</strong> — The admin assigns the reviewer to your org during creation.</li>
+                  <li><strong>You configure their permissions here</strong> — Once assigned, you control what they can do: manage rules, manage AI systems, or approve deployments.</li>
+                </ol>
+              </div>
+              <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 space-y-2">
+                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-primary" /> Sovereign Tier: HFAI Backup Reviewer
+                </h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  On the Sovereign plan, HFAI appoints a dedicated backup reviewer with override authority. This reviewer can override company reviewer decisions when compliance risk is detected — all overrides are logged with mandatory justification in a tamper-evident audit trail.
+                </p>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Need a reviewer assigned? Contact your HFAI administrator or reach out to <span className="text-primary font-medium">support@hfa-i.org</span>.
+              </p>
+            </div>
           </ContentCard>
         ) : (
           <div className="space-y-6">

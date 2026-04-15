@@ -8,12 +8,13 @@ export interface OnboardingStep {
   completed: boolean;
 }
 
-const ONBOARDING_STEPS = ["connect", "first_event", "create_rule", "review_violation", "configure_notifications"];
+const ONBOARDING_STEPS = ["connect", "first_event", "create_rule", "assign_reviewer", "review_violation", "configure_notifications"];
 
 const STEP_LABELS: Record<string, string> = {
   connect: "Connect AI Provider",
   first_event: "Send First Event",
   create_rule: "Create a Rule",
+  assign_reviewer: "Set Up Reviewer",
   review_violation: "Review a Violation",
   configure_notifications: "Configure Notifications",
 };

@@ -29,9 +29,9 @@ const steps = [
   },
   {
     icon: UserCheck,
-    title: "Human Review",
+    title: "Human Review & Reviewers",
     description:
-      "Critical violations are routed to trained human reviewers who approve, reject, or escalate — keeping humans in control of AI decisions.",
+      "Your HFAI admin assigns reviewers to your organization. Once assigned, you configure their permissions in Settings → Reviewer Permissions. Critical violations are routed to reviewers who approve, reject, or escalate.",
   },
   {
     icon: Zap,
