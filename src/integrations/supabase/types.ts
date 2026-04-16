@@ -420,6 +420,63 @@ export type Database = {
         }
         Relationships: []
       }
+      compliance_exports: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          export_type: string
+          id: string
+          integration_id: string | null
+          org_id: string
+          rows_exported: number | null
+          started_at: string
+          status: string
+          tables_exported: string[]
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          export_type?: string
+          id?: string
+          integration_id?: string | null
+          org_id: string
+          rows_exported?: number | null
+          started_at?: string
+          status?: string
+          tables_exported?: string[]
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          export_type?: string
+          id?: string
+          integration_id?: string | null
+          org_id?: string
+          rows_exported?: number | null
+          started_at?: string
+          status?: string
+          tables_exported?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_exports_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_exports_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connected_providers: {
         Row: {
           api_key_encrypted: string
