@@ -380,13 +380,13 @@ export default function LandingPage() {
           transition={{ duration: 0.5 }}
           className="mx-auto max-w-4xl"
         >
-          <InteractiveDemo />
+          <Suspense fallback={<SectionFallback />}><InteractiveDemo /></Suspense>
         </motion.div>
       </section>
 
       {/* ── Pricing Preview ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <PricingPreview />
+        <Suspense fallback={<SectionFallback />}><PricingPreview /></Suspense>
       </section>
 
       {/* ── Final CTA — Book Demo focused ── */}
@@ -419,12 +419,12 @@ export default function LandingPage() {
 
       {/* ── Newsletter ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <NewsletterSignup />
+        <Suspense fallback={<SectionFallback />}><NewsletterSignup /></Suspense>
       </section>
 
       {/* ── Founder ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <FounderSection />
+        <Suspense fallback={<SectionFallback />}><FounderSection /></Suspense>
       </section>
 
       {/* ── FAQ ── */}
@@ -439,7 +439,7 @@ export default function LandingPage() {
             {t("faq.title")}
           </h2>
         </motion.div>
-        <FAQSection />
+        <Suspense fallback={<SectionFallback />}><FAQSection /></Suspense>
       </section>
 
       {/* ── Footer ── */}
@@ -470,9 +470,11 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-      <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
-      <StickyDemoCTA />
-      <ExitIntentCapture />
+      <Suspense fallback={null}>
+        <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
+        <StickyDemoCTA />
+        <ExitIntentCapture />
+      </Suspense>
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
