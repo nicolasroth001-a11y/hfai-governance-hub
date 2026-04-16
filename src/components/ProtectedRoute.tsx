@@ -9,7 +9,8 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
   const { isAuthenticated, profile, isLoading } = useAuth();
 
-  if (isLoading) {
+  // Wait for both auth AND profile to resolve
+  if (isLoading || (isAuthenticated && !profile)) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-muted-foreground">Loading…</p>

@@ -75,18 +75,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return false;
   }, []);
 
-  const fetchProfile = useCallback(async (userId: string) => {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("id, email, name, role, org_id")
-      .eq("id", userId)
-      .single();
-    if (error) {
-      console.error("Failed to fetch profile:", error);
-      setProfile(null);
-    } else {
-      setProfile(data as Profile);
+  const fetchProfile = useCallback(async (userId: string, retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, email, name, role, org_id")
+        .eq("id", userId)
+        .single();
+      if (!error && data) {
+        setProfile(data as Profile);
+        return;
+      }
+      console.error(`Profile fetch attempt ${i + 1} failed:`, error);
+      if (i < retries - 1) await new Promise(r => setTimeout(r, 1000 * (i + 1)));
     }
+    setProfile(null);
   }, []);
 
   const refreshSubscription = useCallback(async () => {
@@ -110,32 +113,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+
+    // Safety timeout — never stay loading forever
+    const safetyTimeout = setTimeout(() => {
+      if (mounted) setIsLoading(false);
+    }, 8000);
+
     const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
       async (_event, newSession) => {
+        if (!mounted) return;
         setSession(newSession);
         setUser(newSession?.user ?? null);
         if (newSession?.user) {
-          setTimeout(() => fetchProfile(newSession.user.id), 0);
-          setTimeout(() => refreshSubscription(), 100);
+          await fetchProfile(newSession.user.id);
+          refreshSubscription();
         } else {
           setProfile(null);
           setSubscription(defaultSubscription);
         }
-        setIsLoading(false);
+        if (mounted) setIsLoading(false);
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: existingSession } }) => {
+      if (!mounted) return;
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
       if (existingSession?.user) {
-        fetchProfile(existingSession.user.id);
+        await fetchProfile(existingSession.user.id);
         refreshSubscription();
       }
-      setIsLoading(false);
+      if (mounted) setIsLoading(false);
     });
 
-    return () => authSub.unsubscribe();
+    return () => {
+      mounted = false;
+      clearTimeout(safetyTimeout);
+      authSub.unsubscribe();
+    };
   }, [fetchProfile, refreshSubscription]);
 
   useEffect(() => {
