@@ -8,7 +8,7 @@ import {
   Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp,
   Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2,
   Database, GraduationCap, ShieldAlert, FileArchive, FileWarning, Globe2,
-  Fingerprint, Target, FileSpreadsheet, Radar, FileOutput, Users,
+  Fingerprint, Target, FileSpreadsheet, Radar, FileOutput, Users, Plug,
 } from "lucide-react";
 
 export default function CustomerLayout() {
