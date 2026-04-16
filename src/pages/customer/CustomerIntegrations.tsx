@@ -11,12 +11,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Slack, Webhook, Cloud, MessageSquare, Plus, Trash2, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { Slack, Webhook, Cloud, MessageSquare, Plus, Trash2, Send, CheckCircle2, AlertCircle, Ticket, Snowflake, Activity, Siren, Database } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useAuth } from "@/contexts/AuthContext";
 import { TIER_LEVEL } from "@/lib/stripe-config";
 
-type IntegrationType = "slack" | "teams" | "webhook_custom" | "s3";
+type IntegrationType = "slack" | "teams" | "webhook_custom" | "s3" | "jira" | "snowflake" | "datadog" | "pagerduty";
 
 const CATALOG: Array<{
   type: IntegrationType;
@@ -51,11 +51,53 @@ const CATALOG: Array<{
   },
   {
     type: "s3", name: "AWS S3 Audit Export", icon: Cloud, minTier: "sovereign",
-    description: "Export audit trails and compliance evidence to your own S3 bucket nightly.",
+    description: "Nightly export of audit trails and compliance evidence to your own S3 bucket.",
     fields: [
       { key: "bucket", label: "Bucket name", placeholder: "my-compliance-evidence", required: true },
       { key: "region", label: "AWS region", placeholder: "us-east-1", required: true },
+      { key: "access_key_id", label: "AWS Access Key ID", placeholder: "AKIA…", required: true },
+      { key: "secret_access_key", label: "AWS Secret Access Key", placeholder: "••••••••", required: true, type: "password" },
       { key: "prefix", label: "Object key prefix", placeholder: "hfai/" },
+    ],
+  },
+  {
+    type: "jira", name: "Jira", icon: Ticket, minTier: "pro",
+    description: "Auto-create Jira issues from violations so engineering can remediate from their backlog.",
+    fields: [
+      { key: "base_url", label: "Jira site URL", placeholder: "https://yourco.atlassian.net", required: true },
+      { key: "email", label: "Atlassian account email", placeholder: "you@company.com", required: true },
+      { key: "api_token", label: "API token", placeholder: "••••••••", required: true, type: "password" },
+      { key: "project_key", label: "Project key", placeholder: "AIGOV", required: true },
+      { key: "issue_type", label: "Issue type", placeholder: "Task" },
+      { key: "priority", label: "Priority (optional)", placeholder: "High" },
+    ],
+  },
+  {
+    type: "snowflake", name: "Snowflake", icon: Snowflake, minTier: "enterprise",
+    description: "Nightly auto-export of violations, reviews, audit logs, and rules to your Snowflake warehouse.",
+    fields: [
+      { key: "account", label: "Account identifier", placeholder: "abc12345.us-east-1", required: true },
+      { key: "warehouse", label: "Warehouse", placeholder: "COMPUTE_WH", required: true },
+      { key: "database", label: "Database", placeholder: "GOVERNANCE", required: true },
+      { key: "schema", label: "Schema", placeholder: "HFAI", required: true },
+      { key: "username", label: "Username", placeholder: "HFAI_SVC", required: true },
+      { key: "password", label: "Password", placeholder: "••••••••", required: true, type: "password" },
+      { key: "role", label: "Role (optional)", placeholder: "SYSADMIN" },
+    ],
+  },
+  {
+    type: "datadog", name: "Datadog", icon: Activity, minTier: "enterprise",
+    description: "Stream violations to Datadog as events with severity tags so SREs see AI alongside infra.",
+    fields: [
+      { key: "api_key", label: "Datadog API key", placeholder: "••••••••", required: true, type: "password" },
+      { key: "site", label: "Datadog site", placeholder: "datadoghq.com (or eu, us3, us5)" },
+    ],
+  },
+  {
+    type: "pagerduty", name: "PagerDuty", icon: Siren, minTier: "enterprise",
+    description: "Trigger PagerDuty incidents on critical violations — wake the on-call engineer when AI goes off the rails.",
+    fields: [
+      { key: "routing_key", label: "Events API v2 integration key", placeholder: "32-char routing key", required: true, type: "password" },
     ],
   },
 ];
@@ -161,6 +203,24 @@ export default function CustomerIntegrations() {
           title="Integrations"
           description="Push violation alerts and compliance evidence to Slack, Teams, your data warehouse, or any HTTPS endpoint."
         />
+
+        {/* Run nightly export now (Snowflake/S3) */}
+        {integrations.some((i) => ["snowflake", "s3"].includes(i.integration_type) && i.enabled) && (
+          <div className="flex justify-end">
+            <Button
+              variant="outline" size="sm"
+              onClick={async () => {
+                toast({ title: "Export started", description: "Pushing last 24h to your warehouse / S3…" });
+                const { data, error } = await supabase.functions.invoke("nightly-compliance-export", { body: {} });
+                if (error) toast({ title: "Export failed", description: error.message, variant: "destructive" });
+                else toast({ title: "Export complete", description: `${data?.exported ?? 0} destinations updated.` });
+                load();
+              }}
+            >
+              <Database className="h-3.5 w-3.5 mr-1.5" /> Run export now
+            </Button>
+          </div>
+        )}
 
         {/* Catalog */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
