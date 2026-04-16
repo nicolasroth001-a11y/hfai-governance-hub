@@ -1772,6 +1772,10 @@ export type Database = {
           read_ct: number
         }[]
       }
+      reviewer_has_org_access: {
+        Args: { _org_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "reviewer" | "customer"
