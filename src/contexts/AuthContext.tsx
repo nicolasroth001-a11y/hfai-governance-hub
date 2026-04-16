@@ -75,18 +75,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return false;
   }, []);
 
-  const fetchProfile = useCallback(async (userId: string) => {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("id, email, name, role, org_id")
-      .eq("id", userId)
-      .single();
-    if (error) {
-      console.error("Failed to fetch profile:", error);
-      setProfile(null);
-    } else {
-      setProfile(data as Profile);
+  const fetchProfile = useCallback(async (userId: string, retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, email, name, role, org_id")
+        .eq("id", userId)
+        .single();
+      if (!error && data) {
+        setProfile(data as Profile);
+        return;
+      }
+      console.error(`Profile fetch attempt ${i + 1} failed:`, error);
+      if (i < retries - 1) await new Promise(r => setTimeout(r, 1000 * (i + 1)));
     }
+    setProfile(null);
   }, []);
 
   const refreshSubscription = useCallback(async () => {
