@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -9,24 +9,29 @@ import {
   Cpu, Zap, Eye, CheckCircle, Scale, Clock, ArrowRight, Calendar, BarChart3,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
-import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
-import { FAQSection } from "@/components/landing/FAQSection";
-import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
-import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
-import { FounderSection } from "@/components/landing/FounderSection";
-import { StickyDemoCTA } from "@/components/landing/StickyDemoCTA";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { RiskTicker } from "@/components/landing/RiskTicker";
-import { ExposureCheck } from "@/components/landing/ExposureCheck";
-import { SocialProof } from "@/components/landing/SocialProof";
-import { PricingPreview } from "@/components/landing/PricingPreview";
-import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
-import { CountdownTimer } from "@/components/landing/CountdownTimer";
-import { ExitIntentCapture } from "@/components/landing/ExitIntentCapture";
-import { ROICalculator } from "@/components/landing/ROICalculator";
-import { TimeToValue } from "@/components/landing/TimeToValue";
 import { AwsMarketplaceBadge } from "@/components/landing/AwsMarketplaceBadge";
 import dashboardPreview from "@/assets/dashboard-preview.png";
+
+// Lazy-load below-the-fold sections to keep initial JS small
+// (prevents white screen / freeze on mobile Safari refresh)
+const SocialProof = lazy(() => import("@/components/landing/SocialProof").then(m => ({ default: m.SocialProof })));
+const CredibilitySignals = lazy(() => import("@/components/landing/CredibilitySignals").then(m => ({ default: m.CredibilitySignals })));
+const CountdownTimer = lazy(() => import("@/components/landing/CountdownTimer").then(m => ({ default: m.CountdownTimer })));
+const ExposureCheck = lazy(() => import("@/components/landing/ExposureCheck").then(m => ({ default: m.ExposureCheck })));
+const TimeToValue = lazy(() => import("@/components/landing/TimeToValue").then(m => ({ default: m.TimeToValue })));
+const ROICalculator = lazy(() => import("@/components/landing/ROICalculator").then(m => ({ default: m.ROICalculator })));
+const InteractiveDemo = lazy(() => import("@/components/landing/InteractiveDemo").then(m => ({ default: m.InteractiveDemo })));
+const PricingPreview = lazy(() => import("@/components/landing/PricingPreview").then(m => ({ default: m.PricingPreview })));
+const NewsletterSignup = lazy(() => import("@/components/landing/NewsletterSignup").then(m => ({ default: m.NewsletterSignup })));
+const FounderSection = lazy(() => import("@/components/landing/FounderSection").then(m => ({ default: m.FounderSection })));
+const FAQSection = lazy(() => import("@/components/landing/FAQSection").then(m => ({ default: m.FAQSection })));
+const FullDemoExperience = lazy(() => import("@/components/landing/FullDemoExperience").then(m => ({ default: m.FullDemoExperience })));
+const StickyDemoCTA = lazy(() => import("@/components/landing/StickyDemoCTA").then(m => ({ default: m.StickyDemoCTA })));
+const ExitIntentCapture = lazy(() => import("@/components/landing/ExitIntentCapture").then(m => ({ default: m.ExitIntentCapture })));
+
+const SectionFallback = () => <div className="h-32" aria-hidden />;
 
 const CALENDLY_URL = "https://calendly.com/nicolasroth001/hfai-demo";
 
