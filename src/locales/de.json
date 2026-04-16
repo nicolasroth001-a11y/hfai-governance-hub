@@ -1436,9 +1436,9 @@
     }
   },
   "landing": {
-    "heroTitle1": "Ihre KI trifft Entscheidungen.",
-    "heroTitle2": "Können Sie beweisen, dass sie gesteuert wird?",
-    "heroSubtitle": "Der EU AI Act tritt im August 2026 in Kraft. Bußgelder bis zu <strong>35 Mio. €</strong>. HFAI bietet Ihnen Audit-Trails, menschliche Aufsicht und regulierungskonforme Dokumente — in Minuten, nicht Monaten.",
+    "heroTitle1": "Die Runtime-Firewall",
+    "heroTitle2": "für KI.",
+    "heroSubtitle": "Blockieren Sie KI-Richtlinienverstöße auf API-Ebene in Echtzeit. Beweisen Sie EU AI Act- und ISO 42001-Konformität mit einer manipulationssicheren Audit-Kette. <strong>Bußgelder bis zu 35 Mio. €</strong> ab August 2026.",
     "heroCta": "Kostenloses 30-Tage-Pilotprojekt starten",
     "heroDemo": "In Aktion sehen",
     "trustNoCc": "Keine Kreditkarte erforderlich",

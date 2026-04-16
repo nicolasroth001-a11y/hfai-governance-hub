@@ -1436,9 +1436,9 @@
     }
   },
   "landing": {
-    "heroTitle1": "Tu IA está tomando decisiones.",
-    "heroTitle2": "¿Puedes demostrar que está gobernada?",
-    "heroSubtitle": "El EU AI Act entra en vigor en agosto de 2026. Multas de hasta <strong>35M€</strong>. HFAI te da auditorías, supervisión humana y documentación regulatoria — en minutos, no meses.",
+    "heroTitle1": "El firewall en tiempo de ejecución",
+    "heroTitle2": "para la IA.",
+    "heroSubtitle": "Bloquea las violaciones de políticas de IA en la capa de API en tiempo real. Demuestra el cumplimiento del EU AI Act e ISO 42001 con una cadena de auditoría a prueba de manipulaciones. <strong>Multas de hasta 35M€</strong> en agosto de 2026.",
     "heroCta": "Comienza piloto gratis de 30 días",
     "heroDemo": "Verlo en acción",
     "trustNoCc": "Sin tarjeta de crédito",
