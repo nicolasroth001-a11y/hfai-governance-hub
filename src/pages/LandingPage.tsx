@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -9,24 +9,29 @@ import {
   Cpu, Zap, Eye, CheckCircle, Scale, Clock, ArrowRight, Calendar, BarChart3,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
-import { InteractiveDemo } from "@/components/landing/InteractiveDemo";
-import { FAQSection } from "@/components/landing/FAQSection";
-import { FullDemoExperience } from "@/components/landing/FullDemoExperience";
-import { NewsletterSignup } from "@/components/landing/NewsletterSignup";
-import { FounderSection } from "@/components/landing/FounderSection";
-import { StickyDemoCTA } from "@/components/landing/StickyDemoCTA";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { RiskTicker } from "@/components/landing/RiskTicker";
-import { ExposureCheck } from "@/components/landing/ExposureCheck";
-import { SocialProof } from "@/components/landing/SocialProof";
-import { PricingPreview } from "@/components/landing/PricingPreview";
-import { CredibilitySignals } from "@/components/landing/CredibilitySignals";
-import { CountdownTimer } from "@/components/landing/CountdownTimer";
-import { ExitIntentCapture } from "@/components/landing/ExitIntentCapture";
-import { ROICalculator } from "@/components/landing/ROICalculator";
-import { TimeToValue } from "@/components/landing/TimeToValue";
 import { AwsMarketplaceBadge } from "@/components/landing/AwsMarketplaceBadge";
 import dashboardPreview from "@/assets/dashboard-preview.png";
+
+// Lazy-load below-the-fold sections to keep initial JS small
+// (prevents white screen / freeze on mobile Safari refresh)
+const SocialProof = lazy(() => import("@/components/landing/SocialProof").then(m => ({ default: m.SocialProof })));
+const CredibilitySignals = lazy(() => import("@/components/landing/CredibilitySignals").then(m => ({ default: m.CredibilitySignals })));
+const CountdownTimer = lazy(() => import("@/components/landing/CountdownTimer").then(m => ({ default: m.CountdownTimer })));
+const ExposureCheck = lazy(() => import("@/components/landing/ExposureCheck").then(m => ({ default: m.ExposureCheck })));
+const TimeToValue = lazy(() => import("@/components/landing/TimeToValue").then(m => ({ default: m.TimeToValue })));
+const ROICalculator = lazy(() => import("@/components/landing/ROICalculator").then(m => ({ default: m.ROICalculator })));
+const InteractiveDemo = lazy(() => import("@/components/landing/InteractiveDemo").then(m => ({ default: m.InteractiveDemo })));
+const PricingPreview = lazy(() => import("@/components/landing/PricingPreview").then(m => ({ default: m.PricingPreview })));
+const NewsletterSignup = lazy(() => import("@/components/landing/NewsletterSignup").then(m => ({ default: m.NewsletterSignup })));
+const FounderSection = lazy(() => import("@/components/landing/FounderSection").then(m => ({ default: m.FounderSection })));
+const FAQSection = lazy(() => import("@/components/landing/FAQSection").then(m => ({ default: m.FAQSection })));
+const FullDemoExperience = lazy(() => import("@/components/landing/FullDemoExperience").then(m => ({ default: m.FullDemoExperience })));
+const StickyDemoCTA = lazy(() => import("@/components/landing/StickyDemoCTA").then(m => ({ default: m.StickyDemoCTA })));
+const ExitIntentCapture = lazy(() => import("@/components/landing/ExitIntentCapture").then(m => ({ default: m.ExitIntentCapture })));
+
+const SectionFallback = () => <div className="h-32" aria-hidden />;
 
 const CALENDLY_URL = "https://calendly.com/nicolasroth001/hfai-demo";
 
@@ -160,17 +165,17 @@ export default function LandingPage() {
 
       {/* ── Social Proof ── */}
       <section className="px-6 pb-14 sm:pb-20">
-        <SocialProof />
+        <Suspense fallback={<SectionFallback />}><SocialProof /></Suspense>
       </section>
 
       {/* ── Credibility Signals ── */}
       <section className="px-6 pb-16 sm:pb-24">
-        <CredibilitySignals />
+        <Suspense fallback={<SectionFallback />}><CredibilitySignals /></Suspense>
       </section>
 
       {/* ── Countdown Timer (urgency) ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <CountdownTimer />
+        <Suspense fallback={<SectionFallback />}><CountdownTimer /></Suspense>
       </section>
 
       {/* ── Product Screenshot ── */}
@@ -215,7 +220,7 @@ export default function LandingPage() {
             {t("landing.exposureDesc")}
           </p>
         </motion.div>
-        <ExposureCheck />
+        <Suspense fallback={<SectionFallback />}><ExposureCheck /></Suspense>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -285,12 +290,12 @@ export default function LandingPage() {
 
       {/* ── Time to Value ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <TimeToValue />
+        <Suspense fallback={<SectionFallback />}><TimeToValue /></Suspense>
       </section>
 
       {/* ── ROI Calculator ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <ROICalculator />
+        <Suspense fallback={<SectionFallback />}><ROICalculator /></Suspense>
       </section>
 
       {/* ── Differentiation ── */}
@@ -375,13 +380,13 @@ export default function LandingPage() {
           transition={{ duration: 0.5 }}
           className="mx-auto max-w-4xl"
         >
-          <InteractiveDemo />
+          <Suspense fallback={<SectionFallback />}><InteractiveDemo /></Suspense>
         </motion.div>
       </section>
 
       {/* ── Pricing Preview ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <PricingPreview />
+        <Suspense fallback={<SectionFallback />}><PricingPreview /></Suspense>
       </section>
 
       {/* ── Final CTA — Book Demo focused ── */}
@@ -414,12 +419,12 @@ export default function LandingPage() {
 
       {/* ── Newsletter ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <NewsletterSignup />
+        <Suspense fallback={<SectionFallback />}><NewsletterSignup /></Suspense>
       </section>
 
       {/* ── Founder ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <FounderSection />
+        <Suspense fallback={<SectionFallback />}><FounderSection /></Suspense>
       </section>
 
       {/* ── FAQ ── */}
@@ -434,7 +439,7 @@ export default function LandingPage() {
             {t("faq.title")}
           </h2>
         </motion.div>
-        <FAQSection />
+        <Suspense fallback={<SectionFallback />}><FAQSection /></Suspense>
       </section>
 
       {/* ── Footer ── */}
@@ -465,9 +470,11 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-      <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
-      <StickyDemoCTA />
-      <ExitIntentCapture />
+      <Suspense fallback={null}>
+        <FullDemoExperience open={demoOpen} onClose={() => setDemoOpen(false)} />
+        <StickyDemoCTA />
+        <ExitIntentCapture />
+      </Suspense>
 
       {/* ── Sticky mobile CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl px-4 py-3 flex items-center gap-2">
