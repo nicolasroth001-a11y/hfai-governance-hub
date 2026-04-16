@@ -144,6 +144,8 @@ export const FEATURE_TIER: Record<string, TierKey> = {
   "Regulator Export Packs": "sovereign",
   "Drift Detection": "sovereign",
   "Multi-Jurisdiction": "sovereign",
+  "Integrations": "pro",
+  "Reviewer Settings": "pro",
 };
 
 // Legacy compat
