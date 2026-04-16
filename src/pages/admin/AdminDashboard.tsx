@@ -39,6 +39,9 @@ export default function AdminDashboard() {
     <div className="space-y-8">
       <SectionHeader title={t("adminDashboard.title")} description={t("adminDashboard.description")} />
 
+      {/* HFAI Platform Health — always visible */}
+      <PlatformHealthScore />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title={t("adminDashboard.totalViolations")} value={stats.totalViolations} icon={ShieldAlert} />
         <StatCard title={t("adminDashboard.awaitingReview")} value={stats.openViolations} icon={Clock} subtitle={t("adminDashboard.needsAttention")} />
