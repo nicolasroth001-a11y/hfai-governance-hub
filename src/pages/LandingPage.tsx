@@ -127,14 +127,27 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            transition={{ delay: 0.55 }}
+            className="flex flex-wrap items-center justify-center gap-2 pt-1"
+          >
+            <AwsMarketplaceBadge variant="compact" />
+            <Link to="/trust" className="inline-flex items-center gap-1.5 rounded-md border border-border/40 bg-secondary/20 px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground transition">
+              <Shield className="h-3 w-3 text-primary/70" />
+              <span>Trust Center · SOC 2 inherited</span>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
             className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
           >
             {[
-              "Audit-ready in 14 days",
+              "Blocks violations in <50ms",
               "5-minute integration",
               "No code changes required",
-              "Free compliance assessment",
+              "Tamper-evident audit chain",
             ].map((text) => (
               <div key={text} className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70">
                 <CheckCircle className="h-3 w-3 text-primary/70" />
