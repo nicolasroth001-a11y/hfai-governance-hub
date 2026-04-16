@@ -165,17 +165,17 @@ export default function LandingPage() {
 
       {/* ── Social Proof ── */}
       <section className="px-6 pb-14 sm:pb-20">
-        <SocialProof />
+        <Suspense fallback={<SectionFallback />}><SocialProof /></Suspense>
       </section>
 
       {/* ── Credibility Signals ── */}
       <section className="px-6 pb-16 sm:pb-24">
-        <CredibilitySignals />
+        <Suspense fallback={<SectionFallback />}><CredibilitySignals /></Suspense>
       </section>
 
       {/* ── Countdown Timer (urgency) ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <CountdownTimer />
+        <Suspense fallback={<SectionFallback />}><CountdownTimer /></Suspense>
       </section>
 
       {/* ── Product Screenshot ── */}
@@ -220,7 +220,7 @@ export default function LandingPage() {
             {t("landing.exposureDesc")}
           </p>
         </motion.div>
-        <ExposureCheck />
+        <Suspense fallback={<SectionFallback />}><ExposureCheck /></Suspense>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -290,12 +290,12 @@ export default function LandingPage() {
 
       {/* ── Time to Value ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <TimeToValue />
+        <Suspense fallback={<SectionFallback />}><TimeToValue /></Suspense>
       </section>
 
       {/* ── ROI Calculator ── */}
       <section className="px-6 pb-20 sm:pb-24">
-        <ROICalculator />
+        <Suspense fallback={<SectionFallback />}><ROICalculator /></Suspense>
       </section>
 
       {/* ── Differentiation ── */}
