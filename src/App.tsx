@@ -21,7 +21,7 @@ import AdminLayout from "./layouts/AdminLayout";
 
 // Login & Signup
 import CustomerLogin from "./pages/login/CustomerLogin";
-import ReviewerLogin from "./pages/login/ReviewerLogin";
+// ReviewerLogin removed — reviewers now use unified /login
 import AdminLogin from "./pages/login/AdminLogin";
 import CustomerSignup from "./pages/signup/CustomerSignup";
 import ForgotPassword from "./pages/login/ForgotPassword";
