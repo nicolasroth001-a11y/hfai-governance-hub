@@ -38,6 +38,7 @@ import BlogSubmit from "./pages/blog/BlogSubmit";
 import EUAIActOmnibusVII from "./pages/blog/EUAIActOmnibusVII";
 import Unsubscribe from "./pages/Unsubscribe";
 import ReadinessAssessment from "./pages/ReadinessAssessment";
+import TrustCenter from "./pages/TrustCenter";
 // Customer pages
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import CustomerViolations from "./pages/customer/CustomerViolations";
@@ -143,6 +144,7 @@ const App = () => {
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/readiness-assessment" element={<ReadinessAssessment />} />
+          <Route path="/trust" element={<TrustCenter />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login" element={<CustomerLogin />} />
