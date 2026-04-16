@@ -19,7 +19,8 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   if (!isAuthenticated) {
-    return <Navigate to={`/login/${requiredRole}`} replace />;
+    const loginPath = requiredRole === "admin" ? "/login/admin" : "/login";
+    return <Navigate to={loginPath} replace />;
   }
 
   if (profile && profile.role !== requiredRole) {

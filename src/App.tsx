@@ -144,8 +144,9 @@ const App = () => {
           <Route path="/readiness-assessment" element={<ReadinessAssessment />} />
 
           {/* Login & Signup & Password Reset */}
+          <Route path="/login" element={<CustomerLogin />} />
           <Route path="/login/customer" element={<CustomerLogin />} />
-          <Route path="/login/reviewer" element={<ReviewerLogin />} />
+          <Route path="/login/reviewer" element={<CustomerLogin />} />
           <Route path="/login/admin" element={<AdminLogin />} />
           <Route path="/signup/customer" element={<CustomerSignup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -18,6 +18,15 @@ export default function CustomerLogin() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showMFA, setShowMFA] = useState(false);
+  const [pendingRole, setPendingRole] = useState<string | null>(null);
+
+  const getRoleDashboard = (role: string) => {
+    switch (role) {
+      case "reviewer": return "/reviewer/dashboard";
+      case "admin": return "/admin/dashboard";
+      default: return "/customer/dashboard";
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +37,21 @@ export default function CustomerLogin() {
       if (result.mfaRequired) {
         setShowMFA(true);
       } else {
-        navigate("/customer/dashboard");
+        // Fetch the profile to determine role-based redirect
+        const { supabase } = await import("@/integrations/supabase/client");
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+          const role = profile?.role || "customer";
+          setPendingRole(role);
+          navigate(getRoleDashboard(role));
+        } else {
+          navigate("/customer/dashboard");
+        }
       }
     } else {
       toast({ title: t("auth.loginFailed"), description: result.error, variant: "destructive" });
@@ -38,7 +61,20 @@ export default function CustomerLogin() {
   if (showMFA) {
     return (
       <MFAChallenge
-        onVerified={() => navigate("/customer/dashboard")}
+        onVerified={async () => {
+          const { supabase } = await import("@/integrations/supabase/client");
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("role")
+              .eq("id", user.id)
+              .single();
+            navigate(getRoleDashboard(profile?.role || pendingRole || "customer"));
+          } else {
+            navigate("/customer/dashboard");
+          }
+        }}
         onCancel={() => {
           setShowMFA(false);
           logout();
@@ -59,8 +95,8 @@ export default function CustomerLogin() {
           <div className="mx-auto h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">
             <Shield className="h-6 w-6 text-primary-foreground" />
           </div>
-          <CardTitle className="text-xl">{t("auth.customerPortal")}</CardTitle>
-          <CardDescription>{t("auth.customerPortalDesc")}</CardDescription>
+          <CardTitle className="text-xl">{t("auth.signIn", "Sign In")}</CardTitle>
+          <CardDescription>{t("auth.signInDesc", "Sign in to your HFAI account")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <form onSubmit={handleLogin} className="space-y-4">
@@ -77,7 +113,7 @@ export default function CustomerLogin() {
             </div>
             <Button type="submit" className="w-full gap-2" disabled={loading}>
               <LogIn className="h-4 w-4" />
-              {loading ? t("auth.signingIn") : t("auth.logIn")}
+              {loading ? t("auth.signingIn") : t("auth.signIn", "Sign In")}
             </Button>
           </form>
           <p className="text-center text-xs text-card-foreground/50">
