@@ -748,6 +748,110 @@ export type Database = {
           },
         ]
       }
+      integration_deliveries: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          event_type: string
+          id: string
+          integration_id: string
+          org_id: string
+          payload: Json | null
+          response_status: number | null
+          success: boolean
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          event_type: string
+          id?: string
+          integration_id: string
+          org_id: string
+          payload?: Json | null
+          response_status?: number | null
+          success?: boolean
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          integration_id?: string
+          org_id?: string
+          payload?: Json | null
+          response_status?: number | null
+          success?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_deliveries_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "integrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_deliveries_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integrations: {
+        Row: {
+          config: Json
+          created_at: string
+          created_by: string | null
+          display_name: string
+          enabled: boolean
+          id: string
+          integration_type: string
+          last_delivered_at: string | null
+          last_error: string | null
+          org_id: string
+          trigger_events: string[]
+          updated_at: string | null
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          created_by?: string | null
+          display_name?: string
+          enabled?: boolean
+          id?: string
+          integration_type: string
+          last_delivered_at?: string | null
+          last_error?: string | null
+          org_id: string
+          trigger_events?: string[]
+          updated_at?: string | null
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          created_by?: string | null
+          display_name?: string
+          enabled?: boolean
+          id?: string
+          integration_type?: string
+          last_delivered_at?: string | null
+          last_error?: string | null
+          org_id?: string
+          trigger_events?: string[]
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integrations_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string

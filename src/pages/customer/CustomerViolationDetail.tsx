@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Save, Gavel, StickyNote } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { SendToIntegrationButton } from "@/components/integrations/SendToIntegrationButton";
 
 export default function CustomerViolationDetail() {
   const { t } = useTranslation();
@@ -77,7 +78,14 @@ export default function CustomerViolationDetail() {
         <Link to="/customer/violations" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> {t("customerViolationDetail.backToViolations")}
         </Link>
-        <SectionHeader title={t("customerViolationDetail.title", { id: typeof v.id === "string" ? v.id.slice(0, 8) : v.id })} description={t("customerViolationDetail.description")} />
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <SectionHeader title={t("customerViolationDetail.title", { id: typeof v.id === "string" ? v.id.slice(0, 8) : v.id })} description={t("customerViolationDetail.description")} />
+          <SendToIntegrationButton
+            violationId={String(v.id)}
+            message={`${(v.severity || "medium").toUpperCase()} violation: ${v.description || "AI governance violation detected"}`}
+            eventType={v.severity === "critical" ? "critical" : v.severity === "high" ? "high_severity" : "new_violation"}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-base">
