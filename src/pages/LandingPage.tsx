@@ -25,6 +25,7 @@ import { CountdownTimer } from "@/components/landing/CountdownTimer";
 import { ExitIntentCapture } from "@/components/landing/ExitIntentCapture";
 import { ROICalculator } from "@/components/landing/ROICalculator";
 import { TimeToValue } from "@/components/landing/TimeToValue";
+import { AwsMarketplaceBadge } from "@/components/landing/AwsMarketplaceBadge";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 
 const CALENDLY_URL = "https://calendly.com/nicolasroth001/hfai-demo";
