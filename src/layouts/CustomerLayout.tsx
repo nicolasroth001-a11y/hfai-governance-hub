@@ -74,6 +74,7 @@ export default function CustomerLayout() {
       label: t("sidebar.settingsGroup", "Settings"),
       items: [
         { title: "Reviewer Permissions", url: "/customer/reviewer-settings", icon: Users },
+        { title: "Integrations", url: "/customer/integrations", icon: Plug, requiredTier: "pro" },
         { title: t("sidebar.notifications"), url: "/customer/notifications", icon: Bell, requiredTier: "starter" },
         { title: t("sidebar.auditLogs"), url: "/customer/logs", icon: ClipboardList, requiredTier: "pro" },
         { title: t("sidebar.security"), url: "/customer/security", icon: ShieldCheck },
