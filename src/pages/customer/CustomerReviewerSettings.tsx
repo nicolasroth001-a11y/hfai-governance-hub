@@ -13,6 +13,7 @@ import { useOrgReviewerPermissions, upsertReviewerPermissions, type ReviewerPerm
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Users, Shield, ShieldCheck, UserPlus, Sparkles, Loader2, Eye, EyeOff } from "lucide-react";
+import { ReviewerGuide } from "@/components/ReviewerGuide";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function CustomerReviewerSettings() {
@@ -313,6 +314,8 @@ export default function CustomerReviewerSettings() {
             })}
           </div>
         )}
+        {/* Guide sections */}
+        <ReviewerGuide />
       </div>
     </SubscriptionGate>
   );
