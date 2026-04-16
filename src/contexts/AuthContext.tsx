@@ -113,32 +113,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+
+    // Safety timeout — never stay loading forever
+    const safetyTimeout = setTimeout(() => {
+      if (mounted) setIsLoading(false);
+    }, 8000);
+
     const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
       async (_event, newSession) => {
+        if (!mounted) return;
         setSession(newSession);
         setUser(newSession?.user ?? null);
         if (newSession?.user) {
-          setTimeout(() => fetchProfile(newSession.user.id), 0);
-          setTimeout(() => refreshSubscription(), 100);
+          await fetchProfile(newSession.user.id);
+          refreshSubscription();
         } else {
           setProfile(null);
           setSubscription(defaultSubscription);
         }
-        setIsLoading(false);
+        if (mounted) setIsLoading(false);
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: existingSession } }) => {
+      if (!mounted) return;
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
       if (existingSession?.user) {
-        fetchProfile(existingSession.user.id);
+        await fetchProfile(existingSession.user.id);
         refreshSubscription();
       }
-      setIsLoading(false);
+      if (mounted) setIsLoading(false);
     });
 
-    return () => authSub.unsubscribe();
+    return () => {
+      mounted = false;
+      clearTimeout(safetyTimeout);
+      authSub.unsubscribe();
+    };
   }, [fetchProfile, refreshSubscription]);
 
   useEffect(() => {
