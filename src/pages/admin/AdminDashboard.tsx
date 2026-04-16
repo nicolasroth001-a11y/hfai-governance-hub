@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { AlertTriangle, BookOpen, Users, Building2, ShieldAlert, Clock } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
+import { PlatformHealthScore } from "@/components/PlatformHealthScore";
 import { ContentCard } from "@/components/ContentCard";
 import { fetchAdminStats, fetchAuditLogs } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
