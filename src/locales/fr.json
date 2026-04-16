@@ -1436,9 +1436,9 @@
     }
   },
   "landing": {
-    "heroTitle1": "Votre IA prend des décisions.",
-    "heroTitle2": "Pouvez-vous prouver qu'elle est gouvernée ?",
-    "heroSubtitle": "Le EU AI Act entre en vigueur en août 2026. Amendes jusqu'à <strong>35M€</strong>. HFAI vous fournit des pistes d'audit, une supervision humaine et des documents réglementaires — en minutes, pas en mois.",
+    "heroTitle1": "Le pare-feu d'exécution",
+    "heroTitle2": "pour l'IA.",
+    "heroSubtitle": "Bloquez les violations de politique IA au niveau de l'API en temps réel. Prouvez la conformité EU AI Act et ISO 42001 avec une chaîne d'audit infalsifiable. <strong>Amendes jusqu'à 35M€</strong> dès août 2026.",
     "heroCta": "Démarrer un pilote gratuit de 30 jours",
     "heroDemo": "Voir en action",
     "trustNoCc": "Aucune carte de crédit requise",

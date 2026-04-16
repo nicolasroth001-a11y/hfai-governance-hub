@@ -1436,9 +1436,9 @@
     }
   },
   "landing": {
-    "heroTitle1": "Your AI is making decisions.",
-    "heroTitle2": "Can you prove it's governed?",
-    "heroSubtitle": "The EU AI Act takes effect August 2026. Fines up to <strong>$35M</strong>. HFAI gives you audit trails, human oversight, and regulator-ready docs — in minutes, not months.",
+    "heroTitle1": "The runtime firewall",
+    "heroTitle2": "for AI.",
+    "heroSubtitle": "Block AI policy violations at the API layer in real time. Prove EU AI Act &amp; ISO 42001 compliance with a tamper-evident audit chain. <strong>Fines up to $35M</strong> hit August 2026.",
     "heroCta": "Start Free 30-Day Pilot",
     "heroDemo": "See It in Action",
     "trustNoCc": "No credit card required",
