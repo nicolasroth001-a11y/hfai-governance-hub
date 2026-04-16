@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { AlertTriangle, BookOpen, Users, Building2, ShieldAlert, Clock } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { SectionHeader } from "@/components/SectionHeader";
+import { PlatformHealthScore } from "@/components/PlatformHealthScore";
 import { ContentCard } from "@/components/ContentCard";
 import { fetchAdminStats, fetchAuditLogs } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
@@ -37,6 +38,9 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       <SectionHeader title={t("adminDashboard.title")} description={t("adminDashboard.description")} />
+
+      {/* HFAI Platform Health — always visible */}
+      <PlatformHealthScore />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title={t("adminDashboard.totalViolations")} value={stats.totalViolations} icon={ShieldAlert} />

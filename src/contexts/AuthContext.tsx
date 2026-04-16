@@ -89,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error(`Profile fetch attempt ${i + 1} failed:`, error);
       if (i < retries - 1) await new Promise(r => setTimeout(r, 1000 * (i + 1)));
     }
+    // After all retries failed, set profile to null so ProtectedRoute can redirect
     setProfile(null);
   }, []);
 
@@ -114,30 +115,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let mounted = true;
+    let initialized = false;
 
     // Safety timeout — never stay loading forever
     const safetyTimeout = setTimeout(() => {
-      if (mounted) setIsLoading(false);
-    }, 8000);
-
-    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
-      async (_event, newSession) => {
-        if (!mounted) return;
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
-        if (newSession?.user) {
-          await fetchProfile(newSession.user.id);
-          refreshSubscription();
-        } else {
-          setProfile(null);
-          setSubscription(defaultSubscription);
-        }
-        if (mounted) setIsLoading(false);
+      if (mounted && !initialized) {
+        initialized = true;
+        setIsLoading(false);
       }
-    );
+    }, 6000);
 
+    // First: get the existing session synchronously
     supabase.auth.getSession().then(async ({ data: { session: existingSession } }) => {
-      if (!mounted) return;
+      if (!mounted || initialized) return;
+      initialized = true;
+
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
       if (existingSession?.user) {
@@ -146,6 +138,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       if (mounted) setIsLoading(false);
     });
+
+    // Then: listen for future auth changes (token refresh, sign-in, sign-out)
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
+      async (_event, newSession) => {
+        if (!mounted) return;
+
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+
+        if (newSession?.user) {
+          // Only fetch profile if it's a different user or we don't have one
+          if (!profile || profile.id !== newSession.user.id) {
+            await fetchProfile(newSession.user.id);
+          }
+          refreshSubscription();
+        } else {
+          setProfile(null);
+          setSubscription(defaultSubscription);
+        }
+
+        // If initial load hasn't finished yet, finish it
+        if (!initialized) {
+          initialized = true;
+          if (mounted) setIsLoading(false);
+        }
+      }
+    );
 
     return () => {
       mounted = false;
