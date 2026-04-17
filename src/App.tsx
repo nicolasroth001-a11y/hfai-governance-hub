@@ -131,6 +131,7 @@ const App = () => {
         <Routes>
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/index" element={<Navigate to="/" replace />} />
           <Route path="/pricing" element={<Navigate to="/pricing/contact" replace />} />
           <Route path="/pricing/contact" element={<PricingContact />} />
           <Route path="/pilot" element={<PilotSignup />} />
