@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,100 +14,106 @@ function AnalyticsTracker() {
   return null;
 }
 
-// Layouts
-import CustomerLayout from "./layouts/CustomerLayout";
-import ReviewerLayout from "./layouts/ReviewerLayout";
-import AdminLayout from "./layouts/AdminLayout";
+// Layouts (lazy)
+const CustomerLayout = lazy(() => import("./layouts/CustomerLayout"));
+const ReviewerLayout = lazy(() => import("./layouts/ReviewerLayout"));
+const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
 
-// Login & Signup
-import CustomerLogin from "./pages/login/CustomerLogin";
-// ReviewerLogin removed — reviewers now use unified /login
-import AdminLogin from "./pages/login/AdminLogin";
-import CustomerSignup from "./pages/signup/CustomerSignup";
-import ForgotPassword from "./pages/login/ForgotPassword";
-import ResetPassword from "./pages/login/ResetPassword";
-import LandingPage from "./pages/LandingPage";
-import PricingContact from "./pages/PricingContact";
-import PilotSignup from "./pages/PilotSignup";
-import SDKDocs from "./pages/SDKDocs";
-import GovernancePage from "./pages/GovernancePage";
-import NISTCompliancePage from "./pages/NISTCompliancePage";
-import BlogIndex from "./pages/blog/BlogIndex";
-import BlogPostPage from "./pages/blog/BlogPostPage";
-import BlogSubmit from "./pages/blog/BlogSubmit";
-import EUAIActOmnibusVII from "./pages/blog/EUAIActOmnibusVII";
-import Unsubscribe from "./pages/Unsubscribe";
-import ReadinessAssessment from "./pages/ReadinessAssessment";
-import TrustCenter from "./pages/TrustCenter";
-// Customer pages
-import CustomerDashboard from "./pages/customer/CustomerDashboard";
-import CustomerViolations from "./pages/customer/CustomerViolations";
-import CustomerViolationDetail from "./pages/customer/CustomerViolationDetail";
-import CustomerRules from "./pages/customer/CustomerRules";
-import CustomerRuleDetail from "./pages/customer/CustomerRuleDetail";
-import CustomerLogs from "./pages/customer/CustomerLogs";
-import CustomerOnboarding from "./pages/customer/CustomerOnboarding";
-import CustomerAISystems from "./pages/customer/CustomerAISystems";
-import CustomerAISystemDetail from "./pages/customer/CustomerAISystemDetail";
-import CustomerEvents from "./pages/customer/CustomerEvents";
-import CustomerEventDetail from "./pages/customer/CustomerEventDetail";
-import CustomerRuleTemplates from "./pages/customer/CustomerRuleTemplates";
-import CustomerReviews from "./pages/customer/CustomerReviews";
-import CustomerNotifications from "./pages/customer/CustomerNotifications";
-import CustomerSecurity from "./pages/customer/CustomerSecurity";
-import CustomerConnect from "./pages/customer/CustomerConnect";
-import CustomerCompliance from "./pages/customer/CustomerCompliance";
-import CustomerBlogSubmit from "./pages/customer/CustomerBlogSubmit";
-import CustomerCertificates from "./pages/customer/CustomerCertificates";
-import CustomerDriftDetection from "./pages/customer/CustomerDriftDetection";
-import CustomerPrecedentIntelligence from "./pages/customer/CustomerPrecedentIntelligence";
-import CustomerMultiJurisdiction from "./pages/customer/CustomerMultiJurisdiction";
-import CustomerDeploymentReadiness from "./pages/customer/CustomerDeploymentReadiness";
-import CustomerBiasAuditing from "./pages/customer/CustomerBiasAuditing";
-import CustomerModelVersions from "./pages/customer/CustomerModelVersions";
-import CustomerScheduledAudits from "./pages/customer/CustomerScheduledAudits";
-import CustomerVendorRisk from "./pages/customer/CustomerVendorRisk";
-import CustomerDataLineage from "./pages/customer/CustomerDataLineage";
-import CustomerAILiteracy from "./pages/customer/CustomerAILiteracy";
-import CustomerProhibitedPractices from "./pages/customer/CustomerProhibitedPractices";
-import CustomerTechnicalDocs from "./pages/customer/CustomerTechnicalDocs";
-import CustomerIncidentReporting from "./pages/customer/CustomerIncidentReporting";
-import CustomerEUDatabase from "./pages/customer/CustomerEUDatabase";
-import CustomerISO42001Controls from "./pages/customer/CustomerISO42001Controls";
-import CustomerAIImpactAssessment from "./pages/customer/CustomerAIImpactAssessment";
-import CustomerStatementOfApplicability from "./pages/customer/CustomerStatementOfApplicability";
-import CustomerShadowAIDiscovery from "./pages/customer/CustomerShadowAIDiscovery";
-import CustomerEvidenceSynthesis from "./pages/customer/CustomerEvidenceSynthesis";
-import CustomerReviewerSettings from "./pages/customer/CustomerReviewerSettings";
-import CustomerIntegrations from "./pages/customer/CustomerIntegrations";
+// Login & Signup (lazy)
+const CustomerLogin = lazy(() => import("./pages/login/CustomerLogin"));
+const AdminLogin = lazy(() => import("./pages/login/AdminLogin"));
+const CustomerSignup = lazy(() => import("./pages/signup/CustomerSignup"));
+const ForgotPassword = lazy(() => import("./pages/login/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/login/ResetPassword"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const PricingContact = lazy(() => import("./pages/PricingContact"));
+const PilotSignup = lazy(() => import("./pages/PilotSignup"));
+const SDKDocs = lazy(() => import("./pages/SDKDocs"));
+const GovernancePage = lazy(() => import("./pages/GovernancePage"));
+const NISTCompliancePage = lazy(() => import("./pages/NISTCompliancePage"));
+const BlogIndex = lazy(() => import("./pages/blog/BlogIndex"));
+const BlogPostPage = lazy(() => import("./pages/blog/BlogPostPage"));
+const BlogSubmit = lazy(() => import("./pages/blog/BlogSubmit"));
+const EUAIActOmnibusVII = lazy(() => import("./pages/blog/EUAIActOmnibusVII"));
+const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
+const ReadinessAssessment = lazy(() => import("./pages/ReadinessAssessment"));
+const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 
-// Reviewer pages
-import ReviewerDashboard from "./pages/reviewer/ReviewerDashboard";
-import ReviewerViolations from "./pages/reviewer/ReviewerViolations";
-import ReviewerViolationDetail from "./pages/reviewer/ReviewerViolationDetail";
+// Customer pages (lazy)
+const CustomerDashboard = lazy(() => import("./pages/customer/CustomerDashboard"));
+const CustomerViolations = lazy(() => import("./pages/customer/CustomerViolations"));
+const CustomerViolationDetail = lazy(() => import("./pages/customer/CustomerViolationDetail"));
+const CustomerRules = lazy(() => import("./pages/customer/CustomerRules"));
+const CustomerRuleDetail = lazy(() => import("./pages/customer/CustomerRuleDetail"));
+const CustomerLogs = lazy(() => import("./pages/customer/CustomerLogs"));
+const CustomerOnboarding = lazy(() => import("./pages/customer/CustomerOnboarding"));
+const CustomerAISystems = lazy(() => import("./pages/customer/CustomerAISystems"));
+const CustomerAISystemDetail = lazy(() => import("./pages/customer/CustomerAISystemDetail"));
+const CustomerEvents = lazy(() => import("./pages/customer/CustomerEvents"));
+const CustomerEventDetail = lazy(() => import("./pages/customer/CustomerEventDetail"));
+const CustomerRuleTemplates = lazy(() => import("./pages/customer/CustomerRuleTemplates"));
+const CustomerReviews = lazy(() => import("./pages/customer/CustomerReviews"));
+const CustomerNotifications = lazy(() => import("./pages/customer/CustomerNotifications"));
+const CustomerSecurity = lazy(() => import("./pages/customer/CustomerSecurity"));
+const CustomerConnect = lazy(() => import("./pages/customer/CustomerConnect"));
+const CustomerCompliance = lazy(() => import("./pages/customer/CustomerCompliance"));
+const CustomerBlogSubmit = lazy(() => import("./pages/customer/CustomerBlogSubmit"));
+const CustomerCertificates = lazy(() => import("./pages/customer/CustomerCertificates"));
+const CustomerDriftDetection = lazy(() => import("./pages/customer/CustomerDriftDetection"));
+const CustomerPrecedentIntelligence = lazy(() => import("./pages/customer/CustomerPrecedentIntelligence"));
+const CustomerMultiJurisdiction = lazy(() => import("./pages/customer/CustomerMultiJurisdiction"));
+const CustomerDeploymentReadiness = lazy(() => import("./pages/customer/CustomerDeploymentReadiness"));
+const CustomerBiasAuditing = lazy(() => import("./pages/customer/CustomerBiasAuditing"));
+const CustomerModelVersions = lazy(() => import("./pages/customer/CustomerModelVersions"));
+const CustomerScheduledAudits = lazy(() => import("./pages/customer/CustomerScheduledAudits"));
+const CustomerVendorRisk = lazy(() => import("./pages/customer/CustomerVendorRisk"));
+const CustomerDataLineage = lazy(() => import("./pages/customer/CustomerDataLineage"));
+const CustomerAILiteracy = lazy(() => import("./pages/customer/CustomerAILiteracy"));
+const CustomerProhibitedPractices = lazy(() => import("./pages/customer/CustomerProhibitedPractices"));
+const CustomerTechnicalDocs = lazy(() => import("./pages/customer/CustomerTechnicalDocs"));
+const CustomerIncidentReporting = lazy(() => import("./pages/customer/CustomerIncidentReporting"));
+const CustomerEUDatabase = lazy(() => import("./pages/customer/CustomerEUDatabase"));
+const CustomerISO42001Controls = lazy(() => import("./pages/customer/CustomerISO42001Controls"));
+const CustomerAIImpactAssessment = lazy(() => import("./pages/customer/CustomerAIImpactAssessment"));
+const CustomerStatementOfApplicability = lazy(() => import("./pages/customer/CustomerStatementOfApplicability"));
+const CustomerShadowAIDiscovery = lazy(() => import("./pages/customer/CustomerShadowAIDiscovery"));
+const CustomerEvidenceSynthesis = lazy(() => import("./pages/customer/CustomerEvidenceSynthesis"));
+const CustomerReviewerSettings = lazy(() => import("./pages/customer/CustomerReviewerSettings"));
+const CustomerIntegrations = lazy(() => import("./pages/customer/CustomerIntegrations"));
 
-// Admin pages
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminViolations from "./pages/admin/AdminViolations";
-import AdminViolationDetail from "./pages/admin/AdminViolationDetail";
-import AdminRules from "./pages/admin/AdminRules";
-import AdminRuleDetail from "./pages/admin/AdminRuleDetail";
-import AdminReviewers from "./pages/admin/AdminReviewers";
-import AdminReviewerDetail from "./pages/admin/AdminReviewerDetail";
-import AdminCreateReviewer from "./pages/admin/AdminCreateReviewer";
-import AdminCustomers from "./pages/admin/AdminCustomers";
-import AdminCustomerDetail from "./pages/admin/AdminCustomerDetail";
-import AdminCreateCustomer from "./pages/admin/AdminCreateCustomer";
-import AdminLogs from "./pages/admin/AdminLogs";
-import AdminAPIKeys from "./pages/admin/AdminAPIKeys";
-import AdminHumanFirstFramework from "./pages/admin/AdminHumanFirstFramework";
-import AdminAnalytics from "./pages/admin/AdminAnalytics";
-import AdminBlogPosts from "./pages/admin/AdminBlogPosts";
-import AdminBlogEditor from "./pages/admin/AdminBlogEditor";
-import AdminNewsletter from "./pages/admin/AdminNewsletter";
-import NotFound from "./pages/NotFound";
+// Reviewer pages (lazy)
+const ReviewerDashboard = lazy(() => import("./pages/reviewer/ReviewerDashboard"));
+const ReviewerViolations = lazy(() => import("./pages/reviewer/ReviewerViolations"));
+const ReviewerViolationDetail = lazy(() => import("./pages/reviewer/ReviewerViolationDetail"));
+
+// Admin pages (lazy)
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminViolations = lazy(() => import("./pages/admin/AdminViolations"));
+const AdminViolationDetail = lazy(() => import("./pages/admin/AdminViolationDetail"));
+const AdminRules = lazy(() => import("./pages/admin/AdminRules"));
+const AdminRuleDetail = lazy(() => import("./pages/admin/AdminRuleDetail"));
+const AdminReviewers = lazy(() => import("./pages/admin/AdminReviewers"));
+const AdminReviewerDetail = lazy(() => import("./pages/admin/AdminReviewerDetail"));
+const AdminCreateReviewer = lazy(() => import("./pages/admin/AdminCreateReviewer"));
+const AdminCustomers = lazy(() => import("./pages/admin/AdminCustomers"));
+const AdminCustomerDetail = lazy(() => import("./pages/admin/AdminCustomerDetail"));
+const AdminCreateCustomer = lazy(() => import("./pages/admin/AdminCreateCustomer"));
+const AdminLogs = lazy(() => import("./pages/admin/AdminLogs"));
+const AdminAPIKeys = lazy(() => import("./pages/admin/AdminAPIKeys"));
+const AdminHumanFirstFramework = lazy(() => import("./pages/admin/AdminHumanFirstFramework"));
+const AdminAnalytics = lazy(() => import("./pages/admin/AdminAnalytics"));
+const AdminBlogPosts = lazy(() => import("./pages/admin/AdminBlogPosts"));
+const AdminBlogEditor = lazy(() => import("./pages/admin/AdminBlogEditor"));
+const AdminNewsletter = lazy(() => import("./pages/admin/AdminNewsletter"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
+
+const RouteFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+  </div>
+);
 
 const App = () => {
   useEffect(() => {
@@ -128,6 +134,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter basename={import.meta.env.BASE_URL}>
         <AnalyticsTracker />
+        <Suspense fallback={<RouteFallback />}>
         <Routes>
           {/* Landing */}
           <Route path="/" element={<LandingPage />} />
@@ -234,6 +241,7 @@ const App = () => {
 
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

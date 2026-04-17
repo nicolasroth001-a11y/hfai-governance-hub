@@ -123,34 +123,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         initialized = true;
         setIsLoading(false);
       }
-    }, 6000);
+    }, 3000);
 
     // First: get the existing session synchronously
-    supabase.auth.getSession().then(async ({ data: { session: existingSession } }) => {
+    supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
       if (!mounted || initialized) return;
       initialized = true;
 
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
+      // Unblock UI immediately — profile + subscription load in background
+      setIsLoading(false);
       if (existingSession?.user) {
-        await fetchProfile(existingSession.user.id);
+        fetchProfile(existingSession.user.id);
         refreshSubscription();
       }
-      if (mounted) setIsLoading(false);
     });
 
     // Then: listen for future auth changes (token refresh, sign-in, sign-out)
     const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
-      async (_event, newSession) => {
+      (_event, newSession) => {
         if (!mounted) return;
 
         setSession(newSession);
         setUser(newSession?.user ?? null);
 
         if (newSession?.user) {
-          // Only fetch profile if it's a different user or we don't have one
+          // Background fetch — never blocks UI
           if (!profile || profile.id !== newSession.user.id) {
-            await fetchProfile(newSession.user.id);
+            fetchProfile(newSession.user.id);
           }
           refreshSubscription();
         } else {
