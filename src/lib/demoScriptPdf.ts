@@ -81,11 +81,13 @@ export function generateDemoScriptPDF(config: DemoConfig) {
     y = startY + blockH + 12;
   };
 
+  const firstName = config.prospectName.split(" ")[0];
+
   // ============ COVER ============
   doc.setFillColor(10, 10, 10).rect(0, 0, W, H, "F");
   doc.setFillColor(196, 153, 58).rect(0, 0, 6, H, "F");
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
-  doc.text("HFAI — DEMO SCRIPT", M, 90);
+  doc.text("HFAI × AESOP — DEMO SCRIPT", M, 90);
   doc.setFont("helvetica", "bold").setFontSize(28).setTextColor(255, 255, 255);
   doc.text(config.prospectName, M, 140);
   doc.setFont("helvetica", "normal").setFontSize(14).setTextColor(200, 200, 200);
@@ -93,139 +95,212 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.setFontSize(11).setTextColor(160, 160, 160);
   doc.text(`Call: ${config.callDate} · Presenter: ${config.presenterName}`, M, 190);
 
-  // Mini agenda on cover
+  // Strategic frame on cover
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
-  doc.text("AGENDA (15–30 MIN)", M, 260);
+  doc.text("STRATEGIC FRAME", M, 240);
+  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(220, 220, 220);
+  const frame = [
+    "Scott is NOT a normal prospect. He's a force multiplier:",
+    "  • Founder of AESOP AI Academy (publishes EU AI Act + NIST RMF alignment)",
+    "  • Healthcare CISO advisor with a network of clients",
+    "  • Already living the regulations — does not need education",
+    "",
+    "DO NOT sell him software. Offer him a Governance Lab for AESOP.",
+    "He will then sell HFAI to his network for you.",
+  ];
+  let fy = 262;
+  frame.forEach((line) => {
+    doc.text(line, M, fy);
+    fy += 14;
+  });
+
+  doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
+  doc.text("AGENDA (15–25 MIN)", M, 410);
   const agenda = [
-    "1. Open · 60–90s — empathy, AESOP bridge",
-    "2. Sign-up — self-serve, no gating",
-    "3. API key & both-sides setup",
-    "4. Reviewer team (Article 14)",
-    "5. Connect AI system — one line",
-    "6. Live events streaming in",
-    `7. Violation BLOCKED: ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
-    "8. What the end user actually sees",
-    "9. Human review + hash-chained audit",
-    "10. Compliance dashboard (live)",
-    "11. Generated Annex IV report (the artifact)",
-    "12. The two-question close",
+    "1. Open · 60–90s — empathy, AESOP bridge, Calendly thank-you",
+    "2. Discovery questions (slip in early, listen hard)",
+    "3. Sign-up — self-serve, no gating",
+    "4. API key & both-sides setup",
+    "5. Reviewer team (Article 14)",
+    "6. Connect AI system — one line",
+    "7. Live events streaming in",
+    `8. Violation BLOCKED: ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
+    "9. What the end user (the student) actually sees",
+    "10. Human review + hash-chained audit",
+    "11. Compliance dashboard (live)",
+    "12. Generated Annex IV report (the artifact)",
+    "13. The two-question close",
   ];
   doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(220, 220, 220);
-  let ay = 285;
+  let ay = 432;
   agenda.forEach((a) => {
     doc.text(a, M, ay);
-    ay += 16;
+    ay += 15;
   });
 
   doc.setFont("helvetica", "italic").setFontSize(9).setTextColor(140, 140, 140);
-  doc.text("Hybrid script · verbatim opening + closing · bullet outlines for live demo · objection answers", M, H - 60);
+  doc.text("Hybrid script · verbatim opener + closing · bullet outlines · questions to ask Scott · objection library", M, H - 60);
+
+  // ============ AESOP INTEL PAGE ============
+  doc.addPage();
+  y = M;
+  h1("AESOP Intel — What He's Already Published");
+  para("Read these BEFORE the call so you can quote him back to himself. Massive psychological win.", { muted: true, italic: true });
+  divider();
+  h2("Public alignment pages on aesopacademy.org");
+  bullet("EU AI Act (Reg 2024/1689) — including Article 4 literacy mandate + GPAI obligations");
+  bullet("NIST AI RMF 1.0 + Generative AI Profile (NIST AI 600-1)");
+  bullet("AI4K12 Five Big Ideas framework");
+  bullet("CSTA K-12 Computer Science Standards");
+  bullet("ISTE Standards for Students (2024 refresh)");
+  bullet("UNESCO AI competency framework");
+  bullet("Published AI Policy: 'data, safety, oversight' — literally HFAI's three-word pitch");
+  bullet("COPPA-compliant (under-13 learners) — child data is HIGH-RISK under EU AI Act Annex III §3");
+  divider();
+  h2("Strategic implications");
+  para("• He has an EU AI Act page. Quote it. Then show him the live enforcement layer that makes those words real.");
+  para("• He has a NIST RMF page. Tell him HFAI auto-generates evidence mapped to RMF GOVERN/MAP/MEASURE/MANAGE.");
+  para("• His learners are minors. Lead with the COPPA + Annex III §3 scenario, not generic PHI.");
+  para("• He uses the words 'data, safety, oversight'. Mirror that language. Don't invent new vocabulary.");
 
   // ============ OPENING (verbatim) ============
   doc.addPage();
   y = M;
   h1("Opening — Verbatim");
-  para(`Goal: thank Scott for the public LinkedIn nudge, find the AESOP bridge, set the agenda, and get permission to share screen. 60–90 seconds total.`, { muted: true, italic: true });
+  para(`Goal: thank Scott for the public Calendly nudge, find the AESOP bridge, set the agenda, and get permission to share screen. 60–90 seconds total.`, { muted: true, italic: true });
   divider();
   h3("Word-for-word opener");
-  verbatimBlock(`"${config.prospectName.split(" ")[0]} — really appreciate you flagging the Calendly hiccup publicly the other day. That actually moved this call up by a week, so thank you. Before I show you anything, I want to ask: your AESOP AI Academy work — preparing the next generation for AI literacy — that's exactly the gap we're trying to close on the enforcement side. So I'd love this to be a two-way conversation, not a pitch. Sound good?"`);
+  verbatimBlock(`"${firstName} — really appreciate you flagging the Calendly hiccup publicly the other day. That actually moved this call up by a week, so genuinely thank you. Before I share my screen, I want to acknowledge something: I spent time on aesopacademy.org this week. The EU AI Act alignment page, the NIST RMF page, the AI Policy — that's not a school's website. That's a manifesto. So I want to flip the usual demo on its head. Instead of pitching, I want to show you what I think you've been describing in your curriculum, and then ask whether AESOP could be the first place this gets used as a live teaching lab. Sound good?"`);
   h3("If they say 'sounds good' (they will)");
-  verbatimBlock(`"Perfect. Here's what I'll do: 15 minutes max, end-to-end walkthrough — sign-up to a real PHI violation getting blocked in 12 milliseconds — then we open it up. If at any point you want me to stop and dig into something healthcare-specific, just jump in."`);
-  h3("Discovery questions to slip in early");
-  bullet("\"What's currently in place for AI governance at your healthcare clients?\" (listen for: nothing, manual review, OneTrust)");
-  bullet("\"How are you thinking about the EU AI Act for US healthcare orgs operating in EU markets?\"");
-  bullet("\"Are your AESOP students asking about real enforcement tools, or mostly theory right now?\"");
+  verbatimBlock(`"Perfect. 15 minutes max — sign-up to a real COPPA violation getting blocked in 9 milliseconds — then we open it up. If at any point you want me to stop and dig into something AESOP-specific or healthcare-specific, just jump in."`);
+
+  // ============ DISCOVERY QUESTIONS — DEDICATED PAGE ============
+  doc.addPage();
+  y = M;
+  h1("Questions to Ask Scott");
+  para("Use these to listen, not to sell. Goal = surface the exact angle he cares about most. Pick 4–5, slip them in throughout the call.", { muted: true, italic: true });
+  divider();
+
+  h2("Tier 1 — AESOP / curriculum (the wedge)");
+  bullet("\"What gap in current AI literacy curricula were you trying to solve when you started AESOP?\"");
+  bullet("\"How are AESOP students learning what 'human oversight' or 'audit trail' actually look like in practice today — or is it mostly conceptual?\"");
+  bullet("\"You publish EU AI Act + NIST RMF alignment pages. What was the moment you decided that mattered for a learning academy?\"");
+  bullet("\"If AESOP students could run real governance against a real model in class — would faculty want that, or is that out of scope?\"");
+  bullet("\"What's your enrollment trajectory? Do you see AESOP as US-focused or international from the start?\"");
+  divider();
+
+  h2("Tier 2 — Healthcare CISO advisory (the channel)");
+  bullet("\"Of the healthcare orgs you advise, how many have an actual AI governance program vs. just a policy document?\"");
+  bullet("\"When a CISO asks you 'what tool should I use for AI governance' — what do you tell them today?\"");
+  bullet("\"How are your healthcare clients thinking about EU AI Act exposure if they touch any EU patient data?\"");
+  bullet("\"What does the procurement timeline look like for a healthcare CISO buying a $300/mo SaaS tool — is it days or quarters?\"");
+  divider();
+
+  h2("Tier 3 — Personal motivation (build rapport)");
+  bullet("\"What got you from CISO into building an AI literacy academy? Most people would have stopped at 'advisor'.\"");
+  bullet("\"You wear two hats — what does a normal week look like for you between the academy and advisory work?\"");
+  bullet("\"What would success look like for you on this call? I'd rather know upfront than guess.\"");
+  divider();
+
+  h2("Tier 4 — Direct ask (only after value is shown)");
+  bullet("\"If I built an AESOP-branded sandbox tier — free for your students, real platform, optional co-branding — would that be a yes, or are there constraints I'm not seeing?\"");
+  bullet("\"Is there one healthcare client in your network where what I just showed would be most urgent? I don't need an intro right now — just whether they exist.\"");
+  bullet("\"What would have to be true for you to put HFAI on your AESOP standards-alignment page next to UNESCO and NIST?\"");
 
   // ============ PER-SCENE SCRIPTS ============
   const scenes = [
     {
-      n: 2,
+      n: 3,
       title: "Sign-Up",
       onScreen: `${config.prospectCompany} signs up at hfa-i.org. Org provisioned in <1 second.`,
       bullets: [
         "Highlight: zero sales-call gating — they self-serve.",
-        "\"This is what your AESOP students could do in class — no IT ticket needed.\"",
-      ],
-    },
-    {
-      n: 3,
-      title: "API Key & Both-Sides Setup",
-      onScreen: "HFAI proxy key issued. Left = customer env vars. Right = what HFAI provisions automatically.",
-      bullets: [
-        "Show the key. Show the env vars on the customer side.",
-        "Right side: RLS-isolated tenant, default rule pack, audit chain initialized, dashboards ready.",
-        "\"You configure two env vars. We do the rest.\"",
+        "\"This is exactly what an AESOP student could do in class. No IT ticket, no procurement.\"",
       ],
     },
     {
       n: 4,
-      title: "Reviewer Team (Article 14)",
-      onScreen: "Customer adds in-house reviewers. HFAI Expert badge for Sovereign tier.",
+      title: "API Key & Both-Sides Setup",
+      onScreen: "HFAI proxy key issued. Left = customer env vars. Right = what HFAI provisions automatically.",
       bullets: [
-        "\"Article 14 mandates human oversight. You add unlimited in-house reviewers — your compliance team, clinical leads.\"",
-        "\"On Sovereign tier, we appoint an HFAI Expert with override authority — independent oversight regulators want to see.\"",
+        "Show the key. Show the env vars on the customer side.",
+        "Right side: RLS-isolated tenant, default rule pack, audit chain initialized.",
+        "\"You configure two env vars. We do the rest. This is the integration story your students could re-create in 5 minutes.\"",
       ],
     },
     {
       n: 5,
-      title: "Connect AI System",
-      onScreen: "Before / After code snippet. One-line base URL change.",
+      title: "Reviewer Team (Article 14)",
+      onScreen: "Customer adds in-house reviewers. HFAI Expert badge for Sovereign tier.",
       bullets: [
-        "\"One line of code. We sit invisibly between your app and the model.\"",
-        "Anticipate latency: \"12ms p99 — less than network jitter to OpenAI itself.\"",
+        "\"Article 14 mandates human oversight. For AESOP, that means: faculty as primary reviewers, an HFAI Expert as guest reviewer for student case studies.\"",
+        "\"For your healthcare clients, that means: their compliance team, plus optional HFAI Expert with override authority — independent oversight regulators want to see.\"",
       ],
     },
     {
       n: 6,
-      title: "Live Events Streaming",
-      onScreen: "Real-time event feed populates. Input + output captured, hash-chained.",
+      title: "Connect AI System",
+      onScreen: "Before / After code snippet. One-line base URL change.",
       bullets: [
-        "Pause for effect — let him see the realtime feed update.",
-        "\"Every prompt, every response, every metadata field — captured. No PHI in clear text.\"",
+        "\"One line of code. We sit invisibly between the app and the model.\"",
+        "Anticipate latency: \"12ms p99 — less than network jitter to OpenAI itself.\"",
+        "\"For AESOP — students literally see what governance does without rewriting their app.\"",
       ],
     },
     {
       n: 7,
-      title: `Violation BLOCKED — ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
-      onScreen: `Pre-scripted prompt fires. ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms later: BLOCKED. ${SCENARIO_LIBRARY[config.primaryScenario].euArticle} + ${SCENARIO_LIBRARY[config.primaryScenario].hipaaRef}.`,
+      title: "Live Events Streaming",
+      onScreen: "Real-time event feed populates. Input + output captured, hash-chained.",
       bullets: [
-        `Read the prompt aloud: "${SCENARIO_LIBRARY[config.primaryScenario].prompt}"`,
-        `"In a normal stack, that response goes to the user. Here:" — click → BLOCK in ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms.`,
-        "Switch scenarios live if Scott asks for another use case.",
+        "Pause for effect — let him watch the realtime feed update.",
+        "\"Every prompt, every response, every metadata field — captured. No PII or PHI in clear text.\"",
       ],
     },
     {
       n: 8,
-      title: "What the End User Sees",
-      onScreen: "Chat-style view: graceful fallback message replaces blocked output. Reference number for follow-up.",
+      title: `Violation BLOCKED — ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
+      onScreen: `Pre-scripted prompt fires. ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms later: BLOCKED. ${SCENARIO_LIBRARY[config.primaryScenario].euArticle}.`,
       bullets: [
-        "\"This is what the patient or staff member actually sees — no scary 'BLOCKED' banner. A graceful handoff with a reference number.\"",
-        "\"Zero PHI exposed. Zero liability. The user feels taken care of.\"",
+        `Read the prompt aloud (an 11-year-old asking for homework help): "${SCENARIO_LIBRARY[config.primaryScenario].prompt}"`,
+        `"In a normal stack, that response goes back. The AI casually echoes a minor's home address. Here:" — click → BLOCK in ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms.`,
+        "Switch scenarios live if Scott asks for healthcare PHI or EU AI Act prohibited practice — all 5 are loaded.",
       ],
     },
     {
       n: 9,
-      title: "Human Review (HITL)",
-      onScreen: `${config.reviewerName} opens the violation, adds notes, decides. SHA-256 hash chain visible.`,
+      title: "What the Student Sees",
+      onScreen: "Chat-style view: graceful fallback message replaces blocked output. Reference number for follow-up.",
       bullets: [
-        "Show the integrity hash. \"Tamper-evident — alter one, every subsequent hash breaks.\"",
-        "\"For OCR audits, this is the artifact your QSA wants.\"",
+        "\"This is what your AESOP student or a patient actually sees — no scary 'BLOCKED' banner. A graceful handoff with a reference number.\"",
+        "\"Zero PII exposed. Zero liability. The user feels taken care of. The audit trail is complete.\"",
       ],
     },
     {
       n: 10,
-      title: "Compliance Dashboard",
-      onScreen: "Score gauge animates 78% → 84%. Stats panel shows live activity.",
+      title: "Human Review (HITL)",
+      onScreen: `${config.reviewerName} opens the violation, adds notes, decides. SHA-256 hash chain visible.`,
       bullets: [
-        "\"47 active rules. 12,847 events governed in 24 hours. 23 violations blocked. Zero reached end-users.\"",
+        "Show the integrity hash. \"Tamper-evident — alter one, every subsequent hash breaks.\"",
+        "\"For AESOP teaching: this is how a student SEES Article 14 working. For your healthcare clients: this is the artifact a QSA or OCR auditor wants.\"",
       ],
     },
     {
       n: 11,
+      title: "Compliance Dashboard",
+      onScreen: "Score gauge animates 78% → 84%. Stats panel shows live activity.",
+      bullets: [
+        "\"47 active rules. Live score that moves with every reviewed event.\"",
+        "\"Imagine an AESOP class watching this in real time as they fire test prompts.\"",
+      ],
+    },
+    {
+      n: 12,
       title: "Generated Annex IV Report",
-      onScreen: `Rendered PDF preview of the actual Annex IV technical documentation for ${config.aiSystemName}.`,
+      onScreen: `Rendered PDF preview of the Annex IV technical documentation for ${config.aiSystemName}.`,
       bullets: [
         "\"This is the doc EU regulators will demand starting Aug 2026.\"",
-        "\"Most companies will scramble to write this in Word from memory. You generate it from real audit data, on demand. 47 pages, regulator-grade.\"",
+        "\"For AESOP — this is the artifact you'd hand a student to show 'this is what compliance looks like as a deliverable, not a policy.'\"",
+        "\"Most companies will scramble to write this in Word from memory. You generate it from real audit data, on demand.\"",
       ],
     },
   ];
@@ -244,26 +319,34 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.addPage();
   y = M;
   h1("Closing — Verbatim");
-  h3("The transition")
-  verbatimBlock(`"So that's end-to-end — sign-up to blocked PHI leak to audit-ready evidence, in under 15 minutes of real work. Two questions for you, ${config.prospectName.split(" ")[0]}:"`);
+  h3("The transition");
+  verbatimBlock(`"So that's end-to-end — sign-up to a blocked COPPA violation to audit-ready evidence, in under 15 minutes of real work. Two questions for you, ${firstName}:"`);
   h3("The two-question close");
-  bullet("\"Of the healthcare clients you're advising right now — is there one where this would be most urgent?\"");
-  bullet("\"And separately — your AESOP curriculum: would it be valuable to your students if HFAI sponsored a free tier for them to actually run governance against real models?\"");
-  h3("If yes to client urgency");
+  bullet("\"AESOP first — would your students benefit from running governance against real models in a live HFAI lab? I'm thinking AESOP-branded sandbox, free for learners, optional co-branding.\"");
+  bullet("\"And separately — of the healthcare clients you're advising right now, is there one where this would be most urgent?\"");
+  h3("If yes to AESOP partnership (PRIMARY GOAL)");
+  verbatimBlock(`"Amazing. Let's do this: I'll set up an AESOP-branded sandbox tier this week — your students get free Sovereign-tier accounts, you get the real platform powering your curriculum. In exchange: HFAI joins your standards-alignment page next to UNESCO and NIST, and we co-author one short piece on operationalizing EU AI Act Article 4 in education. I'll send a one-pager Monday. Fair trade?"`);
+  h3("If yes to healthcare client urgency (CHANNEL UPSIDE)");
   verbatimBlock(`"Great. I can have a Free Pilot live for them tomorrow — 30 days, no card required, full feature access. Want me to send the link to you to forward, or directly to your contact there?"`);
-  h3("If yes to AESOP partnership");
-  verbatimBlock(`"Even better. Let's do this: I'll set up an AESOP-branded sandbox tier — your students get free accounts, you get the real platform powering your curriculum. Co-branding optional, mutual win. Can I send a one-pager by Monday?"`);
-  h3("If no / 'let me think about it'");
-  verbatimBlock(`"Totally fair. Last thing — the Free Pilot is genuinely free, no demo required. If it would help to just have it sitting in the background for one of your clients, take 2 minutes after the call and self-provision. Either way, I'd love to stay in touch on the AESOP side specifically."`);
+  h3("If 'let me think about it'");
+  verbatimBlock(`"Totally fair. Last thing — the AESOP sandbox offer is genuinely zero-strings. Even if today is just 'cool, keep me posted', take 2 minutes after the call and self-provision a Free Pilot for AESOP. You'll have a working governance lab by tonight. Either way, I'd love to stay in touch on the curriculum side specifically."`);
 
   // ============ OBJECTION LIBRARY ============
   doc.addPage();
   y = M;
-  h1("Objection Library");
-  para("Anticipated questions from a Healthcare CISO. Use the answers verbatim or adapt.", { muted: true, italic: true });
+  h1("Objection Library — Likely Questions From Scott");
+  para("Anticipated questions. Use the answers verbatim or adapt. Listed in order of likelihood for Scott specifically.", { muted: true, italic: true });
   divider();
 
   const objections = [
+    {
+      q: "How is HFAI different from what I already teach in the AESOP AI Policy?",
+      a: "Your AI Policy describes the principles — data, safety, oversight. HFAI is the runtime layer that makes those principles enforceable in code. You teach what governance should look like; we make it happen at the API in 12 milliseconds. Together: theory + working lab.",
+    },
+    {
+      q: "What about COPPA? My learners are under 13.",
+      a: "That's exactly why I led with the under-13 scenario. HFAI auto-detects minor PII patterns (name + age signal + school email + address) and blocks echo/retention before the model output reaches the student. We map directly to COPPA §312.5 and EU AI Act Annex III §3 (education = high-risk).",
+    },
     {
       q: "Can you sign a BAA?",
       a: "Yes. Lovable Cloud (our infrastructure layer) is SOC 2 Type II and supports BAA execution. We never persist PHI in clear text — the audit trail uses hash-chained metadata, not raw patient data. Happy to walk through the architecture with your privacy officer.",
@@ -274,27 +357,35 @@ export function generateDemoScriptPDF(config: DemoConfig) {
     },
     {
       q: "We already use OneTrust / Drata / Vanta for compliance.",
-      a: "Great — those are GRC platforms. They tell you what policies you should have. HFAI is the runtime enforcement layer. We sit at the API and actually block prohibited use as it happens, then feed evidence back into your GRC tool. We have webhook integrations with all three.",
+      a: "Those are GRC platforms — they tell you what policies you should have. HFAI is the runtime enforcement layer. We sit at the API and actually block prohibited use as it happens, then feed evidence back into your GRC tool. We have webhook integrations with all three.",
     },
     {
       q: "How is this different from OpenAI's built-in moderation?",
-      a: "OpenAI moderation flags content. HFAI enforces your specific rules — HIPAA, EU AI Act Article 5, your internal AUP — and gives you the audit trail regulators actually accept. We're model-agnostic too: same enforcement layer works for GPT, Claude, Gemini, and on-prem models.",
+      a: "OpenAI moderation flags content. HFAI enforces YOUR specific rules — HIPAA, COPPA, EU AI Act Article 5, your AUP — and gives you the audit trail regulators actually accept. We're model-agnostic too: same enforcement layer works for GPT, Claude, Gemini, and on-prem models.",
     },
     {
       q: "What's the deployment story? Self-hosted? Cloud-only?",
-      a: "Cloud-hosted by default (us-east, eu-west regions). Sovereign tier offers single-tenant deployment in your VPC for healthcare and gov clients. Roadmap includes on-prem Helm chart for Q2.",
+      a: "Cloud-hosted by default (us-east, eu-west regions). Sovereign tier offers single-tenant deployment for healthcare and gov clients. Roadmap includes on-prem Helm chart for Q2.",
     },
     {
       q: "How do I know your detection is actually accurate?",
-      a: "Every rule is testable — you can fire synthetic events from the dashboard and see exactly what triggers. Every detection is reviewable by a human. And every override teaches the system. We're explicit about not being a black box.",
+      a: "Every rule is testable — you can fire synthetic events from the dashboard and see exactly what triggers. Every detection is reviewable by a human. Every override teaches the system. We're explicit about not being a black box. Perfect transparency for an AESOP curriculum.",
     },
     {
       q: "Pricing?",
-      a: "Free Pilot: 30 days, full features, no card. Pro: $299/mo (most healthcare clients land here). Enterprise: $999/mo with priority support + custom rules. Sovereign: $499/mo for the external reviewer + isolated infrastructure tier.",
+      a: "Free Pilot: 30 days, full features, no card. Pro: $299/mo. Enterprise: $999/mo with priority support + custom rules. Sovereign: $499/mo for the external reviewer + isolated infrastructure tier. For AESOP I'm proposing a no-cost Sovereign tier in exchange for the standards-page mention — call it educational sponsorship.",
+    },
+    {
+      q: "What's in it for you to give AESOP free Sovereign tier?",
+      a: "Honesty: distribution. AESOP students become future CISOs, GRC engineers, AI program leads. If they learn governance ON HFAI, they recommend HFAI when they get jobs. Same playbook MongoDB, Stripe, and Notion ran. Plus: your standards page is high-authority — being listed there next to UNESCO and NIST is real validation for us.",
+    },
+    {
+      q: "What does 'co-author one piece' commit me to?",
+      a: "One short article — 1500 words max — on operationalizing EU AI Act Article 4 in education. We do 80% of the writing, you review and add the curriculum perspective. Co-bylined. We promote it on our channels, you promote it on yours. Total time commitment: maybe 2 hours.",
     },
     {
       q: "What's the sales process from here?",
-      a: "Honestly — the fastest path is you self-provision the Free Pilot today, fire 5–10 events from a sandbox, see if the detection matches what you'd expect for healthcare. If it does, we talk pilot-to-paid. If not, you've spent 20 minutes and learned something.",
+      a: "Honestly — fastest path is you self-provision the Free Pilot today, fire 5–10 events from a sandbox, see if the detection matches what you'd expect for a learning environment. If it does, we move to the AESOP sandbox setup. If not, you've spent 20 minutes and learned something.",
     },
   ];
 
@@ -313,6 +404,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
     { name: "Pro", price: "$299/mo", duration: "monthly", who: "Single org, up to 100K events/mo, standard support. Most healthcare clients." },
     { name: "Enterprise", price: "$999/mo", duration: "monthly or annual", who: "Up to 1M events/mo, priority support, custom rule packs, SAML SSO." },
     { name: "Sovereign", price: "$499/mo (add-on)", duration: "monthly", who: "External HFAI-appointed reviewer + isolated infrastructure. Required for some EU AI Act high-risk deployments." },
+    { name: "AESOP Sandbox", price: "$0 (proposed)", duration: "indefinite", who: "Sovereign-tier features, capped event volume per student account, in exchange for standards-page listing + co-authored content. Educational sponsorship — internal name only." },
   ];
   tiers.forEach((t) => {
     h3(`${t.name} — ${t.price}`);
@@ -321,10 +413,11 @@ export function generateDemoScriptPDF(config: DemoConfig) {
 
   divider();
   h2("Post-call action items");
-  bullet("Send recap email within 2 hours (template in Notion)");
+  bullet("Send recap email within 2 hours — reference his AESOP standards page by name");
+  bullet("If AESOP partnership discussed: send AESOP × HFAI one-pager by Monday");
   bullet("Send Free Pilot signup link with prefilled company name");
-  bullet("If AESOP partnership discussed: send one-pager by Monday");
-  bullet("Add to CRM with next-touch date");
+  bullet("Add Scott to CRM with next-touch date + 'Channel + Reference' tag");
+  bullet("LinkedIn follow-up: thank him publicly for the call (he reciprocates publicly — established pattern)");
 
-  doc.save(`HFAI-Demo-Script-${config.prospectName.replace(/\s+/g, "-")}-${config.callDate}.pdf`);
+  doc.save(`HFAI-AESOP-Demo-Script-${config.prospectName.replace(/\s+/g, "-")}-${config.callDate}.pdf`);
 }
