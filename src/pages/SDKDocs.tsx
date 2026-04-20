@@ -120,6 +120,44 @@ await fetch("${INGEST_URL}", {
 });
 // ✅ Only metadata sent — AI traffic stays private`;
 
+const guardJs = `// ── HFAI Guard — Fail-Closed SDK (offline-safe) ──
+// No install needed — single file, zero deps.
+import { HFAIGuard } from "https://hfa-i.org/sdk/hfai-guard.js";
+
+const guard = new HFAIGuard({ apiKey: "YOUR_HFAI_API_KEY" });
+
+// Synchronous local check (<1ms, never touches the network)
+const local = guard.checkLocal(userInput);
+if (local.blocked) return local.explanation;
+
+// Full check: local first (fail-closed), then cloud rules + AI
+const verdict = await guard.check(userInput, { user_id: "u_123" });
+if (verdict.blocked) {
+  return verdict.explanation;  // Article 5 / COPPA / org policy
+}
+
+// On reconnect, replay anything that queued while offline
+await guard.flushQueue();`;
+
+const guardPy = `# ── HFAI Guard — Fail-Closed SDK (offline-safe) ──
+# Drop hfai_guard.py into your project. Stdlib-only.
+from hfai_guard import HFAIGuard
+
+guard = HFAIGuard(api_key="YOUR_HFAI_API_KEY")
+
+# Synchronous local check (no network, no exceptions)
+local = guard.check_local(user_input)
+if local["blocked"]:
+    return local["explanation"]
+
+# Full check: local first, then cloud (org rules + AI classifier)
+verdict = guard.check(user_input, meta={"user_id": "u_123"})
+if verdict["blocked"]:
+    return verdict["explanation"]
+
+# Replay queued offline events when network is back
+guard.flush_queue()`;
+
 export default function SDKDocs() {
   usePageView("/docs/sdk");
   const [copied, setCopied] = useState<string | null>(null);
