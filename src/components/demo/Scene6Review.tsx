@@ -27,7 +27,7 @@ export function Scene6Review({ config, scenario }: { config: DemoConfig; scenari
           <p className="text-xs text-card-foreground/70">{s.ruleTriggered}</p>
         </div>
         <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Reviewer notes</label>
-        <div className="mt-1 mb-4 px-3 py-2 rounded-md border border-border bg-background text-xs">
+        <div className="mt-1 mb-4 px-3 py-2 rounded-md border border-border bg-white text-xs text-neutral-900">
           Confirmed PHI exposure risk. Block stands. Recommending team training on prompt sanitization.
         </div>
         {!decided ? (

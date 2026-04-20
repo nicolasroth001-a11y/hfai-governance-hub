@@ -3,10 +3,11 @@ import { Trophy, ArrowRight } from "lucide-react";
 import type { DemoConfig } from "@/lib/demoConfig";
 
 const TIERS = [
-  { name: "Free Pilot", price: "$0", duration: "30 days", highlight: false, features: ["Full features", "No card required", "Self-provision"] },
-  { name: "Pro", price: "$299", duration: "/month", highlight: true, features: ["Up to 100K events/mo", "Standard support", "Most healthcare clients"] },
-  { name: "Enterprise", price: "$999", duration: "/month", highlight: false, features: ["1M events/mo", "Priority support", "SAML SSO + custom rules"] },
-  { name: "Sovereign", price: "$499", duration: "add-on", highlight: false, features: ["External HFAI reviewer", "Isolated infra", "EU AI Act high-risk ready"] },
+  { name: "Free", price: "$0", duration: "forever", highlight: false, features: ["1 AI system", "5 governance rules", "7-day event history"] },
+  { name: "Starter", price: "$19", duration: "/month", highlight: false, features: ["Up to 3 AI systems", "Violation detection & alerts", "Email notifications"] },
+  { name: "Pro", price: "$49.99", duration: "/month", highlight: true, features: ["Unlimited AI systems", "Analytics + human review", "Full audit trail"] },
+  { name: "Enterprise", price: "$149.99", duration: "/month", highlight: false, features: ["Root cause analysis (AI)", "Pattern detection", "Custom rule templates"] },
+  { name: "Sovereign", price: "$499", duration: "/month", highlight: false, features: ["Compliance certificates", "Multi-jurisdiction engine", "Dedicated advisor"] },
 ];
 
 export function Scene8Close({ config }: { config: DemoConfig }) {
@@ -28,7 +29,7 @@ export function Scene8Close({ config }: { config: DemoConfig }) {
         </div>
       </motion.div>
 
-      <div className="grid gap-3 md:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-5">
         {TIERS.map((t, i) => (
           <motion.div key={t.name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i }}
             className={`rounded-xl border p-5 ${t.highlight ? "border-primary bg-primary/5 ring-1 ring-primary/30" : "border-border bg-card"}`}>
