@@ -61,7 +61,7 @@ export function Scene6Review({ config, scenario }: { config: DemoConfig; scenari
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
               className="rounded border-2 border-primary/40 bg-primary/5 px-3 py-2">
               <p className="text-[9px] uppercase tracking-wider text-primary font-bold">Block #1250 · NEW</p>
-              <p className="text-[10px] font-mono text-foreground break-all">d8e2f9a4c1b7…3e5f</p>
+              <p className="text-[10px] font-mono text-card-foreground break-all">d8e2f9a4c1b7…3e5f</p>
             </motion.div>
           )}
         </div>

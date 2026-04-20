@@ -22,7 +22,7 @@ export function Scene2ApiKey({ config }: { config: DemoConfig }) {
           transition={{ delay: 0.3 }}
           className="rounded-lg border-2 border-primary/40 bg-primary/5 p-5 font-mono text-base flex items-center justify-between"
         >
-          <span className="break-all text-foreground">{FAKE_KEY}</span>
+          <span className="break-all text-card-foreground">{FAKE_KEY}</span>
           <button className="ml-4 p-2 rounded-md bg-primary/15 hover:bg-primary/25 shrink-0">
             <Copy className="h-4 w-4 text-primary" />
           </button>
@@ -59,7 +59,7 @@ export function Scene2ApiKey({ config }: { config: DemoConfig }) {
             <Code2 className="h-4 w-4 text-primary" />
             <p className="text-xs font-semibold text-card-foreground">Customer side · your env</p>
           </div>
-          <pre className="rounded-md bg-muted/50 border border-border p-3 text-[11px] font-mono leading-relaxed text-foreground overflow-x-auto">
+          <pre className="rounded-md bg-muted/50 border border-border p-3 text-[11px] font-mono leading-relaxed text-card-foreground overflow-x-auto">
 {`HFAI_PROXY_KEY=hfai_proxy_4a7c92e…
 HFAI_BASE_URL=https://proxy.hfa-i.org/v1`}
           </pre>
@@ -70,7 +70,7 @@ HFAI_BASE_URL=https://proxy.hfa-i.org/v1`}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="rounded-xl border border-primary/30 bg-primary/5 p-5"
+          className="rounded-xl border-2 border-primary/40 bg-card p-5"
         >
           <div className="flex items-center gap-2 mb-3">
             <Server className="h-4 w-4 text-primary" />

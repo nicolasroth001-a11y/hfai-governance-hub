@@ -11,7 +11,7 @@ export function Scene1Signup({ config }: { config: DemoConfig }) {
           <span className="font-bold tracking-tight">HFAI</span>
           <span className="text-xs text-muted-foreground ml-auto">Sign up</span>
         </div>
-        <h2 className="text-2xl font-bold mb-1">Create your account</h2>
+        <h2 className="text-2xl font-bold mb-1 text-card-foreground">Create your account</h2>
         <p className="text-sm text-muted-foreground mb-6">Free pilot · 30 days · no card</p>
         <div className="space-y-3">
           <Field label="Full name" value={config.prospectName} delay={0.3} />
@@ -25,7 +25,7 @@ export function Scene1Signup({ config }: { config: DemoConfig }) {
         </div>
       </div>
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.8 }}
-        className="rounded-xl border border-primary/30 bg-primary/5 p-6">
+        className="rounded-xl border-2 border-primary/40 bg-card p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
           <CheckCircle2 className="h-5 w-5 text-primary" />
           <p className="font-semibold text-sm">Org provisioned · 847ms</p>
@@ -49,7 +49,7 @@ function Field({ label, value, delay }: { label: string; value: string; delay: n
     <div>
       <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{label}</label>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay }}
-        className="mt-1 px-3 py-2 rounded-md border border-border bg-background text-sm">
+        className="mt-1 px-3 py-2 rounded-md border border-border bg-muted/40 text-sm text-card-foreground">
         {value}
       </motion.div>
     </div>

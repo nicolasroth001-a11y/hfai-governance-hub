@@ -13,17 +13,17 @@ export function Scene8Close({ config }: { config: DemoConfig }) {
   return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 via-card to-card p-8 text-center">
+        className="rounded-2xl border-2 border-primary/30 bg-card p-8 text-center shadow-sm">
         <Trophy className="h-10 w-10 text-primary mx-auto mb-3" />
-        <h2 className="text-2xl font-bold tracking-tight mb-2">Two questions, {config.prospectName.split(" ")[0]}</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-2 text-card-foreground">Two questions, {config.prospectName.split(" ")[0]}</h2>
         <div className="grid gap-4 md:grid-cols-2 mt-6 text-left max-w-2xl mx-auto">
-          <div className="rounded-lg border border-primary/20 bg-background/50 p-5">
+          <div className="rounded-lg border border-primary/20 bg-muted/40 p-5">
             <p className="text-[10px] uppercase tracking-widest text-primary font-bold mb-2">Question 1</p>
-            <p className="text-sm font-semibold leading-snug">Of the healthcare clients you advise — is there one where this would be most urgent?</p>
+            <p className="text-sm font-semibold leading-snug text-card-foreground">Of the healthcare clients you advise — is there one where this would be most urgent?</p>
           </div>
-          <div className="rounded-lg border border-primary/20 bg-background/50 p-5">
+          <div className="rounded-lg border border-primary/20 bg-muted/40 p-5">
             <p className="text-[10px] uppercase tracking-widest text-primary font-bold mb-2">Question 2</p>
-            <p className="text-sm font-semibold leading-snug">Would your AESOP students benefit from a free HFAI tier to run governance against real models?</p>
+            <p className="text-sm font-semibold leading-snug text-card-foreground">Would your AESOP students benefit from a free HFAI tier to run governance against real models?</p>
           </div>
         </div>
       </motion.div>

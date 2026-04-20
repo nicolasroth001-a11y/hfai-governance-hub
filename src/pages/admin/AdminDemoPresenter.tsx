@@ -180,7 +180,7 @@ export default function AdminDemoPresenter() {
   // ============ CLEAN MODE — pure prospect view ============
   if (cleanMode) {
     return (
-      <div className="fixed inset-0 bg-background text-foreground overflow-auto">
+      <div className="fixed inset-0 text-card-foreground overflow-auto" style={{ background: "hsl(33 25% 88%)" }}>
         <div className="max-w-6xl mx-auto px-8 py-10">
           <AnimatePresence mode="wait">
             <motion.div
@@ -283,7 +283,7 @@ export default function AdminDemoPresenter() {
       </aside>
 
       {/* CENTER — Stage (clean light surface so cards pop) */}
-      <main className="flex-1 flex flex-col overflow-hidden bg-muted/30">
+      <main className="flex-1 flex flex-col overflow-hidden text-card-foreground" style={{ background: "hsl(33 25% 88%)" }}>
         <header className="px-8 py-4 border-b border-border bg-background flex items-center justify-between shrink-0">
           <div>
             <p className="text-[10px] uppercase tracking-widest text-primary font-semibold">Scene {current.id} of {TOTAL}</p>
