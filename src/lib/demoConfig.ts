@@ -1,5 +1,5 @@
 // Demo cockpit configuration — stored in localStorage for presenter mode
-export type DemoScenario = "phi_leak" | "prohibited_practice" | "hallucination";
+export type DemoScenario = "phi_leak" | "prohibited_practice" | "hallucination" | "coppa_minor_data" | "ai_literacy_gap";
 
 export interface DemoConfig {
   prospectName: string;
