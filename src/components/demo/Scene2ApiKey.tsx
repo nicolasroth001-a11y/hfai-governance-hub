@@ -70,7 +70,7 @@ HFAI_BASE_URL=https://proxy.hfa-i.org/v1`}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="rounded-xl border border-primary/30 bg-primary/5 p-5"
+          className="rounded-xl border-2 border-primary/40 bg-card p-5"
         >
           <div className="flex items-center gap-2 mb-3">
             <Server className="h-4 w-4 text-primary" />
