@@ -180,7 +180,7 @@ export default function AdminDemoPresenter() {
   // ============ CLEAN MODE — pure prospect view ============
   if (cleanMode) {
     return (
-      <div className="fixed inset-0 bg-muted/30 text-foreground overflow-auto">
+      <div className="fixed inset-0 text-card-foreground overflow-auto" style={{ background: "hsl(33 25% 88%)" }}>
         <div className="max-w-6xl mx-auto px-8 py-10">
           <AnimatePresence mode="wait">
             <motion.div
