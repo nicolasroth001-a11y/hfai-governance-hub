@@ -120,6 +120,44 @@ await fetch("${INGEST_URL}", {
 });
 // ✅ Only metadata sent — AI traffic stays private`;
 
+const guardJs = `// ── HFAI Guard — Fail-Closed SDK (offline-safe) ──
+// No install needed — single file, zero deps.
+import { HFAIGuard } from "https://hfa-i.org/sdk/hfai-guard.js";
+
+const guard = new HFAIGuard({ apiKey: "YOUR_HFAI_API_KEY" });
+
+// Synchronous local check (<1ms, never touches the network)
+const local = guard.checkLocal(userInput);
+if (local.blocked) return local.explanation;
+
+// Full check: local first (fail-closed), then cloud rules + AI
+const verdict = await guard.check(userInput, { user_id: "u_123" });
+if (verdict.blocked) {
+  return verdict.explanation;  // Article 5 / COPPA / org policy
+}
+
+// On reconnect, replay anything that queued while offline
+await guard.flushQueue();`;
+
+const guardPy = `# ── HFAI Guard — Fail-Closed SDK (offline-safe) ──
+# Drop hfai_guard.py into your project. Stdlib-only.
+from hfai_guard import HFAIGuard
+
+guard = HFAIGuard(api_key="YOUR_HFAI_API_KEY")
+
+# Synchronous local check (no network, no exceptions)
+local = guard.check_local(user_input)
+if local["blocked"]:
+    return local["explanation"]
+
+# Full check: local first, then cloud (org rules + AI classifier)
+verdict = guard.check(user_input, meta={"user_id": "u_123"})
+if verdict["blocked"]:
+    return verdict["explanation"]
+
+# Replay queued offline events when network is back
+guard.flush_queue()`;
+
 export default function SDKDocs() {
   usePageView("/docs/sdk");
   const [copied, setCopied] = useState<string | null>(null);
@@ -192,6 +230,77 @@ export default function SDKDocs() {
               </ul>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Resilience / Fail-Closed Guard */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-primary" />
+            <h2 className="text-xl font-bold text-foreground">HFAI Guard — Fail-Closed Resilience</h2>
+            <Badge variant="outline" className="text-[10px] border-primary/40 text-primary">v1.0.0</Badge>
+          </div>
+          <Card className="border-primary/30 bg-primary/5">
+            <CardContent className="p-5 space-y-4">
+              <p className="text-sm text-foreground leading-relaxed">
+                <strong>Guarantee:</strong> Even if the HFAI cloud is 100% unreachable, this SDK will still <strong>block every EU AI Act Article 5 prohibited practice</strong> and every baseline COPPA / child-safety pattern. Highest-risk enforcement is embedded in the SDK and cannot be disabled by an outage on our end.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-3 text-xs">
+                <div className="space-y-1">
+                  <h4 className="font-semibold text-foreground uppercase tracking-wider text-[10px]">Always blocked locally</h4>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Subliminal manipulation / coercion</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Exploitation of vulnerable groups</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Social scoring / citizen scoring</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Predictive policing</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Untargeted facial scraping</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Workplace / school emotion recognition</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Biometric categorisation</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Real-time remote biometric ID</li>
+                  </ul>
+                </div>
+                <div className="space-y-1">
+                  <h4 className="font-semibold text-foreground uppercase tracking-wider text-[10px]">Baseline safety (COPPA)</h4>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Minor PII requests (address / phone / school)</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Grooming-pattern language</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Self-harm instruction requests</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> CSAM patterns (zero tolerance)</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Offline event queue + auto-replay on reconnect</li>
+                    <li className="flex gap-2"><CheckCircle className="h-3 w-3 text-primary mt-0.5 shrink-0" /> Sub-millisecond synchronous check API</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2 pt-2">
+                <Button variant="outline" size="sm" asChild>
+                  <a href="/sdk/hfai-guard.js" target="_blank" rel="noopener">Download hfai-guard.js</a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <a href="/sdk/hfai-guard.py" target="_blank" rel="noopener">Download hfai-guard.py</a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Tabs defaultValue="guard-js" className="w-full">
+            <TabsList>
+              <TabsTrigger value="guard-js" className="text-xs">JavaScript / Node</TabsTrigger>
+              <TabsTrigger value="guard-py" className="text-xs">Python</TabsTrigger>
+            </TabsList>
+            <TabsContent value="guard-js">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-foreground">Fail-closed usage</h3>
+                <CopyBtn text={guardJs} label="guard-js" />
+              </div>
+              <CodeSnippetBlock code={guardJs} language="typescript" />
+            </TabsContent>
+            <TabsContent value="guard-py">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-foreground">Fail-closed usage</h3>
+                <CopyBtn text={guardPy} label="guard-py" />
+              </div>
+              <CodeSnippetBlock code={guardPy} language="python" />
+            </TabsContent>
+          </Tabs>
         </div>
 
         {/* Code examples */}
