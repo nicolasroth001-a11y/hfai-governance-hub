@@ -97,14 +97,18 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
   doc.text("AGENDA (15–30 MIN)", M, 260);
   const agenda = [
-    "1. Open · 2 min — empathy, AESOP bridge",
-    "2. Sign-up & API key — 2 min",
-    "3. Connect AI system — 2 min",
-    "4. First event flows — 1 min",
-    `5. Violation detected: ${SCENARIO_LIBRARY[config.primaryScenario].label} — 4 min`,
-    "6. Human review + tamper-evident audit — 3 min",
-    "7. Compliance dashboard + Annex IV export — 3 min",
-    "8. Close: pricing + ask — 3 min",
+    "1. Open · 60–90s — empathy, AESOP bridge",
+    "2. Sign-up — self-serve, no gating",
+    "3. API key & both-sides setup",
+    "4. Reviewer team (Article 14)",
+    "5. Connect AI system — one line",
+    "6. Live events streaming in",
+    `7. Violation BLOCKED: ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
+    "8. What the end user actually sees",
+    "9. Human review + hash-chained audit",
+    "10. Compliance dashboard (live)",
+    "11. Generated Annex IV report (the artifact)",
+    "12. The two-question close",
   ];
   doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(220, 220, 220);
   let ay = 285;
@@ -135,63 +139,93 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   const scenes = [
     {
       n: 2,
-      title: "Sign-Up Flow",
-      onScreen: `${config.prospectCompany} signing up at hfa-i.org. Email, password, company name auto-fills. Org provisioned in <1 second.`,
+      title: "Sign-Up",
+      onScreen: `${config.prospectCompany} signs up at hfa-i.org. Org provisioned in <1 second.`,
       bullets: [
-        "Highlight: zero sales-call gating. They can self-serve.",
-        "Mention: SOC 2 Type II infrastructure (Lovable Cloud).",
-        "Drop: \"This is what your AESOP students could do in class — no IT ticket needed.\"",
+        "Highlight: zero sales-call gating — they self-serve.",
+        "\"This is what your AESOP students could do in class — no IT ticket needed.\"",
       ],
     },
     {
       n: 3,
-      title: "API Key & Connect",
-      onScreen: `New org gets a unique HFAI proxy key (hfai_...) instantly. Drop-in replacement for OpenAI base URL.`,
+      title: "API Key & Both-Sides Setup",
+      onScreen: "HFAI proxy key issued. Left = customer env vars. Right = what HFAI provisions automatically.",
       bullets: [
-        "Show the key. Show the proxy URL.",
-        "Key line: \"One line of code change. We sit invisibly between your app and the model.\"",
-        "Anticipate: \"Does this add latency?\" → \"12ms p99. Less than the network jitter to OpenAI itself.\"",
+        "Show the key. Show the env vars on the customer side.",
+        "Right side: RLS-isolated tenant, default rule pack, audit chain initialized, dashboards ready.",
+        "\"You configure two env vars. We do the rest.\"",
       ],
     },
     {
       n: 4,
-      title: "First Event Flows In",
-      onScreen: "Live event feed — patient query streams in real-time. Input + output captured. No PHI persisted in clear text.",
+      title: "Reviewer Team (Article 14)",
+      onScreen: "Customer adds in-house reviewers. HFAI Expert badge for Sovereign tier.",
       bullets: [
-        "Pause for effect — let him see the realtime feed update.",
-        "\"Every prompt, every response, every metadata field — captured and hash-chained.\"",
-        "Don't dwell. Move to the wow moment.",
+        "\"Article 14 mandates human oversight. You add unlimited in-house reviewers — your compliance team, clinical leads.\"",
+        "\"On Sovereign tier, we appoint an HFAI Expert with override authority — independent oversight regulators want to see.\"",
       ],
     },
     {
       n: 5,
-      title: `Violation Detected — ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
-      onScreen: `Pre-scripted prompt fires. ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms later: BLOCKED. Banner shows ${SCENARIO_LIBRARY[config.primaryScenario].euArticle} + ${SCENARIO_LIBRARY[config.primaryScenario].hipaaRef}.`,
+      title: "Connect AI System",
+      onScreen: "Before / After code snippet. One-line base URL change.",
       bullets: [
-        `Read the prompt out loud: "${SCENARIO_LIBRARY[config.primaryScenario].prompt}"`,
-        `"In a normal stack, that response goes to the user. Here:" — click → BLOCK animation in ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms.`,
-        `"This is ${SCENARIO_LIBRARY[config.primaryScenario].ruleTriggered} — and it's already mapped to both ${SCENARIO_LIBRARY[config.primaryScenario].euArticle} and ${SCENARIO_LIBRARY[config.primaryScenario].hipaaRef}."`,
-        "If he asks about other scenarios — switch live to the scenario library and run a 2nd or 3rd.",
+        "\"One line of code. We sit invisibly between your app and the model.\"",
+        "Anticipate latency: \"12ms p99 — less than network jitter to OpenAI itself.\"",
       ],
     },
     {
       n: 6,
-      title: "Human Review (HITL)",
-      onScreen: `${config.reviewerName} opens the violation, adds notes, makes a decision. Each review is SHA-256 hash-chained.`,
+      title: "Live Events Streaming",
+      onScreen: "Real-time event feed populates. Input + output captured, hash-chained.",
       bullets: [
-        "Show the integrity hash. \"This is tamper-evident. If someone alters a past review, every subsequent hash breaks.\"",
-        "\"For OCR audits, this is the artifact your QSA wants to see.\"",
-        "Mention: HFAI also offers Sovereign-tier external reviewers — independent oversight when internal review isn't enough.",
+        "Pause for effect — let him see the realtime feed update.",
+        "\"Every prompt, every response, every metadata field — captured. No PHI in clear text.\"",
       ],
     },
     {
       n: 7,
-      title: "Compliance Dashboard + Annex IV Export",
-      onScreen: `Compliance score updated live. One-click Annex IV doc generates as PDF for ${config.aiSystemName}.`,
+      title: `Violation BLOCKED — ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
+      onScreen: `Pre-scripted prompt fires. ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms later: BLOCKED. ${SCENARIO_LIBRARY[config.primaryScenario].euArticle} + ${SCENARIO_LIBRARY[config.primaryScenario].hipaaRef}.`,
       bullets: [
-        "Show the score gauge updating.",
-        "Click 'Generate Annex IV' — show the PDF appearing.",
-        "\"This is the doc EU regulators will demand starting Aug 2026. Most companies will scramble to write it. You generate it on-demand from real data.\"",
+        `Read the prompt aloud: "${SCENARIO_LIBRARY[config.primaryScenario].prompt}"`,
+        `"In a normal stack, that response goes to the user. Here:" — click → BLOCK in ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms.`,
+        "Switch scenarios live if Scott asks for another use case.",
+      ],
+    },
+    {
+      n: 8,
+      title: "What the End User Sees",
+      onScreen: "Chat-style view: graceful fallback message replaces blocked output. Reference number for follow-up.",
+      bullets: [
+        "\"This is what the patient or staff member actually sees — no scary 'BLOCKED' banner. A graceful handoff with a reference number.\"",
+        "\"Zero PHI exposed. Zero liability. The user feels taken care of.\"",
+      ],
+    },
+    {
+      n: 9,
+      title: "Human Review (HITL)",
+      onScreen: `${config.reviewerName} opens the violation, adds notes, decides. SHA-256 hash chain visible.`,
+      bullets: [
+        "Show the integrity hash. \"Tamper-evident — alter one, every subsequent hash breaks.\"",
+        "\"For OCR audits, this is the artifact your QSA wants.\"",
+      ],
+    },
+    {
+      n: 10,
+      title: "Compliance Dashboard",
+      onScreen: "Score gauge animates 78% → 84%. Stats panel shows live activity.",
+      bullets: [
+        "\"47 active rules. 12,847 events governed in 24 hours. 23 violations blocked. Zero reached end-users.\"",
+      ],
+    },
+    {
+      n: 11,
+      title: "Generated Annex IV Report",
+      onScreen: `Rendered PDF preview of the actual Annex IV technical documentation for ${config.aiSystemName}.`,
+      bullets: [
+        "\"This is the doc EU regulators will demand starting Aug 2026.\"",
+        "\"Most companies will scramble to write this in Word from memory. You generate it from real audit data, on demand. 47 pages, regulator-grade.\"",
       ],
     },
   ];
