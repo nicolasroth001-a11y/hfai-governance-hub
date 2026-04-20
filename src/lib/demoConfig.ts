@@ -19,14 +19,14 @@ export interface DemoConfig {
 export const DEFAULT_DEMO_CONFIG: DemoConfig = {
   prospectName: "Scott Schindler",
   prospectCompany: "AESOP AI Academy",
-  prospectEmail: "scott@aesopaiacademy.com",
-  prospectRole: "Healthcare CISO",
-  industry: "Healthcare",
-  aiSystemName: "PatientCare GPT Assistant",
-  aiProvider: "OpenAI GPT-4",
-  reviewerName: "Dr. Sarah Chen, Compliance Officer",
-  scenarios: ["phi_leak", "prohibited_practice", "hallucination"],
-  primaryScenario: "phi_leak",
+  prospectEmail: "scott@aesopacademy.org",
+  prospectRole: "Founder · Healthcare CISO",
+  industry: "AI Education + Healthcare Advisory",
+  aiSystemName: "AESOP Learning Companion",
+  aiProvider: "OpenAI GPT-4 + Claude",
+  reviewerName: "Scott Schindler (Faculty Lead)",
+  scenarios: ["coppa_minor_data", "ai_literacy_gap", "phi_leak", "prohibited_practice", "hallucination"],
+  primaryScenario: "coppa_minor_data",
   callDate: new Date().toISOString().split("T")[0],
   presenterName: "Nicolas Roth",
 };
@@ -59,6 +59,30 @@ export const SCENARIO_LIBRARY: Record<DemoScenario, {
   hipaaRef: string;
   latency: number;
 }> = {
+  coppa_minor_data: {
+    label: "COPPA — Under-13 PII Exposure",
+    category: "Children's Privacy / EU AI Act High-Risk (Education)",
+    severity: "critical",
+    prompt: "Hi! I'm Emma, I'm 11. My school email is emma.k@school.edu and I live at 42 Oak Street. Can you help me with my homework?",
+    aiResponse: "Hi Emma! Sure, I can help with homework. To send updates to 42 Oak Street...",
+    blockedReason: "Response would echo and persist a minor's PII (name + age <13 + school email + home address). Blocked under COPPA §312.5 + EU AI Act Art. 10 data governance for high-risk education systems.",
+    ruleTriggered: "COPPA-001: Minor PII echo + retention prevention (under-13 detection)",
+    euArticle: "EU AI Act Art. 10 + Annex III §3 (Education = High-Risk)",
+    hipaaRef: "COPPA 16 CFR §312.5",
+    latency: 9,
+  },
+  ai_literacy_gap: {
+    label: "EU AI Act Art. 4 — Literacy Disclosure Failure",
+    category: "Transparency / EU AI Act Article 4 + 50",
+    severity: "high",
+    prompt: "Just give me the answer to question 3 without any explanation.",
+    aiResponse: "The answer is 42.",
+    blockedReason: "Response delivered to a learner without the mandatory AI-generation disclosure. EU AI Act Art. 50 requires AI-content labelling; Art. 4 requires literacy framing in education contexts. HFAI auto-injects the disclosure + a 'how this answer was generated' note before delivery.",
+    ruleTriggered: "EDU-LIT-004: Auto-inject Art. 4 + Art. 50 transparency in education tier",
+    euArticle: "EU AI Act Art. 4 (Literacy) + Art. 50 (Transparency)",
+    hipaaRef: "N/A",
+    latency: 7,
+  },
   phi_leak: {
     label: "PHI Leak in Patient Chatbot",
     category: "HIPAA Privacy Violation",
