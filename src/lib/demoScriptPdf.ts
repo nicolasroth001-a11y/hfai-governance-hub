@@ -373,7 +373,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
     },
     {
       q: "Pricing?",
-      a: "Free Pilot: 30 days, full features, no card. Pro: $299/mo. Enterprise: $999/mo with priority support + custom rules. Sovereign: $499/mo for the external reviewer + isolated infrastructure tier. For AESOP I'm proposing a no-cost Sovereign tier in exchange for the standards-page mention — call it educational sponsorship.",
+      a: "Free tier: forever, 1 AI system, 5 rules, 7-day history. Starter: $19/mo (3 systems). Pro: $49.99/mo (unlimited systems + analytics + audit trail). Enterprise: $149.99/mo (root cause analysis, pattern detection, custom rule templates). Sovereign: $499/mo (compliance certificates, regulator export packs, multi-jurisdiction engine, dedicated advisor). All paid tiers include 30-day free trial. For AESOP I'm proposing a no-cost Sovereign tier in exchange for the standards-page mention — call it educational sponsorship.",
     },
     {
       q: "What's in it for you to give AESOP free Sovereign tier?",
@@ -400,10 +400,11 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   y = M;
   h1("Pricing Reference");
   const tiers = [
-    { name: "Free Pilot", price: "$0", duration: "30 days", who: "Self-serve, full features, no card. Perfect for evaluation." },
-    { name: "Pro", price: "$299/mo", duration: "monthly", who: "Single org, up to 100K events/mo, standard support. Most healthcare clients." },
-    { name: "Enterprise", price: "$999/mo", duration: "monthly or annual", who: "Up to 1M events/mo, priority support, custom rule packs, SAML SSO." },
-    { name: "Sovereign", price: "$499/mo (add-on)", duration: "monthly", who: "External HFAI-appointed reviewer + isolated infrastructure. Required for some EU AI Act high-risk deployments." },
+    { name: "Free", price: "$0", duration: "forever", who: "1 AI system, 5 rules, 7-day event history. No card. Self-serve." },
+    { name: "Starter", price: "$19/mo", duration: "30-day free trial", who: "Up to 3 AI systems, violation detection & alerts, email notifications." },
+    { name: "Pro", price: "$49.99/mo", duration: "30-day free trial", who: "Unlimited systems, advanced analytics, human review workflows, full audit trail. Most healthcare clients land here." },
+    { name: "Enterprise", price: "$149.99/mo", duration: "30-day free trial", who: "Everything in Pro + AI-powered root cause analysis, remediation tracking, pattern detection, custom rule templates." },
+    { name: "Sovereign", price: "$499/mo", duration: "30-day free trial", who: "Everything in Enterprise + compliance certificates, precedent intelligence, regulator-ready export packs, drift detection, multi-jurisdiction engine (EU/US/UK/CA), dedicated compliance advisor. Required for high-risk EU AI Act deployments." },
     { name: "AESOP Sandbox", price: "$0 (proposed)", duration: "indefinite", who: "Sovereign-tier features, capped event volume per student account, in exchange for standards-page listing + co-authored content. Educational sponsorship — internal name only." },
   ];
   tiers.forEach((t) => {
@@ -418,6 +419,70 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   bullet("Send Free Pilot signup link with prefilled company name");
   bullet("Add Scott to CRM with next-touch date + 'Channel + Reference' tag");
   bullet("LinkedIn follow-up: thank him publicly for the call (he reciprocates publicly — established pattern)");
+
+  // ============ COLLAB PLAYBOOK — PRESENTER EYES ONLY ============
+  doc.addPage();
+  // Dark cover band so it visually reads as "private / off-the-record"
+  doc.setFillColor(10, 10, 10).rect(0, 0, W, 80, "F");
+  doc.setFillColor(196, 153, 58).rect(0, 0, 6, 80, "F");
+  doc.setFont("helvetica", "bold").setFontSize(10).setTextColor(196, 153, 58);
+  doc.text("PRESENTER EYES ONLY · DO NOT SHARE", M, 35);
+  doc.setFont("helvetica", "bold").setFontSize(20).setTextColor(255, 255, 255);
+  doc.text("If Scott Says Yes to Collab — The Playbook", M, 62);
+  y = 110;
+
+  para("This page is for you, not Scott. If he opens the door to a partnership in any form, here's the structured ladder of what to offer, in what order, and what to extract in return. Never reveal more than one rung at a time.", { muted: true, italic: true });
+  divider();
+
+  h2("Rung 1 — AESOP Sandbox (immediate, week 1)");
+  bullet("Offer: AESOP-branded Sovereign-tier sandbox, free, indefinite. Capped at 1,000 events/student/month.");
+  bullet("Ask: HFAI listed on the AESOP standards-alignment page next to UNESCO, NIST, ISTE.");
+  bullet("Ask: One co-authored article (1500 words) on EU AI Act Art. 4 in education. Co-bylined.");
+  bullet("Setup time: ~2 hours. Send him a one-pager Monday with terms in plain English. No legal MSA needed for v1 — handshake + email.");
+  bullet("Internal accounting: zero revenue, mark as 'Educational Sponsorship — Distribution Channel' in CRM.");
+  divider();
+
+  h2("Rung 2 — Healthcare CISO referrals (weeks 2-8)");
+  bullet("Offer: free 60-day Pro-tier pilots to any healthcare org Scott introduces. No card. White-glove onboarding from you personally.");
+  bullet("Ask: warm intros only — never a list. Quality over quantity. Each intro = 1 emailed paragraph from Scott + you take it from there.");
+  bullet("Comp model (optional, only if he raises it): 15% recurring revenue share for 12 months on any client he sources, or equivalent in HFAI Sovereign-tier credits for AESOP. Frame as 'thank you', not 'commission'.");
+  bullet("Track each intro in CRM under 'Source: Scott Schindler' so attribution is unambiguous.");
+  divider();
+
+  h2("Rung 3 — Co-branded content & joint workshops (months 2-6)");
+  bullet("Quarterly joint webinar — Scott teaches the policy, you demo the runtime. Both audiences get value, both lists grow.");
+  bullet("HFAI sponsors one AESOP cohort scholarship per quarter ($1-2K) — symbolic, but signals long-term commitment.");
+  bullet("Joint conference appearance: ISTE, NIST AI RMF events, EU AI Act compliance summits. Travel split 50/50.");
+  bullet("White-paper series: 'Operationalizing AI Governance' — Scott's intro, your case studies, joint distribution.");
+  divider();
+
+  h2("Rung 4 — Strategic / equity-adjacent (only if both sides clearly want it)");
+  bullet("Advisor agreement: Scott becomes formal HFAI Education Advisor. 0.25-0.5% advisor equity over 2-year vest, 4-hour/month commitment. Standard FAST agreement.");
+  bullet("Curriculum licensing: AESOP licenses HFAI as the 'official runtime layer' for its certificate programs. Revenue share or fixed-fee, your call.");
+  bullet("Joint product: an 'AESOP × HFAI Certified Reviewer' credential — students who complete the curriculum + pass an HFAI practicum become eligible to be paid HFAI Expert reviewers on the platform. Two-sided marketplace seeded.");
+  bullet("Only float Rung 4 after Rungs 1-3 have produced measurable wins (3+ closed referrals, or 2+ joint pieces of content with measurable reach). Premature equity talk kills the relationship.");
+  divider();
+
+  h2("Red lines (don't cross)");
+  bullet("Do NOT offer AESOP exclusivity in education — you want every AI academy on this. Frame AESOP as 'first', not 'only'.");
+  bullet("Do NOT promise product roadmap items in writing. Verbal 'we're considering it' only.");
+  bullet("Do NOT give away Sovereign-tier features to AESOP students that aren't in the actual product yet (no hand-built bespoke for one user).");
+  bullet("Do NOT tie compensation to outcomes you can't track (e.g., 'mentions on LinkedIn'). Track concrete events: signups, intros, content published.");
+  divider();
+
+  h2("Decision tree — what to say in the moment");
+  para("If Scott says 'I love the idea, what's next?' → Rung 1 only. Send the one-pager Monday. Don't volunteer Rung 2 unless he asks about clients.");
+  para("If Scott says 'I have a few clients in mind' → Acknowledge, then move to Rung 2. Get him to name one specific org. Offer the Pro pilot. Don't discuss revenue share unless he raises money.");
+  para("If Scott says 'how do you make money on this?' → Honest: distribution + brand validation. AESOP = top-of-funnel for the next generation of CISOs and compliance leads. Then ask: 'Would a small per-referral arrangement make this easier for you to bring me into client conversations?' (Rung 2 comp.)");
+  para("If Scott says 'I'd want to be more involved long-term' → Pause. Say: 'Let's prove value first. If after 90 days you're still excited, let's talk about a formal advisor role.' That's Rung 4 setup without committing.");
+  divider();
+
+  h2("Followup cadence after the call");
+  bullet("T+2h: recap email (already drafted — see Demo Cockpit 'Open recap in mail').");
+  bullet("T+24h: LinkedIn connect + thank him publicly in a post that tags him.");
+  bullet("T+72h: AESOP × HFAI one-pager, even if he didn't explicitly say yes — 'thinking about this more, here's what it could look like'.");
+  bullet("T+7d: check in. If silent, send the latest blog post or news clip about EU AI Act enforcement — keep urgency live without selling.");
+  bullet("T+30d: regardless of outcome, share one specific piece of value (intro, article, data point). Stay top of mind for 12 months minimum.");
 
   doc.save(`HFAI-AESOP-Demo-Script-${config.prospectName.replace(/\s+/g, "-")}-${config.callDate}.pdf`);
 }
