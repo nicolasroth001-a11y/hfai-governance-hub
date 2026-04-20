@@ -11,7 +11,7 @@ export function Scene1Signup({ config }: { config: DemoConfig }) {
           <span className="font-bold tracking-tight">HFAI</span>
           <span className="text-xs text-muted-foreground ml-auto">Sign up</span>
         </div>
-        <h2 className="text-2xl font-bold mb-1">Create your account</h2>
+        <h2 className="text-2xl font-bold mb-1 text-card-foreground">Create your account</h2>
         <p className="text-sm text-muted-foreground mb-6">Free pilot · 30 days · no card</p>
         <div className="space-y-3">
           <Field label="Full name" value={config.prospectName} delay={0.3} />
