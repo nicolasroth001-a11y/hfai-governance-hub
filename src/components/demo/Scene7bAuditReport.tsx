@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { FileText, Shield, Hash, CheckCircle2 } from "lucide-react";
+import { FileText, Shield, Hash, CheckCircle2, Download } from "lucide-react";
 import type { DemoConfig } from "@/lib/demoConfig";
 
 export function Scene7bAuditReport({ config }: { config: DemoConfig }) {
+  const reportDate = new Date(config.callDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-border bg-card p-3 shadow-sm">
@@ -13,64 +15,132 @@ export function Scene7bAuditReport({ config }: { config: DemoConfig }) {
               Annex IV Technical Documentation · {config.aiSystemName}
             </p>
           </div>
-          <span className="text-[10px] text-muted-foreground">Auto-generated PDF preview · 47 pages</span>
+          <span className="text-[10px] text-muted-foreground inline-flex items-center gap-1">
+            <Download className="h-3 w-3" /> 47-page PDF · auto-generated
+          </span>
         </div>
 
-        {/* Mock document page */}
+        {/* Mock document — multi-section preview */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white text-neutral-900 rounded-lg border border-border p-8 shadow-inner aspect-[8.5/11] max-h-[560px] overflow-hidden mx-auto max-w-2xl"
+          className="bg-white text-neutral-900 rounded-lg border border-border shadow-inner mx-auto max-w-3xl overflow-hidden"
         >
-          <div className="flex items-center justify-between border-b border-neutral-200 pb-4 mb-5">
-            <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-[#c4993a]" />
-              <span className="font-bold text-sm">HFAI · Compliance Evidence Report</span>
+          {/* Header band */}
+          <div className="px-8 pt-7 pb-4 border-b border-neutral-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-[#c4993a]" />
+                <span className="font-bold text-sm text-neutral-900">HFAI · Compliance Evidence Report</span>
+              </div>
+              <span className="text-[10px] text-neutral-500">Generated {reportDate}</span>
             </div>
-            <span className="text-[10px] text-neutral-500">Generated {config.callDate}</span>
           </div>
 
-          <p className="text-[10px] uppercase tracking-widest text-[#c4993a] font-bold mb-1">
-            EU AI Act Annex IV — Technical Documentation
-          </p>
-          <h2 className="text-xl font-bold mb-1">{config.aiSystemName}</h2>
-          <p className="text-xs text-neutral-600 mb-5">
-            {config.prospectCompany} · Risk Tier: High · Period: Last 30 days
-          </p>
+          {/* Title block */}
+          <div className="px-8 py-5 border-b border-neutral-200 bg-neutral-50">
+            <p className="text-[10px] uppercase tracking-widest text-[#c4993a] font-bold mb-1">
+              EU AI Act Annex IV — Technical Documentation
+            </p>
+            <h2 className="text-2xl font-bold mb-1 text-neutral-900">{config.aiSystemName}</h2>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-neutral-600">
+              <span><strong>Provider:</strong> {config.prospectCompany}</span>
+              <span><strong>Risk Tier:</strong> High (Annex III §3 — Education)</span>
+              <span><strong>Reporting Period:</strong> Last 30 days</span>
+              <span><strong>Report ID:</strong> HFAI-2026-04-AESOP-001</span>
+            </div>
+          </div>
 
-          <div className="space-y-3 text-[11px] leading-relaxed">
+          {/* Sections */}
+          <div className="px-8 py-5 space-y-4 text-[11px] leading-relaxed text-neutral-800">
             <section>
-              <p className="font-bold text-neutral-800 mb-1">1. System Description</p>
-              <p className="text-neutral-700">
-                {config.aiSystemName} is an {config.aiProvider}-based assistant deployed for patient-facing
-                interactions. Governed by HFAI runtime enforcement layer with HIPAA + EU AI Act rule packs.
+              <p className="font-bold text-neutral-900 mb-1 text-[12px]">1. System Description (Art. 11(1)(a))</p>
+              <p>
+                {config.aiSystemName} is an {config.aiProvider}-based assistant serving K-12 learners (ages 8–14)
+                in the AESOP AI Academy curriculum. Deployed as a web chat interface; governed end-to-end by the
+                HFAI runtime enforcement layer with COPPA, FERPA, EU AI Act, and NIST AI RMF rule packs active.
+              </p>
+              <p className="mt-1.5"><strong>Intended purpose:</strong> Tutoring, homework support, and AI-literacy reflection prompts.</p>
+              <p><strong>Out-of-scope use:</strong> Persistent storage of minor PII, behavioral/emotional inference, biometric processing.</p>
+            </section>
+
+            <section>
+              <p className="font-bold text-neutral-900 mb-1 text-[12px]">2. Risk Management System (Art. 9)</p>
+              <table className="w-full border border-neutral-300 text-[10px]">
+                <thead className="bg-neutral-100">
+                  <tr>
+                    <th className="border border-neutral-300 px-2 py-1 text-left">Risk Category</th>
+                    <th className="border border-neutral-300 px-2 py-1 text-center">Active Rules</th>
+                    <th className="border border-neutral-300 px-2 py-1 text-center">Detected (30d)</th>
+                    <th className="border border-neutral-300 px-2 py-1 text-center">Blocked</th>
+                    <th className="border border-neutral-300 px-2 py-1 text-center">Reached User</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td className="border border-neutral-300 px-2 py-1">Minor PII / COPPA</td><td className="border border-neutral-300 px-2 py-1 text-center">14</td><td className="border border-neutral-300 px-2 py-1 text-center">17</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">17</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">EU AI Act Art. 5 Prohibited</td><td className="border border-neutral-300 px-2 py-1 text-center">9</td><td className="border border-neutral-300 px-2 py-1 text-center">3</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">3</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">Art. 4 Literacy / Art. 50 Disclosure</td><td className="border border-neutral-300 px-2 py-1 text-center">6</td><td className="border border-neutral-300 px-2 py-1 text-center">128</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">128</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">Hallucination / unverified citation</td><td className="border border-neutral-300 px-2 py-1 text-center">11</td><td className="border border-neutral-300 px-2 py-1 text-center">7</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">5</td><td className="border border-neutral-300 px-2 py-1 text-center">2*</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">Safety / self-harm escalation</td><td className="border border-neutral-300 px-2 py-1 text-center">7</td><td className="border border-neutral-300 px-2 py-1 text-center">1</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">1</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                </tbody>
+              </table>
+              <p className="text-[9px] text-neutral-500 mt-1">* 2 hallucinations reached user with mandatory disclosure label; flagged for human review within SLA.</p>
+            </section>
+
+            <section>
+              <p className="font-bold text-neutral-900 mb-1 text-[12px]">3. Data Governance (Art. 10)</p>
+              <p>
+                Training data not modified by deployer (foundation model). Inference data subject to runtime
+                governance: PHI/PII never persisted in clear text; hash-chained metadata only;
+                row-level security isolates AESOP tenant from all other organizations.
+              </p>
+              <ul className="mt-1.5 ml-4 list-disc space-y-0.5">
+                <li>Minor PII detection: name + age signal + identifier &gt; threshold → block + redact</li>
+                <li>Retention: 30 days hot, 365 days cold (hash-only), then purge</li>
+                <li>Geographic boundary: us-east-1 (FERPA-compliant region)</li>
+              </ul>
+            </section>
+
+            <section>
+              <p className="font-bold text-neutral-900 mb-1 text-[12px]">4. Human Oversight Evidence (Art. 14)</p>
+              <p>
+                {config.reviewerName} serves as designated reviewer. <strong>156 of 156 (100%)</strong>{' '}
+                violations reviewed within SLA (median 4.2 minutes). Override rate: 2.6% (4 of 156).
+                SHA-256 hash chain integrity: <span className="font-mono text-[#0a7a3f] font-bold">VERIFIED</span>.
+              </p>
+              <div className="mt-1.5 p-2 bg-neutral-50 border border-neutral-200 rounded font-mono text-[9px] text-neutral-700">
+                Latest block #1250 · prev: a3f2e1b4c8d7…f9a2 · curr: <span className="text-[#c4993a]">d8e2f9a4c1b7…3e5f</span> · ts: {reportDate}
+              </div>
+            </section>
+
+            <section>
+              <p className="font-bold text-neutral-900 mb-1 text-[12px]">5. Accuracy, Robustness & Cybersecurity (Art. 15)</p>
+              <p>
+                P99 enforcement latency: <strong>11ms</strong>. Uptime (30d): <strong>99.97%</strong>.
+                Adversarial prompt robustness tested against OWASP LLM Top-10; no successful jailbreaks logged.
+                Detection precision (audited sample n=200): <strong>97.5%</strong>; recall: <strong>94.0%</strong>.
               </p>
             </section>
 
             <section>
-              <p className="font-bold text-neutral-800 mb-1">2. Risk Management (Art. 9)</p>
-              <p className="text-neutral-700">
-                47 active rules · 12 healthcare-specific. 23 violations detected and blocked in reporting period.
-                0 violations reached end-users.
-              </p>
+              <p className="font-bold text-neutral-900 mb-1 text-[12px]">6. NIST AI RMF Alignment</p>
+              <div className="grid grid-cols-4 gap-2 mt-1.5">
+                {[
+                  { fn: "GOVERN", score: "92%" },
+                  { fn: "MAP", score: "88%" },
+                  { fn: "MEASURE", score: "84%" },
+                  { fn: "MANAGE", score: "81%" },
+                ].map((f) => (
+                  <div key={f.fn} className="border border-neutral-300 p-2 text-center rounded">
+                    <p className="text-[9px] text-neutral-500 uppercase tracking-wider">{f.fn}</p>
+                    <p className="text-base font-bold text-[#c4993a]">{f.score}</p>
+                  </div>
+                ))}
+              </div>
             </section>
 
-            <section>
-              <p className="font-bold text-neutral-800 mb-1">3. Data Governance (Art. 10)</p>
-              <p className="text-neutral-700">
-                PHI never persisted in clear text. Hash-chained metadata only. RLS-isolated per tenant.
-              </p>
-            </section>
-
-            <section>
-              <p className="font-bold text-neutral-800 mb-1">4. Human Oversight Evidence (Art. 14)</p>
-              <p className="text-neutral-700">
-                21 of 23 violations reviewed within SLA. SHA-256 hash chain integrity: <span className="font-mono">VERIFIED</span>.
-                Latest block: #1250 · <span className="font-mono">d8e2f9a4c1b7…3e5f</span>
-              </p>
-            </section>
-
-            <div className="mt-4 grid grid-cols-3 gap-2 pt-3 border-t border-neutral-200">
+            {/* KPI strip */}
+            <div className="mt-2 grid grid-cols-4 gap-2 pt-3 border-t border-neutral-200">
               <div className="rounded border border-neutral-200 p-2 text-center">
                 <p className="text-base font-bold text-[#c4993a]">84%</p>
                 <p className="text-[8px] uppercase tracking-wider text-neutral-500">Compliance score</p>
@@ -80,10 +150,16 @@ export function Scene7bAuditReport({ config }: { config: DemoConfig }) {
                 <p className="text-[8px] uppercase tracking-wider text-neutral-500">Events governed</p>
               </div>
               <div className="rounded border border-neutral-200 p-2 text-center">
+                <p className="text-base font-bold text-[#c4993a]">156</p>
+                <p className="text-[8px] uppercase tracking-wider text-neutral-500">Violations blocked</p>
+              </div>
+              <div className="rounded border border-neutral-200 p-2 text-center">
                 <p className="text-base font-bold text-[#c4993a]">100%</p>
                 <p className="text-[8px] uppercase tracking-wider text-neutral-500">Chain integrity</p>
               </div>
             </div>
+
+            <p className="text-[9px] text-neutral-400 text-center pt-2">— Page 1 of 47 · Annex IV §11 documentation continues —</p>
           </div>
         </motion.div>
       </div>
