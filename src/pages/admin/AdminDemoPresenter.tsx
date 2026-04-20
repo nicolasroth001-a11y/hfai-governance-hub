@@ -283,7 +283,7 @@ export default function AdminDemoPresenter() {
       </aside>
 
       {/* CENTER — Stage (clean light surface so cards pop) */}
-      <main className="flex-1 flex flex-col overflow-hidden bg-muted/30">
+      <main className="flex-1 flex flex-col overflow-hidden bg-muted/30 text-card-foreground">
         <header className="px-8 py-4 border-b border-border bg-background flex items-center justify-between shrink-0">
           <div>
             <p className="text-[10px] uppercase tracking-widest text-primary font-semibold">Scene {current.id} of {TOTAL}</p>
