@@ -97,14 +97,18 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
   doc.text("AGENDA (15–30 MIN)", M, 260);
   const agenda = [
-    "1. Open · 2 min — empathy, AESOP bridge",
-    "2. Sign-up & API key — 2 min",
-    "3. Connect AI system — 2 min",
-    "4. First event flows — 1 min",
-    `5. Violation detected: ${SCENARIO_LIBRARY[config.primaryScenario].label} — 4 min`,
-    "6. Human review + tamper-evident audit — 3 min",
-    "7. Compliance dashboard + Annex IV export — 3 min",
-    "8. Close: pricing + ask — 3 min",
+    "1. Open · 60–90s — empathy, AESOP bridge",
+    "2. Sign-up — self-serve, no gating",
+    "3. API key & both-sides setup",
+    "4. Reviewer team (Article 14)",
+    "5. Connect AI system — one line",
+    "6. Live events streaming in",
+    `7. Violation BLOCKED: ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
+    "8. What the end user actually sees",
+    "9. Human review + hash-chained audit",
+    "10. Compliance dashboard (live)",
+    "11. Generated Annex IV report (the artifact)",
+    "12. The two-question close",
   ];
   doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(220, 220, 220);
   let ay = 285;
