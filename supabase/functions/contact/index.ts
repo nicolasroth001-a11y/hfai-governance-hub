@@ -11,11 +11,43 @@ serve(async (req) => {
   }
 
   try {
+    // Hard cap request body size (defense against payload-bomb DoS)
+    const contentLength = parseInt(req.headers.get('content-length') || '0', 10);
+    if (contentLength > 16_000) {
+      return new Response(
+        JSON.stringify({ error: 'Payload too large.' }),
+        { status: 413, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { name, company, email, message } = await req.json();
 
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: 'Name, email, and message are required.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Strict input validation — type, length, and format
+    const isStr = (v: unknown, max: number) => typeof v === 'string' && v.length > 0 && v.length <= max;
+    if (!isStr(name, 200) || !isStr(email, 320) || !isStr(message, 5000) || (company && !isStr(company, 200))) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid field length or type.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(email)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid email format.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    // Block obvious header-injection / control characters
+    if (/[\r\n\u0000-\u0008\u000b-\u001f]/.test(name) || /[\r\n\u0000-\u0008\u000b-\u001f]/.test(email)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid characters in input.' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
