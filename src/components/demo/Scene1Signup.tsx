@@ -25,7 +25,7 @@ export function Scene1Signup({ config }: { config: DemoConfig }) {
         </div>
       </div>
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.8 }}
-        className="rounded-xl border border-primary/30 bg-primary/5 p-6">
+        className="rounded-xl border-2 border-primary/40 bg-card p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
           <CheckCircle2 className="h-5 w-5 text-primary" />
           <p className="font-semibold text-sm">Org provisioned · 847ms</p>
