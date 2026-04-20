@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Trophy, ArrowRight } from "lucide-react";
+import { Trophy, ArrowRight, ShieldCheck } from "lucide-react";
 import type { DemoConfig } from "@/lib/demoConfig";
 
 const TIERS = [
@@ -47,7 +47,33 @@ export function Scene8Close({ config }: { config: DemoConfig }) {
         ))}
       </div>
 
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="rounded-xl border-2 border-primary/40 bg-primary/5 p-5 max-w-2xl mx-auto"
+      >
+        <div className="flex items-start gap-3">
+          <div className="rounded-lg bg-primary/10 p-2 shrink-0">
+            <ShieldCheck className="h-5 w-5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <p className="text-sm font-bold text-card-foreground">Fortress Mode</p>
+              <span className="text-[9px] uppercase tracking-widest font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                Included on every tier
+              </span>
+            </div>
+            <p className="text-xs text-card-foreground/80 leading-relaxed">
+              Even if HFAI's cloud is 100% unreachable, your AI app continues to block all 8 EU AI Act Article 5
+              prohibited practices and COPPA child-safety patterns. Enforcement is embedded in the SDK — an outage on
+              our end cannot disable it.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
         className="text-center text-xs text-muted-foreground">
         Thanks for your time, {config.prospectName.split(" ")[0]}. Recap email coming within 2 hours.
       </motion.p>
