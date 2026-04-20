@@ -59,7 +59,7 @@ export function Scene2ApiKey({ config }: { config: DemoConfig }) {
             <Code2 className="h-4 w-4 text-primary" />
             <p className="text-xs font-semibold text-card-foreground">Customer side · your env</p>
           </div>
-          <pre className="rounded-md bg-muted/50 border border-border p-3 text-[11px] font-mono leading-relaxed text-foreground overflow-x-auto">
+          <pre className="rounded-md bg-muted/50 border border-border p-3 text-[11px] font-mono leading-relaxed text-card-foreground overflow-x-auto">
 {`HFAI_PROXY_KEY=hfai_proxy_4a7c92e…
 HFAI_BASE_URL=https://proxy.hfa-i.org/v1`}
           </pre>
