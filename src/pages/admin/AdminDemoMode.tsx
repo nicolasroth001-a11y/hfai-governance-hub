@@ -9,9 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { Play, Save, FileText, Sparkles, User, Building2, Bot, Shield, Calendar, Download } from "lucide-react";
+import { Play, Save, FileText, Sparkles, User, Building2, Bot, Shield, Calendar, Download, Mail, Copy } from "lucide-react";
 import { DEFAULT_DEMO_CONFIG, loadDemoConfig, saveDemoConfig, SCENARIO_LIBRARY, type DemoConfig, type DemoScenario } from "@/lib/demoConfig";
 import { generateDemoScriptPDF } from "@/lib/demoScriptPdf";
+import { buildRecapEmail } from "@/lib/demoRecapEmail";
 
 export default function AdminDemoMode() {
   const [config, setConfig] = useState<DemoConfig>(() => loadDemoConfig());
@@ -48,6 +49,19 @@ export default function AdminDemoMode() {
     toast({ title: "Script PDF downloaded", description: "Print or keep on a 2nd screen during the call." });
   };
 
+  const handleOpenRecapEmail = () => {
+    saveDemoConfig(config);
+    const email = buildRecapEmail(config);
+    window.location.href = email.mailtoUrl;
+    toast({ title: "Recap email opened", description: `Drafted to ${email.to} — review, then send.` });
+  };
+
+  const handleCopyRecapEmail = async () => {
+    const email = buildRecapEmail(config);
+    await navigator.clipboard.writeText(`To: ${email.to}\nSubject: ${email.subject}\n\n${email.body}`);
+    toast({ title: "Recap email copied", description: "Paste into your mail client of choice." });
+  };
+
   return (
     <div className="space-y-section">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -62,6 +76,12 @@ export default function AdminDemoMode() {
           </Button>
           <Button variant="outline" onClick={handleDownloadPdf} className="gap-2">
             <Download className="h-4 w-4" /> Script PDF
+          </Button>
+          <Button variant="outline" onClick={handleCopyRecapEmail} className="gap-2">
+            <Copy className="h-4 w-4" /> Copy recap email
+          </Button>
+          <Button variant="outline" onClick={handleOpenRecapEmail} className="gap-2">
+            <Mail className="h-4 w-4" /> Open recap in mail
           </Button>
           <Button onClick={handleLaunch} className="gap-2 bg-primary hover:bg-primary/90">
             <Play className="h-4 w-4" /> Launch Presenter Mode
