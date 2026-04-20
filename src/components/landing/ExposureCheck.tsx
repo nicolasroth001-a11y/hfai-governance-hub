@@ -264,7 +264,7 @@ function ResultActions({ riskScore, navigate, reset }: { riskScore: number; navi
   if (riskScore >= 2) {
     return (
       <div className="flex flex-col sm:flex-row gap-2 justify-center">
-        <Button className="gap-2" onClick={() => window.open("mailto:nicolasroth@hfa-i.org?subject=HFAI%20Demo%20Requesthttps://calendly.com/nicolasroth001/hfai-demobody=Hi%20Nicolas%2C%0A%0AI%27d%20like%20to%20book%20a%20demo%20of%20HFAI.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0APreferred%20time%3A%0A", "_blank", "noopener,noreferrer")}>
+        <Button className="gap-2" onClick={() => window.open("mailto:nicolasroth@hfa-i.org?subject=HFAI%20Demo%20Request&body=Hi%20Nicolas%2C%0A%0AI%27d%20like%20to%20book%20a%20demo%20of%20HFAI.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0APreferred%20time%3A%0A", "_blank", "noopener,noreferrer")}>
           <Calendar className="h-4 w-4" /> Fix This Now <ArrowRight className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={reset}>Retake</Button>

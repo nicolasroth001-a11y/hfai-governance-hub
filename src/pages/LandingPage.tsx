@@ -33,7 +33,7 @@ const ExitIntentCapture = lazy(() => import("@/components/landing/ExitIntentCapt
 
 const SectionFallback = () => <div className="h-32" aria-hidden />;
 
-const CALENDLY_URL = "mailto:nicolasroth@hfa-i.org?subject=HFAI%20Demo%20Requesthttps://calendly.com/nicolasroth001/hfai-demobody=Hi%20Nicolas%2C%0A%0AI%27d%20like%20to%20book%20a%20demo%20of%20HFAI.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0APreferred%20time%3A%0A";
+const CALENDLY_URL = "mailto:nicolasroth@hfa-i.org?subject=HFAI%20Demo%20Request&body=Hi%20Nicolas%2C%0A%0AI%27d%20like%20to%20book%20a%20demo%20of%20HFAI.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0APreferred%20time%3A%0A";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
