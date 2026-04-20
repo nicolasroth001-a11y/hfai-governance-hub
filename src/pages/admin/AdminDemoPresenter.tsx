@@ -85,10 +85,13 @@ const SCRIPTS: Record<number, { say: string[]; show: string; ifAsked?: { q: stri
       "\"Watch this prompt — this is what could end your career as a CISO.\"",
       "\"In a normal stack, that response goes to the user. In HFAI:\"",
       "\"BLOCKED in 12 milliseconds. EU AI Act mapped. HIPAA mapped. Audit log written. All before the user sees anything.\"",
+      "\"And here's the part most vendors won't tell you — even if HFAI's cloud went 100% offline, this exact block still fires. Article 5 + COPPA enforcement is embedded in the SDK. We call it Fortress Mode.\"",
     ],
     ifAsked: [
       { q: "False positives?", a: "Every rule is testable + reviewable. You tune sensitivity per system." },
       { q: "What if I want to allow it?", a: "Override → reason logged → hash-chained. The override itself is auditable." },
+      { q: "What if your service goes down?", a: "Fortress Mode. The SDK ships with all 8 EU AI Act Article 5 prohibited practices + COPPA red-flags compiled in. Local enforcement is authoritative for the highest-risk categories — an HFAI outage cannot un-block them. Events queue locally and replay when we're back." },
+      { q: "So you're saying you can't be the single point of failure?", a: "Correct. For Article 5 + child safety, we are physically incapable of being the SPOF — the rules execute on the customer's machine. For ambiguous content, we fail-closed by default." },
     ],
   },
   7: {
@@ -121,12 +124,16 @@ const SCRIPTS: Record<number, { say: string[]; show: string; ifAsked?: { q: stri
     ],
   },
   11: {
-    show: "Pricing tiers + the two-question close on screen.",
+    show: "Pricing tiers + Fortress Mode badge + the two-question close on screen.",
     say: [
       "\"So that's end-to-end. Sign-up to blocked PHI to regulator-ready evidence — in 15 minutes of real work.\"",
+      "\"And remember — Fortress Mode means even an HFAI outage can't expose your students or patients to Article 5 or COPPA-class harm. That promise is in the SDK, not the marketing deck.\"",
       "\"Two questions before I let you go:\"",
       "\"1. Of the healthcare clients you're advising — is there one where this would be most urgent?\"",
       "\"2. Your AESOP curriculum — would your students benefit from a free HFAI tier to run governance against real models?\"",
+    ],
+    ifAsked: [
+      { q: "What's the catch with Fortress Mode?", a: "It only covers the highest-risk categories (Art. 5 + COPPA + self-harm). Org-specific custom rules + AI-based ambiguous classification still need the cloud — but those queue locally and replay on reconnect." },
     ],
   },
 };
