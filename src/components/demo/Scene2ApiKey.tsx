@@ -22,7 +22,7 @@ export function Scene2ApiKey({ config }: { config: DemoConfig }) {
           transition={{ delay: 0.3 }}
           className="rounded-lg border-2 border-primary/40 bg-primary/5 p-5 font-mono text-base flex items-center justify-between"
         >
-          <span className="break-all text-foreground">{FAKE_KEY}</span>
+          <span className="break-all text-card-foreground">{FAKE_KEY}</span>
           <button className="ml-4 p-2 rounded-md bg-primary/15 hover:bg-primary/25 shrink-0">
             <Copy className="h-4 w-4 text-primary" />
           </button>
