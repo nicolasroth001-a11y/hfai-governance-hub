@@ -49,7 +49,7 @@ function Field({ label, value, delay }: { label: string; value: string; delay: n
     <div>
       <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{label}</label>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay }}
-        className="mt-1 px-3 py-2 rounded-md border border-border bg-background text-sm">
+        className="mt-1 px-3 py-2 rounded-md border border-border bg-muted/40 text-sm text-card-foreground">
         {value}
       </motion.div>
     </div>
