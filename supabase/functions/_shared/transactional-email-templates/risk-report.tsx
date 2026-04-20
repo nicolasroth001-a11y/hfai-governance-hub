@@ -118,7 +118,7 @@ const RiskReportEmail = ({
           </a>
           <Text style={{ fontSize: '12px', color: '#999', margin: '12px 0 0' }}>
             Or{' '}
-            <a href="mailto:nicolasroth@hfa-i.org?subject=HFAI%20Demo%20Request&body=Hi%20Nicolas%2C%0A%0AI%27d%20like%20to%20book%20a%20demo%20of%20HFAI.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0APreferred%20time%3A%0A" style={{ color: '#b8944f' }}>
+            <a href="https://calendly.com/nicolasroth001/hfai-demo" style={{ color: '#b8944f' }}>
               book a demo with our founder
             </a>
           </Text>
