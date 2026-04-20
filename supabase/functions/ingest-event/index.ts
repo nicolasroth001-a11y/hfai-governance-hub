@@ -16,6 +16,15 @@ serve(async (req) => {
   }
 
   try {
+    // Hard cap request body size (defense against payload-bomb DoS)
+    const contentLength = parseInt(req.headers.get("content-length") || "0", 10);
+    if (contentLength > 256_000) {
+      return new Response(JSON.stringify({ error: "Payload too large (max 256KB)" }), {
+        status: 413,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);

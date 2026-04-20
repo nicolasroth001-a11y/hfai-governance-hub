@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Security headers (defense-in-depth via meta where supported) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=(self)" />
+    <meta name="robots" content="index, follow" />
+
     <title>HFAI — The Runtime Firewall for AI</title>
     <meta name="description" content="HFAI is the runtime firewall for AI. Block policy violations at the API layer in real time, prove EU AI Act &amp; ISO 42001 compliance with a tamper-evident audit chain. Book a demo." />
     <link rel="canonical" href="https://hfa-i.org" />
