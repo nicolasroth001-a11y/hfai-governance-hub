@@ -11,9 +11,10 @@ const logStep = (step: string, details?: any) => {
   console.log(`[CREATE-CHECKOUT] ${step}${details ? ` - ${JSON.stringify(details)}` : ''}`);
 };
 
-// Valid price IDs
+// Valid price IDs (must match src/lib/stripe-config.ts)
 const VALID_PRICES = new Set([
-  "price_1T86TdL0paaPta3ZTOMYma2o", // Starter
+  "price_1TOiS9L0paaPta3Z2bcmpwJQ", // Starter — $10/mo (current)
+  "price_1T86TdL0paaPta3ZTOMYma2o", // Starter — legacy (kept for in-flight checkouts)
   "price_1T9nbOL0paaPta3Zp91ftpUo", // Pro
   "price_1T9ncPL0paaPta3ZOLIpE2XP", // Enterprise
   "price_1TGiOiL0paaPta3ZKlKaA1lU", // Sovereign
@@ -47,8 +48,8 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated", { email: user.email });
 
-    // Get requested price and coupon from body (default to Starter)
-    let priceId = "price_1T86TdL0paaPta3ZTOMYma2o";
+    // Get requested price and coupon from body (default to current $10 Starter)
+    let priceId = "price_1TOiS9L0paaPta3Z2bcmpwJQ";
     let couponCode: string | undefined;
     try {
       const body = await req.json();

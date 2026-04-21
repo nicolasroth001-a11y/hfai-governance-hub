@@ -210,7 +210,7 @@ export default function AdminDemoMode() {
           </div>
           <div>
             <p className="font-semibold text-card-foreground mb-1">If asked about pricing</p>
-            <p>Free Pilot for 30 days, then Pro ($299/mo) for his AESOP demos, Enterprise/Sovereign for healthcare client deployments.</p>
+            <p>$10/mo Starter with a 30-day free trial (cancel anytime). Pro ($49.99/mo) for advanced analytics + HITL workflows; Enterprise/Sovereign for healthcare client deployments.</p>
           </div>
           <div className="pt-2 flex gap-2">
             <Button variant="outline" asChild className="gap-2">
