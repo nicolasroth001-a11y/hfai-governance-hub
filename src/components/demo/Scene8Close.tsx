@@ -3,8 +3,7 @@ import { Trophy, ArrowRight, ShieldCheck } from "lucide-react";
 import type { DemoConfig } from "@/lib/demoConfig";
 
 const TIERS = [
-  { name: "Free", price: "$0", duration: "forever", highlight: false, features: ["1 AI system", "5 governance rules", "7-day event history"] },
-  { name: "Starter", price: "$19", duration: "/month", highlight: false, features: ["Up to 3 AI systems", "Violation detection & alerts", "Email notifications"] },
+  { name: "Starter", price: "$10", duration: "/month", highlight: false, features: ["Up to 3 AI systems", "Violation detection & alerts", "30-day free trial"] },
   { name: "Pro", price: "$49.99", duration: "/month", highlight: true, features: ["Unlimited AI systems", "Analytics + human review", "Full audit trail"] },
   { name: "Enterprise", price: "$149.99", duration: "/month", highlight: false, features: ["Root cause analysis (AI)", "Pattern detection", "Custom rule templates"] },
   { name: "Sovereign", price: "$499", duration: "/month", highlight: false, features: ["Compliance certificates", "Multi-jurisdiction engine", "Dedicated advisor"] },
