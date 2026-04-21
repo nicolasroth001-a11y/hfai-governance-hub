@@ -70,7 +70,7 @@ export default function PricingContact() {
     }
   };
 
-  const tierKeys: TierKey[] = ["free", "starter", "pro", "enterprise", "sovereign"];
+  const tierKeys: TierKey[] = ["starter", "pro", "enterprise", "sovereign"];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -98,7 +98,7 @@ export default function PricingContact() {
         </section>
 
         {/* Pricing Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {tierKeys.map((key) => (
             <PricingCard
               key={key}
