@@ -123,11 +123,13 @@ export const FREE_TIER_LIMITS = {
 };
 
 // Feature-to-minimum-tier mapping
+// Note: "free" tier no longer offered — represents unsubscribed state.
+// Core features now require Starter ($10/mo) at minimum.
 export const FEATURE_TIER: Record<string, TierKey> = {
-  "AI Systems": "free",
-  "Rules": "free",
-  "Violations": "free",
-  "Events": "free",
+  "AI Systems": "starter",
+  "Rules": "starter",
+  "Violations": "starter",
+  "Events": "starter",
   "Notifications": "starter",
   "Analytics": "pro",
   "Human Reviews": "pro",
