@@ -16,6 +16,8 @@ export interface TierConfig {
 }
 
 export const TIERS: Record<TierKey, TierConfig> = {
+  // "free" represents the unsubscribed state — not shown on pricing page.
+  // Locks all paid features until user subscribes to Starter or higher.
   free: {
     product_id: "",
     price_id: "",
@@ -24,19 +26,13 @@ export const TIERS: Record<TierKey, TierConfig> = {
     currency: "USD",
     interval: "month",
     trial_days: 0,
-    features: [
-      "1 AI system",
-      "5 governance rules",
-      "Basic violation detection",
-      "7‑day event history",
-      "Community support",
-    ],
+    features: [],
   },
   starter: {
-    product_id: "prod_U6J5wUGrIWUqSz",
-    price_id: "price_1T86TdL0paaPta3ZTOMYma2o",
+    product_id: "prod_UNTOfrOGaHU2wf",
+    price_id: "price_1TOiS9L0paaPta3Z2bcmpwJQ",
     name: "Starter",
-    price: 19,
+    price: 10,
     currency: "USD",
     interval: "month",
     trial_days: 30,
@@ -46,6 +42,7 @@ export const TIERS: Record<TierKey, TierConfig> = {
       "Violation detection & alerts",
       "Basic event logging",
       "Email notifications",
+      "30‑day free trial",
     ],
   },
   pro: {
