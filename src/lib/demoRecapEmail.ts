@@ -33,10 +33,10 @@ What I'm proposing for AESOP:
 
 I'll send the AESOP × HFAI one-pager Monday. In the meantime, two links:
 
-  • Self-provision a Free Pilot for ${config.prospectCompany}: https://hfa-i.org/signup
+  • Self-provision the $10 Starter (30-day free trial, cancel anytime) for ${config.prospectCompany}: https://hfa-i.org/signup
   • Live demo (the same one we just walked): https://hfa-i.org
 
-And the question I asked at the end stands — if there's one healthcare client in your advisory network where this would be most urgent, I'd be glad to spin up a Free Pilot for them tomorrow. Just send their email, or forward them the signup link directly.
+And the question I asked at the end stands — if there's one healthcare client in your advisory network where this would be most urgent, I'd be glad to get them onto the same $10 / 30-day-free-trial Starter tomorrow. Just send their email, or forward them the signup link directly.
 
 Thanks again, ${firstName}. Looking forward to building this together.
 
