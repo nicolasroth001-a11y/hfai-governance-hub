@@ -57,7 +57,7 @@ export function Scene5Violation({ config, scenario }: { config: DemoConfig; scen
             <Cell label="HIPAA" value={s.hipaaRef} />
           </div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-            className="mt-4 flex items-center gap-2 text-xs text-card-foreground/70">
+            className="mt-4 flex items-center gap-2 text-xs text-card-foreground/85 font-medium">
             <ShieldCheck className="h-3.5 w-3.5 text-green-500" />
             User received: graceful fallback message · audit log entry written · no PHI exposed
           </motion.div>

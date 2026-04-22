@@ -117,19 +117,20 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
   doc.text("AGENDA (15–25 MIN)", M, 410);
   const agenda = [
-    "1. Open · 60–90s — empathy, AESOP bridge, Calendly thank-you",
-    "2. Discovery questions (slip in early, listen hard)",
-    "3. Sign-up — self-serve, no gating",
-    "4. API key & both-sides setup",
-    "5. Reviewer team (Article 14)",
-    "6. Connect AI system — one line",
-    "7. Live events streaming in",
-    `8. Violation BLOCKED: ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
-    "9. What the end user (the student) actually sees",
+    "1.  Open · 60–90s — empathy, AESOP bridge, Calendly thank-you",
+    "2.  Discovery questions (slip in early, listen hard)",
+    "3.  Sign-up — self-serve, no gating",
+    "4.  API key & both-sides setup",
+    "5.  Reviewer team (Article 14)",
+    "6.  Connect AI system — one line",
+    "7.  Live events streaming in",
+    `8.  Violation BLOCKED: ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
+    "9.  What the end user (the student) actually sees",
     "10. Human review + hash-chained audit",
     "11. Compliance dashboard (live)",
     "12. Generated Annex IV report (the artifact)",
-    "13. The two-question close",
+    "13. Industrial AI coverage — the 80% no other vendor governs",
+    "14. The two-question close",
   ];
   doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(220, 220, 220);
   let ay = 432;
@@ -172,7 +173,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   h3("Word-for-word opener");
   verbatimBlock(`"${firstName} — really appreciate you flagging the Calendly hiccup publicly the other day. That actually moved this call up by a week, so genuinely thank you. Before I share my screen, I want to acknowledge something: I spent time on aesopacademy.org this week. The EU AI Act alignment page, the NIST RMF page, the AI Policy — that's not a school's website. That's a manifesto. So I want to flip the usual demo on its head. Instead of pitching, I want to show you what I think you've been describing in your curriculum, and then ask whether AESOP could be the first place this gets used as a live teaching lab. Sound good?"`);
   h3("If they say 'sounds good' (they will)");
-  verbatimBlock(`"Perfect. 15 minutes max — sign-up to a real COPPA violation getting blocked in 9 milliseconds — then we open it up. If at any point you want me to stop and dig into something AESOP-specific or healthcare-specific, just jump in."`);
+  verbatimBlock(`"Perfect. 15 minutes max — sign-up to a real COPPA violation getting blocked in 12 milliseconds — then we open it up. If at any point you want me to stop and dig into something AESOP-specific or healthcare-specific, just jump in."`);
 
   // ============ DISCOVERY QUESTIONS — DEDICATED PAGE ============
   doc.addPage();
@@ -210,7 +211,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   // ============ PER-SCENE SCRIPTS ============
   const scenes = [
     {
-      n: 3,
+      n: 1,
       title: "Sign-Up",
       onScreen: `${config.prospectCompany} signs up at hfa-i.org. Org provisioned in <1 second.`,
       bullets: [
@@ -219,7 +220,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 4,
+      n: 2,
       title: "API Key & Both-Sides Setup",
       onScreen: "HFAI proxy key issued. Left = customer env vars. Right = what HFAI provisions automatically.",
       bullets: [
@@ -229,7 +230,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 5,
+      n: 3,
       title: "Reviewer Team (Article 14)",
       onScreen: "Customer adds in-house reviewers. HFAI Expert badge for Sovereign tier.",
       bullets: [
@@ -238,7 +239,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 6,
+      n: 4,
       title: "Connect AI System",
       onScreen: "Before / After code snippet. One-line base URL change.",
       bullets: [
@@ -248,7 +249,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 7,
+      n: 5,
       title: "Live Events Streaming",
       onScreen: "Real-time event feed populates. Input + output captured, hash-chained.",
       bullets: [
@@ -257,7 +258,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 8,
+      n: 6,
       title: `Violation BLOCKED — ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
       onScreen: `Pre-scripted prompt fires. ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms later: BLOCKED. ${SCENARIO_LIBRARY[config.primaryScenario].euArticle}.`,
       bullets: [
@@ -267,16 +268,16 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 9,
+      n: 7,
       title: "What the Student Sees",
       onScreen: "Chat-style view: graceful fallback message replaces blocked output. Reference number for follow-up.",
       bullets: [
         "\"This is what your AESOP student or a patient actually sees — no scary 'BLOCKED' banner. A graceful handoff with a reference number.\"",
-        "\"Zero PII exposed. Zero liability. The user feels taken care of. The audit trail is complete.\"",
+        "\"Zero PHI exposed. Zero liability. The user feels taken care of. The audit trail is complete.\"",
       ],
     },
     {
-      n: 10,
+      n: 8,
       title: "Human Review (HITL)",
       onScreen: `${config.reviewerName} opens the violation, adds notes, decides. SHA-256 hash chain visible.`,
       bullets: [
@@ -285,7 +286,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 11,
+      n: 9,
       title: "Compliance Dashboard",
       onScreen: "Score gauge animates 78% → 84%. Stats panel shows live activity.",
       bullets: [
@@ -294,13 +295,24 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       ],
     },
     {
-      n: 12,
+      n: 10,
       title: "Generated Annex IV Report",
       onScreen: `Rendered PDF preview of the Annex IV technical documentation for ${config.aiSystemName}.`,
       bullets: [
         "\"This is the doc EU regulators will demand starting Aug 2026.\"",
         "\"For AESOP — this is the artifact you'd hand a student to show 'this is what compliance looks like as a deliverable, not a policy.'\"",
         "\"Most companies will scramble to write this in Word from memory. You generate it from real audit data, on demand.\"",
+      ],
+    },
+    {
+      n: 11,
+      title: "Industrial AI Coverage",
+      onScreen: "Robotics, computer vision, predictive maintenance, autonomous units — with ISO 23482, IEC 61508, ISO 13849, and OSHA 1910 mapped out of the box.",
+      bullets: [
+        "\"Quick aside — because this is what every other governance vendor will skip.\"",
+        "\"Same hash-chained oversight extended to the AI that touches the physical world. Factory robots, CV quality control, predictive maintenance, autonomous mobile units.\"",
+        "\"A bad chatbot reply is embarrassing. A misclassified weld or missed proximity event is an OSHA filing — or a fatality.\"",
+        "\"This is why HFAI works for an AI Academy and a manufacturer on the same control plane.\"",
       ],
     },
   ];
