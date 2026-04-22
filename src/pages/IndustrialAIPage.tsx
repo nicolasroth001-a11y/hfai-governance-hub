@@ -143,6 +143,7 @@ export default function IndustrialAIPage() {
             Available on the <strong>Sovereign tier</strong>. Same platform, same audit chain — extended to industrial AI use cases.
           </p>
         </motion.div>
+        </div>
       </section>
 
       {/* Honest boundary callout */}
