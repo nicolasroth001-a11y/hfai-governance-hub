@@ -14,6 +14,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { RiskTicker } from "@/components/landing/RiskTicker";
 import { AwsMarketplaceBadge } from "@/components/landing/AwsMarketplaceBadge";
 import dashboardPreview from "@/assets/dashboard-preview.png";
+import industrialHero from "@/assets/industrial-ai-hero.jpg";
 
 // Lazy-load below-the-fold sections to keep initial JS small
 // (prevents white screen / freeze on mobile Safari refresh)
@@ -396,7 +397,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="mx-auto max-w-5xl"
         >
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">
               New · Sovereign tier
             </span>
@@ -406,6 +407,17 @@ export default function LandingPage() {
             <p className="mt-3 text-sm text-muted-foreground max-w-xl mx-auto">
               Same human-first audit chain — extended to robotics, predictive maintenance, computer vision QC, and autonomous systems.
             </p>
+          </div>
+
+          {/* Hero image */}
+          <div className="relative mb-8 rounded-2xl overflow-hidden border border-border/50 shadow-2xl">
+            <img
+              src={industrialHero}
+              alt="Industrial AI governance — robotics, predictive maintenance, and computer vision on the factory floor"
+              loading="lazy"
+              className="w-full h-48 sm:h-72 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent pointer-events-none" />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
@@ -504,21 +516,16 @@ export default function LandingPage() {
               {t("footer.tagline")}
             </p>
           </div>
-          <div className="flex flex-col items-center sm:items-end gap-2">
-            <div className="flex items-center gap-4">
-              <Link to="/blog" className="text-primary hover:underline text-xs">{t("nav.resources")}</Link>
-              <span className="text-border/30">·</span>
-              <Link to="/pricing/contact" className="text-primary hover:underline text-xs">{t("nav.pricing")}</Link>
-              <span className="text-border/30">·</span>
-              <Link to="/governance" className="text-primary hover:underline text-xs">{t("nav.framework")}</Link>
-              <span className="text-border/30">·</span>
-              <Link to="/industrial-ai" className="text-primary hover:underline text-xs">Industrial AI</Link>
-              <span className="text-border/30">·</span>
-              <Link to="/pilot" className="text-primary hover:underline text-xs">{t("nav.freePilot")}</Link>
-              <span className="text-border/30">·</span>
-              <Link to="/login/admin" className="text-muted-foreground hover:text-primary hover:underline text-xs">{t("nav.admin")}</Link>
+          <div className="flex flex-col items-center sm:items-end gap-3">
+            <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-4 gap-y-2">
+              <Link to="/blog" className="text-primary hover:underline text-xs whitespace-nowrap">{t("nav.resources")}</Link>
+              <Link to="/pricing/contact" className="text-primary hover:underline text-xs whitespace-nowrap">{t("nav.pricing")}</Link>
+              <Link to="/governance" className="text-primary hover:underline text-xs whitespace-nowrap">{t("nav.framework")}</Link>
+              <Link to="/industrial-ai" className="text-primary hover:underline text-xs whitespace-nowrap">Industrial AI</Link>
+              <Link to="/pilot" className="text-primary hover:underline text-xs whitespace-nowrap">{t("nav.freePilot")}</Link>
+              <Link to="/login/admin" className="text-muted-foreground hover:text-primary hover:underline text-xs whitespace-nowrap">{t("nav.admin")}</Link>
             </div>
-            <p className="text-[11px] text-muted-foreground/40">{t("footer.copyright", { year: new Date().getFullYear() })}</p>
+            <p className="text-[11px] text-muted-foreground/40 text-center sm:text-right">{t("footer.copyright", { year: new Date().getFullYear() })}</p>
           </div>
         </div>
       </footer>
