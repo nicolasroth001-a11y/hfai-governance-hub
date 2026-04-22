@@ -55,11 +55,11 @@ export function Scene7Dashboard({ config }: { config: DemoConfig }) {
       </div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-        className="rounded-xl border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 p-6">
-        <div className="flex items-center justify-between">
+        className="rounded-xl border-2 border-primary/50 bg-card p-6">
+        <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-bold mb-1">EU AI Act Annex IV — Technical Documentation</p>
-            <p className="text-xs text-card-foreground/85">{config.aiSystemName} · auto-generated from your real audit data</p>
+            <p className="text-base font-bold mb-1 text-foreground">EU AI Act Annex IV — Technical Documentation</p>
+            <p className="text-sm text-foreground font-medium">{config.aiSystemName} · auto-generated from your real audit data</p>
           </div>
           <Button onClick={() => setExported(true)} className="gap-2">
             <FileDown className="h-4 w-4" /> {exported ? "Generated" : "Generate PDF"}
