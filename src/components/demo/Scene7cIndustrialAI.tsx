@@ -95,12 +95,12 @@ export function Scene7cIndustrialAI({ config: _config }: { config: DemoConfig })
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.55 }}
-        className="rounded-xl border border-primary/30 bg-primary/5 p-4 flex items-start gap-3"
+        className="rounded-xl border-2 border-primary/50 bg-card p-5 flex items-start gap-3 shadow-sm"
       >
-        <AlertTriangle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+        <AlertTriangle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
         <div>
-          <p className="text-xs font-semibold text-card-foreground">Why this matters</p>
-          <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+          <p className="text-sm font-bold text-foreground">Why this matters</p>
+          <p className="text-sm text-foreground font-medium mt-1.5 leading-relaxed">
             A hallucinated chatbot reply is embarrassing. A misclassified weld, a missed proximity
             event, or a runaway autonomous unit is an OSHA filing — or a fatality.
             HFAI extends the same hash-chained, human-in-the-loop oversight to the AI systems

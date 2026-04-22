@@ -37,28 +37,28 @@ export function Scene5Violation({ config, scenario }: { config: DemoConfig; scen
 
       {stage === "blocked" && (
         <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}
-          className="rounded-xl border-2 border-destructive bg-destructive/5 p-6">
+          className="rounded-xl border-2 border-destructive bg-card p-6 shadow-md">
           <div className="flex items-start gap-3 mb-4">
-            <div className="h-10 w-10 rounded-full bg-destructive/20 flex items-center justify-center shrink-0">
+            <div className="h-10 w-10 rounded-full bg-destructive/15 flex items-center justify-center shrink-0">
               <ShieldAlert className="h-5 w-5 text-destructive" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-base font-bold text-destructive">BLOCKED</p>
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-destructive/20 text-destructive">{s.latency}ms</span>
+                <p className="text-lg font-bold text-destructive">BLOCKED</p>
+                <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-destructive text-destructive-foreground">{s.latency}ms</span>
               </div>
-              <p className="text-xs font-semibold">{s.category}</p>
+              <p className="text-sm font-bold text-foreground">{s.category}</p>
             </div>
           </div>
-          <p className="text-xs text-card-foreground/80 leading-relaxed mb-4">{s.blockedReason}</p>
+          <p className="text-sm text-foreground font-medium leading-relaxed mb-4">{s.blockedReason}</p>
           <div className="grid grid-cols-3 gap-2 text-[10px]">
             <Cell label="Rule" value={s.ruleTriggered} />
             <Cell label="EU AI Act" value={s.euArticle} />
             <Cell label="HIPAA" value={s.hipaaRef} />
           </div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-            className="mt-4 flex items-center gap-2 text-xs text-card-foreground/85 font-medium">
-            <ShieldCheck className="h-3.5 w-3.5 text-green-500" />
+            className="mt-4 flex items-center gap-2 text-sm text-foreground font-semibold">
+            <ShieldCheck className="h-4 w-4 text-green-600" />
             User received: graceful fallback message · audit log entry written · no PHI exposed
           </motion.div>
         </motion.div>
@@ -69,9 +69,9 @@ export function Scene5Violation({ config, scenario }: { config: DemoConfig; scen
 
 function Cell({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded border border-border bg-card px-2 py-1.5">
-      <p className="text-muted-foreground uppercase tracking-wider mb-0.5">{label}</p>
-      <p className="font-mono text-card-foreground/90 truncate">{value}</p>
+    <div className="rounded border border-border bg-muted/40 px-2 py-1.5">
+      <p className="text-foreground/70 font-bold uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="font-mono font-semibold text-foreground truncate">{value}</p>
     </div>
   );
 }
