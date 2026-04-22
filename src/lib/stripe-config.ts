@@ -91,6 +91,7 @@ export const TIERS: Record<TierKey, TierConfig> = {
     highlighted: false,
     features: [
       "Everything in Enterprise",
+      "Industrial AI governance included (robotics, predictive maintenance, computer vision QC, autonomous systems)",
       "Compliance certificates & attestations",
       "Regulatory precedent intelligence",
       "Regulator‑ready export packs",
