@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
   ChevronLeft, ChevronRight, X, Sparkles, UserPlus, KeyRound, Plug,
-  Activity, ShieldAlert, UserCheck, BarChart3, Trophy, FileText, Users, MessageSquare, FileCheck, Eye, EyeOff,
+  Activity, ShieldAlert, UserCheck, BarChart3, Trophy, FileText, Users, MessageSquare, FileCheck, Eye, EyeOff, Factory,
 } from "lucide-react";
 import { loadDemoConfig, SCENARIO_LIBRARY, type DemoConfig, type DemoScenario } from "@/lib/demoConfig";
 import { Scene1Signup } from "@/components/demo/Scene1Signup";
@@ -18,6 +18,7 @@ import { Scene5bUserView } from "@/components/demo/Scene5bUserView";
 import { Scene6Review } from "@/components/demo/Scene6Review";
 import { Scene7Dashboard } from "@/components/demo/Scene7Dashboard";
 import { Scene7bAuditReport } from "@/components/demo/Scene7bAuditReport";
+import { Scene7cIndustrialAI } from "@/components/demo/Scene7cIndustrialAI";
 import { Scene8Close } from "@/components/demo/Scene8Close";
 
 const SCENES = [
@@ -31,7 +32,8 @@ const SCENES = [
   { id: 8, icon: UserCheck,     title: "Human Review",           subtitle: "Hash-chained audit trail" },
   { id: 9, icon: BarChart3,     title: "Compliance Dashboard",   subtitle: "Live score · 47 rules active" },
   { id: 10, icon: FileCheck,    title: "Generated Audit Report", subtitle: "Annex IV technical documentation" },
-  { id: 11, icon: Trophy,       title: "The No-Brainer Close",   subtitle: "Pricing + the two-question close" },
+  { id: 11, icon: Factory,      title: "Industrial AI Coverage", subtitle: "Robotics · CV · predictive maintenance" },
+  { id: 12, icon: Trophy,       title: "The No-Brainer Close",   subtitle: "Pricing + the two-question close" },
 ] as const;
 
 const TOTAL = SCENES.length;
@@ -124,6 +126,19 @@ const SCRIPTS: Record<number, { say: string[]; show: string; ifAsked?: { q: stri
     ],
   },
   11: {
+    show: "Industrial AI coverage — robotics, CV, predictive maintenance, autonomous units. Standards: ISO 23482, IEC 61508, ISO 13849, OSHA 1910.",
+    say: [
+      "\"Quick aside — because this is what every other governance vendor will skip.\"",
+      "\"Everything you've just seen also applies to the AI that touches the physical world: factory robots, computer-vision QC, predictive maintenance, autonomous mobile units.\"",
+      "\"A bad chatbot reply is embarrassing. A misclassified weld or a missed proximity event is an OSHA filing — or worse. Same hash-chained oversight, extended to ISO 23482, IEC 61508, ISO 13849, and OSHA 1910.\"",
+      "\"That's why HFAI works for an AI Academy and a manufacturer on the same control plane.\"",
+    ],
+    ifAsked: [
+      { q: "Do you actually integrate with PLCs / robot controllers?", a: "We ingest events from any SDK, MQTT bridge, or REST hook your robotics stack already emits. We don't replace your safety controller — we govern the AI decisions feeding it." },
+      { q: "Is this live today or roadmap?", a: "The runtime + standards mapping are live. Specific connector packs (ROS 2, OPC-UA) are part of Sovereign onboarding." },
+    ],
+  },
+  12: {
     show: "Pricing tiers + Fortress Mode badge + the two-question close on screen.",
     say: [
       "\"So that's end-to-end. Sign-up to blocked PHI to regulator-ready evidence — in 15 minutes of real work.\"",
@@ -179,7 +194,8 @@ export default function AdminDemoPresenter() {
       case 8: return <Scene6Review config={config} scenario={activeScenario} />;
       case 9: return <Scene7Dashboard config={config} />;
       case 10: return <Scene7bAuditReport config={config} />;
-      case 11: return <Scene8Close config={config} />;
+      case 11: return <Scene7cIndustrialAI config={config} />;
+      case 12: return <Scene8Close config={config} />;
       default: return null;
     }
   };
