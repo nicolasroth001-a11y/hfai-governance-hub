@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, AlertTriangle, UserCheck, ChevronRight,
   Cpu, Zap, Eye, CheckCircle, Scale, Clock, ArrowRight, Calendar, BarChart3,
+  Bot, Wrench, Camera, Car,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
