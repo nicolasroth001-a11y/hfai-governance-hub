@@ -18,24 +18,28 @@ const useCases = [
     title: "AI-Controlled Robotics",
     risk: "EU AI Act Article 6 — High-Risk",
     body: "Industrial robots making autonomous decisions about motion, force, or human-proximity safety. HFAI logs every AI-driven actuator decision, applies tolerance rules, and routes anomalies to a trained human reviewer before they become incidents.",
+    signals: ["Force/torque tolerance breaches", "Speed & position envelope drift", "Human-proximity safety overrides"],
   },
   {
     icon: Wrench,
     title: "Predictive Maintenance Models",
     risk: "ISO 42001 Clause 8 — Operational Controls",
     body: "ML models forecasting equipment failure can drift, develop bias toward certain failure modes, or under-predict on specific asset classes. HFAI monitors prediction quality, flags drift, and produces audit-ready evidence of model oversight.",
+    signals: ["Wear pattern drift before failure", "Parameter creep across cycles", "Model under-prediction on asset classes"],
   },
   {
     icon: Camera,
     title: "Computer Vision Quality Control",
     risk: "Product Liability + EU AI Act transparency",
     body: "Vision models that pass or reject products on a production line. HFAI tracks false-negative rates, surfaces edge cases for human review, and creates a defensible record of every AI-driven QC decision.",
+    signals: ["Confidence threshold breaches", "False-negative rate spikes", "Borderline classifications for human review"],
   },
   {
     icon: Car,
     title: "Autonomous & Semi-Autonomous Systems",
     risk: "EU AI Act Article 14 — Human Oversight",
     body: "AGVs, drones, and assistive driving systems require demonstrable human oversight. HFAI provides the contextual-friction review layer regulators expect — without slowing the production floor.",
+    signals: ["Spec creep outside approved envelope", "Path-planning anomalies", "Sovereign override authority on demand"],
   },
 ];
 
@@ -169,6 +173,14 @@ export default function IndustrialAIPage() {
                       <h3 className="font-semibold text-lg">{u.title}</h3>
                       <Badge variant="outline" className="mt-1 mb-3 text-xs">{u.risk}</Badge>
                       <p className="text-sm text-muted-foreground leading-relaxed">{u.body}</p>
+                      <ul className="mt-3 space-y-1.5">
+                        {u.signals.map((s) => (
+                          <li key={s} className="flex items-start gap-2 text-xs text-foreground/80">
+                            <CheckCircle className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
+                            <span>{s}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 </CardContent>
