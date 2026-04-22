@@ -72,6 +72,9 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/blog")}>
               {t("nav.blog")}
             </Button>
+            <Button variant="ghost" size="sm" className="text-xs hidden md:inline-flex" onClick={() => navigate("/industrial-ai")}>
+              Industrial AI
+            </Button>
             <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/pricing/contact")}>
               {t("nav.pricing")}
             </Button>
@@ -461,6 +464,8 @@ export default function LandingPage() {
               <Link to="/pricing/contact" className="text-primary hover:underline text-xs">{t("nav.pricing")}</Link>
               <span className="text-border/30">·</span>
               <Link to="/governance" className="text-primary hover:underline text-xs">{t("nav.framework")}</Link>
+              <span className="text-border/30">·</span>
+              <Link to="/industrial-ai" className="text-primary hover:underline text-xs">Industrial AI</Link>
               <span className="text-border/30">·</span>
               <Link to="/pilot" className="text-primary hover:underline text-xs">{t("nav.freePilot")}</Link>
               <span className="text-border/30">·</span>
