@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
   ChevronLeft, ChevronRight, X, Sparkles, UserPlus, KeyRound, Plug,
-  Activity, ShieldAlert, UserCheck, BarChart3, Trophy, FileText, Users, MessageSquare, FileCheck, Eye, EyeOff,
+  Activity, ShieldAlert, UserCheck, BarChart3, Trophy, FileText, Users, MessageSquare, FileCheck, Eye, EyeOff, Factory,
 } from "lucide-react";
 import { loadDemoConfig, SCENARIO_LIBRARY, type DemoConfig, type DemoScenario } from "@/lib/demoConfig";
 import { Scene1Signup } from "@/components/demo/Scene1Signup";
@@ -18,6 +18,7 @@ import { Scene5bUserView } from "@/components/demo/Scene5bUserView";
 import { Scene6Review } from "@/components/demo/Scene6Review";
 import { Scene7Dashboard } from "@/components/demo/Scene7Dashboard";
 import { Scene7bAuditReport } from "@/components/demo/Scene7bAuditReport";
+import { Scene7cIndustrialAI } from "@/components/demo/Scene7cIndustrialAI";
 import { Scene8Close } from "@/components/demo/Scene8Close";
 
 const SCENES = [
@@ -31,7 +32,8 @@ const SCENES = [
   { id: 8, icon: UserCheck,     title: "Human Review",           subtitle: "Hash-chained audit trail" },
   { id: 9, icon: BarChart3,     title: "Compliance Dashboard",   subtitle: "Live score · 47 rules active" },
   { id: 10, icon: FileCheck,    title: "Generated Audit Report", subtitle: "Annex IV technical documentation" },
-  { id: 11, icon: Trophy,       title: "The No-Brainer Close",   subtitle: "Pricing + the two-question close" },
+  { id: 11, icon: Factory,      title: "Industrial AI Coverage", subtitle: "Robotics · CV · predictive maintenance" },
+  { id: 12, icon: Trophy,       title: "The No-Brainer Close",   subtitle: "Pricing + the two-question close" },
 ] as const;
 
 const TOTAL = SCENES.length;
