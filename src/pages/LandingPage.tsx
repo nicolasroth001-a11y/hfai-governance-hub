@@ -388,6 +388,52 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── Industrial AI ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-5xl"
+        >
+          <div className="text-center mb-10">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">
+              New · Sovereign tier
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight mt-2">
+              Now governing AI on the factory floor
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground max-w-xl mx-auto">
+              Same human-first audit chain — extended to robotics, predictive maintenance, computer vision QC, and autonomous systems.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {[
+              { icon: Bot, label: "Robotics" },
+              { icon: Wrench, label: "Predictive Maintenance" },
+              { icon: Camera, label: "Computer Vision QC" },
+              { icon: Car, label: "Autonomous Systems" },
+            ].map((item) => (
+              <Card key={item.label} className="border-border/50 bg-card/40 hover:border-primary/40 transition-colors">
+                <CardContent className="p-4 sm:p-5 flex flex-col items-center text-center gap-2">
+                  <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <item.icon className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-medium text-foreground">{item.label}</span>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-8 flex justify-center">
+            <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate("/industrial-ai")}>
+              See industrial AI governance <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </motion.div>
+      </section>
+
       {/* ── Pricing Preview ── */}
       <section className="px-6 pb-20 sm:pb-24">
         <Suspense fallback={<SectionFallback />}><PricingPreview /></Suspense>
