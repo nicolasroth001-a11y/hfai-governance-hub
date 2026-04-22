@@ -37,7 +37,7 @@ export function Scene8Close({ config }: { config: DemoConfig }) {
             <p className="text-2xl font-bold">{t.price}<span className="text-xs font-normal text-muted-foreground ml-1">{t.duration}</span></p>
             <ul className="mt-3 space-y-1.5">
               {t.features.map((f) => (
-                <li key={f} className="text-[11px] text-card-foreground/70 flex items-start gap-1.5">
+                <li key={f} className="text-[11px] text-card-foreground/85 flex items-start gap-1.5">
                   <ArrowRight className="h-3 w-3 text-primary shrink-0 mt-0.5" /> {f}
                 </li>
               ))}

@@ -22,11 +22,11 @@ export function Scene6Review({ config, scenario }: { config: DemoConfig; scenari
           <p className="text-sm font-semibold">Reviewer Console — {config.reviewerName}</p>
         </div>
         <div className="rounded-lg border border-border bg-muted/30 p-4 mb-4">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Violation under review</p>
+          <p className="text-[10px] uppercase tracking-wider text-card-foreground/75 font-semibold mb-1">Violation under review</p>
           <p className="text-sm font-semibold mb-1">{s.label}</p>
-          <p className="text-xs text-card-foreground/70">{s.ruleTriggered}</p>
+          <p className="text-xs text-card-foreground/85">{s.ruleTriggered}</p>
         </div>
-        <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Reviewer notes</label>
+        <label className="text-[10px] uppercase tracking-wider text-card-foreground/75 font-semibold">Reviewer notes</label>
         <div className="mt-1 mb-4 px-3 py-2 rounded-md border border-border bg-white text-xs text-neutral-900">
           Confirmed PHI exposure risk. Block stands. Recommending team training on prompt sanitization.
         </div>

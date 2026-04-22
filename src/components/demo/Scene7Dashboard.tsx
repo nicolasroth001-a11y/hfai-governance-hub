@@ -45,8 +45,8 @@ export function Scene7Dashboard({ config }: { config: DemoConfig }) {
             <motion.div key={s.label} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }} className="rounded-lg border border-border bg-card p-4 flex items-center justify-between">
               <div>
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.label}</p>
-                <p className="text-xs text-card-foreground/60 mt-0.5">{s.sub}</p>
+                <p className="text-[10px] uppercase tracking-wider text-card-foreground/80 font-semibold">{s.label}</p>
+                <p className="text-xs text-card-foreground/80 mt-0.5">{s.sub}</p>
               </div>
               <p className="text-xl font-bold">{s.value}</p>
             </motion.div>
@@ -59,7 +59,7 @@ export function Scene7Dashboard({ config }: { config: DemoConfig }) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-bold mb-1">EU AI Act Annex IV — Technical Documentation</p>
-            <p className="text-xs text-card-foreground/70">{config.aiSystemName} · auto-generated from your real audit data</p>
+            <p className="text-xs text-card-foreground/85">{config.aiSystemName} · auto-generated from your real audit data</p>
           </div>
           <Button onClick={() => setExported(true)} className="gap-2">
             <FileDown className="h-4 w-4" /> {exported ? "Generated" : "Generate PDF"}
