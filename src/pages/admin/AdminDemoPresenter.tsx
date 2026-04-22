@@ -215,6 +215,16 @@ export default function AdminDemoPresenter() {
               transition={{ duration: 0.3 }}
             >
               {renderScene()}
+              {SLIDE_EXPLANATIONS[scene] && (
+                <div className="mt-6 rounded-xl border border-neutral-300 bg-white p-5 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-widest font-bold mb-2" style={{ color: "#000" }}>
+                    {SLIDE_EXPLANATIONS[scene].headline}
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "#000" }}>
+                    {SLIDE_EXPLANATIONS[scene].body}
+                  </p>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -344,6 +354,16 @@ export default function AdminDemoPresenter() {
               className="max-w-5xl mx-auto"
             >
               {renderScene()}
+              {SLIDE_EXPLANATIONS[scene] && (
+                <div className="mt-6 rounded-xl border border-neutral-300 bg-white p-5 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-widest font-bold mb-2" style={{ color: "#000" }}>
+                    {SLIDE_EXPLANATIONS[scene].headline}
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "#000" }}>
+                    {SLIDE_EXPLANATIONS[scene].body}
+                  </p>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
