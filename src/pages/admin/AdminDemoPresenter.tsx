@@ -8,6 +8,7 @@ import {
   Activity, ShieldAlert, UserCheck, BarChart3, Trophy, FileText, Users, MessageSquare, FileCheck, Eye, EyeOff, Factory,
 } from "lucide-react";
 import { loadDemoConfig, SCENARIO_LIBRARY, type DemoConfig, type DemoScenario } from "@/lib/demoConfig";
+import { SLIDE_EXPLANATIONS } from "@/lib/demoSlideExplanations";
 import { Scene1Signup } from "@/components/demo/Scene1Signup";
 import { Scene2ApiKey } from "@/components/demo/Scene2ApiKey";
 import { Scene2bReviewers } from "@/components/demo/Scene2bReviewers";
