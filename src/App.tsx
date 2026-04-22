@@ -31,6 +31,7 @@ const PilotSignup = lazy(() => import("./pages/PilotSignup"));
 const SDKDocs = lazy(() => import("./pages/SDKDocs"));
 const GovernancePage = lazy(() => import("./pages/GovernancePage"));
 const NISTCompliancePage = lazy(() => import("./pages/NISTCompliancePage"));
+const IndustrialAIPage = lazy(() => import("./pages/IndustrialAIPage"));
 const BlogIndex = lazy(() => import("./pages/blog/BlogIndex"));
 const BlogPostPage = lazy(() => import("./pages/blog/BlogPostPage"));
 const BlogSubmit = lazy(() => import("./pages/blog/BlogSubmit"));
@@ -148,6 +149,7 @@ const App = () => {
           <Route path="/docs/sdk" element={<SDKDocs />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/nist-ai-rmf" element={<NISTCompliancePage />} />
+          <Route path="/industrial-ai" element={<IndustrialAIPage />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/submit" element={<BlogSubmit />} />
           <Route path="/blog/eu-ai-act-omnibus-vii-timeline-update" element={<EUAIActOmnibusVII />} />
