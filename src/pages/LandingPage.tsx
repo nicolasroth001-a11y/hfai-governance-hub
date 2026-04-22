@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, AlertTriangle, UserCheck, ChevronRight,
   Cpu, Zap, Eye, CheckCircle, Scale, Clock, ArrowRight, Calendar, BarChart3,
+  Bot, Wrench, Camera, Car,
 } from "lucide-react";
 import { usePageView } from "@/hooks/usePageView";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -65,24 +66,24 @@ export default function LandingPage() {
             <Shield className="h-5 w-5 text-primary" />
             <span className="text-sm font-semibold text-foreground tracking-tight">HFAI</span>
           </Link>
-          <div className="flex items-center gap-1 sm:gap-2">
-            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/docs/sdk")}>
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <Button variant="ghost" size="sm" className="text-xs px-2 hidden lg:inline-flex" onClick={() => navigate("/docs/sdk")}>
               {t("nav.docs")}
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/blog")}>
+            <Button variant="ghost" size="sm" className="text-xs px-2 hidden md:inline-flex" onClick={() => navigate("/blog")}>
               {t("nav.blog")}
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs hidden md:inline-flex" onClick={() => navigate("/industrial-ai")}>
+            <Button variant="ghost" size="sm" className="text-xs px-2 hidden sm:inline-flex" onClick={() => navigate("/industrial-ai")}>
               Industrial AI
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs hidden sm:inline-flex" onClick={() => navigate("/pricing/contact")}>
+            <Button variant="ghost" size="sm" className="text-xs px-2 hidden md:inline-flex" onClick={() => navigate("/pricing/contact")}>
               {t("nav.pricing")}
             </Button>
-            <Button variant="ghost" size="sm" className="text-xs" onClick={() => navigate("/login/customer")}>
+            <Button variant="ghost" size="sm" className="text-xs px-2" onClick={() => navigate("/login/customer")}>
               {t("nav.signIn")}
             </Button>
-            <Button size="sm" className="text-xs gap-1" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
-              <Calendar className="h-3 w-3" /> Book Demo
+            <Button size="sm" className="text-xs gap-1 px-3" onClick={() => window.open(CALENDLY_URL, "_blank", "noopener,noreferrer")}>
+              <Calendar className="h-3 w-3" /> <span className="hidden xs:inline">Book Demo</span><span className="xs:hidden">Demo</span>
             </Button>
             <LanguageSwitcher />
           </div>
@@ -384,6 +385,52 @@ export default function LandingPage() {
           className="mx-auto max-w-4xl"
         >
           <Suspense fallback={<SectionFallback />}><InteractiveDemo /></Suspense>
+        </motion.div>
+      </section>
+
+      {/* ── Industrial AI ── */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-5xl"
+        >
+          <div className="text-center mb-10">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">
+              New · Sovereign tier
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight mt-2">
+              Now governing AI on the factory floor
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground max-w-xl mx-auto">
+              Same human-first audit chain — extended to robotics, predictive maintenance, computer vision QC, and autonomous systems.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {[
+              { icon: Bot, label: "Robotics" },
+              { icon: Wrench, label: "Predictive Maintenance" },
+              { icon: Camera, label: "Computer Vision QC" },
+              { icon: Car, label: "Autonomous Systems" },
+            ].map((item) => (
+              <Card key={item.label} className="border-border/50 bg-card/40 hover:border-primary/40 transition-colors">
+                <CardContent className="p-4 sm:p-5 flex flex-col items-center text-center gap-2">
+                  <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <item.icon className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-medium text-foreground">{item.label}</span>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-8 flex justify-center">
+            <Button size="lg" variant="outline" className="gap-2" onClick={() => navigate("/industrial-ai")}>
+              See industrial AI governance <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
         </motion.div>
       </section>
 
