@@ -126,6 +126,19 @@ const SCRIPTS: Record<number, { say: string[]; show: string; ifAsked?: { q: stri
     ],
   },
   11: {
+    show: "Industrial AI coverage — robotics, CV, predictive maintenance, autonomous units. Standards: ISO 23482, IEC 61508, ISO 13849, OSHA 1910.",
+    say: [
+      "\"Quick aside — because this is what every other governance vendor will skip.\"",
+      "\"Everything you've just seen also applies to the AI that touches the physical world: factory robots, computer-vision QC, predictive maintenance, autonomous mobile units.\"",
+      "\"A bad chatbot reply is embarrassing. A misclassified weld or a missed proximity event is an OSHA filing — or worse. Same hash-chained oversight, extended to ISO 23482, IEC 61508, ISO 13849, and OSHA 1910.\"",
+      "\"That's why HFAI works for an AI Academy and a manufacturer on the same control plane.\"",
+    ],
+    ifAsked: [
+      { q: "Do you actually integrate with PLCs / robot controllers?", a: "We ingest events from any SDK, MQTT bridge, or REST hook your robotics stack already emits. We don't replace your safety controller — we govern the AI decisions feeding it." },
+      { q: "Is this live today or roadmap?", a: "The runtime + standards mapping are live. Specific connector packs (ROS 2, OPC-UA) are part of Sovereign onboarding." },
+    ],
+  },
+  12: {
     show: "Pricing tiers + Fortress Mode badge + the two-question close on screen.",
     say: [
       "\"So that's end-to-end. Sign-up to blocked PHI to regulator-ready evidence — in 15 minutes of real work.\"",
@@ -181,7 +194,8 @@ export default function AdminDemoPresenter() {
       case 8: return <Scene6Review config={config} scenario={activeScenario} />;
       case 9: return <Scene7Dashboard config={config} />;
       case 10: return <Scene7bAuditReport config={config} />;
-      case 11: return <Scene8Close config={config} />;
+      case 11: return <Scene7cIndustrialAI config={config} />;
+      case 12: return <Scene8Close config={config} />;
       default: return null;
     }
   };
