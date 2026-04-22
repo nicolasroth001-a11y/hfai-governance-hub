@@ -12,14 +12,15 @@ const SAMPLE_EVENTS = [
 ];
 
 export function Scene4EventFlow({ config }: { config: DemoConfig }) {
-  const [events, setEvents] = useState<typeof SAMPLE_EVENTS>([]);
+  const [events, setEvents] = useState<Array<typeof SAMPLE_EVENTS[number] & { _id: string }>>([]);
 
   useEffect(() => {
     setEvents([]);
     let i = 0;
     const interval = setInterval(() => {
       if (i >= SAMPLE_EVENTS.length) { clearInterval(interval); return; }
-      setEvents((prev) => [SAMPLE_EVENTS[i], ...prev]);
+      const idx = i;
+      setEvents((prev) => [{ ...SAMPLE_EVENTS[idx], _id: `${idx}-${Date.now()}` }, ...prev]);
       i++;
     }, 900);
     return () => clearInterval(interval);
@@ -39,8 +40,8 @@ export function Scene4EventFlow({ config }: { config: DemoConfig }) {
       </div>
       <div className="divide-y divide-border min-h-[400px]">
         <AnimatePresence>
-          {events.map((e, i) => (
-            <motion.div key={i + e.input} initial={{ opacity: 0, y: -10, backgroundColor: "hsl(var(--primary) / 0.1)" }}
+          {events.map((e) => (
+            <motion.div key={e._id} initial={{ opacity: 0, y: -10, backgroundColor: "hsl(var(--primary) / 0.1)" }}
               animate={{ opacity: 1, y: 0, backgroundColor: "transparent" }} transition={{ duration: 0.6 }}
               className="px-6 py-3 flex items-start gap-4">
               <span className="text-[10px] font-mono text-muted-foreground mt-0.5 shrink-0">{new Date().toLocaleTimeString()}</span>
