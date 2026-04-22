@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Activity } from "lucide-react";
 import type { DemoConfig } from "@/lib/demoConfig";
@@ -11,19 +11,40 @@ const SAMPLE_EVENTS = [
   { type: "chat.completion", input: "Summarize the latest lab results", output: "Your recent lab results show all values within normal range…", latency: 421 },
 ];
 
+type StreamEvent = (typeof SAMPLE_EVENTS)[number] & { _id: string };
+
 export function Scene4EventFlow({ config }: { config: DemoConfig }) {
-  const [events, setEvents] = useState<Array<typeof SAMPLE_EVENTS[number] & { _id: string }>>([]);
+  const [events, setEvents] = useState<StreamEvent[]>([]);
+  const runIdRef = useRef(0);
 
   useEffect(() => {
+    runIdRef.current += 1;
+    const runId = runIdRef.current;
     setEvents([]);
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i >= SAMPLE_EVENTS.length) { clearInterval(interval); return; }
-      const idx = i;
-      setEvents((prev) => [{ ...SAMPLE_EVENTS[idx], _id: `${idx}-${Date.now()}` }, ...prev]);
-      i++;
-    }, 900);
-    return () => clearInterval(interval);
+
+    const timeoutIds = SAMPLE_EVENTS.map((event, idx) =>
+      window.setTimeout(() => {
+        if (runIdRef.current !== runId) return;
+
+        setEvents((prev) => {
+          const alreadyExists = prev.some(
+            (item) =>
+              item.type === event.type &&
+              item.input === event.input &&
+              item.output === event.output &&
+              item.latency === event.latency,
+          );
+
+          if (alreadyExists) return prev;
+
+          return [{ ...event, _id: `${runId}-${idx}` }, ...prev];
+        });
+      }, (idx + 1) * 900),
+    );
+
+    return () => {
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
   }, []);
 
   return (
