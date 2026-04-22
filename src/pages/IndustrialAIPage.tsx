@@ -11,6 +11,7 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import { usePageView } from "@/hooks/usePageView";
+import industrialHero from "@/assets/industrial-ai-hero.jpg";
 
 const useCases = [
   {
@@ -105,7 +106,19 @@ export default function IndustrialAIPage() {
       </header>
 
       {/* Hero */}
-      <section className="container mx-auto px-4 py-20 md:py-28">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <img
+            src={industrialHero}
+            alt="Industrial AI governance: robotic arm with holographic audit shield over a factory floor"
+            width={1920}
+            height={1080}
+            className="h-full w-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background" />
+        </div>
+        <div className="container mx-auto px-4 py-20 md:py-28">
         <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0} className="max-w-3xl">
           <Badge variant="secondary" className="mb-4">
             <Cpu className="h-3 w-3 mr-1" /> Industrial AI Governance
