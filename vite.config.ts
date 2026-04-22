@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => ({
             "@radix-ui/react-tooltip",
           ],
           "chart-vendor": ["recharts"],
-          "pdf-vendor": ["jspdf", "html2canvas"],
+          "pdf-vendor": ["jspdf"],
           "motion-vendor": ["framer-motion"],
           "supabase-vendor": ["@supabase/supabase-js"],
           "i18n-vendor": ["i18next", "react-i18next", "i18next-browser-languagedetector"],
