@@ -90,7 +90,7 @@ serve(async (req) => {
 
     // ── Parse body ──
     const body = await req.json();
-    const { event_type, payload, ai_system_id } = body;
+    const { event_type, payload, ai_system_id, input_text, output_text } = body;
 
     if (!event_type) {
       return new Response(JSON.stringify({ error: "event_type is required" }), {
@@ -100,10 +100,19 @@ serve(async (req) => {
     }
 
     aiSystemId = ai_system_id || null;
-    const inputText = typeof payload === "string" ? payload : JSON.stringify(payload);
+    // Accept input_text/output_text as top-level fields, fall back to payload
+    const inputText = input_text || (typeof payload === "string" ? payload : payload ? JSON.stringify(payload) : "");
+    const outputText = output_text || "";
+
+    // Declare collectors BEFORE they're used
+    const violations: any[] = [];
+    const blockedRules: { ruleId: string; ruleName: string; description: string; severity: string }[] = [];
+    const keywordMatched: string[] = [];
 
     // 1. Log the user event
-    const eventPayload = typeof payload === "object" ? payload : { message: payload, timestamp: new Date().toISOString() };
+    const eventPayload = typeof payload === "object" && payload !== null
+      ? payload
+      : { message: payload || inputText, timestamp: new Date().toISOString() };
     const { data: userEvent, error: insertErr } = await supabase
       .from("ai_events")
       .insert({
@@ -111,6 +120,7 @@ serve(async (req) => {
         event_type,
         payload: eventPayload,
         input_text: inputText,
+        output_text: outputText,
         org_id: orgId,
       })
       .select()
@@ -120,7 +130,6 @@ serve(async (req) => {
     log("Event logged", { id: userEvent.id });
 
     // 2. Check rules for violations — hybrid: keyword match + AI classification
-    //    This includes Art. 5 prohibited practice detection via keyword + AI classifiers
     const { data: rules } = await supabase
       .from("rules")
       .select("*")
@@ -139,10 +148,11 @@ serve(async (req) => {
       { pattern: /real.?time.*biometric|remote.*identif.*public|facial.*recognition.*public/i, label: "Art.5(1)(h) Real-time Remote Biometric ID", severity: "critical" },
     ];
 
-    // Check for prohibited practices in input
-    const prohibitedMatches = PROHIBITED_PRACTICE_PATTERNS.filter(p => p.pattern.test(inputText || ""));
+    // Check for prohibited practices in input + output
+    const scanText = `${inputText}\n${outputText}`;
+    const prohibitedMatches = PROHIBITED_PRACTICE_PATTERNS.filter(p => p.pattern.test(scanText));
     for (const match of prohibitedMatches) {
-      const { data: violation } = await supabase
+      const { data: violation, error: vErr } = await supabase
         .from("violations")
         .insert({
           ai_system_id: aiSystemId,
@@ -153,6 +163,11 @@ serve(async (req) => {
         })
         .select()
         .single();
+
+      if (vErr) {
+        log("Failed to insert Art.5 violation", { error: vErr.message });
+        continue;
+      }
 
       if (violation) {
         violations.push(violation);
@@ -172,10 +187,6 @@ serve(async (req) => {
       }
       log("Art.5 prohibited practice detected", { label: match.label });
     }
-
-    const violations: unknown[] = [];
-    const blockedRules: { ruleId: string; ruleName: string; description: string; severity: string }[] = [];
-    const keywordMatched: string[] = [];
 
     if (rules && rules.length > 0) {
       // Phase 1: Fast keyword pre-filter
