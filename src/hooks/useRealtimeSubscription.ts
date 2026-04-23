@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 export interface RealtimeEvent {
@@ -18,6 +19,7 @@ interface UseRealtimeOptions {
 }
 
 export function useRealtimeSubscription({ tables, onEvent, enabled = true }: UseRealtimeOptions) {
+  const { profile } = useAuth();
   const channelRef = useRef<RealtimeChannel | null>(null);
   const [connected, setConnected] = useState(false);
   const [events, setEvents] = useState<RealtimeEvent[]>([]);
@@ -27,15 +29,20 @@ export function useRealtimeSubscription({ tables, onEvent, enabled = true }: Use
     onEvent?.(event);
   }, [onEvent]);
 
-  useEffect(() => {
-    if (!enabled || tables.length === 0) return;
+  const orgId = profile?.org_id ?? null;
 
-    const channel = supabase.channel("realtime-dashboard");
+  useEffect(() => {
+    if (!enabled || tables.length === 0 || !orgId) return;
+
+    // Org-scoped channel name required by realtime.messages RLS policy
+    const channel = supabase.channel(`org:${orgId}:dashboard`, {
+      config: { private: true },
+    });
 
     tables.forEach((table) => {
       channel.on(
         "postgres_changes" as any,
-        { event: "*", schema: "public", table },
+        { event: "*", schema: "public", table, filter: `org_id=eq.${orgId}` },
         (payload: any) => {
           const event: RealtimeEvent = {
             id: crypto.randomUUID(),
@@ -61,7 +68,7 @@ export function useRealtimeSubscription({ tables, onEvent, enabled = true }: Use
       channelRef.current = null;
       setConnected(false);
     };
-  }, [tables.join(","), enabled, addEvent]);
+  }, [tables.join(","), enabled, addEvent, orgId]);
 
   const clearEvents = useCallback(() => setEvents([]), []);
 
