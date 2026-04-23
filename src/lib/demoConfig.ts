@@ -18,15 +18,15 @@ export interface DemoConfig {
 
 export const DEFAULT_DEMO_CONFIG: DemoConfig = {
   prospectName: "Scott Schindler",
-  prospectCompany: "AESOP AI Academy",
-  prospectEmail: "scott@aesopacademy.org",
-  prospectRole: "Founder · Healthcare CISO",
-  industry: "AI Education + Healthcare Advisory",
-  aiSystemName: "AESOP Learning Companion",
+  prospectCompany: "Community Medical Centers",
+  prospectEmail: "scott@communitymedical.org",
+  prospectRole: "Healthcare CISO",
+  industry: "Healthcare / Hospital System",
+  aiSystemName: "Ambient Scribe + CDS Assistant",
   aiProvider: "OpenAI GPT-4 + Claude",
-  reviewerName: "Scott Schindler (Faculty Lead)",
-  scenarios: ["coppa_minor_data", "ai_literacy_gap", "phi_leak", "prohibited_practice", "hallucination"],
-  primaryScenario: "coppa_minor_data",
+  reviewerName: "Scott Schindler (CISO)",
+  scenarios: ["phi_leak", "hallucination", "prohibited_practice", "coppa_minor_data", "ai_literacy_gap"],
+  primaryScenario: "phi_leak",
   callDate: new Date().toISOString().split("T")[0],
   presenterName: "Nicolas Roth",
 };
