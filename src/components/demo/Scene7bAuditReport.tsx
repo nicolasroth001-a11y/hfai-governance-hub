@@ -44,10 +44,10 @@ export function Scene7bAuditReport({ config }: { config: DemoConfig }) {
             </p>
             <h2 className="text-2xl font-bold mb-1 text-neutral-900">{config.aiSystemName}</h2>
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-neutral-600">
-              <span><strong>Provider:</strong> {config.prospectCompany}</span>
-              <span><strong>Risk Tier:</strong> High (Annex III §3 — Education)</span>
+              <span><strong>Deployer:</strong> {config.prospectCompany}</span>
+              <span><strong>Risk Tier:</strong> High (Annex III §5 — Healthcare)</span>
               <span><strong>Reporting Period:</strong> Last 30 days</span>
-              <span><strong>Report ID:</strong> HFAI-2026-04-AESOP-001</span>
+              <span><strong>Report ID:</strong> HFAI-2026-04-CMC-001</span>
             </div>
           </div>
 
@@ -56,12 +56,12 @@ export function Scene7bAuditReport({ config }: { config: DemoConfig }) {
             <section>
               <p className="font-bold text-neutral-900 mb-1 text-[12px]">1. System Description (Art. 11(1)(a))</p>
               <p>
-                {config.aiSystemName} is an {config.aiProvider}-based assistant serving K-12 learners (ages 8–14)
-                in the AESOP AI Academy curriculum. Deployed as a web chat interface; governed end-to-end by the
-                HFAI runtime enforcement layer with COPPA, FERPA, EU AI Act, and NIST AI RMF rule packs active.
+                {config.aiSystemName} is an {config.aiProvider}-based clinical assistant deployed across
+                ambient scribe, clinical decision support, and patient-facing chat workflows at {config.prospectCompany}.
+                Governed end-to-end by the HFAI runtime enforcement layer with HIPAA, CMIA, EU AI Act, and NIST AI RMF rule packs active.
               </p>
-              <p className="mt-1.5"><strong>Intended purpose:</strong> Tutoring, homework support, and AI-literacy reflection prompts.</p>
-              <p><strong>Out-of-scope use:</strong> Persistent storage of minor PII, behavioral/emotional inference, biometric processing.</p>
+              <p className="mt-1.5"><strong>Intended purpose:</strong> Encounter documentation, decision support recommendations, and patient triage / Q&amp;A.</p>
+              <p><strong>Out-of-scope use:</strong> Autonomous diagnosis, persistent storage of PHI in clear text, behavioral / emotional inference on patients.</p>
             </section>
 
             <section>
@@ -77,27 +77,27 @@ export function Scene7bAuditReport({ config }: { config: DemoConfig }) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td className="border border-neutral-300 px-2 py-1">Minor PII / COPPA</td><td className="border border-neutral-300 px-2 py-1 text-center">14</td><td className="border border-neutral-300 px-2 py-1 text-center">17</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">17</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
-                  <tr><td className="border border-neutral-300 px-2 py-1">EU AI Act Art. 5 Prohibited</td><td className="border border-neutral-300 px-2 py-1 text-center">9</td><td className="border border-neutral-300 px-2 py-1 text-center">3</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">3</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
-                  <tr><td className="border border-neutral-300 px-2 py-1">Art. 4 Literacy / Art. 50 Disclosure</td><td className="border border-neutral-300 px-2 py-1 text-center">6</td><td className="border border-neutral-300 px-2 py-1 text-center">128</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">128</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
-                  <tr><td className="border border-neutral-300 px-2 py-1">Hallucination / unverified citation</td><td className="border border-neutral-300 px-2 py-1 text-center">11</td><td className="border border-neutral-300 px-2 py-1 text-center">7</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">5</td><td className="border border-neutral-300 px-2 py-1 text-center">2*</td></tr>
-                  <tr><td className="border border-neutral-300 px-2 py-1">Safety / self-harm escalation</td><td className="border border-neutral-300 px-2 py-1 text-center">7</td><td className="border border-neutral-300 px-2 py-1 text-center">1</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">1</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">PHI leakage / HIPAA §164.502</td><td className="border border-neutral-300 px-2 py-1 text-center">22</td><td className="border border-neutral-300 px-2 py-1 text-center">41</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">41</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">EU AI Act Art. 5 Prohibited</td><td className="border border-neutral-300 px-2 py-1 text-center">9</td><td className="border border-neutral-300 px-2 py-1 text-center">2</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">2</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">Clinical hallucination / unverified citation</td><td className="border border-neutral-300 px-2 py-1 text-center">14</td><td className="border border-neutral-300 px-2 py-1 text-center">19</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">17</td><td className="border border-neutral-300 px-2 py-1 text-center">2*</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">Diagnosis without physician sign-off</td><td className="border border-neutral-300 px-2 py-1 text-center">8</td><td className="border border-neutral-300 px-2 py-1 text-center">6</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">6</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
+                  <tr><td className="border border-neutral-300 px-2 py-1">Self-harm / crisis escalation</td><td className="border border-neutral-300 px-2 py-1 text-center">7</td><td className="border border-neutral-300 px-2 py-1 text-center">3</td><td className="border border-neutral-300 px-2 py-1 text-center text-[#0a7a3f] font-bold">3</td><td className="border border-neutral-300 px-2 py-1 text-center">0</td></tr>
                 </tbody>
               </table>
-              <p className="text-[9px] text-neutral-500 mt-1">* 2 hallucinations reached user with mandatory disclosure label; flagged for human review within SLA.</p>
+              <p className="text-[9px] text-neutral-500 mt-1">* 2 unverified citations reached clinician with mandatory disclosure label; flagged for human review within SLA.</p>
             </section>
 
             <section>
               <p className="font-bold text-neutral-900 mb-1 text-[12px]">3. Data Governance (Art. 10)</p>
               <p>
-                Training data not modified by deployer (foundation model). Inference data subject to runtime
-                governance: PHI/PII never persisted in clear text; hash-chained metadata only;
-                row-level security isolates AESOP tenant from all other organizations.
+                Foundation model not retrained by deployer. Inference data subject to runtime governance:
+                PHI never persisted in clear text; only hash-chained metadata is retained;
+                row-level security isolates {config.prospectCompany} from all other organizations.
               </p>
               <ul className="mt-1.5 ml-4 list-disc space-y-0.5">
-                <li>Minor PII detection: name + age signal + identifier &gt; threshold → block + redact</li>
-                <li>Retention: 30 days hot, 365 days cold (hash-only), then purge</li>
-                <li>Geographic boundary: us-east-1 (FERPA-compliant region)</li>
+                <li>PHI detection: name + DOB + MRN / identifier &gt; threshold → block + redact in 12ms</li>
+                <li>Retention: 30 days hot, 7 years cold (hash-only, HIPAA §164.530(j) aligned), then purge</li>
+                <li>Geographic boundary: us-west-2 (BAA-covered region)</li>
               </ul>
             </section>
 

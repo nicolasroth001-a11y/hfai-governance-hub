@@ -43,7 +43,7 @@ const SCRIPTS: Record<number, { say: string[]; show: string; ifAsked?: { q: stri
   1: {
     show: "Sign-up form auto-fills the prospect's company. Org provisioned in real time.",
     say: [
-      "\"This is what your team — or your AESOP students — would do today. No sales gate, no IT ticket.\"",
+      "\"This is what your team — or any clinician on your AI committee — would do today. No sales gate, no IT ticket.\"",
       "\"Email, password, company name. Done. We just provisioned a real org with isolated data, RLS policies, the works.\"",
     ],
   },
@@ -143,10 +143,10 @@ const SCRIPTS: Record<number, { say: string[]; show: string; ifAsked?: { q: stri
     show: "Pricing tiers + Fortress Mode badge + the two-question close on screen.",
     say: [
       "\"So that's end-to-end. Sign-up to blocked PHI to regulator-ready evidence — in 15 minutes of real work.\"",
-      "\"And remember — Fortress Mode means even an HFAI outage can't expose your students or patients to Article 5 or COPPA-class harm. That promise is in the SDK, not the marketing deck.\"",
+      "\"And remember — Fortress Mode means even an HFAI outage can't expose your patients to HIPAA, Article 5, or self-harm-class harm. That promise is in the SDK, not the marketing deck.\"",
       "\"Two questions before I let you go:\"",
-      "\"1. Of the healthcare clients you're advising — is there one where this would be most urgent?\"",
-      "\"2. Your AESOP curriculum — would your students benefit from a free HFAI tier to run governance against real models?\"",
+      "\"1. Of the clinical AI surfaces at CMC — ambient scribe, CDS, patient chat — which one keeps you up at night?\"",
+      "\"2. Would your medical staff committee want a 30-day pilot scoped to that one workflow?\"",
     ],
     ifAsked: [
       { q: "What's the catch with Fortress Mode?", a: "It only covers the highest-risk categories (Art. 5 + COPPA + self-harm). Org-specific custom rules + AI-based ambiguous classification still need the cloud — but those queue locally and replay on reconnect." },
