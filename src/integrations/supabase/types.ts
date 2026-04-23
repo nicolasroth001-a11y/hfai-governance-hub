@@ -1900,6 +1900,7 @@ export type Database = {
         Returns: number
       }
       get_analytics_summary: { Args: never; Returns: Json }
+      get_org_api_key: { Args: { _org_id: string }; Returns: string }
       get_org_counts: {
         Args: never
         Returns: {
@@ -1908,6 +1909,10 @@ export type Database = {
           user_count: number
           violation_count: number
         }[]
+      }
+      get_provider_proxy_token: {
+        Args: { _provider_id: string }
+        Returns: string
       }
       has_role: {
         Args: {
