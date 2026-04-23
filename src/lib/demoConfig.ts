@@ -32,7 +32,7 @@ export const DEFAULT_DEMO_CONFIG: DemoConfig = {
 };
 
 const STORAGE_KEY = "hfai_demo_config";
-const CONFIG_VERSION = "2025-04-cmc"; // bump to invalidate stale cached configs (e.g., AESOP)
+const CONFIG_VERSION = "2025-04-cmc-v2"; // bump to invalidate stale cached configs (e.g., AESOP)
 const VERSION_KEY = "hfai_demo_config_version";
 
 export function loadDemoConfig(): DemoConfig {
