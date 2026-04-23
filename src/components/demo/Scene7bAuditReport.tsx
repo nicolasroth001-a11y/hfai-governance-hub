@@ -98,6 +98,8 @@ export function Scene7bAuditReport({ config }: { config: DemoConfig }) {
                 <li>PHI detection: name + DOB + MRN / identifier &gt; threshold → block + redact in 12ms</li>
                 <li>Retention: 30 days hot, 7 years cold (hash-only, HIPAA §164.530(j) aligned), then purge</li>
                 <li>Geographic boundary: us-west-2 (BAA-covered region)</li>
+              </ul>
+            </section>
 
             <section>
               <p className="font-bold text-neutral-900 mb-1 text-[12px]">4. Human Oversight Evidence (Art. 14)</p>
