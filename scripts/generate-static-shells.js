@@ -78,6 +78,10 @@ const routeMeta = {
     title: "AI Governance Readiness Assessment — HFAI",
     description: "Free 2-minute assessment: check your AI governance readiness against the EU AI Act. Get an instant score and personalized compliance report.",
   },
+  "/industrial-ai": {
+    title: "Industrial AI Governance — HFAI",
+    description: "Govern the AI on your factory floor: robotics, predictive maintenance, computer-vision QC, and AGVs. Drift detection, tamper-evident audit chain, and EU AI Act / ISO 42001 / NIST evidence — auto-generated.",
+  },
 };
 
 function generateShell(rootHtml, route, meta) {
