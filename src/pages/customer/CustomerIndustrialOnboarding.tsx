@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { CheckCircle2, Cpu, Eye, Wrench, Truck, Copy, ArrowRight, Factory } from "lucide-react";
+import { CheckCircle2, Cpu, Eye, Wrench, Truck, Copy, ArrowRight, Factory, Plug, Activity } from "lucide-react";
 import { toast } from "sonner";
 
 type AIType = "robotics" | "vision_qc" | "predictive_maintenance" | "agv";
@@ -422,6 +422,3 @@ export default function CustomerIndustrialOnboarding() {
     </div>
   );
 }
-
-// Local imports to avoid extra top-level pollution
-import { Plug, Activity } from "lucide-react";
