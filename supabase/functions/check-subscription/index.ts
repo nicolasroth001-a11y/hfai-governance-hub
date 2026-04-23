@@ -24,7 +24,16 @@ serve(async (req) => {
     if (!stripeKey) throw new Error("STRIPE_KEY is not set");
 
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("No authorization header provided");
+    const unauthenticatedResponse = () =>
+      new Response(JSON.stringify({ subscribed: false, on_trial: false }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+
+    if (!authHeader) {
+      logStep("No auth header — returning unsubscribed");
+      return unauthenticatedResponse();
+    }
 
     const token = authHeader.replace("Bearer ", "");
 
@@ -36,9 +45,11 @@ serve(async (req) => {
     );
 
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
-    if (userError || !userData.user) throw new Error(`Authentication error: ${userError?.message || "No user"}`);
+    if (userError || !userData.user?.email) {
+      logStep("No valid session — returning unsubscribed", { error: userError?.message });
+      return unauthenticatedResponse();
+    }
     const user = userData.user;
-    if (!user.email) throw new Error("User email not available");
     logStep("User authenticated", { email: user.email });
 
     // Grant full Enterprise access to test account
