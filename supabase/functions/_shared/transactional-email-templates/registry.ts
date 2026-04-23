@@ -18,6 +18,7 @@ import { template as newsletterWelcome } from './newsletter-welcome.tsx'
 import { template as newsletterBlast } from './newsletter-blast.tsx'
 import { template as blogDigest } from './blog-digest.tsx'
 import { template as riskReport } from './risk-report.tsx'
+import { template as hfaiExpertRequest } from './hfai-expert-request.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'contact-inquiry': contactInquiry,
@@ -29,4 +30,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'newsletter-blast': newsletterBlast,
   'blog-digest': blogDigest,
   'risk-report': riskReport,
+  'hfai-expert-request': hfaiExpertRequest,
 }

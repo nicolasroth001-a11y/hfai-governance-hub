@@ -40,7 +40,6 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Get caller profile
     const { data: profile } = await supabaseAdmin
       .from("profiles")
       .select("role, org_id, name, email")
@@ -54,41 +53,27 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Get org info
     const { data: org } = await supabaseAdmin
       .from("organizations")
       .select("name, contact_email")
       .eq("id", profile.org_id)
       .single();
 
-    // Notify HFAI admin via email
-    const resendKey = Deno.env.get("RESEND_API_KEY");
-    const adminEmail = Deno.env.get("CONTACT_EMAIL") || "nicolasroth001@gmail.com";
-
-    if (resendKey) {
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${resendKey}`,
+    // Notify admin via Lovable Email queue
+    await supabaseAdmin.functions.invoke('send-transactional-email', {
+      body: {
+        templateName: 'hfai-expert-request',
+        idempotencyKey: `hfai-expert-${profile.org_id}-${Date.now()}`,
+        templateData: {
+          orgName: org?.name || 'Unknown',
+          requesterName: profile.name,
+          requesterEmail: profile.email,
+          orgContactEmail: org?.contact_email || 'N/A',
+          orgId: profile.org_id,
         },
-        body: JSON.stringify({
-          from: "HFAI Platform <noreply@notify.hfa-i.org>",
-          to: [adminEmail],
-          subject: `🔔 HFAI Expert Reviewer Requested — ${org?.name || "Unknown Org"}`,
-          html: `
-            <h2>HFAI Expert Reviewer Request</h2>
-            <p><strong>Organization:</strong> ${org?.name || "Unknown"}</p>
-            <p><strong>Requested by:</strong> ${profile.name} (${profile.email})</p>
-            <p><strong>Org Contact:</strong> ${org?.contact_email || "N/A"}</p>
-            <p><strong>Org ID:</strong> ${profile.org_id}</p>
-            <p>Please assign an HFAI Expert Reviewer to this organization through the Admin portal.</p>
-          `,
-        }),
-      });
-    }
+      },
+    });
 
-    // Audit log
     await supabaseAdmin.from("audit_logs").insert({
       action: "hfai_expert_requested",
       entity_type: "organization",
