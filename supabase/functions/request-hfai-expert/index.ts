@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
           Authorization: `Bearer ${resendKey}`,
         },
         body: JSON.stringify({
-          from: "HFAI Platform <noreply@hfa-i.org>",
+          from: "HFAI Platform <noreply@notify.hfa-i.org>",
           to: [adminEmail],
           subject: `🔔 HFAI Expert Reviewer Requested — ${org?.name || "Unknown Org"}`,
           html: `
