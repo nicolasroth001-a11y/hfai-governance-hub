@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 export interface RealtimeEvent {
