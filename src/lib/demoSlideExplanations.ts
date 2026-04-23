@@ -49,6 +49,6 @@ export const SLIDE_EXPLANATIONS: Record<number, { headline: string; body: string
   },
   12: {
     headline: "Step 12 — Pricing & The Two-Question Close",
-    body: "End-to-end: from sign-up to a blocked violation to regulator-ready evidence in roughly fifteen minutes of real work. Pricing scales from a free pilot up to Sovereign for high-risk EU AI Act deployments. Two questions: which of your healthcare clients needs this most urgently, and would your AESOP students benefit from a free HFAI tier to run governance against real models?",
+    body: "End-to-end: from sign-up to a blocked violation to regulator-ready evidence in roughly fifteen minutes of real work. Pricing scales from a free 30-day pilot up to Sovereign for high-risk EU AI Act and HIPAA-regulated deployments. Two questions: which clinical AI workflow at your health system is closest to a regulator-visible incident today, and who owns the audit-trail conversation when OCR or your malpractice carrier calls?",
   },
 };
