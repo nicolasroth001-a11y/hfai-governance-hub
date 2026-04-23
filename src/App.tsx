@@ -81,6 +81,7 @@ const CustomerShadowAIDiscovery = lazy(() => import("./pages/customer/CustomerSh
 const CustomerEvidenceSynthesis = lazy(() => import("./pages/customer/CustomerEvidenceSynthesis"));
 const CustomerReviewerSettings = lazy(() => import("./pages/customer/CustomerReviewerSettings"));
 const CustomerIntegrations = lazy(() => import("./pages/customer/CustomerIntegrations"));
+const CustomerIndustrialOnboarding = lazy(() => import("./pages/customer/CustomerIndustrialOnboarding"));
 
 // Reviewer pages (lazy)
 const ReviewerDashboard = lazy(() => import("./pages/reviewer/ReviewerDashboard"));
@@ -210,6 +211,7 @@ const App = () => {
             <Route path="evidence-synthesis" element={<CustomerEvidenceSynthesis />} />
             <Route path="reviewer-settings" element={<CustomerReviewerSettings />} />
             <Route path="integrations" element={<CustomerIntegrations />} />
+            <Route path="industrial-onboarding" element={<CustomerIndustrialOnboarding />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
