@@ -32,9 +32,18 @@ export const DEFAULT_DEMO_CONFIG: DemoConfig = {
 };
 
 const STORAGE_KEY = "hfai_demo_config";
+const CONFIG_VERSION = "2025-04-cmc"; // bump to invalidate stale cached configs (e.g., AESOP)
+const VERSION_KEY = "hfai_demo_config_version";
 
 export function loadDemoConfig(): DemoConfig {
   try {
+    const storedVersion = localStorage.getItem(VERSION_KEY);
+    if (storedVersion !== CONFIG_VERSION) {
+      // Stale or missing version — discard old cached config and reset to current defaults
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem(VERSION_KEY, CONFIG_VERSION);
+      return DEFAULT_DEMO_CONFIG;
+    }
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_DEMO_CONFIG;
     return { ...DEFAULT_DEMO_CONFIG, ...JSON.parse(raw) };
@@ -45,6 +54,7 @@ export function loadDemoConfig(): DemoConfig {
 
 export function saveDemoConfig(config: DemoConfig) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  localStorage.setItem(VERSION_KEY, CONFIG_VERSION);
 }
 
 export const SCENARIO_LIBRARY: Record<DemoScenario, {
