@@ -39,6 +39,7 @@ const EUAIActOmnibusVII = lazy(() => import("./pages/blog/EUAIActOmnibusVII"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const ReadinessAssessment = lazy(() => import("./pages/ReadinessAssessment"));
 const TrustCenter = lazy(() => import("./pages/TrustCenter"));
+const ScottDeck = lazy(() => import("./pages/ScottDeck"));
 
 // Customer pages (lazy)
 const CustomerDashboard = lazy(() => import("./pages/customer/CustomerDashboard"));
@@ -158,6 +159,7 @@ const App = () => {
           <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/readiness-assessment" element={<ReadinessAssessment />} />
           <Route path="/trust" element={<TrustCenter />} />
+          <Route path="/scott" element={<ScottDeck />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login" element={<CustomerLogin />} />
