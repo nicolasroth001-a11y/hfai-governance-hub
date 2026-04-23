@@ -82,16 +82,17 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   };
 
   const firstName = config.prospectName.split(" ")[0];
+  const company = config.prospectCompany;
 
   // ============ COVER ============
   doc.setFillColor(10, 10, 10).rect(0, 0, W, H, "F");
   doc.setFillColor(196, 153, 58).rect(0, 0, 6, H, "F");
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
-  doc.text("HFAI × AESOP — DEMO SCRIPT", M, 90);
+  doc.text(`HFAI × ${company.toUpperCase()} — DEMO SCRIPT`, M, 90);
   doc.setFont("helvetica", "bold").setFontSize(28).setTextColor(255, 255, 255);
   doc.text(config.prospectName, M, 140);
   doc.setFont("helvetica", "normal").setFontSize(14).setTextColor(200, 200, 200);
-  doc.text(`${config.prospectRole} · ${config.prospectCompany}`, M, 165);
+  doc.text(`${config.prospectRole} · ${company}`, M, 165);
   doc.setFontSize(11).setTextColor(160, 160, 160);
   doc.text(`Call: ${config.callDate} · Presenter: ${config.presenterName}`, M, 190);
 
@@ -100,13 +101,16 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.text("STRATEGIC FRAME", M, 240);
   doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(220, 220, 220);
   const frame = [
-    "Scott is NOT a normal prospect. He's a force multiplier:",
-    "  • Founder of AESOP AI Academy (publishes EU AI Act + NIST RMF alignment)",
-    "  • Healthcare CISO advisor with a network of clients",
-    "  • Already living the regulations — does not need education",
+    `Scott is the Healthcare CISO at ${company} — Central Valley health system,`,
+    "~3 hospitals, ~7,000 employees, real HIPAA + CMIA exposure.",
     "",
-    "DO NOT sell him software. Offer him a Governance Lab for AESOP.",
-    "He will then sell HFAI to his network for you.",
+    "  • Decision-maker (or one seat away) for AI governance procurement",
+    "  • Already lives the regulations — does NOT need education on HIPAA, OCR, or NIST",
+    "  • Real budget, real BAA process, real medical staff committee",
+    "  • Buyer for: ambient scribes, CDS, patient chatbots, radiology AI, prior-auth automation",
+    "",
+    "DO NOT pitch features. Show him the OCR-defensible artifact",
+    "his current vendors cannot produce.",
   ];
   let fy = 262;
   frame.forEach((line) => {
@@ -115,25 +119,25 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   });
 
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(196, 153, 58);
-  doc.text("AGENDA (15–25 MIN)", M, 410);
+  doc.text("AGENDA (15–25 MIN)", M, 430);
   const agenda = [
-    "1.  Open · 60–90s — empathy, AESOP bridge, Calendly thank-you",
+    "1.  Open · 60–90s — empathy, CMC clinical-AI bridge, Calendly thank-you",
     "2.  Discovery questions (slip in early, listen hard)",
     "3.  Sign-up — self-serve, no gating",
     "4.  API key & both-sides setup",
-    "5.  Reviewer team (Article 14)",
+    "5.  Reviewer team (Article 14 / medical staff committee mapping)",
     "6.  Connect AI system — one line",
     "7.  Live events streaming in",
     `8.  Violation BLOCKED: ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
-    "9.  What the end user (the student) actually sees",
-    "10. Human review + hash-chained audit",
+    "9.  What the patient or clinician actually sees",
+    "10. Human review + hash-chained audit (the OCR artifact)",
     "11. Compliance dashboard (live)",
-    "12. Generated Annex IV report (the artifact)",
+    "12. Generated Annex IV / HIPAA evidence pack",
     "13. Industrial AI coverage — the 80% no other vendor governs",
     "14. The two-question close",
   ];
   doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(220, 220, 220);
-  let ay = 432;
+  let ay = 452;
   agenda.forEach((a) => {
     doc.text(a, M, ay);
     ay += 15;
@@ -142,81 +146,87 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.setFont("helvetica", "italic").setFontSize(9).setTextColor(140, 140, 140);
   doc.text("Hybrid script · verbatim opener + closing · bullet outlines · questions to ask Scott · objection library", M, H - 60);
 
-  // ============ AESOP INTEL PAGE ============
+  // ============ CMC INTEL PAGE ============
   doc.addPage();
   y = M;
-  h1("AESOP Intel — What He's Already Published");
-  para("Read these BEFORE the call so you can quote him back to himself. Massive psychological win.", { muted: true, italic: true });
+  h1(`${company} Intel — What He's Actually Dealing With`);
+  para("Read these BEFORE the call so you can speak his world, not yours. Massive credibility win.", { muted: true, italic: true });
   divider();
-  h2("Public alignment pages on aesopacademy.org");
-  bullet("EU AI Act (Reg 2024/1689) — including Article 4 literacy mandate + GPAI obligations");
-  bullet("NIST AI RMF 1.0 + Generative AI Profile (NIST AI 600-1)");
-  bullet("AI4K12 Five Big Ideas framework");
-  bullet("CSTA K-12 Computer Science Standards");
-  bullet("ISTE Standards for Students (2024 refresh)");
-  bullet("UNESCO AI competency framework");
-  bullet("Published AI Policy: 'data, safety, oversight' — literally HFAI's three-word pitch");
-  bullet("COPPA-compliant (under-13 learners) — child data is HIGH-RISK under EU AI Act Annex III §3");
+  h2(`${company} — what we know`);
+  bullet("Central Valley California health system — Fresno-area, ~3 hospitals (CRMC, Clovis Community, Fresno Heart & Surgical), ~7,000 employees");
+  bullet("CMIA (CA Confidentiality of Medical Information Act) layered on top of HIPAA — stricter than HIPAA on patient consent for any secondary AI use of records");
+  bullet("Joint Commission accredited — AI-related sentinel event reporting falls under their oversight");
+  bullet("Likely vendors in play: Epic (EHR), Nuance DAX or Abridge (ambient scribe), Epic Cognitive Computing / Aidoc (radiology), Notable / Olive (prior-auth)");
+  bullet("Insurer / malpractice carrier almost certainly asking about AI governance posture in the 2024-2025 renewal cycle");
+  bullet("California AB 3030 (effective Jan 2025) requires disclaimers when generative AI communicates with patients about clinical info — direct enforcement risk");
   divider();
-  h2("Strategic implications");
-  para("• He has an EU AI Act page. Quote it. Then show him the live enforcement layer that makes those words real.");
-  para("• He has a NIST RMF page. Tell him HFAI auto-generates evidence mapped to RMF GOVERN/MAP/MEASURE/MANAGE.");
-  para("• His learners are minors. Lead with the COPPA + Annex III §3 scenario, not generic PHI.");
-  para("• He uses the words 'data, safety, oversight'. Mirror that language. Don't invent new vocabulary.");
+  h2("What keeps a healthcare CISO up at night");
+  para("• Ambient scribe drift: a SOAP note that subtly hallucinates — discovered during a malpractice deposition.");
+  para("• Patient chatbot giving off-label medication advice or missing a stroke-symptom red flag.");
+  para("• Shadow AI: clinicians pasting PHI into ChatGPT to draft letters — already happening, no audit trail.");
+  para("• OCR breach investigation request: 'Show me every AI decision that touched this patient' — and you have a 6-month forensic project ahead of you.");
+  para("• Plaintiff's attorney subpoena for 'all model versions, prompts, and outputs' on a contested chart.");
+  divider();
+  h2("Strategic implications for the call");
+  para("• Lead with the OCR / plaintiff-attorney scenario, not 'compliance dashboard'. Pain first.");
+  para("• Map every HFAI feature to a control he already owns: Article 14 ↔ medical staff committee, RCA ↔ peer review, hash chain ↔ legal hold.");
+  para("• Don't say 'EU AI Act' first. Say 'HIPAA Security Rule §164.312 audit controls' and let HIM bring up EU AI Act if his system touches EU patients.");
+  para("• When pricing comes up: anchor on cost of one OCR settlement ($4.3M average for healthcare per IBM 2024). Sovereign tier is a rounding error.");
 
   // ============ OPENING (verbatim) ============
   doc.addPage();
   y = M;
   h1("Opening — Verbatim");
-  para(`Goal: thank Scott for the public Calendly nudge, find the AESOP bridge, set the agenda, and get permission to share screen. 60–90 seconds total.`, { muted: true, italic: true });
+  para(`Goal: thank Scott for the public Calendly nudge, anchor on the ${company} clinical-AI surface area, set the agenda, and get permission to share screen. 60–90 seconds total.`, { muted: true, italic: true });
   divider();
   h3("Word-for-word opener");
-  verbatimBlock(`"${firstName} — really appreciate you flagging the Calendly hiccup publicly the other day. That actually moved this call up by a week, so genuinely thank you. Before I share my screen, I want to acknowledge something: I spent time on aesopacademy.org this week. The EU AI Act alignment page, the NIST RMF page, the AI Policy — that's not a school's website. That's a manifesto. So I want to flip the usual demo on its head. Instead of pitching, I want to show you what I think you've been describing in your curriculum, and then ask whether AESOP could be the first place this gets used as a live teaching lab. Sound good?"`);
+  verbatimBlock(`"${firstName} — really appreciate you flagging the Calendly hiccup publicly the other day. That actually moved this call up by a week, so genuinely thank you. Before I share my screen, I want to be honest about why I think this conversation matters: ${company} runs in a state where CMIA is stricter than HIPAA, you've got real ambient-scribe and clinical-AI exposure, and AB 3030 just kicked in. So instead of a generic governance pitch, I want to show you the artifact your malpractice carrier and OCR will actually ask for — and then ask which of your AI workflows is closest to a regulator-visible incident today. Sound good?"`);
   h3("If they say 'sounds good' (they will)");
-  verbatimBlock(`"Perfect. 15 minutes max — sign-up to a real COPPA violation getting blocked in 12 milliseconds — then we open it up. If at any point you want me to stop and dig into something AESOP-specific or healthcare-specific, just jump in."`);
+  verbatimBlock(`"Perfect. 15 minutes max — sign-up to a real PHI-exposure scenario getting blocked in 12 milliseconds, then the audit trail OCR would actually accept. If at any point you want me to stop and dig into a specific ${company} workflow — ambient scribe, CDS, patient chatbot, radiology — just jump in."`);
 
   // ============ DISCOVERY QUESTIONS — DEDICATED PAGE ============
   doc.addPage();
   y = M;
   h1("Questions to Ask Scott");
-  para("Use these to listen, not to sell. Goal = surface the exact angle he cares about most. Pick 4–5, slip them in throughout the call.", { muted: true, italic: true });
+  para("Use these to listen, not to sell. Goal = surface the exact AI workflow he's most exposed on. Pick 4–5, slip them in throughout the call.", { muted: true, italic: true });
   divider();
 
-  h2("Tier 1 — AESOP / curriculum (the wedge)");
-  bullet("\"What gap in current AI literacy curricula were you trying to solve when you started AESOP?\"");
-  bullet("\"How are AESOP students learning what 'human oversight' or 'audit trail' actually look like in practice today — or is it mostly conceptual?\"");
-  bullet("\"You publish EU AI Act + NIST RMF alignment pages. What was the moment you decided that mattered for a learning academy?\"");
-  bullet("\"If AESOP students could run real governance against a real model in class — would faculty want that, or is that out of scope?\"");
-  bullet("\"What's your enrollment trajectory? Do you see AESOP as US-focused or international from the start?\"");
+  h2("Tier 1 — Clinical AI surface area (the wedge)");
+  bullet(`"Of the AI tools live or piloting at ${company} today — ambient scribe, CDS, patient chatbot, radiology AI, prior-auth — which one is your current biggest exposure?"`);
+  bullet("\"How are you logging model decisions today? Is it Epic's audit log, the vendor's portal, or are you blind below the API?\"");
+  bullet("\"Who on your medical staff committee actually reviews AI-generated content — and how often does that happen vs. the policy version?\"");
+  bullet("\"Has your malpractice carrier started asking AI-governance questions in renewal — and if so, what specifically?\"");
+  bullet("\"Are clinicians at CMC pasting PHI into ChatGPT or Claude to draft notes? Honest answer.\"");
   divider();
 
-  h2("Tier 2 — Healthcare CISO advisory (the channel)");
-  bullet("\"Of the healthcare orgs you advise, how many have an actual AI governance program vs. just a policy document?\"");
-  bullet("\"When a CISO asks you 'what tool should I use for AI governance' — what do you tell them today?\"");
-  bullet("\"How are your healthcare clients thinking about EU AI Act exposure if they touch any EU patient data?\"");
-  bullet("\"What does the procurement timeline look like for a healthcare CISO buying a $300/mo SaaS tool — is it days or quarters?\"");
+  h2("Tier 2 — OCR & legal posture (the urgency)");
+  bullet("\"Have you done a tabletop exercise on an OCR investigation that includes AI-generated content? What broke?\"");
+  bullet("\"If a plaintiff attorney subpoenas every model decision that touched a contested chart, how long does that response take today — days or quarters?\"");
+  bullet("\"How is CMC handling AB 3030 disclaimers — at the application layer, the model layer, or post-hoc audit?\"");
+  bullet("\"What does your incident response runbook say when an ambient scribe hallucinates into a chart that's already been billed?\"");
   divider();
 
-  h2("Tier 3 — Personal motivation (build rapport)");
-  bullet("\"What got you from CISO into building an AI literacy academy? Most people would have stopped at 'advisor'.\"");
-  bullet("\"You wear two hats — what does a normal week look like for you between the academy and advisory work?\"");
-  bullet("\"What would success look like for you on this call? I'd rather know upfront than guess.\"");
+  h2("Tier 3 — Procurement & decision velocity (the path to yes)");
+  bullet("\"Walk me through who would need to bless a $500/month tool that touches AI workflows — security, privacy, IT, medical staff?\"");
+  bullet("\"Is this a CapEx or OpEx decision at CMC? And does the threshold matter for procurement velocity?\"");
+  bullet("\"What's your BAA turnaround typically? Are we talking 2 weeks or 3 months?\"");
+  bullet("\"What would have to be true at day 30 of a pilot for you to take this to your IT council?\"");
   divider();
 
   h2("Tier 4 — Direct ask (only after value is shown)");
-  bullet("\"If I built an AESOP-branded sandbox tier — free for your students, real platform, optional co-branding — would that be a yes, or are there constraints I'm not seeing?\"");
-  bullet("\"Is there one healthcare client in your network where what I just showed would be most urgent? I don't need an intro right now — just whether they exist.\"");
-  bullet("\"What would have to be true for you to put HFAI on your AESOP standards-alignment page next to UNESCO and NIST?\"");
+  bullet(`"If I set up a 30-day Free Pilot for one ${company} AI workflow this week — full Sovereign tier, no card, no procurement gate — which workflow would you point it at first?"`);
+  bullet("\"At day 30, who would you want in the room for a readout — you, CMIO, Chief Compliance, all three?\"");
+  bullet("\"What's the smallest signal that would make you say 'yes, let's run this against a second workflow'?\"");
 
   // ============ PER-SCENE SCRIPTS ============
   const scenes = [
     {
       n: 1,
       title: "Sign-Up",
-      onScreen: `${config.prospectCompany} signs up at hfa-i.org. Org provisioned in <1 second.`,
+      onScreen: `${company} signs up at hfa-i.org. Org provisioned in <1 second.`,
       bullets: [
         "Highlight: zero sales-call gating — they self-serve.",
-        "\"This is exactly what an AESOP student could do in class. No IT ticket, no procurement.\"",
+        `"This is the velocity ${company} would actually need. No IT ticket, no procurement, no 90-day POC paperwork to get a working baseline."`,
       ],
     },
     {
@@ -225,17 +235,18 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       onScreen: "HFAI proxy key issued. Left = customer env vars. Right = what HFAI provisions automatically.",
       bullets: [
         "Show the key. Show the env vars on the customer side.",
-        "Right side: RLS-isolated tenant, default rule pack, audit chain initialized.",
-        "\"You configure two env vars. We do the rest. This is the integration story your students could re-create in 5 minutes.\"",
+        "Right side: RLS-isolated tenant, default HIPAA + CMIA + EU AI Act rule pack, hash-chained audit chain initialized.",
+        `"You configure two env vars. We do the rest. For ${company}, your IT integration team would treat this exactly like adding a new logging endpoint."`,
       ],
     },
     {
       n: 3,
-      title: "Reviewer Team (Article 14)",
-      onScreen: "Customer adds in-house reviewers. HFAI Expert badge for Sovereign tier.",
+      title: "Reviewer Team (Article 14 / Medical Staff Committee)",
+      onScreen: "Customer adds in-house reviewers. HFAI Expert badge available on Sovereign tier.",
       bullets: [
-        "\"Article 14 mandates human oversight. For AESOP, that means: faculty as primary reviewers, an HFAI Expert as guest reviewer for student case studies.\"",
-        "\"For your healthcare clients, that means: their compliance team, plus optional HFAI Expert with override authority — independent oversight regulators want to see.\"",
+        `"For ${company}, this maps directly onto your existing medical staff committee structure. Primary reviewers: your CMIO, Chief Compliance, Privacy Officer. Secondary: clinical leads per service line."`,
+        "\"Sovereign tier adds an HFAI Expert reviewer with override authority — independent oversight your carrier and Joint Commission want to see documented.\"",
+        "\"Article 14 of the EU AI Act is essentially the medical staff peer review model you already run, applied to AI. We just give you the audit-grade workflow.\"",
       ],
     },
     {
@@ -244,8 +255,8 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       onScreen: "Before / After code snippet. One-line base URL change.",
       bullets: [
         "\"One line of code. We sit invisibly between the app and the model.\"",
-        "Anticipate latency: \"12ms p99 — less than network jitter to OpenAI itself.\"",
-        "\"For AESOP — students literally see what governance does without rewriting their app.\"",
+        "Anticipate latency: \"12ms p99 — less than network jitter to OpenAI itself. Clinicians will not notice.\"",
+        `"For an ambient scribe vendor like Nuance or Abridge, your IT team adds one base-URL override. The vendor never touches HFAI directly — ${company} owns the governance layer."`,
       ],
     },
     {
@@ -254,7 +265,8 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       onScreen: "Real-time event feed populates. Input + output captured, hash-chained.",
       bullets: [
         "Pause for effect — let him watch the realtime feed update.",
-        "\"Every prompt, every response, every metadata field — captured. No PII or PHI in clear text.\"",
+        "\"Every prompt, every model response, every metadata field — captured. PHI is never persisted in clear text; the audit trail is hash-chained metadata.\"",
+        "\"This is what you'd hand an OCR investigator on day one of a breach inquiry.\"",
       ],
     },
     {
@@ -262,18 +274,18 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       title: `Violation BLOCKED — ${SCENARIO_LIBRARY[config.primaryScenario].label}`,
       onScreen: `Pre-scripted prompt fires. ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms later: BLOCKED. ${SCENARIO_LIBRARY[config.primaryScenario].euArticle}.`,
       bullets: [
-        `Read the prompt aloud (an 11-year-old asking for homework help): "${SCENARIO_LIBRARY[config.primaryScenario].prompt}"`,
-        `"In a normal stack, that response goes back. The AI casually echoes a minor's home address. Here:" — click → BLOCK in ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms.`,
-        "Switch scenarios live if Scott asks for healthcare PHI or EU AI Act prohibited practice — all 5 are loaded.",
+        `Read the scenario aloud: "${SCENARIO_LIBRARY[config.primaryScenario].prompt}"`,
+        `"In a normal stack, that response goes back. The AI casually exposes PHI or gives off-label medical advice. Here:" — click → BLOCK in ${SCENARIO_LIBRARY[config.primaryScenario].latency}ms.`,
+        `"Switch scenarios live if Scott asks for a specific ${company} workflow — ambient scribe hallucination, CDS over-confidence, patient chatbot triage failure — all 5 are loaded."`,
       ],
     },
     {
       n: 7,
-      title: "What the Student Sees",
+      title: "What the Patient or Clinician Sees",
       onScreen: "Chat-style view: graceful fallback message replaces blocked output. Reference number for follow-up.",
       bullets: [
-        "\"This is what your AESOP student or a patient actually sees — no scary 'BLOCKED' banner. A graceful handoff with a reference number.\"",
-        "\"Zero PHI exposed. Zero liability. The user feels taken care of. The audit trail is complete.\"",
+        "\"This is what your patient or clinician actually sees — no scary 'BLOCKED' banner, no exposed PHI. A graceful handoff with a reference number that routes back to your team.\"",
+        "\"Zero PHI exposed. Zero malpractice surface added. The clinician feels supported. The audit trail is complete.\"",
       ],
     },
     {
@@ -281,8 +293,8 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       title: "Human Review (HITL)",
       onScreen: `${config.reviewerName} opens the violation, adds notes, decides. SHA-256 hash chain visible.`,
       bullets: [
-        "Show the integrity hash. \"Tamper-evident — alter one, every subsequent hash breaks.\"",
-        "\"For AESOP teaching: this is how a student SEES Article 14 working. For your healthcare clients: this is the artifact a QSA or OCR auditor wants.\"",
+        "Show the integrity hash. \"Tamper-evident — alter one entry, every subsequent hash breaks. This is the cryptographic property OCR investigators and forensic experts can actually verify.\"",
+        `"For ${company}: this is what you hand to your malpractice carrier when they ask 'show me your AI oversight evidence.' Not a CSV log. Not a screenshot. A cryptographic chain."`,
       ],
     },
     {
@@ -290,18 +302,18 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       title: "Compliance Dashboard",
       onScreen: "Score gauge animates 78% → 84%. Stats panel shows live activity.",
       bullets: [
-        "\"47 active rules. Live score that moves with every reviewed event.\"",
-        "\"Imagine an AESOP class watching this in real time as they fire test prompts.\"",
+        "\"47 active rules — HIPAA Security Rule controls, CMIA consent flags, EU AI Act Article 5 prohibited practices, AB 3030 disclaimer enforcement.\"",
+        `"Live score that moves with every reviewed event. Imagine your medical staff committee opening this monthly instead of a 40-page PDF nobody reads."`,
       ],
     },
     {
       n: 10,
-      title: "Generated Annex IV Report",
-      onScreen: `Rendered PDF preview of the Annex IV technical documentation for ${config.aiSystemName}.`,
+      title: "Generated Annex IV / HIPAA Evidence Pack",
+      onScreen: `Rendered PDF preview of the technical documentation for ${config.aiSystemName}.`,
       bullets: [
-        "\"This is the doc EU regulators will demand starting Aug 2026.\"",
-        "\"For AESOP — this is the artifact you'd hand a student to show 'this is what compliance looks like as a deliverable, not a policy.'\"",
-        "\"Most companies will scramble to write this in Word from memory. You generate it from real audit data, on demand.\"",
+        "\"This is the doc EU regulators will demand starting Aug 2026 — and it's also the artifact your OCR investigator will ask for tomorrow if you have an incident today.\"",
+        `"For ${company}: imagine your privacy officer being able to generate this on-demand at the moment of a breach inquiry, instead of triggering a 6-month forensic project."`,
+        "\"Most healthcare orgs will scramble to write this in Word from memory. You generate it from real audit data — the same data the hash chain proves is unaltered.\"",
       ],
     },
     {
@@ -309,10 +321,9 @@ export function generateDemoScriptPDF(config: DemoConfig) {
       title: "Industrial AI Coverage",
       onScreen: "Robotics, computer vision, predictive maintenance, autonomous units — with ISO 23482, IEC 61508, ISO 13849, and OSHA 1910 mapped out of the box.",
       bullets: [
-        "\"Quick aside — because this is what every other governance vendor will skip.\"",
-        "\"Same hash-chained oversight extended to the AI that touches the physical world. Factory robots, CV quality control, predictive maintenance, autonomous mobile units.\"",
-        "\"A bad chatbot reply is embarrassing. A misclassified weld or missed proximity event is an OSHA filing — or a fatality.\"",
-        "\"This is why HFAI works for an AI Academy and a manufacturer on the same control plane.\"",
+        "\"Quick aside — because hospitals increasingly have AI on the physical side too: surgical robotics, automated medication dispensing, autonomous delivery bots, computer-vision QC on sterile processing.\"",
+        "\"Same hash-chained oversight extended to that AI. A misclassified surgical tool ID or a missed proximity event in pharmacy automation is an FDA filing — or worse.\"",
+        "\"This is why HFAI works for a clinical chatbot and a Da Vinci surgical robot on the same control plane.\"",
       ],
     },
   ];
@@ -332,72 +343,76 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   y = M;
   h1("Closing — Verbatim");
   h3("The transition");
-  verbatimBlock(`"So that's end-to-end — sign-up to a blocked COPPA violation to audit-ready evidence, in under 15 minutes of real work. Two questions for you, ${firstName}:"`);
+  verbatimBlock(`"So that's end-to-end — sign-up to a blocked PHI-exposure scenario to OCR-defensible evidence, in under 15 minutes of real work. Two questions for you, ${firstName}:"`);
   h3("The two-question close");
-  bullet("\"AESOP first — would your students benefit from running governance against real models in a live HFAI lab? I'm thinking AESOP-branded sandbox, free for learners, optional co-branding.\"");
-  bullet("\"And separately — of the healthcare clients you're advising right now, is there one where this would be most urgent?\"");
-  h3("If yes to AESOP partnership (PRIMARY GOAL)");
-  verbatimBlock(`"Amazing. Let's do this: I'll set up an AESOP-branded sandbox tier this week — your students get free Sovereign-tier accounts, you get the real platform powering your curriculum. In exchange: HFAI joins your standards-alignment page next to UNESCO and NIST, and we co-author one short piece on operationalizing EU AI Act Article 4 in education. I'll send a one-pager Monday. Fair trade?"`);
-  h3("If yes to healthcare client urgency (CHANNEL UPSIDE)");
-  verbatimBlock(`"Great. I can have a Free Pilot live for them tomorrow — 30 days, no card required, full feature access. Want me to send the link to you to forward, or directly to your contact there?"`);
+  bullet(`"First — of the AI workflows live or piloting at ${company} today, which one is closest to a regulator-visible incident? That's the one I'd point a 30-day Free Pilot at this week."`);
+  bullet("\"Second — who on your team owns the audit-trail conversation when OCR or your malpractice carrier calls? I'd want them in the day-30 readout.\"");
+  h3("If yes to a pilot (PRIMARY GOAL)");
+  verbatimBlock(`"Amazing. Here's what I'll do: I'll set up a 30-day Free Pilot for ${company} this week — full Sovereign-tier features, no card, BAA executed within 5 business days. We point it at the workflow you named. At day 30 we do a 30-minute readout with you and whoever you want in the room. If it's earned its place, we move to a paid engagement. If not, you walk away with a working governance baseline you can point any vendor at. Fair?"`);
+  h3("If yes to identifying the audit-trail owner (CHANNEL UPSIDE)");
+  verbatimBlock(`"Great. Want me to send a one-paragraph intro you can forward to them, or would you rather walk them through it yourself? I'm comfortable either way."`);
   h3("If 'let me think about it'");
-  verbatimBlock(`"Totally fair. Last thing — the AESOP sandbox offer is genuinely zero-strings. Even if today is just 'cool, keep me posted', take 2 minutes after the call and self-provision a Free Pilot for AESOP. You'll have a working governance lab by tonight. Either way, I'd love to stay in touch on the curriculum side specifically."`);
+  verbatimBlock(`"Totally fair. Last thing — the 30-day pilot is genuinely zero-strings. Even if today is just 'cool, keep me posted', take 2 minutes after the call and self-provision it for ${company}. You'll have a working governance baseline by tonight. Either way, I'd love to stay in touch as AB 3030 enforcement ramps."`);
 
   // ============ OBJECTION LIBRARY ============
   doc.addPage();
   y = M;
   h1("Objection Library — Likely Questions From Scott");
-  para("Anticipated questions. Use the answers verbatim or adapt. Listed in order of likelihood for Scott specifically.", { muted: true, italic: true });
+  para("Anticipated questions. Use the answers verbatim or adapt. Listed in order of likelihood for a healthcare CISO specifically.", { muted: true, italic: true });
   divider();
 
   const objections = [
     {
-      q: "How is HFAI different from what I already teach in the AESOP AI Policy?",
-      a: "Your AI Policy describes the principles — data, safety, oversight. HFAI is the runtime layer that makes those principles enforceable in code. You teach what governance should look like; we make it happen at the API in 12 milliseconds. Together: theory + working lab.",
-    },
-    {
-      q: "What about COPPA? My learners are under 13.",
-      a: "That's exactly why I led with the under-13 scenario. HFAI auto-detects minor PII patterns (name + age signal + school email + address) and blocks echo/retention before the model output reaches the student. We map directly to COPPA §312.5 and EU AI Act Annex III §3 (education = high-risk).",
-    },
-    {
       q: "Can you sign a BAA?",
-      a: "Yes. Lovable Cloud (our infrastructure layer) is SOC 2 Type II and supports BAA execution. We never persist PHI in clear text — the audit trail uses hash-chained metadata, not raw patient data. Happy to walk through the architecture with your privacy officer.",
+      a: "Yes. Lovable Cloud (our infrastructure layer) is SOC 2 Type II and supports BAA execution. We never persist PHI in clear text — the audit trail uses SHA-256 hash-chained metadata, not raw patient data. Happy to walk through the architecture with your privacy officer this week and get a BAA in your hands within 5 business days.",
     },
     {
-      q: "What about latency? We can't add 200ms to every AI call.",
-      a: "P99 is 12 milliseconds. We're a thin proxy layer that runs detection in parallel with the upstream model call — not in serial. For the rare cases where we block, the user sees a graceful fallback in under 50ms total.",
+      q: "How does this work with Epic? We're not replacing the EHR.",
+      a: "We don't touch Epic. We sit between your AI vendors (Nuance, Abridge, Aidoc, Notable, etc.) and the model APIs they call. Epic remains the system of record. We're the governance layer for the AI surface area Epic doesn't audit for you — ambient scribes, CDS, patient chatbots, radiology models, prior-auth automation.",
+    },
+    {
+      q: "What about CMIA? California is stricter than HIPAA.",
+      a: "Exactly why we surface CMIA-specific consent flags as first-class rules, not buried in policy. Every event is tagged with the CMIA consent basis, every secondary use is logged separately from primary care, and the audit trail satisfies the heightened CMIA documentation standard. We can demo a CMIA-specific scenario right now if useful.",
+    },
+    {
+      q: "AB 3030 just went live. How do you handle the disclaimer requirement?",
+      a: "Two layers. One: a hard rule that blocks any patient-facing generative response that doesn't carry the AB 3030 disclaimer. Two: a passive audit log proving every response that DID go out had the disclaimer attached. So you have both real-time enforcement and post-hoc evidence — exactly what the AG's office will ask for in an enforcement action.",
     },
     {
       q: "We already use OneTrust / Drata / Vanta for compliance.",
-      a: "Those are GRC platforms — they tell you what policies you should have. HFAI is the runtime enforcement layer. We sit at the API and actually block prohibited use as it happens, then feed evidence back into your GRC tool. We have webhook integrations with all three.",
+      a: "Those are GRC platforms — they tell you what policies you should have. HFAI is the runtime enforcement layer for AI specifically. We sit at the API and actually block prohibited use as it happens, then feed evidence back into your GRC tool. We have webhook integrations with all three, so HFAI events flow into your existing OneTrust dashboards.",
     },
     {
-      q: "How is this different from OpenAI's built-in moderation?",
-      a: "OpenAI moderation flags content. HFAI enforces YOUR specific rules — HIPAA, COPPA, EU AI Act Article 5, your AUP — and gives you the audit trail regulators actually accept. We're model-agnostic too: same enforcement layer works for GPT, Claude, Gemini, and on-prem models.",
+      q: "What about latency? Clinicians won't tolerate adding seconds to a workflow.",
+      a: "P99 is 12 milliseconds. We're a thin proxy that runs detection in parallel with the upstream model call — not in serial. For the rare cases where we block, the user sees a graceful fallback in under 50ms total. No clinician will perceive the difference; we've measured this against ambient scribe workflows specifically.",
+    },
+    {
+      q: "How is this different from OpenAI's built-in moderation or Microsoft's Azure AI Content Safety?",
+      a: "Those flag content. HFAI enforces YOUR specific rules — HIPAA Security Rule §164.312, CMIA consent, EU AI Act Article 5, AB 3030, your medical staff committee policies — and gives you the cryptographic audit trail OCR investigators actually accept. We're also model-agnostic: same enforcement layer works for GPT, Claude, Gemini, Llama, and on-prem models. So when ${"your vendor mix"} changes, your governance doesn't.",
     },
     {
       q: "What's the deployment story? Self-hosted? Cloud-only?",
-      a: "Cloud-hosted by default (us-east, eu-west regions). Sovereign tier offers single-tenant deployment for healthcare and gov clients. Roadmap includes on-prem Helm chart for Q2.",
+      a: "Cloud-hosted by default (us-east, eu-west regions). Sovereign tier offers single-tenant deployment for healthcare clients who require it. Roadmap includes on-prem Helm chart for Q2 — we already have one healthcare prospect requesting that for a single-tenant Epic-adjacent deployment.",
     },
     {
-      q: "How do I know your detection is actually accurate?",
-      a: "Every rule is testable — you can fire synthetic events from the dashboard and see exactly what triggers. Every detection is reviewable by a human. Every override teaches the system. We're explicit about not being a black box. Perfect transparency for an AESOP curriculum.",
+      q: "How accurate is your detection? False positives are operationally expensive in clinical workflows.",
+      a: "Every rule is testable — your team can fire synthetic events from the dashboard and see exactly what triggers. We also support a 'monitor mode' for any rule, so you can run it for 2 weeks against real traffic, see the precision/recall, and only then promote it to 'block mode'. Nothing forces you into hard enforcement until you've proven the rule on YOUR data.",
     },
     {
       q: "Pricing?",
-      a: "Free tier: forever, 1 AI system, 5 rules, 7-day history. Starter: $19/mo (3 systems). Pro: $49.99/mo (unlimited systems + analytics + audit trail). Enterprise: $149.99/mo (root cause analysis, pattern detection, custom rule templates). Sovereign: $499/mo (compliance certificates, regulator export packs, multi-jurisdiction engine, dedicated advisor). All paid tiers include 30-day free trial. For AESOP I'm proposing a no-cost Sovereign tier in exchange for the standards-page mention — call it educational sponsorship.",
+      a: "Free tier: forever, 1 AI system, 5 rules, 7-day history. Starter: $19/mo. Pro: $49.99/mo (unlimited systems + analytics + audit trail). Enterprise: $149.99/mo (root cause analysis, pattern detection, custom rule templates). Sovereign: $499/mo (compliance certificates, regulator export packs, multi-jurisdiction engine, dedicated advisor — what most health systems land on). All paid tiers include 30-day free trial. For ${company} I'd put you on Sovereign for the pilot at no cost for 30 days, then we right-size based on event volume.",
     },
     {
-      q: "What's in it for you to give AESOP free Sovereign tier?",
-      a: "Honesty: distribution. AESOP students become future CISOs, GRC engineers, AI program leads. If they learn governance ON HFAI, they recommend HFAI when they get jobs. Same playbook MongoDB, Stripe, and Notion ran. Plus: your standards page is high-authority — being listed there next to UNESCO and NIST is real validation for us.",
+      q: "We have a long procurement cycle. Even a 30-day pilot needs security review.",
+      a: "Understood — that's true at every health system. Three things that compress it: (1) BAA in 5 business days, (2) we're a SaaS proxy, not an in-network deployment, so InfoSec review is closer to 'reviewing a vendor API' than 'reviewing an Epic integration', (3) for the pilot, you can scope it to a single non-production AI workflow to bypass the higher-rigor review until you've seen value. I've done this exact pattern with [reference TBD].",
     },
     {
-      q: "What does 'co-author one piece' commit me to?",
-      a: "One short article — 1500 words max — on operationalizing EU AI Act Article 4 in education. We do 80% of the writing, you review and add the curriculum perspective. Co-bylined. We promote it on our channels, you promote it on yours. Total time commitment: maybe 2 hours.",
+      q: "What happens if HFAI goes down? We can't have AI workflows blocked because of your outage.",
+      a: "Two layers of protection. One: Fortress Mode is embedded in the SDK — even if our cloud is 100% unreachable, the EU AI Act Article 5 prohibited practices and core HIPAA PHI patterns are still enforced locally. Two: you can configure fail-open or fail-closed per rule. Most healthcare orgs run patient-safety rules fail-closed (block on uncertainty) and convenience rules fail-open. Your call, configurable per rule.",
     },
     {
       q: "What's the sales process from here?",
-      a: "Honestly — fastest path is you self-provision the Free Pilot today, fire 5–10 events from a sandbox, see if the detection matches what you'd expect for a learning environment. If it does, we move to the AESOP sandbox setup. If not, you've spent 20 minutes and learned something.",
+      a: `Honestly — fastest path is the 30-day Free Pilot. You name one ${company} AI workflow, I get you provisioned this week, BAA signed within 5 business days, and we do a day-30 readout with whoever you want in the room. If it's earned its place, we move to paid. If not, you've spent 30 minutes per week and walked away with a working governance baseline. No deck, no POC document, no statement of work needed for the pilot.`,
     },
   ];
 
@@ -412,12 +427,12 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   y = M;
   h1("Pricing Reference");
   const tiers = [
-    { name: "Free", price: "$0", duration: "forever", who: "1 AI system, 5 rules, 7-day event history. No card. Self-serve." },
-    { name: "Starter", price: "$19/mo", duration: "30-day free trial", who: "Up to 3 AI systems, violation detection & alerts, email notifications." },
-    { name: "Pro", price: "$49.99/mo", duration: "30-day free trial", who: "Unlimited systems, advanced analytics, human review workflows, full audit trail. Most healthcare clients land here." },
-    { name: "Enterprise", price: "$149.99/mo", duration: "30-day free trial", who: "Everything in Pro + AI-powered root cause analysis, remediation tracking, pattern detection, custom rule templates." },
-    { name: "Sovereign", price: "$499/mo", duration: "30-day free trial", who: "Everything in Enterprise + compliance certificates, precedent intelligence, regulator-ready export packs, drift detection, multi-jurisdiction engine (EU/US/UK/CA), dedicated compliance advisor. Required for high-risk EU AI Act deployments." },
-    { name: "AESOP Sandbox", price: "$0 (proposed)", duration: "indefinite", who: "Sovereign-tier features, capped event volume per student account, in exchange for standards-page listing + co-authored content. Educational sponsorship — internal name only." },
+    { name: "Free", price: "$0", duration: "forever", who: "1 AI system, 5 rules, 7-day event history. No card. Self-serve. Useful for IT to validate the integration before the real pilot." },
+    { name: "Starter", price: "$19/mo", duration: "30-day free trial", who: "Up to 3 AI systems, violation detection & alerts, email notifications. Right-sized for a single ambient-scribe pilot." },
+    { name: "Pro", price: "$49.99/mo", duration: "30-day free trial", who: "Unlimited systems, advanced analytics, human review workflows, full audit trail. Smaller health systems and digital-health vendors typically land here." },
+    { name: "Enterprise", price: "$149.99/mo", duration: "30-day free trial", who: "Everything in Pro + AI-powered root cause analysis, remediation tracking, pattern detection, custom rule templates. Multi-hospital systems typical entry point." },
+    { name: "Sovereign", price: "$499/mo", duration: "30-day free trial", who: `Everything in Enterprise + compliance certificates, precedent intelligence, regulator-ready export packs (HIPAA / OCR / CMIA / EU AI Act Annex IV), drift detection, multi-jurisdiction engine, dedicated compliance advisor. Recommended for ${company} given CMIA + AB 3030 + Joint Commission posture.` },
+    { name: "CMC Pilot", price: "$0 (proposed)", duration: "30 days", who: `Sovereign-tier features, free for 30 days, applied to one ${company} AI workflow. Full BAA executed. Day-30 readout with CMIO + Compliance + CISO. Right-size to a paid tier afterward based on actual event volume.` },
   ];
   tiers.forEach((t) => {
     h3(`${t.name} — ${t.price}`);
@@ -426,11 +441,12 @@ export function generateDemoScriptPDF(config: DemoConfig) {
 
   divider();
   h2("Post-call action items");
-  bullet("Send recap email within 2 hours — reference his AESOP standards page by name");
-  bullet("If AESOP partnership discussed: send AESOP × HFAI one-pager by Monday");
-  bullet("Send Free Pilot signup link with prefilled company name");
-  bullet("Add Scott to CRM with next-touch date + 'Channel + Reference' tag");
+  bullet(`Send recap email within 2 hours — reference the specific ${company} workflow Scott named`);
+  bullet("Send BAA template + architecture overview within 24 hours so privacy officer can start review");
+  bullet(`Send Free Pilot signup link with prefilled "${company}" company name`);
+  bullet("Add Scott to CRM with next-touch date + 'Healthcare / CMC / Pilot' tag");
   bullet("LinkedIn follow-up: thank him publicly for the call (he reciprocates publicly — established pattern)");
+  bullet("Calendar hold for day-30 readout, even if pilot hasn't formally started — anchors the timeline");
 
   // ============ COLLAB PLAYBOOK — PRESENTER EYES ONLY ============
   doc.addPage();
@@ -440,61 +456,62 @@ export function generateDemoScriptPDF(config: DemoConfig) {
   doc.setFont("helvetica", "bold").setFontSize(10).setTextColor(196, 153, 58);
   doc.text("PRESENTER EYES ONLY · DO NOT SHARE", M, 35);
   doc.setFont("helvetica", "bold").setFontSize(20).setTextColor(255, 255, 255);
-  doc.text("If Scott Says Yes to Collab — The Playbook", M, 62);
+  doc.text("If Scott Says Yes — The 90-Day Playbook", M, 62);
   y = 110;
 
-  para("This page is for you, not Scott. If he opens the door to a partnership in any form, here's the structured ladder of what to offer, in what order, and what to extract in return. Never reveal more than one rung at a time.", { muted: true, italic: true });
+  para(`This page is for you, not Scott. If he agrees to a pilot in any form, here's the structured ladder of what to do, in what order, to maximize the chance ${company} converts to a paid Sovereign-tier customer at day 90 — and becomes the first healthcare reference customer.`, { muted: true, italic: true });
   divider();
 
-  h2("Rung 1 — AESOP Sandbox (immediate, week 1)");
-  bullet("Offer: AESOP-branded Sovereign-tier sandbox, free, indefinite. Capped at 1,000 events/student/month.");
-  bullet("Ask: HFAI listed on the AESOP standards-alignment page next to UNESCO, NIST, ISTE.");
-  bullet("Ask: One co-authored article (1500 words) on EU AI Act Art. 4 in education. Co-bylined.");
-  bullet("Setup time: ~2 hours. Send him a one-pager Monday with terms in plain English. No legal MSA needed for v1 — handshake + email.");
-  bullet("Internal accounting: zero revenue, mark as 'Educational Sponsorship — Distribution Channel' in CRM.");
+  h2("Phase 1 — Pilot setup (week 1)");
+  bullet(`Provision ${company} on Sovereign tier, free for 30 days, applied to ONE specific workflow Scott named.`);
+  bullet("BAA in his privacy officer's inbox within 5 business days. Use Lovable Cloud SOC 2 Type II + our standard hash-chain architecture diagram.");
+  bullet("Schedule a 30-min IT integration call with whoever owns the AI vendor relationship (likely IT director or CIO direct report).");
+  bullet("Pre-load HIPAA + CMIA + AB 3030 rule pack — do NOT make him configure rules manually for the pilot. Friction kills pilots.");
+  bullet("Set the day-30 readout meeting NOW. Calendar invite goes out before week 1 ends.");
   divider();
 
-  h2("Rung 2 — Healthcare CISO referrals (weeks 2-8)");
-  bullet("Offer: free 60-day Pro-tier pilots to any healthcare org Scott introduces. No card. White-glove onboarding from you personally.");
-  bullet("Ask: warm intros only — never a list. Quality over quantity. Each intro = 1 emailed paragraph from Scott + you take it from there.");
-  bullet("Comp model (optional, only if he raises it): 15% recurring revenue share for 12 months on any client he sources, or equivalent in HFAI Sovereign-tier credits for AESOP. Frame as 'thank you', not 'commission'.");
-  bullet("Track each intro in CRM under 'Source: Scott Schindler' so attribution is unambiguous.");
+  h2("Phase 2 — Pilot operation (weeks 2-4)");
+  bullet("Weekly 15-min check-ins with Scott. Bring ONE specific finding each week (e.g., 'we detected 3 ambient scribe events that flagged AB 3030 disclaimer violations').");
+  bullet("If you can identify a single instance where HFAI prevented a real exposure — even minor — make THAT the centerpiece of the day-30 readout.");
+  bullet("Quietly map every CMC AI vendor in scope. Build the multi-vendor view so day-30 readout shows 'here's what your AI surface area actually looks like'.");
+  bullet("If Shadow AI Discovery surfaces clinicians using ChatGPT — that's gold. Do NOT name individuals; report aggregate patterns.");
   divider();
 
-  h2("Rung 3 — Co-branded content & joint workshops (months 2-6)");
-  bullet("Quarterly joint webinar — Scott teaches the policy, you demo the runtime. Both audiences get value, both lists grow.");
-  bullet("HFAI sponsors one AESOP cohort scholarship per quarter ($1-2K) — symbolic, but signals long-term commitment.");
-  bullet("Joint conference appearance: ISTE, NIST AI RMF events, EU AI Act compliance summits. Travel split 50/50.");
-  bullet("White-paper series: 'Operationalizing AI Governance' — Scott's intro, your case studies, joint distribution.");
+  h2("Phase 3 — Day-30 readout (the conversion moment)");
+  bullet("Audience target: Scott + CMIO + Chief Compliance + (ideally) CFO observer. Push for all three minimum.");
+  bullet(`Open with the regulator-defensible artifact: "Here's the Annex IV / HIPAA evidence pack for the workflow we governed for 30 days at ${company}."`);
+  bullet("Show 1 specific prevention event in detail. Show the hash chain. Let it land.");
+  bullet("Show shadow AI findings if any. Frame as 'here's what we surfaced; you decide how to act on it.'");
+  bullet("Pricing ask: 'Sovereign tier, $499/month, applied to your top 3 AI workflows. Right-size up or down at month 6 based on event volume.' Anchor to one OCR settlement avoided ($4.3M average).");
   divider();
 
-  h2("Rung 4 — Strategic / equity-adjacent (only if both sides clearly want it)");
-  bullet("Advisor agreement: Scott becomes formal HFAI Education Advisor. 0.25-0.5% advisor equity over 2-year vest, 4-hour/month commitment. Standard FAST agreement.");
-  bullet("Curriculum licensing: AESOP licenses HFAI as the 'official runtime layer' for its certificate programs. Revenue share or fixed-fee, your call.");
-  bullet("Joint product: an 'AESOP × HFAI Certified Reviewer' credential — students who complete the curriculum + pass an HFAI practicum become eligible to be paid HFAI Expert reviewers on the platform. Two-sided marketplace seeded.");
-  bullet("Only float Rung 4 after Rungs 1-3 have produced measurable wins (3+ closed referrals, or 2+ joint pieces of content with measurable reach). Premature equity talk kills the relationship.");
+  h2("Phase 4 — Reference customer activation (months 2-6)");
+  bullet(`If ${company} converts: ask Scott to be quoted by name in one case study. Healthcare buyers will only trust other healthcare buyers — his quote is worth more than 100 of our blog posts.`);
+  bullet("Joint webinar or HIMSS appearance: 'Building an OCR-Defensible AI Governance Program at a Mid-Sized Health System'. Co-present.");
+  bullet(`Use ${company} logo on the website (with explicit written permission) and in the next round of healthcare-focused outbound.`);
+  bullet("Introduce Scott to other healthcare CISOs in the network — give him status as a peer connector. He'll reciprocate by recommending HFAI when CISOs in his network ask 'what AI governance tool should I use'.");
   divider();
 
   h2("Red lines (don't cross)");
-  bullet("Do NOT offer AESOP exclusivity in education — you want every AI academy on this. Frame AESOP as 'first', not 'only'.");
-  bullet("Do NOT promise product roadmap items in writing. Verbal 'we're considering it' only.");
-  bullet("Do NOT give away Sovereign-tier features to AESOP students that aren't in the actual product yet (no hand-built bespoke for one user).");
-  bullet("Do NOT tie compensation to outcomes you can't track (e.g., 'mentions on LinkedIn'). Track concrete events: signups, intros, content published.");
+  bullet(`Do NOT promise ${company} bespoke features that aren't on the roadmap. One-off custom builds for one customer kill the company.`);
+  bullet("Do NOT discount Sovereign tier below $499/mo at conversion — it sets a floor for every other healthcare buyer. Pilot is free; paid is full price.");
+  bullet("Do NOT bypass the medical staff committee. If they're not bought in by day 30, the pilot dies at month 6 regardless of what Scott thinks.");
+  bullet("Do NOT name-drop other healthcare prospects to Scott. He'll find out (small world) and lose trust.");
   divider();
 
   h2("Decision tree — what to say in the moment");
-  para("If Scott says 'I love the idea, what's next?' → Rung 1 only. Send the one-pager Monday. Don't volunteer Rung 2 unless he asks about clients.");
-  para("If Scott says 'I have a few clients in mind' → Acknowledge, then move to Rung 2. Get him to name one specific org. Offer the Pro pilot. Don't discuss revenue share unless he raises money.");
-  para("If Scott says 'how do you make money on this?' → Honest: distribution + brand validation. AESOP = top-of-funnel for the next generation of CISOs and compliance leads. Then ask: 'Would a small per-referral arrangement make this easier for you to bring me into client conversations?' (Rung 2 comp.)");
-  para("If Scott says 'I'd want to be more involved long-term' → Pause. Say: 'Let's prove value first. If after 90 days you're still excited, let's talk about a formal advisor role.' That's Rung 4 setup without committing.");
+  para("If Scott says 'I love it, when do we start?' → Phase 1 immediately. Don't oversell. 'Great, I'll provision this week and have a BAA to your privacy officer by Friday.'");
+  para(`If Scott says 'I need to think about it' → 'Totally fair. Self-provision the Free tier this week — no BAA needed, no PHI in scope. Just see the integration shape. We'll talk again in 2 weeks once you've kicked the tires.'`);
+  para("If Scott says 'I need to bring this to my CMIO/Compliance first' → 'Perfect. Want me on that call, or would you rather walk it through yourself? I have a 5-slide deck specifically for medical staff committees if useful.'");
+  para("If Scott says 'pricing is high for what we'd use it for' → DO NOT negotiate price. Negotiate scope. 'Let's start with one workflow on Pro tier ($49.99/mo) and prove value before scaling. You can upgrade to Sovereign when the second workflow goes live.'");
   divider();
 
   h2("Followup cadence after the call");
   bullet("T+2h: recap email (already drafted — see Demo Cockpit 'Open recap in mail').");
   bullet("T+24h: LinkedIn connect + thank him publicly in a post that tags him.");
-  bullet("T+72h: AESOP × HFAI one-pager, even if he didn't explicitly say yes — 'thinking about this more, here's what it could look like'.");
-  bullet("T+7d: check in. If silent, send the latest blog post or news clip about EU AI Act enforcement — keep urgency live without selling.");
-  bullet("T+30d: regardless of outcome, share one specific piece of value (intro, article, data point). Stay top of mind for 12 months minimum.");
+  bullet("T+72h: BAA template + architecture diagram, even if he hasn't explicitly said yes — 'thinking about this more, here's what setup would look like'.");
+  bullet("T+7d: check in. If silent, send the latest OCR enforcement action news clip — keep urgency live without selling.");
+  bullet("T+30d: regardless of pilot status, share one specific piece of value (intro, article, regulatory update). Stay top of mind for 12 months minimum.");
 
-  doc.save(`HFAI-AESOP-Demo-Script-${config.prospectName.replace(/\s+/g, "-")}-${config.callDate}.pdf`);
+  doc.save(`HFAI-${company.replace(/\s+/g, "-")}-Demo-Script-${config.prospectName.replace(/\s+/g, "-")}-${config.callDate}.pdf`);
 }

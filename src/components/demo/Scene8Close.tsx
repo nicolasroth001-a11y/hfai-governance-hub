@@ -19,11 +19,11 @@ export function Scene8Close({ config }: { config: DemoConfig }) {
         <div className="grid gap-4 md:grid-cols-2 mt-6 text-left max-w-2xl mx-auto">
           <div className="rounded-lg border border-primary/20 bg-muted/40 p-5">
             <p className="text-[10px] uppercase tracking-widest text-primary font-bold mb-2">Question 1</p>
-            <p className="text-sm font-semibold leading-snug text-card-foreground">Of the healthcare clients you advise — is there one where this would be most urgent?</p>
+            <p className="text-sm font-semibold leading-snug text-card-foreground">Which clinical AI workflow at {config.prospectCompany} is closest to a regulator-visible incident today — ambient scribe, CDS, or patient chatbot?</p>
           </div>
           <div className="rounded-lg border border-primary/20 bg-muted/40 p-5">
             <p className="text-[10px] uppercase tracking-widest text-primary font-bold mb-2">Question 2</p>
-            <p className="text-sm font-semibold leading-snug text-card-foreground">Would your AESOP students benefit from a free HFAI tier to run governance against real models?</p>
+            <p className="text-sm font-semibold leading-snug text-card-foreground">Who owns the audit-trail conversation when OCR or your malpractice carrier calls — and would they say yes to a 30-day pilot this week?</p>
           </div>
         </div>
       </motion.div>

@@ -194,14 +194,14 @@ export default function AdminDemoMode() {
         <div className="space-y-4 text-sm text-card-foreground/80 leading-relaxed">
           <div>
             <p className="font-semibold text-card-foreground mb-1">Open with empathy, not pitch</p>
-            <p>Scott is a Healthcare CISO + AI educator. He'll see through generic decks. First 60 seconds: thank him for the LinkedIn nudge, ask about his AESOP AI Academy work, find the bridge.</p>
+            <p>Scott is a Healthcare CISO. He'll see through generic decks. First 60 seconds: thank him for the LinkedIn nudge, anchor on Community Medical Centers' clinical AI surface area (ambient scribes, CDS, patient chatbots, radiology AI), and ask which one keeps him up at night.</p>
           </div>
           <div>
             <p className="font-semibold text-card-foreground mb-1">Three angles, woven together</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
-              <li><span className="font-medium">Healthcare compliance</span> — HIPAA × EU AI Act × HHS, real-time PHI block (Scene 5)</li>
-              <li><span className="font-medium">CISO security posture</span> — Tamper-evident audit trail (Scene 6), shadow AI discovery</li>
-              <li><span className="font-medium">Educator partnership</span> — HFAI as the live platform behind AESOP curriculum (Closing)</li>
+              <li><span className="font-medium">HIPAA + CMIA exposure</span> — Real-time PHI block in 12ms before it touches the chart (Scene 5)</li>
+              <li><span className="font-medium">CISO audit posture</span> — Tamper-evident SHA-256 hash chain, OCR-defensible (Scene 6); shadow AI discovery for unsanctioned tools</li>
+              <li><span className="font-medium">Medical staff committee</span> — HITL workflows that map cleanly to existing peer-review and credentialing structures (Closing)</li>
             </ul>
           </div>
           <div>
