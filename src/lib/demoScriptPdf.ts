@@ -388,7 +388,7 @@ export function generateDemoScriptPDF(config: DemoConfig) {
     },
     {
       q: "How is this different from OpenAI's built-in moderation or Microsoft's Azure AI Content Safety?",
-      a: "Those flag content. HFAI enforces YOUR specific rules — HIPAA Security Rule §164.312, CMIA consent, EU AI Act Article 5, AB 3030, your medical staff committee policies — and gives you the cryptographic audit trail OCR investigators actually accept. We're also model-agnostic: same enforcement layer works for GPT, Claude, Gemini, Llama, and on-prem models. So when ${"your vendor mix"} changes, your governance doesn't.",
+      a: "Those flag content. HFAI enforces YOUR specific rules — HIPAA Security Rule §164.312, CMIA consent, EU AI Act Article 5, AB 3030, your medical staff committee policies — and gives you the cryptographic audit trail OCR investigators actually accept. We're also model-agnostic: same enforcement layer works for GPT, Claude, Gemini, Llama, and on-prem models. So when your vendor mix changes, your governance doesn't.",
     },
     {
       q: "What's the deployment story? Self-hosted? Cloud-only?",
