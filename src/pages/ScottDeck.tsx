@@ -14,8 +14,10 @@ import {
   Activity,
   CheckCircle2,
   ArrowRight,
+  Headphones,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 /**
  * /scott — Interactive deck for Scott @ Community Medical Centers
