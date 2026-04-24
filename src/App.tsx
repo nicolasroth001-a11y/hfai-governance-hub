@@ -26,6 +26,7 @@ const CustomerSignup = lazy(() => import("./pages/signup/CustomerSignup"));
 const ForgotPassword = lazy(() => import("./pages/login/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/login/ResetPassword"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const AdminCallCopilot = lazy(() => import("./pages/admin/AdminCallCopilot"));
 const PricingContact = lazy(() => import("./pages/PricingContact"));
 const PilotSignup = lazy(() => import("./pages/PilotSignup"));
 const SDKDocs = lazy(() => import("./pages/SDKDocs"));
