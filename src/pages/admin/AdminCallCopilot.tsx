@@ -470,6 +470,16 @@ export default function AdminCallCopilot() {
         </Alert>
       )}
 
+      {isMobile && (
+        <Alert>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Phone calls won’t feed this reliably</AlertTitle>
+          <AlertDescription>
+            Use this on a laptop beside the call. On mobile browsers, the active phone-call audio usually doesn’t reach the page microphone, so type the question manually instead.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
         <ContentCard
           icon={Mic}
