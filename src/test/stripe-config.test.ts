@@ -21,7 +21,7 @@ describe("stripe-config", () => {
     });
 
     it("paid tiers have valid Stripe product and price IDs", () => {
-      for (const key of ["starter", "pro", "enterprise"] as TierKey[]) {
+      for (const key of ["starter", "pro", "enterprise", "sovereign"] as TierKey[]) {
         expect(TIERS[key].product_id).toMatch(/^prod_/);
         expect(TIERS[key].price_id).toMatch(/^price_/);
       }
@@ -37,18 +37,20 @@ describe("stripe-config", () => {
       expect(TIERS.starter.highlighted).toBeUndefined();
     });
 
-    it("each tier has at least 3 features", () => {
-      for (const key of Object.keys(TIERS) as TierKey[]) {
+    it("each paid tier has at least 3 features (free = unsubscribed placeholder)", () => {
+      for (const key of ["starter", "pro", "enterprise", "sovereign"] as TierKey[]) {
         expect(TIERS[key].features.length).toBeGreaterThanOrEqual(3);
       }
+      expect(TIERS.free.features.length).toBe(0);
     });
   });
 
   describe("PRODUCT_TO_TIER", () => {
     it("maps product IDs back to tier keys", () => {
-      expect(PRODUCT_TO_TIER["prod_U6J5wUGrIWUqSz"]).toBe("starter");
+      expect(PRODUCT_TO_TIER["prod_UNTOfrOGaHU2wf"]).toBe("starter");
       expect(PRODUCT_TO_TIER["prod_U83i1kLpe72gKv"]).toBe("pro");
       expect(PRODUCT_TO_TIER["prod_U83jB97VVesTcg"]).toBe("enterprise");
+      expect(PRODUCT_TO_TIER["prod_UFCotAY4Bwbhxj"]).toBe("sovereign");
     });
   });
 
@@ -70,8 +72,8 @@ describe("stripe-config", () => {
       expect(FEATURE_TIER["Analytics"]).toBe("pro");
     });
 
-    it("allows AI Systems for free", () => {
-      expect(FEATURE_TIER["AI Systems"]).toBe("free");
+    it("gates AI Systems to starter (free = unsubscribed)", () => {
+      expect(FEATURE_TIER["AI Systems"]).toBe("starter");
     });
 
     it("gates Sovereign features correctly", () => {
