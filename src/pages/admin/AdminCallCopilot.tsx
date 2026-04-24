@@ -444,7 +444,7 @@ export default function AdminCallCopilot() {
           </Button>
           <Button
             onClick={toggleListening}
-            disabled={!supported}
+            disabled={!supported || isMobile}
             className={`gap-2 ${listening ? "bg-destructive hover:bg-destructive/90" : "bg-primary hover:bg-primary/90"}`}
           >
             {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
@@ -581,6 +581,7 @@ export default function AdminCallCopilot() {
       <ContentCard icon={Headphones} title="How to use during the call">
         <ol className="text-sm text-card-foreground/80 space-y-2 list-decimal list-inside">
           <li>Open this page on a 2nd screen or window beside your call.</li>
+          <li>Use a laptop or desktop. Mobile browsers usually cannot capture live phone-call audio into this page.</li>
           <li>Click <strong>Start listening</strong> — grant mic access. The mic picks up both your voice and Scott's (via your speakers/headset).</li>
           <li>When Scott asks a question and pauses, click <strong>Ask copilot</strong>. A spoken-ready answer streams in 1–3 seconds.</li>
           <li>If transcription misses something, type the question manually in the box.</li>
