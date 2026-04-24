@@ -26,6 +26,7 @@ const CustomerSignup = lazy(() => import("./pages/signup/CustomerSignup"));
 const ForgotPassword = lazy(() => import("./pages/login/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/login/ResetPassword"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const AdminCallCopilot = lazy(() => import("./pages/admin/AdminCallCopilot"));
 const PricingContact = lazy(() => import("./pages/PricingContact"));
 const PilotSignup = lazy(() => import("./pages/PilotSignup"));
 const SDKDocs = lazy(() => import("./pages/SDKDocs"));
@@ -110,7 +111,6 @@ const AdminBlogEditor = lazy(() => import("./pages/admin/AdminBlogEditor"));
 const AdminNewsletter = lazy(() => import("./pages/admin/AdminNewsletter"));
 const AdminDemoMode = lazy(() => import("./pages/admin/AdminDemoMode"));
 const AdminDemoPresenter = lazy(() => import("./pages/admin/AdminDemoPresenter"));
-const AdminCallCopilot = lazy(() => import("./pages/admin/AdminCallCopilot"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -161,6 +161,7 @@ const App = () => {
           <Route path="/readiness-assessment" element={<ReadinessAssessment />} />
           <Route path="/trust" element={<TrustCenter />} />
           <Route path="/scott" element={<ScottDeck />} />
+          <Route path="/call-copilot" element={<AdminCallCopilot />} />
 
           {/* Login & Signup & Password Reset */}
           <Route path="/login" element={<CustomerLogin />} />
