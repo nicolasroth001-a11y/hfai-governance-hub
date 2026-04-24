@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Mic, MicOff, Sparkles, Trash2, Send, Loader2, Headphones, AlertTriangle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // SpeechRecognition is a browser API — minimal types
 type SR = any;
@@ -38,6 +39,7 @@ const supportsStreamingResponse = () =>
   typeof ReadableStream !== "undefined" && typeof TextDecoder !== "undefined";
 
 export default function AdminCallCopilot() {
+  const isMobile = useIsMobile();
   const [listening, setListening] = useState(false);
   const [interim, setInterim] = useState("");
   const [transcriptBuffer, setTranscriptBuffer] = useState("");
@@ -317,7 +319,7 @@ export default function AdminCallCopilot() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${ANON_KEY}`,
         },
-        body: JSON.stringify({ transcript: trimmed, history, stream: supportsStreamingResponse() }),
+        body: JSON.stringify({ transcript: trimmed, history, stream: supportsStreamingResponse() && !isMobile }),
       });
 
       const contentType = resp.headers.get("content-type") || "";
@@ -407,7 +409,7 @@ export default function AdminCallCopilot() {
         streaming: false,
       } : it)));
     }
-  }, [items]);
+  }, [isMobile, items]);
 
   const sendBuffered = () => {
     if (!transcriptBuffer.trim()) return;
