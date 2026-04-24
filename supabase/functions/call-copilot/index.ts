@@ -7,6 +7,14 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+const jsonResponse = (
+  body: Record<string, unknown>,
+  status = 200,
+) => new Response(JSON.stringify(body), {
+  status,
+  headers: { ...corsHeaders, "Content-Type": "application/json" },
+});
+
 const SYSTEM_PROMPT = `You are HFAI Call Copilot — a real-time assistant whispering in the founder's ear during a sales call with Scott (Healthcare CISO at Community Medical Centers).
 
 YOUR JOB: When you receive a transcript fragment of what Scott (or anyone) just said, give the founder the most natural thing to say next.
@@ -83,12 +91,9 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { transcript, history } = await req.json();
+    const { transcript, history, stream } = await req.json();
     if (!transcript || typeof transcript !== "string") {
-      return new Response(JSON.stringify({ error: "transcript required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ error: "transcript required" }, 400);
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -112,29 +117,30 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages,
-        stream: true,
+        stream: stream !== false,
       }),
     });
 
     if (!response.ok) {
       if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limited — wait a moment." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return jsonResponse({ error: "Rate limited — wait a moment." }, 429);
       }
       if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return jsonResponse({ error: "AI credits exhausted." }, 402);
       }
       const t = await response.text();
       console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: "AI gateway error" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      return jsonResponse({
+        error: "Copilot was temporarily unavailable.",
+        fallback: true,
+        answer: "Try: 'The cleanest way to think about it is we sit inline between the app and the model, inspect the traffic in real time, and create the audit trail without forcing a rebuild.'",
       });
+    }
+
+    if (stream === false) {
+      const data = await response.json();
+      const answer = data.choices?.[0]?.message?.content;
+      return jsonResponse({ answer: typeof answer === "string" ? answer : "No answer returned." });
     }
 
     return new Response(response.body, {
@@ -142,9 +148,10 @@ Deno.serve(async (req) => {
     });
   } catch (e) {
     console.error("call-copilot error:", e);
-    return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    return jsonResponse({
+      error: e instanceof Error ? e.message : "Unknown error",
+      fallback: true,
+      answer: "Keep it simple: 'We give you a control point in front of the model so risky AI traffic can be reviewed, blocked, and audited in real time.'",
+    });
   }
 });
