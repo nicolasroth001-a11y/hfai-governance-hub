@@ -110,6 +110,7 @@ const AdminBlogEditor = lazy(() => import("./pages/admin/AdminBlogEditor"));
 const AdminNewsletter = lazy(() => import("./pages/admin/AdminNewsletter"));
 const AdminDemoMode = lazy(() => import("./pages/admin/AdminDemoMode"));
 const AdminDemoPresenter = lazy(() => import("./pages/admin/AdminDemoPresenter"));
+const AdminCallCopilot = lazy(() => import("./pages/admin/AdminCallCopilot"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -246,6 +247,7 @@ const App = () => {
             <Route path="blog/:id" element={<AdminBlogEditor />} />
             <Route path="newsletter" element={<AdminNewsletter />} />
             <Route path="demo-mode" element={<AdminDemoMode />} />
+            <Route path="call-copilot" element={<AdminCallCopilot />} />
           </Route>
           <Route path="/admin/demo-mode/present" element={<ProtectedRoute requiredRole="admin"><AdminDemoPresenter /></ProtectedRoute>} />
 
