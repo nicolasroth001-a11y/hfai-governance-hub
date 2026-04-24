@@ -32,14 +32,16 @@ export default function AdminCallCopilot() {
   const recognitionRef = useRef<SR | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  // Build the recognizer lazily inside the click handler so the browser
+  // treats start() as part of the user gesture (required by Chrome/Safari).
+  const buildRecognizer = useCallback(() => {
     const SpeechRec =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRec) {
       setSupported(false);
-      return;
+      return null;
     }
-    const rec: SR = new SpeechRec();
+    const rec: any = new SpeechRec();
     rec.continuous = true;
     rec.interimResults = true;
     rec.lang = "en-US";
@@ -64,21 +66,44 @@ export default function AdminCallCopilot() {
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
         toast({
           title: "Microphone blocked",
-          description: "Allow mic access in your browser settings.",
+          description:
+            "Click the lock icon in the address bar → Site settings → Microphone → Allow, then reload.",
+          variant: "destructive",
+        });
+        rec._wantOn = false;
+        setListening(false);
+      } else if (e.error === "no-speech") {
+        // Benign — Chrome fires this after silence; the onend handler restarts.
+      } else if (e.error === "audio-capture") {
+        toast({
+          title: "No microphone detected",
+          description: "Plug in or select a mic in your OS sound settings.",
           variant: "destructive",
         });
         setListening(false);
       }
     };
     rec.onend = () => {
-      // Auto-restart if still meant to be listening (Chrome stops after silence)
-      if (recognitionRef.current?._wantOn) {
-        try { rec.start(); } catch { /* ignore */ }
+      if (rec._wantOn) {
+        try { rec.start(); } catch { /* ignore double-start */ }
+      } else {
+        setListening(false);
       }
     };
     recognitionRef.current = rec;
+    return rec;
+  }, []);
+
+  // Detect support once on mount (don't construct yet — that happens on click)
+  useEffect(() => {
+    const ok = !!((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
+    setSupported(ok);
     return () => {
-      try { rec.stop(); } catch { /* ignore */ }
+      const rec = recognitionRef.current;
+      if (rec) {
+        rec._wantOn = false;
+        try { rec.stop(); } catch { /* ignore */ }
+      }
     };
   }, []);
 
@@ -86,18 +111,77 @@ export default function AdminCallCopilot() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [items]);
 
-  const toggleListening = () => {
-    const rec = recognitionRef.current;
-    if (!rec) return;
+  const toggleListening = useCallback(async () => {
     if (listening) {
-      rec._wantOn = false;
-      try { rec.stop(); } catch { /* ignore */ }
+      const rec = recognitionRef.current;
+      if (rec) {
+        rec._wantOn = false;
+        try { rec.stop(); } catch { /* ignore */ }
+      }
       setListening(false);
-    } else {
-      rec._wantOn = true;
-      try { rec.start(); setListening(true); } catch (e) { console.error(e); }
+      return;
     }
-  };
+
+    // Proactively prompt for mic permission with a real user gesture.
+    // This makes the browser show its permission dialog reliably, even if
+    // SpeechRecognition silently no-ops on some setups.
+    try {
+      if (navigator.mediaDevices?.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // We don't need the raw stream — SpeechRecognition opens its own.
+        stream.getTracks().forEach((t) => t.stop());
+      }
+    } catch (err: any) {
+      console.error("getUserMedia error:", err);
+      const name = err?.name || "";
+      if (name === "NotAllowedError" || name === "SecurityError") {
+        toast({
+          title: "Microphone blocked",
+          description:
+            "Allow microphone for this site: click the lock icon in the address bar → Site settings → Microphone → Allow, then reload.",
+          variant: "destructive",
+        });
+      } else if (name === "NotFoundError" || name === "OverconstrainedError") {
+        toast({
+          title: "No microphone found",
+          description: "Connect a mic or pick one in your OS sound settings.",
+          variant: "destructive",
+        });
+      } else if (name === "NotReadableError") {
+        toast({
+          title: "Microphone in use",
+          description: "Another app (Zoom, Meet, etc.) is holding the mic — close it and retry.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Mic error",
+          description: err?.message || "Could not access microphone.",
+          variant: "destructive",
+        });
+      }
+      return;
+    }
+
+    const rec = recognitionRef.current ?? buildRecognizer();
+    if (!rec) {
+      toast({
+        title: "Speech recognition unavailable",
+        description: "Use Chrome or Edge on desktop. Safari and mobile have limited support.",
+        variant: "destructive",
+      });
+      return;
+    }
+    rec._wantOn = true;
+    try {
+      rec.start();
+      setListening(true);
+    } catch (e) {
+      console.error("recognition.start error:", e);
+      // Already started — treat as listening.
+      setListening(true);
+    }
+  }, [listening, buildRecognizer]);
 
   const askCopilot = useCallback(async (text: string) => {
     const trimmed = text.trim();
