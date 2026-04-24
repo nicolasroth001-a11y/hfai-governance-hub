@@ -10,19 +10,19 @@ function canAccess(feature: string, currentTier: string | null): boolean {
 }
 
 describe("SubscriptionGate logic", () => {
-  it("free users can access free-tier features", () => {
-    expect(canAccess("AI Systems", "free")).toBe(true);
-    expect(canAccess("Rules", "free")).toBe(true);
-    expect(canAccess("Violations", "free")).toBe(true);
-  });
-
-  it("free users cannot access paid features", () => {
+  it("free (unsubscribed) users cannot access core paid features", () => {
+    expect(canAccess("AI Systems", "free")).toBe(false);
+    expect(canAccess("Rules", "free")).toBe(false);
+    expect(canAccess("Violations", "free")).toBe(false);
     expect(canAccess("Notifications", "free")).toBe(false);
     expect(canAccess("Analytics", "free")).toBe(false);
     expect(canAccess("Root Cause Analysis", "free")).toBe(false);
   });
 
   it("starter users can access starter features but not pro", () => {
+    expect(canAccess("AI Systems", "starter")).toBe(true);
+    expect(canAccess("Rules", "starter")).toBe(true);
+    expect(canAccess("Violations", "starter")).toBe(true);
     expect(canAccess("Notifications", "starter")).toBe(true);
     expect(canAccess("Analytics", "starter")).toBe(false);
     expect(canAccess("Root Cause Analysis", "starter")).toBe(false);
@@ -42,8 +42,8 @@ describe("SubscriptionGate logic", () => {
     expect(canAccess("AI Systems", "enterprise")).toBe(true);
   });
 
-  it("null tier defaults to free", () => {
-    expect(canAccess("AI Systems", null)).toBe(true);
+  it("null tier defaults to free (unsubscribed)", () => {
+    expect(canAccess("AI Systems", null)).toBe(false);
     expect(canAccess("Analytics", null)).toBe(false);
   });
 
