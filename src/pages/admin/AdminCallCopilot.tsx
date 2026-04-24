@@ -169,30 +169,6 @@ export default function AdminCallCopilot() {
       return;
     }
 
-    let permissionState: PermissionState | "prompt" | null = null;
-    if (navigator.permissions?.query) {
-      try {
-        const status = await navigator.permissions.query({ name: "microphone" as PermissionName });
-        permissionState = status.state;
-      } catch {
-        permissionState = null;
-      }
-    }
-
-    if (permissionState === "denied") {
-      setMicBanner({
-        title: "Microphone blocked",
-        description: "Your browser is already blocking the mic. Click the lock icon beside the address bar, allow microphone access, then reload this page.",
-        destructive: true,
-      });
-      toast({
-        title: "Microphone blocked",
-        description: "Allow microphone access from the lock icon in the address bar, then reload.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setMicBanner({
       title: "Check the browser prompt",
       description: "The permission popup usually appears beside the address bar at the top of the browser window. If you don’t see it, click the lock icon and allow microphone access.",
