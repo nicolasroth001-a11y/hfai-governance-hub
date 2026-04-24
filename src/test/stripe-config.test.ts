@@ -37,10 +37,11 @@ describe("stripe-config", () => {
       expect(TIERS.starter.highlighted).toBeUndefined();
     });
 
-    it("each tier has at least 3 features", () => {
-      for (const key of Object.keys(TIERS) as TierKey[]) {
+    it("each paid tier has at least 3 features (free = unsubscribed placeholder)", () => {
+      for (const key of ["starter", "pro", "enterprise", "sovereign"] as TierKey[]) {
         expect(TIERS[key].features.length).toBeGreaterThanOrEqual(3);
       }
+      expect(TIERS.free.features.length).toBe(0);
     });
   });
 
