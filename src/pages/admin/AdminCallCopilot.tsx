@@ -19,6 +19,12 @@ interface QAItem {
   streaming?: boolean;
 }
 
+interface CopilotJsonResponse {
+  answer?: string;
+  error?: string;
+  fallback?: boolean;
+}
+
 interface MicBanner {
   title: string;
   description: string;
@@ -27,6 +33,9 @@ interface MicBanner {
 
 const COPILOT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/call-copilot`;
 const ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+const supportsStreamingResponse = () =>
+  typeof ReadableStream !== "undefined" && typeof TextDecoder !== "undefined";
 
 export default function AdminCallCopilot() {
   const [listening, setListening] = useState(false);
@@ -308,18 +317,53 @@ export default function AdminCallCopilot() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${ANON_KEY}`,
         },
-        body: JSON.stringify({ transcript: trimmed, history }),
+        body: JSON.stringify({ transcript: trimmed, history, stream: supportsStreamingResponse() }),
       });
 
-      if (!resp.ok || !resp.body) {
+      const contentType = resp.headers.get("content-type") || "";
+      const isJson = contentType.includes("application/json");
+
+      if (!resp.ok) {
+        let payload: CopilotJsonResponse | null = null;
+        if (isJson) {
+          payload = await resp.json().catch(() => null);
+        }
+
         if (resp.status === 429) {
           toast({ title: "Rate limited", description: "Wait a moment and try again.", variant: "destructive" });
         } else if (resp.status === 402) {
           toast({ title: "AI credits exhausted", description: "Top up in Lovable Cloud.", variant: "destructive" });
         } else {
-          toast({ title: "Copilot error", description: `Status ${resp.status}`, variant: "destructive" });
+          toast({
+            title: payload?.fallback ? "Copilot fallback" : "Copilot error",
+            description: payload?.error || `Status ${resp.status}`,
+            variant: "destructive",
+          });
         }
-        setItems((prev) => prev.map((it) => (it.id === id ? { ...it, answer: "[error]", streaming: false } : it)));
+
+        setItems((prev) => prev.map((it) => (it.id === id ? {
+          ...it,
+          answer: payload?.answer || payload?.error || "Copilot failed.",
+          streaming: false,
+        } : it)));
+        return;
+      }
+
+      if (isJson || !resp.body || typeof resp.body.getReader !== "function") {
+        const payload = await resp.json().catch(() => null) as CopilotJsonResponse | null;
+        if (!payload?.answer) {
+          toast({
+            title: payload?.fallback ? "Copilot fallback" : "Copilot error",
+            description: payload?.error || "No answer returned.",
+            variant: payload?.fallback ? "default" : "destructive",
+          });
+        }
+
+        setItems((prev) => prev.map((it) => (it.id === id ? {
+          ...it,
+          answer: payload?.answer || payload?.error || "No answer returned.",
+          streaming: false,
+        } : it)));
         return;
       }
 
@@ -357,7 +401,11 @@ export default function AdminCallCopilot() {
     } catch (e) {
       console.error(e);
       toast({ title: "Network error", description: String(e), variant: "destructive" });
-      setItems((prev) => prev.map((it) => (it.id === id ? { ...it, answer: "[network error]", streaming: false } : it)));
+      setItems((prev) => prev.map((it) => (it.id === id ? {
+        ...it,
+        answer: "Copilot couldn’t connect. Use the typed box for a short question and try again.",
+        streaming: false,
+      } : it)));
     }
   }, [items]);
 
