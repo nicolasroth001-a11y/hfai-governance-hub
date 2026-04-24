@@ -4,8 +4,9 @@ import { ContentCard } from "@/components/ContentCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Mic, MicOff, Sparkles, Trash2, Send, Loader2, Headphones } from "lucide-react";
+import { Mic, MicOff, Sparkles, Trash2, Send, Loader2, Headphones, AlertTriangle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // SpeechRecognition is a browser API — minimal types
 type SR = any;
@@ -18,6 +19,12 @@ interface QAItem {
   streaming?: boolean;
 }
 
+interface MicBanner {
+  title: string;
+  description: string;
+  destructive?: boolean;
+}
+
 const COPILOT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/call-copilot`;
 const ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
@@ -28,6 +35,10 @@ export default function AdminCallCopilot() {
   const [items, setItems] = useState<QAItem[]>([]);
   const [manualInput, setManualInput] = useState("");
   const [supported, setSupported] = useState(true);
+  const [micBanner, setMicBanner] = useState<MicBanner | null>({
+    title: "Microphone prompt",
+    description: "When you click Start listening, check near the address bar for the browser mic prompt. If nothing appears, click the lock icon and allow microphone access.",
+  });
 
   const recognitionRef = useRef<SR | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -64,6 +75,11 @@ export default function AdminCallCopilot() {
     rec.onerror = (e: any) => {
       console.error("SpeechRecognition error:", e);
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+        setMicBanner({
+          title: "Microphone blocked",
+          description: "Click the lock icon in the address bar, allow microphone access for this site, then reload this page.",
+          destructive: true,
+        });
         toast({
           title: "Microphone blocked",
           description:
@@ -75,6 +91,11 @@ export default function AdminCallCopilot() {
       } else if (e.error === "no-speech") {
         // Benign — Chrome fires this after silence; the onend handler restarts.
       } else if (e.error === "audio-capture") {
+        setMicBanner({
+          title: "No microphone detected",
+          description: "Plug in or select a microphone in your computer sound settings, then try again.",
+          destructive: true,
+        });
         toast({
           title: "No microphone detected",
           description: "Plug in or select a mic in your OS sound settings.",
@@ -125,6 +146,10 @@ export default function AdminCallCopilot() {
     // Proactively prompt for mic permission with a real user gesture.
     // This makes the browser show its permission dialog reliably, even if
     // SpeechRecognition silently no-ops on some setups.
+    setMicBanner({
+      title: "Check the browser prompt",
+      description: "The permission popup usually appears beside the address bar at the top of the browser window. If you don’t see it, click the lock icon and allow microphone access.",
+    });
     try {
       if (navigator.mediaDevices?.getUserMedia) {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -135,6 +160,11 @@ export default function AdminCallCopilot() {
       console.error("getUserMedia error:", err);
       const name = err?.name || "";
       if (name === "NotAllowedError" || name === "SecurityError") {
+        setMicBanner({
+          title: "Microphone blocked",
+          description: "Allow microphone access from the lock icon in the address bar, then reload and try again.",
+          destructive: true,
+        });
         toast({
           title: "Microphone blocked",
           description:
@@ -142,18 +172,33 @@ export default function AdminCallCopilot() {
           variant: "destructive",
         });
       } else if (name === "NotFoundError" || name === "OverconstrainedError") {
+        setMicBanner({
+          title: "No microphone found",
+          description: "Connect a microphone or choose one in your computer sound settings.",
+          destructive: true,
+        });
         toast({
           title: "No microphone found",
           description: "Connect a mic or pick one in your OS sound settings.",
           variant: "destructive",
         });
       } else if (name === "NotReadableError") {
+        setMicBanner({
+          title: "Microphone already in use",
+          description: "Another app is holding the microphone. Close that app or change the input device, then try again.",
+          destructive: true,
+        });
         toast({
           title: "Microphone in use",
           description: "Another app (Zoom, Meet, etc.) is holding the mic — close it and retry.",
           variant: "destructive",
         });
       } else {
+        setMicBanner({
+          title: "Microphone error",
+          description: err?.message || "Could not access microphone.",
+          destructive: true,
+        });
         toast({
           title: "Mic error",
           description: err?.message || "Could not access microphone.",
@@ -175,10 +220,18 @@ export default function AdminCallCopilot() {
     rec._wantOn = true;
     try {
       rec.start();
+      setMicBanner({
+        title: "Microphone live",
+        description: "You’re listening now. Speak normally, then click Ask copilot when the question is complete.",
+      });
       setListening(true);
     } catch (e) {
       console.error("recognition.start error:", e);
       // Already started — treat as listening.
+      setMicBanner({
+        title: "Microphone live",
+        description: "The mic is already active. Speak normally, then click Ask copilot when the question is complete.",
+      });
       setListening(true);
     }
   }, [listening, buildRecognizer]);
@@ -304,6 +357,14 @@ export default function AdminCallCopilot() {
             You can still type questions manually below.
           </p>
         </ContentCard>
+      )}
+
+      {micBanner && (
+        <Alert variant={micBanner.destructive ? "destructive" : "default"}>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>{micBanner.title}</AlertTitle>
+          <AlertDescription>{micBanner.description}</AlertDescription>
+        </Alert>
       )}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
