@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Mic, MicOff, Sparkles, Trash2, Send, Loader2, Headphones, AlertTriangle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // SpeechRecognition is a browser API — minimal types
 type SR = any;
@@ -19,6 +20,12 @@ interface QAItem {
   streaming?: boolean;
 }
 
+interface CopilotJsonResponse {
+  answer?: string;
+  error?: string;
+  fallback?: boolean;
+}
+
 interface MicBanner {
   title: string;
   description: string;
@@ -28,7 +35,11 @@ interface MicBanner {
 const COPILOT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/call-copilot`;
 const ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
+const supportsStreamingResponse = () =>
+  typeof ReadableStream !== "undefined" && typeof TextDecoder !== "undefined";
+
 export default function AdminCallCopilot() {
+  const isMobile = useIsMobile();
   const [listening, setListening] = useState(false);
   const [interim, setInterim] = useState("");
   const [transcriptBuffer, setTranscriptBuffer] = useState("");
@@ -308,18 +319,53 @@ export default function AdminCallCopilot() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${ANON_KEY}`,
         },
-        body: JSON.stringify({ transcript: trimmed, history }),
+        body: JSON.stringify({ transcript: trimmed, history, stream: supportsStreamingResponse() && !isMobile }),
       });
 
-      if (!resp.ok || !resp.body) {
+      const contentType = resp.headers.get("content-type") || "";
+      const isJson = contentType.includes("application/json");
+
+      if (!resp.ok) {
+        let payload: CopilotJsonResponse | null = null;
+        if (isJson) {
+          payload = await resp.json().catch(() => null);
+        }
+
         if (resp.status === 429) {
           toast({ title: "Rate limited", description: "Wait a moment and try again.", variant: "destructive" });
         } else if (resp.status === 402) {
           toast({ title: "AI credits exhausted", description: "Top up in Lovable Cloud.", variant: "destructive" });
         } else {
-          toast({ title: "Copilot error", description: `Status ${resp.status}`, variant: "destructive" });
+          toast({
+            title: payload?.fallback ? "Copilot fallback" : "Copilot error",
+            description: payload?.error || `Status ${resp.status}`,
+            variant: "destructive",
+          });
         }
-        setItems((prev) => prev.map((it) => (it.id === id ? { ...it, answer: "[error]", streaming: false } : it)));
+
+        setItems((prev) => prev.map((it) => (it.id === id ? {
+          ...it,
+          answer: payload?.answer || payload?.error || "Copilot failed.",
+          streaming: false,
+        } : it)));
+        return;
+      }
+
+      if (isJson || !resp.body || typeof resp.body.getReader !== "function") {
+        const payload = await resp.json().catch(() => null) as CopilotJsonResponse | null;
+        if (!payload?.answer) {
+          toast({
+            title: payload?.fallback ? "Copilot fallback" : "Copilot error",
+            description: payload?.error || "No answer returned.",
+            variant: payload?.fallback ? "default" : "destructive",
+          });
+        }
+
+        setItems((prev) => prev.map((it) => (it.id === id ? {
+          ...it,
+          answer: payload?.answer || payload?.error || "No answer returned.",
+          streaming: false,
+        } : it)));
         return;
       }
 
@@ -357,9 +403,13 @@ export default function AdminCallCopilot() {
     } catch (e) {
       console.error(e);
       toast({ title: "Network error", description: String(e), variant: "destructive" });
-      setItems((prev) => prev.map((it) => (it.id === id ? { ...it, answer: "[network error]", streaming: false } : it)));
+      setItems((prev) => prev.map((it) => (it.id === id ? {
+        ...it,
+        answer: "Copilot couldn’t connect. Use the typed box for a short question and try again.",
+        streaming: false,
+      } : it)));
     }
-  }, [items]);
+  }, [isMobile, items]);
 
   const sendBuffered = () => {
     if (!transcriptBuffer.trim()) return;
@@ -394,7 +444,7 @@ export default function AdminCallCopilot() {
           </Button>
           <Button
             onClick={toggleListening}
-            disabled={!supported}
+            disabled={!supported || isMobile}
             className={`gap-2 ${listening ? "bg-destructive hover:bg-destructive/90" : "bg-primary hover:bg-primary/90"}`}
           >
             {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
@@ -417,6 +467,16 @@ export default function AdminCallCopilot() {
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>{micBanner.title}</AlertTitle>
           <AlertDescription>{micBanner.description}</AlertDescription>
+        </Alert>
+      )}
+
+      {isMobile && (
+        <Alert>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Phone calls won’t feed this reliably</AlertTitle>
+          <AlertDescription>
+            Use this on a laptop beside the call. On mobile browsers, the active phone-call audio usually doesn’t reach the page microphone, so type the question manually instead.
+          </AlertDescription>
         </Alert>
       )}
 
@@ -521,6 +581,7 @@ export default function AdminCallCopilot() {
       <ContentCard icon={Headphones} title="How to use during the call">
         <ol className="text-sm text-card-foreground/80 space-y-2 list-decimal list-inside">
           <li>Open this page on a 2nd screen or window beside your call.</li>
+          <li>Use a laptop or desktop. Mobile browsers usually cannot capture live phone-call audio into this page.</li>
           <li>Click <strong>Start listening</strong> — grant mic access. The mic picks up both your voice and Scott's (via your speakers/headset).</li>
           <li>When Scott asks a question and pauses, click <strong>Ask copilot</strong>. A spoken-ready answer streams in 1–3 seconds.</li>
           <li>If transcription misses something, type the question manually in the box.</li>
