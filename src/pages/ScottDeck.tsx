@@ -14,8 +14,10 @@ import {
   Activity,
   CheckCircle2,
   ArrowRight,
+  Headphones,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 /**
  * /scott — Interactive deck for Scott @ Community Medical Centers
@@ -548,6 +550,12 @@ export default function ScottDeck() {
           <span className="text-white/70">HFAI · Scott · CMC deck</span>
         </div>
         <div className="flex items-center gap-3 text-white/60">
+          <Button asChild variant="outline" size="sm" className="gap-2 border-white/15 bg-white/5 text-white hover:bg-white/10 hover:text-white">
+            <Link to="/call-copilot" target="_blank" rel="noreferrer">
+              <Headphones className="w-4 h-4" />
+              Open Call Copilot
+            </Link>
+          </Button>
           <span className="tabular-nums">
             {String(index + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
           </span>
