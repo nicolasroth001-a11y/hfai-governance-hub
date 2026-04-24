@@ -42,6 +42,7 @@ export default function AdminCallCopilot() {
 
   const recognitionRef = useRef<SR | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const autoSendTimerRef = useRef<number | null>(null);
 
   // Build the recognizer lazily inside the click handler so the browser
   // treats start() as part of the user gesture (required by Chrome/Safari).
@@ -132,6 +133,31 @@ export default function AdminCallCopilot() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [items]);
 
+  useEffect(() => {
+    if (!listening || interim || !transcriptBuffer.trim()) return;
+
+    if (autoSendTimerRef.current) {
+      window.clearTimeout(autoSendTimerRef.current);
+    }
+
+    autoSendTimerRef.current = window.setTimeout(() => {
+      setTranscriptBuffer((current) => {
+        const next = current.trim();
+        if (!next) return current;
+        askCopilot(next);
+        return "";
+      });
+      setInterim("");
+    }, 1200);
+
+    return () => {
+      if (autoSendTimerRef.current) {
+        window.clearTimeout(autoSendTimerRef.current);
+        autoSendTimerRef.current = null;
+      }
+    };
+  }, [listening, interim, transcriptBuffer]);
+
   const toggleListening = useCallback(async () => {
     if (listening) {
       const rec = recognitionRef.current;
@@ -143,21 +169,100 @@ export default function AdminCallCopilot() {
       return;
     }
 
-    // Proactively prompt for mic permission with a real user gesture.
-    // This makes the browser show its permission dialog reliably, even if
-    // SpeechRecognition silently no-ops on some setups.
+    let permissionState: PermissionState | "prompt" | null = null;
+    if (navigator.permissions?.query) {
+      try {
+        const status = await navigator.permissions.query({ name: "microphone" as PermissionName });
+        permissionState = status.state;
+      } catch {
+        permissionState = null;
+      }
+    }
+
+    if (permissionState === "denied") {
+      setMicBanner({
+        title: "Microphone blocked",
+        description: "Your browser is already blocking the mic. Click the lock icon beside the address bar, allow microphone access, then reload this page.",
+        destructive: true,
+      });
+      toast({
+        title: "Microphone blocked",
+        description: "Allow microphone access from the lock icon in the address bar, then reload.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setMicBanner({
       title: "Check the browser prompt",
       description: "The permission popup usually appears beside the address bar at the top of the browser window. If you don’t see it, click the lock icon and allow microphone access.",
     });
+
+    const rec = recognitionRef.current ?? buildRecognizer();
+    if (!rec) {
+      toast({
+        title: "Speech recognition unavailable",
+        description: "Use Chrome or Edge on desktop. Safari and mobile have limited support.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    rec._wantOn = true;
+
+    let pendingMicStream: Promise<MediaStream> | null = null;
     try {
       if (navigator.mediaDevices?.getUserMedia) {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        // We don't need the raw stream — SpeechRecognition opens its own.
-        stream.getTracks().forEach((t) => t.stop());
+        pendingMicStream = navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        });
       }
+      rec.start();
+      setMicBanner({
+        title: "Microphone live",
+        description: "You’re live. Ask or repeat the question out loud and Copilot will answer automatically after a short pause.",
+      });
+      setListening(true);
+    } catch (e) {
+      console.error("recognition.start error:", e);
+      const message = e instanceof Error ? e.message : String(e);
+      if (!message.toLowerCase().includes("already started")) {
+        rec._wantOn = false;
+        setMicBanner({
+          title: "Microphone failed to start",
+          description: "Close other tabs or apps using speech input, then try Start listening again.",
+          destructive: true,
+        });
+        toast({
+          title: "Mic start failed",
+          description: "Close other speech or dictation apps, then try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setMicBanner({
+        title: "Microphone live",
+        description: "The mic is already active. Ask or repeat the question out loud and Copilot will answer automatically.",
+      });
+      setListening(true);
+    }
+
+    if (!pendingMicStream) return;
+
+    try {
+      const stream = await pendingMicStream;
+      stream.getTracks().forEach((t) => t.stop());
     } catch (err: any) {
       console.error("getUserMedia error:", err);
+      rec._wantOn = false;
+      try { rec.stop(); } catch { /* ignore */ }
+      setListening(false);
+
       const name = err?.name || "";
       if (name === "NotAllowedError" || name === "SecurityError") {
         setMicBanner({
@@ -205,34 +310,6 @@ export default function AdminCallCopilot() {
           variant: "destructive",
         });
       }
-      return;
-    }
-
-    const rec = recognitionRef.current ?? buildRecognizer();
-    if (!rec) {
-      toast({
-        title: "Speech recognition unavailable",
-        description: "Use Chrome or Edge on desktop. Safari and mobile have limited support.",
-        variant: "destructive",
-      });
-      return;
-    }
-    rec._wantOn = true;
-    try {
-      rec.start();
-      setMicBanner({
-        title: "Microphone live",
-        description: "You’re listening now. Speak normally, then click Ask copilot when the question is complete.",
-      });
-      setListening(true);
-    } catch (e) {
-      console.error("recognition.start error:", e);
-      // Already started — treat as listening.
-      setMicBanner({
-        title: "Microphone live",
-        description: "The mic is already active. Speak normally, then click Ask copilot when the question is complete.",
-      });
-      setListening(true);
     }
   }, [listening, buildRecognizer]);
 
