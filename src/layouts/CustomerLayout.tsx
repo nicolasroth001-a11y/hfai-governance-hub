@@ -8,7 +8,7 @@ import {
   Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp,
   Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2,
   Database, GraduationCap, ShieldAlert, FileArchive, FileWarning, Globe2,
-  Fingerprint, Target, FileSpreadsheet, Radar, FileOutput, Users, Factory,
+    Fingerprint, Target, FileSpreadsheet, Radar, FileOutput, Users, Factory, Package,
 } from "lucide-react";
 
 export default function CustomerLayout() {
@@ -41,6 +41,7 @@ export default function CustomerLayout() {
         { title: t("sidebar.dataLineage"), url: "/customer/data-lineage", icon: Database },
         { title: "Shadow AI Discovery", url: "/customer/shadow-ai-discovery", icon: Radar },
         { title: "Evidence Synthesis", url: "/customer/evidence-synthesis", icon: FileOutput },
+        { title: "AI-SBOM", url: "/customer/ai-sbom", icon: Package },
       ],
     },
     {

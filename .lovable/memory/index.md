@@ -8,3 +8,4 @@ Reviewers now customer-managed (in-house) with optional HFAI Expert add-on.
 
 ## Memories
 - [Reviewer Architecture](mem://features/reviewer-architecture) — Customer-managed in-house reviewers, HFAI Expert support, org-scoped RLS, unified login
+- [AI-SBOM](mem://features/ai-sbom) — /customer/ai-sbom aggregates systems+versions+vendors+lineage into exportable JSON/PDF artifact (HFAI-AI-SBOM v1.0)
