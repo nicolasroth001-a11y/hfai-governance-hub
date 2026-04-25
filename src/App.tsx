@@ -84,6 +84,7 @@ const CustomerEvidenceSynthesis = lazy(() => import("./pages/customer/CustomerEv
 const CustomerReviewerSettings = lazy(() => import("./pages/customer/CustomerReviewerSettings"));
 const CustomerIntegrations = lazy(() => import("./pages/customer/CustomerIntegrations"));
 const CustomerIndustrialOnboarding = lazy(() => import("./pages/customer/CustomerIndustrialOnboarding"));
+const CustomerAISBOM = lazy(() => import("./pages/customer/CustomerAISBOM"));
 
 // Reviewer pages (lazy)
 const ReviewerDashboard = lazy(() => import("./pages/reviewer/ReviewerDashboard"));
