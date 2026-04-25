@@ -217,6 +217,7 @@ const App = () => {
             <Route path="reviewer-settings" element={<CustomerReviewerSettings />} />
             <Route path="integrations" element={<CustomerIntegrations />} />
             <Route path="industrial-onboarding" element={<CustomerIndustrialOnboarding />} />
+            <Route path="ai-sbom" element={<CustomerAISBOM />} />
           </Route>
 
           {/* Reviewer routes (protected) */}
