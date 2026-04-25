@@ -41,6 +41,7 @@ export default function CustomerLayout() {
         { title: t("sidebar.dataLineage"), url: "/customer/data-lineage", icon: Database },
         { title: "Shadow AI Discovery", url: "/customer/shadow-ai-discovery", icon: Radar },
         { title: "Evidence Synthesis", url: "/customer/evidence-synthesis", icon: FileOutput },
+        { title: "AI-SBOM", url: "/customer/ai-sbom", icon: Package },
       ],
     },
     {
