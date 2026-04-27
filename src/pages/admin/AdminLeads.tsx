@@ -139,6 +139,29 @@ export default function AdminLeads() {
     }
   };
 
+  const handleTestSend = async () => {
+    if (!activeLead) return;
+    setTestingId(activeLead.id);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-cold-email", {
+        body: {
+          lead_id: activeLead.id,
+          subject_override: editSubject,
+          body_override: editBody,
+          recipient_override: "nicolasroth@hfa-i.org",
+          is_test: true,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast({ title: "Test sent", description: "Check nicolasroth@hfa-i.org (subject prefixed [TEST]). Lead status unchanged." });
+    } catch (e: any) {
+      toast({ title: "Test send failed", description: e.message || String(e), variant: "destructive" });
+    } finally {
+      setTestingId(null);
+    }
+  };
+
   const handleStatusChange = async (id: string, status: string) => {
     try {
       const { error } = await supabase.from("leads").update({ status }).eq("id", id);
