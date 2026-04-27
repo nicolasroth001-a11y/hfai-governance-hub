@@ -40,20 +40,24 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // ---------- Daily send cap ----------
+    // ---------- Daily send cap (skipped for test sends) ----------
     const cap = parseInt(Deno.env.get("COLD_EMAIL_DAILY_CAP") ?? "") || DEFAULT_DAILY_CAP;
-    const since = new Date();
-    since.setUTCHours(0, 0, 0, 0);
-    const { count: sentToday, error: countErr } = await admin
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .gte("sent_at", since.toISOString());
-    if (countErr) console.error("daily cap count error:", countErr);
-    if ((sentToday ?? 0) >= cap) {
-      return new Response(
-        JSON.stringify({ error: `Daily send cap reached (${sentToday}/${cap}). Try again tomorrow or raise COLD_EMAIL_DAILY_CAP.` }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    let sentToday = 0;
+    if (!is_test) {
+      const since = new Date();
+      since.setUTCHours(0, 0, 0, 0);
+      const { count, error: countErr } = await admin
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .gte("sent_at", since.toISOString());
+      if (countErr) console.error("daily cap count error:", countErr);
+      sentToday = count ?? 0;
+      if (sentToday >= cap) {
+        return new Response(
+          JSON.stringify({ error: `Daily send cap reached (${sentToday}/${cap}). Try again tomorrow or raise COLD_EMAIL_DAILY_CAP.` }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
     const { data: lead, error: leadErr } = await admin.from("leads").select("*").eq("id", lead_id).single();
