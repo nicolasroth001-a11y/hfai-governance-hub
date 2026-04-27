@@ -55,6 +55,7 @@ export default function AdminLeads() {
   const [activeLead, setActiveLead] = useState<Lead | null>(null);
   const [draftingId, setDraftingId] = useState<string | null>(null);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [testingId, setTestingId] = useState<string | null>(null);
   const [editSubject, setEditSubject] = useState("");
   const [editBody, setEditBody] = useState("");
 
@@ -135,6 +136,29 @@ export default function AdminLeads() {
       toast({ title: "Send failed", description: e.message || String(e), variant: "destructive" });
     } finally {
       setSendingId(null);
+    }
+  };
+
+  const handleTestSend = async () => {
+    if (!activeLead) return;
+    setTestingId(activeLead.id);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-cold-email", {
+        body: {
+          lead_id: activeLead.id,
+          subject_override: editSubject,
+          body_override: editBody,
+          recipient_override: "nicolasroth@hfa-i.org",
+          is_test: true,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast({ title: "Test sent", description: "Check nicolasroth@hfa-i.org (subject prefixed [TEST]). Lead status unchanged." });
+    } catch (e: any) {
+      toast({ title: "Test send failed", description: e.message || String(e), variant: "destructive" });
+    } finally {
+      setTestingId(null);
     }
   };
 
@@ -291,8 +315,12 @@ export default function AdminLeads() {
               </div>
             </div>
           )}
-          <DialogFooter className="gap-2">
+          <DialogFooter className="gap-2 flex-wrap">
             <Button variant="outline" onClick={copyEmail} className="gap-1"><Copy className="h-4 w-4" /> Copy</Button>
+            <Button variant="outline" onClick={handleTestSend} disabled={testingId === activeLead?.id} className="gap-1">
+              {testingId === activeLead?.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
+              Send test to me
+            </Button>
             <Button variant="outline" onClick={() => setActiveLead(null)}>Cancel</Button>
             <Button onClick={handleSend} disabled={sendingId === activeLead?.id} className="gap-2">
               {sendingId === activeLead?.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}

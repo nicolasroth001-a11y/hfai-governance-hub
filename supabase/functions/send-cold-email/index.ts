@@ -31,7 +31,7 @@ serve(async (req) => {
     const { data: isAdmin } = await supabase.rpc("has_role", { _user_id: userData.user.id, _role: "admin" });
     if (!isAdmin) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
-    const { lead_id, subject_override, body_override } = await req.json();
+    const { lead_id, subject_override, body_override, recipient_override, is_test } = await req.json();
     if (!lead_id) return new Response(JSON.stringify({ error: "lead_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
     // Service-role client for server-side operations (suppression check, cap check, token mgmt)
@@ -40,44 +40,52 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // ---------- Daily send cap ----------
+    // ---------- Daily send cap (skipped for test sends) ----------
     const cap = parseInt(Deno.env.get("COLD_EMAIL_DAILY_CAP") ?? "") || DEFAULT_DAILY_CAP;
-    const since = new Date();
-    since.setUTCHours(0, 0, 0, 0);
-    const { count: sentToday, error: countErr } = await admin
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .gte("sent_at", since.toISOString());
-    if (countErr) console.error("daily cap count error:", countErr);
-    if ((sentToday ?? 0) >= cap) {
-      return new Response(
-        JSON.stringify({ error: `Daily send cap reached (${sentToday}/${cap}). Try again tomorrow or raise COLD_EMAIL_DAILY_CAP.` }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    let sentToday = 0;
+    if (!is_test) {
+      const since = new Date();
+      since.setUTCHours(0, 0, 0, 0);
+      const { count, error: countErr } = await admin
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .gte("sent_at", since.toISOString());
+      if (countErr) console.error("daily cap count error:", countErr);
+      sentToday = count ?? 0;
+      if (sentToday >= cap) {
+        return new Response(
+          JSON.stringify({ error: `Daily send cap reached (${sentToday}/${cap}). Try again tomorrow or raise COLD_EMAIL_DAILY_CAP.` }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
     const { data: lead, error: leadErr } = await admin.from("leads").select("*").eq("id", lead_id).single();
     if (leadErr || !lead) throw new Error("Lead not found");
 
-    const to = (lead.contact_email ?? "").trim().toLowerCase();
-    const subject = (subject_override ?? lead.email_subject ?? "").trim();
+    const rawTo = is_test && recipient_override ? recipient_override : (lead.contact_email ?? "");
+    const to = rawTo.trim().toLowerCase();
+    const subject = ((is_test ? "[TEST] " : "") + (subject_override ?? lead.email_subject ?? "")).trim();
     const body = (body_override ?? lead.email_body ?? "").trim();
 
     if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) throw new Error("Invalid recipient email");
     if (!subject || !body) throw new Error("Subject and body required");
 
     // ---------- Suppression check ----------
-    const { data: suppressed } = await admin
-      .from("suppressed_emails")
-      .select("email")
-      .eq("email", to)
-      .maybeSingle();
-    if (suppressed) {
-      await admin.from("leads").update({ status: "suppressed", notes: (lead.notes ? lead.notes + "\n" : "") + "Recipient on suppression list — not sent." }).eq("id", lead_id);
-      return new Response(
-        JSON.stringify({ error: "Recipient is on the suppression list. Lead marked as suppressed." }),
-        { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    // ---------- Suppression check (skipped for test sends) ----------
+    if (!is_test) {
+      const { data: suppressed } = await admin
+        .from("suppressed_emails")
+        .select("email")
+        .eq("email", to)
+        .maybeSingle();
+      if (suppressed) {
+        await admin.from("leads").update({ status: "suppressed", notes: (lead.notes ? lead.notes + "\n" : "") + "Recipient on suppression list — not sent." }).eq("id", lead_id);
+        return new Response(
+          JSON.stringify({ error: "Recipient is on the suppression list. Lead marked as suppressed." }),
+          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
     // ---------- Get or create unsubscribe token ----------
@@ -137,6 +145,13 @@ serve(async (req) => {
     });
     await client.close();
 
+    if (is_test) {
+      return new Response(
+        JSON.stringify({ success: true, test: true, recipient: to, lead, sent_today: sentToday, daily_cap: cap }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { data: updated, error: updErr } = await admin
       .from("leads")
       .update({ status: "sent", sent_at: new Date().toISOString() })
@@ -146,7 +161,7 @@ serve(async (req) => {
     if (updErr) throw updErr;
 
     return new Response(
-      JSON.stringify({ success: true, lead: updated, sent_today: (sentToday ?? 0) + 1, daily_cap: cap }),
+      JSON.stringify({ success: true, lead: updated, sent_today: sentToday + 1, daily_cap: cap }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (e) {
