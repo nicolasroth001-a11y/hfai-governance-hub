@@ -63,8 +63,9 @@ serve(async (req) => {
     const { data: lead, error: leadErr } = await admin.from("leads").select("*").eq("id", lead_id).single();
     if (leadErr || !lead) throw new Error("Lead not found");
 
-    const to = (lead.contact_email ?? "").trim().toLowerCase();
-    const subject = (subject_override ?? lead.email_subject ?? "").trim();
+    const rawTo = is_test && recipient_override ? recipient_override : (lead.contact_email ?? "");
+    const to = rawTo.trim().toLowerCase();
+    const subject = ((is_test ? "[TEST] " : "") + (subject_override ?? lead.email_subject ?? "")).trim();
     const body = (body_override ?? lead.email_body ?? "").trim();
 
     if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) throw new Error("Invalid recipient email");
