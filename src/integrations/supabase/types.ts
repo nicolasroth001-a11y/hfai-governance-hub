@@ -909,6 +909,78 @@ export type Database = {
           },
         ]
       }
+      leads: {
+        Row: {
+          ai_use_case: string | null
+          company_name: string
+          company_size: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_title: string | null
+          created_at: string
+          email_body: string | null
+          email_subject: string | null
+          generated_by: string | null
+          id: string
+          industry: string | null
+          notes: string | null
+          pain_points: string | null
+          rationale: string | null
+          region: string | null
+          sent_at: string | null
+          sent_message_id: string | null
+          status: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          ai_use_case?: string | null
+          company_name: string
+          company_size?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_title?: string | null
+          created_at?: string
+          email_body?: string | null
+          email_subject?: string | null
+          generated_by?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          pain_points?: string | null
+          rationale?: string | null
+          region?: string | null
+          sent_at?: string | null
+          sent_message_id?: string | null
+          status?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          ai_use_case?: string | null
+          company_name?: string
+          company_size?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_title?: string | null
+          created_at?: string
+          email_body?: string | null
+          email_subject?: string | null
+          generated_by?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          pain_points?: string | null
+          rationale?: string | null
+          region?: string | null
+          sent_at?: string | null
+          sent_message_id?: string | null
+          status?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
