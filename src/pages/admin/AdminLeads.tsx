@@ -55,6 +55,7 @@ export default function AdminLeads() {
   const [activeLead, setActiveLead] = useState<Lead | null>(null);
   const [draftingId, setDraftingId] = useState<string | null>(null);
   const [sendingId, setSendingId] = useState<string | null>(null);
+  const [testingId, setTestingId] = useState<string | null>(null);
   const [editSubject, setEditSubject] = useState("");
   const [editBody, setEditBody] = useState("");
 
