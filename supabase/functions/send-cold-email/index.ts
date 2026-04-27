@@ -132,18 +132,21 @@ serve(async (req) => {
       },
     });
 
-    await client.send({
-      from: `Nicolas Roth <${fromEmail}>`,
-      to,
-      subject,
-      content: fullText,
-      html: `<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:14px;line-height:1.6;color:#1a1a1a;">${htmlBody}${htmlFooter}</div>`,
-      headers: {
-        "List-Unsubscribe": `<${unsubUrl}>, <mailto:${fromEmail}?subject=unsubscribe>`,
-        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-      },
-    });
-    await client.close();
+    try {
+      await client.send({
+        from: `Nicolas Roth <${fromEmail}>`,
+        to,
+        subject,
+        content: fullText,
+        html: `<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:14px;line-height:1.6;color:#1a1a1a;">${htmlBody}${htmlFooter}</div>`,
+        headers: {
+          "List-Unsubscribe": `<${unsubUrl}>, <mailto:${fromEmail}?subject=unsubscribe>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
+      });
+    } finally {
+      client.close().catch((closeError) => console.error("send-cold-email close error:", closeError));
+    }
 
     if (is_test) {
       return new Response(
