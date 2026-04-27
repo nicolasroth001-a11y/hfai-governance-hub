@@ -31,7 +31,7 @@ serve(async (req) => {
     const { data: isAdmin } = await supabase.rpc("has_role", { _user_id: userData.user.id, _role: "admin" });
     if (!isAdmin) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
-    const { lead_id, subject_override, body_override } = await req.json();
+    const { lead_id, subject_override, body_override, recipient_override, is_test } = await req.json();
     if (!lead_id) return new Response(JSON.stringify({ error: "lead_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
     // Service-role client for server-side operations (suppression check, cap check, token mgmt)
