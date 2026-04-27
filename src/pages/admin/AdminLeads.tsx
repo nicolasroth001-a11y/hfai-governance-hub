@@ -315,8 +315,12 @@ export default function AdminLeads() {
               </div>
             </div>
           )}
-          <DialogFooter className="gap-2">
+          <DialogFooter className="gap-2 flex-wrap">
             <Button variant="outline" onClick={copyEmail} className="gap-1"><Copy className="h-4 w-4" /> Copy</Button>
+            <Button variant="outline" onClick={handleTestSend} disabled={testingId === activeLead?.id} className="gap-1">
+              {testingId === activeLead?.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
+              Send test to me
+            </Button>
             <Button variant="outline" onClick={() => setActiveLead(null)}>Cancel</Button>
             <Button onClick={handleSend} disabled={sendingId === activeLead?.id} className="gap-2">
               {sendingId === activeLead?.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
