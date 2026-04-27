@@ -7,6 +7,11 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Daily send cap to protect domain reputation. Override with COLD_EMAIL_DAILY_CAP env var.
+const DEFAULT_DAILY_CAP = 50;
+
+const SITE_URL = "https://hfa-i.org";
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -29,19 +34,86 @@ serve(async (req) => {
     const { lead_id, subject_override, body_override } = await req.json();
     if (!lead_id) return new Response(JSON.stringify({ error: "lead_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
-    const { data: lead, error: leadErr } = await supabase.from("leads").select("*").eq("id", lead_id).single();
+    // Service-role client for server-side operations (suppression check, cap check, token mgmt)
+    const admin = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
+    // ---------- Daily send cap ----------
+    const cap = parseInt(Deno.env.get("COLD_EMAIL_DAILY_CAP") ?? "") || DEFAULT_DAILY_CAP;
+    const since = new Date();
+    since.setUTCHours(0, 0, 0, 0);
+    const { count: sentToday, error: countErr } = await admin
+      .from("leads")
+      .select("id", { count: "exact", head: true })
+      .gte("sent_at", since.toISOString());
+    if (countErr) console.error("daily cap count error:", countErr);
+    if ((sentToday ?? 0) >= cap) {
+      return new Response(
+        JSON.stringify({ error: `Daily send cap reached (${sentToday}/${cap}). Try again tomorrow or raise COLD_EMAIL_DAILY_CAP.` }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { data: lead, error: leadErr } = await admin.from("leads").select("*").eq("id", lead_id).single();
     if (leadErr || !lead) throw new Error("Lead not found");
 
-    const to = lead.contact_email;
+    const to = (lead.contact_email ?? "").trim().toLowerCase();
     const subject = (subject_override ?? lead.email_subject ?? "").trim();
     const body = (body_override ?? lead.email_body ?? "").trim();
 
     if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) throw new Error("Invalid recipient email");
     if (!subject || !body) throw new Error("Subject and body required");
 
+    // ---------- Suppression check ----------
+    const { data: suppressed } = await admin
+      .from("suppressed_emails")
+      .select("email")
+      .eq("email", to)
+      .maybeSingle();
+    if (suppressed) {
+      await admin.from("leads").update({ status: "suppressed", notes: (lead.notes ? lead.notes + "\n" : "") + "Recipient on suppression list — not sent." }).eq("id", lead_id);
+      return new Response(
+        JSON.stringify({ error: "Recipient is on the suppression list. Lead marked as suppressed." }),
+        { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // ---------- Get or create unsubscribe token ----------
+    let unsubToken: string | null = null;
+    const { data: existingTok } = await admin
+      .from("email_unsubscribe_tokens")
+      .select("token")
+      .eq("email", to)
+      .is("used_at", null)
+      .maybeSingle();
+    if (existingTok?.token) {
+      unsubToken = existingTok.token;
+    } else {
+      const newToken = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
+      const { data: inserted, error: tokErr } = await admin
+        .from("email_unsubscribe_tokens")
+        .insert({ email: to, token: newToken })
+        .select("token")
+        .single();
+      if (tokErr) throw new Error(`Failed to create unsubscribe token: ${tokErr.message}`);
+      unsubToken = inserted.token;
+    }
+
+    const unsubUrl = `${SITE_URL}/unsubscribe?token=${unsubToken}`;
+
     const fromEmail = Deno.env.get("CONTACT_EMAIL");
     const password = Deno.env.get("CONTACT_EMAIL_APP_PASSWORD");
     if (!fromEmail || !password) throw new Error("Zoho SMTP credentials not configured");
+
+    // ---------- Compose with footer ----------
+    const footerText = `\n\n—\nIf you'd rather not hear from me, just reply STOP and I won't email again. You can also opt out here: ${unsubUrl}`;
+    const fullText = body + footerText;
+
+    const escape = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const htmlBody = body.split("\n").map((l: string) => escape(l)).join("<br>");
+    const htmlFooter = `<p style="margin-top:24px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:12px;color:#6b7280;line-height:1.5;">If you'd rather not hear from me, just reply <strong>STOP</strong> and I won't email again. You can also <a href="${unsubUrl}" style="color:#6b7280;">opt out here</a>.</p>`;
 
     const client = new SMTPClient({
       connection: {
@@ -52,18 +124,20 @@ serve(async (req) => {
       },
     });
 
-    const htmlBody = body.split("\n").map((l: string) => l.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")).join("<br>");
-
     await client.send({
       from: `Nicolas Roth <${fromEmail}>`,
       to,
       subject,
-      content: body,
-      html: `<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:14px;line-height:1.6;color:#1a1a1a;">${htmlBody}</div>`,
+      content: fullText,
+      html: `<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:14px;line-height:1.6;color:#1a1a1a;">${htmlBody}${htmlFooter}</div>`,
+      headers: {
+        "List-Unsubscribe": `<${unsubUrl}>, <mailto:${fromEmail}?subject=unsubscribe>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      },
     });
     await client.close();
 
-    const { data: updated, error: updErr } = await supabase
+    const { data: updated, error: updErr } = await admin
       .from("leads")
       .update({ status: "sent", sent_at: new Date().toISOString() })
       .eq("id", lead_id)
@@ -71,7 +145,10 @@ serve(async (req) => {
       .single();
     if (updErr) throw updErr;
 
-    return new Response(JSON.stringify({ success: true, lead: updated }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return new Response(
+      JSON.stringify({ success: true, lead: updated, sent_today: (sentToday ?? 0) + 1, daily_cap: cap }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   } catch (e) {
     console.error("send-cold-email error:", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown" }), {
