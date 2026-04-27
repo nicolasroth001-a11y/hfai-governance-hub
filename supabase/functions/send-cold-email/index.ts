@@ -145,6 +145,13 @@ serve(async (req) => {
     });
     await client.close();
 
+    if (is_test) {
+      return new Response(
+        JSON.stringify({ success: true, test: true, recipient: to, lead, sent_today: sentToday, daily_cap: cap }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { data: updated, error: updErr } = await admin
       .from("leads")
       .update({ status: "sent", sent_at: new Date().toISOString() })
@@ -154,7 +161,7 @@ serve(async (req) => {
     if (updErr) throw updErr;
 
     return new Response(
-      JSON.stringify({ success: true, lead: updated, sent_today: (sentToday ?? 0) + 1, daily_cap: cap }),
+      JSON.stringify({ success: true, lead: updated, sent_today: sentToday + 1, daily_cap: cap }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (e) {
