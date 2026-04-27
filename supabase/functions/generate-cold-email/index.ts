@@ -6,6 +6,8 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const DRAFT_MODEL = "google/gemini-2.5-flash";
+
 const SYSTEM = `You are Nicolas Roth, founder of HFAI (Human-First AI), writing a cold email to a prospect.
 
 HFAI is a governance platform for companies deploying high-risk AI. Core differentiators:
@@ -68,8 +70,10 @@ ${custom_angle ? `Custom angle: ${custom_angle}` : ""}`;
       method: "POST",
       headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "google/gemini-2.5-pro",
+        model: DRAFT_MODEL,
         messages: [{ role: "system", content: SYSTEM }, { role: "user", content: userPrompt }],
+        temperature: 0.7,
+        max_tokens: 220,
         tools: [{
           type: "function",
           function: {
