@@ -27,6 +27,7 @@ const ForgotPassword = lazy(() => import("./pages/login/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/login/ResetPassword"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const AdminCallCopilot = lazy(() => import("./pages/admin/AdminCallCopilot"));
+const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
 const PricingContact = lazy(() => import("./pages/PricingContact"));
 const PilotSignup = lazy(() => import("./pages/PilotSignup"));
 const SDKDocs = lazy(() => import("./pages/SDKDocs"));
@@ -251,6 +252,7 @@ const App = () => {
             <Route path="newsletter" element={<AdminNewsletter />} />
             <Route path="demo-mode" element={<AdminDemoMode />} />
             <Route path="call-copilot" element={<AdminCallCopilot />} />
+            <Route path="leads" element={<AdminLeads />} />
           </Route>
           <Route path="/admin/demo-mode/present" element={<ProtectedRoute requiredRole="admin"><AdminDemoPresenter /></ProtectedRoute>} />
 

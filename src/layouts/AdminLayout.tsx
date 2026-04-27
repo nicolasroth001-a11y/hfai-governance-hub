@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { RoleSidebar, NavItem } from "@/components/RoleSidebar";
 import { TopBar } from "@/components/TopBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Users, Building2, Plug, ScrollText, BarChart3, FileText, Mail, Sparkles, Headphones } from "lucide-react";
+import { LayoutDashboard, AlertTriangle, BookOpen, ClipboardList, Users, Building2, Plug, ScrollText, BarChart3, FileText, Mail, Sparkles, Headphones, Target } from "lucide-react";
 
 export default function AdminLayout() {
   const { t } = useTranslation();
@@ -21,6 +21,7 @@ export default function AdminLayout() {
     { title: t("sidebar.analytics"), url: "/admin/analytics", icon: BarChart3 },
     { title: "Demo Cockpit", url: "/admin/demo-mode", icon: Sparkles },
     { title: "Call Copilot", url: "/admin/call-copilot", icon: Headphones },
+    { title: "Lead Generator", url: "/admin/leads", icon: Target },
   ];
 
   const docItems: NavItem[] = [
