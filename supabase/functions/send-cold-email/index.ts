@@ -72,17 +72,20 @@ serve(async (req) => {
     if (!subject || !body) throw new Error("Subject and body required");
 
     // ---------- Suppression check ----------
-    const { data: suppressed } = await admin
-      .from("suppressed_emails")
-      .select("email")
-      .eq("email", to)
-      .maybeSingle();
-    if (suppressed) {
-      await admin.from("leads").update({ status: "suppressed", notes: (lead.notes ? lead.notes + "\n" : "") + "Recipient on suppression list — not sent." }).eq("id", lead_id);
-      return new Response(
-        JSON.stringify({ error: "Recipient is on the suppression list. Lead marked as suppressed." }),
-        { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    // ---------- Suppression check (skipped for test sends) ----------
+    if (!is_test) {
+      const { data: suppressed } = await admin
+        .from("suppressed_emails")
+        .select("email")
+        .eq("email", to)
+        .maybeSingle();
+      if (suppressed) {
+        await admin.from("leads").update({ status: "suppressed", notes: (lead.notes ? lead.notes + "\n" : "") + "Recipient on suppression list — not sent." }).eq("id", lead_id);
+        return new Response(
+          JSON.stringify({ error: "Recipient is on the suppression list. Lead marked as suppressed." }),
+          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
     // ---------- Get or create unsubscribe token ----------
