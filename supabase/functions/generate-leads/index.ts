@@ -147,17 +147,36 @@ Return ONLY via the function call.`;
     });
 
     if (!aiResp.ok) {
-      const t = await aiResp.text();
+      const t = await aiResp.text().catch(() => "");
       console.error("AI error:", aiResp.status, t);
       if (aiResp.status === 429) return new Response(JSON.stringify({ error: "Rate limited, try again in a moment" }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       if (aiResp.status === 402) return new Response(JSON.stringify({ error: "AI credits exhausted — top up at Settings → Workspace → Usage" }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      throw new Error(`AI gateway ${aiResp.status}`);
+      throw new Error(`AI gateway ${aiResp.status}: ${t.slice(0, 200)}`);
     }
 
-    const aiData = await aiResp.json();
+    // Read body as text first so we can give a clear error if it's empty/truncated
+    const aiText = await aiResp.text().catch(() => "");
+    if (!aiText || aiText.trim().length === 0) {
+      throw new Error("AI gateway returned an empty response — please retry");
+    }
+    let aiData: any;
+    try {
+      aiData = JSON.parse(aiText);
+    } catch (e) {
+      console.error("AI response not JSON:", aiText.slice(0, 500));
+      throw new Error("AI gateway returned malformed JSON — please retry");
+    }
     const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-    if (!toolCall) throw new Error("No tool call in response");
-    const parsed = JSON.parse(toolCall.function.arguments);
+    if (!toolCall?.function?.arguments) {
+      console.error("No tool call. Full response:", JSON.stringify(aiData).slice(0, 500));
+      throw new Error("AI did not return structured leads — please retry");
+    }
+    let parsed: any;
+    try {
+      parsed = JSON.parse(toolCall.function.arguments);
+    } catch {
+      throw new Error("AI returned malformed lead data — please retry");
+    }
     let leads = parsed.leads || [];
 
     // Server-side dedup safety net (case-insensitive)
@@ -171,6 +190,7 @@ Return ONLY via the function call.`;
     }
 
     // Verify each lead by fetching its website. Mark as verified / invalid / unverified.
+    // CRITICAL: always cancel the response body to avoid leaked streams in edge runtime.
     async function verifyWebsite(rawSite: string): Promise<{ status: string; notes: string }> {
       const site = (rawSite || "").trim().replace(/^https?:\/\//i, "").replace(/\/$/, "");
       if (!site || !/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(site)) {
@@ -178,25 +198,27 @@ Return ONLY via the function call.`;
       }
       const tryUrls = [`https://${site}`, `https://www.${site}`];
       for (const url of tryUrls) {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 5000);
         try {
-          const ctrl = new AbortController();
-          const t = setTimeout(() => ctrl.abort(), 6000);
           const resp = await fetch(url, {
-            method: "GET",
+            method: "HEAD",
             redirect: "follow",
             signal: ctrl.signal,
-            headers: { "User-Agent": "Mozilla/5.0 (HFAI lead verifier)" },
+            headers: { "User-Agent": "Mozilla/5.0 (compatible; HFAI-LeadVerifier/1.0)" },
           });
+          // HEAD has no body but cancel anyway just in case
+          try { await resp.body?.cancel(); } catch { /* ignore */ }
           clearTimeout(t);
           if (resp.status >= 200 && resp.status < 400) {
             return { status: "verified", notes: `HTTP ${resp.status} from ${url}` };
           }
-          if (resp.status === 403 || resp.status === 401 || resp.status === 429) {
-            // Likely a real site blocking bots
-            return { status: "verified", notes: `HTTP ${resp.status} (bot-blocked, site exists)` };
+          if (resp.status === 401 || resp.status === 403 || resp.status === 405 || resp.status === 429) {
+            return { status: "verified", notes: `HTTP ${resp.status} (site exists, blocks bots/HEAD)` };
           }
-        } catch (err) {
-          // try next
+        } catch {
+          clearTimeout(t);
+          // try next URL
         }
       }
       return { status: "invalid", notes: "Website unreachable — likely fabricated" };
