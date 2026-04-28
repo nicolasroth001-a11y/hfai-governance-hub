@@ -18,16 +18,91 @@ HFAI is a governance platform for companies deploying high-risk AI. Core differe
 
 Tone:
 - Founder-personal, sharp, no fluff
-- Open with a specific observation about their AI footprint or industry pressure — not a generic pitch
-- One concrete value prop, not three
+- Open with the SPECIFIC HOOK provided (a real observation about their site, recent news, or industry deadline) — never generic
+- One concrete value prop tied to that hook
 - One soft CTA (15-min call, not "let me know what you think")
 - No emoji, no exclamation marks, no "I hope this email finds you well", no "I came across your company"
 - Max 130 words body
 - Sign as "Nicolas Roth, Founder, HFAI — hfa-i.org"
 
-Subject lines: 4-7 words, no clickbait, regulatory or operational hook.
+Subject lines: 4-7 words, regulatory or operational hook tied to the lead, no clickbait.
 
 Return via function call only.`;
+
+// Lightweight HTML → text extractor for hook discovery
+function extractText(html: string, maxChars = 4000): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxChars);
+}
+
+async function fetchWithTimeout(url: string, ms = 4000): Promise<string | null> {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms);
+    const r = await fetch(url, {
+      signal: ctrl.signal,
+      headers: { "User-Agent": "Mozilla/5.0 (HFAI-LeadResearch/1.0)" },
+      redirect: "follow",
+    });
+    clearTimeout(t);
+    if (!r.ok) return null;
+    const ct = r.headers.get("content-type") || "";
+    if (!ct.includes("text/html") && !ct.includes("text/plain")) return null;
+    return await r.text();
+  } catch {
+    return null;
+  }
+}
+
+function normalizeUrl(raw: string): string | null {
+  if (!raw) return null;
+  let u = raw.trim();
+  if (!/^https?:\/\//i.test(u)) u = "https://" + u;
+  try {
+    const url = new URL(u);
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+async function discoverHook(lead: any): Promise<string> {
+  const origin = normalizeUrl(lead.website || "");
+  const snippets: string[] = [];
+
+  if (origin) {
+    // Try homepage + a few common surfaces in parallel
+    const candidates = [origin, `${origin}/about`, `${origin}/news`, `${origin}/press`, `${origin}/blog`];
+    const htmls = await Promise.all(candidates.map((u) => fetchWithTimeout(u, 3500)));
+    htmls.forEach((html, i) => {
+      if (!html) return;
+      const text = extractText(html, 1200);
+      if (text.length > 200) snippets.push(`[${candidates[i]}]\n${text}`);
+    });
+  }
+
+  if (!snippets.length) {
+    // Industry-level fallback hook (always specific to a regulatory clock)
+    const industry = (lead.industry || "").toLowerCase();
+    if (industry.includes("financ") || industry.includes("bank") || industry.includes("insur"))
+      return "EU AI Act Article 6 classifies AI used in credit scoring and insurance pricing as high-risk — Article 11 documentation deadline applies in 2026.";
+    if (industry.includes("health"))
+      return "MDR + EU AI Act overlap means health AI systems need both CE marking AND Article 11 technical documentation by 2026.";
+    if (industry.includes("hr") || industry.includes("recruit") || industry.includes("staff"))
+      return "AI used in hiring is explicitly named high-risk under Annex III — every screening or scoring model needs Article 14 human oversight evidence.";
+    if (industry.includes("educ"))
+      return "EU AI Act Annex III names AI in education (admissions, grading, proctoring) as high-risk — most edtech vendors haven't classified their stack.";
+    return "EU AI Act Article 11 + 14 + 26 obligations apply to companies deploying high-risk AI — first enforcement actions land in 2026.";
+  }
+
+  return snippets.join("\n\n").slice(0, 6000);
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -54,6 +129,9 @@ serve(async (req) => {
     const { data: lead, error: leadErr } = await supabase.from("leads").select("*").eq("id", lead_id).single();
     if (leadErr || !lead) throw new Error("Lead not found");
 
+    // NEW: discover a specific, recent hook for this lead
+    const hookContext = await discoverHook(lead);
+
     const userPrompt = `Write a cold email to:
 Company: ${lead.company_name}
 Industry: ${lead.industry}
@@ -61,7 +139,14 @@ Contact: ${lead.contact_name || "(unknown)"} — ${lead.contact_title || "(unkno
 AI use case: ${lead.ai_use_case}
 Known pain points: ${lead.pain_points || "general AI governance gaps"}
 Why HFAI fits: ${lead.rationale}
-${custom_angle ? `Custom angle: ${custom_angle}` : ""}`;
+${custom_angle ? `Custom angle: ${custom_angle}` : ""}
+
+SPECIFIC HOOK CONTEXT (use this to open the email with a real, personalized observation — quote a phrase, reference a product/initiative, or cite the regulatory clock that applies to them. Do NOT invent facts not present here):
+"""
+${hookContext}
+"""
+
+Pick ONE concrete detail from the hook context and open with it. Keep it tight.`;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
@@ -73,7 +158,7 @@ ${custom_angle ? `Custom angle: ${custom_angle}` : ""}`;
         model: DRAFT_MODEL,
         messages: [{ role: "system", content: SYSTEM }, { role: "user", content: userPrompt }],
         temperature: 0.7,
-        max_tokens: 220,
+        max_tokens: 260,
         tools: [{
           type: "function",
           function: {
