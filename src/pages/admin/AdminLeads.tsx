@@ -320,7 +320,7 @@ export default function AdminLeads() {
                   </div>
                 </div>
               </div>
-            ))}
+            );})}
           </div>
         )}
       </ContentCard>
