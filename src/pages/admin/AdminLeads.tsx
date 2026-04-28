@@ -85,7 +85,14 @@ export default function AdminLeads() {
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-      toast({ title: `${data.leads?.length || 0} leads generated` });
+      const verified = data?.verified ?? 0;
+      const invalid = data?.invalid ?? 0;
+      toast({
+        title: `${data.leads?.length || 0} leads generated`,
+        description: invalid > 0
+          ? `${verified} verified · ${invalid} flagged unverified (website unreachable — likely fabricated)`
+          : `All ${verified} leads passed website verification ✓`,
+      });
       await fetchLeads();
     } catch (e: any) {
       toast({ title: "Generation failed", description: e.message || String(e), variant: "destructive" });
