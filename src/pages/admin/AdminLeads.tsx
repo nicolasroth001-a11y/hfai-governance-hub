@@ -31,6 +31,8 @@ interface Lead {
   notes: string;
   sent_at: string | null;
   created_at: string;
+  verification_status?: string;
+  verification_notes?: string;
 }
 
 const STATUS_VARIANTS: Record<string, string> = {
