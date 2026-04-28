@@ -170,7 +170,43 @@ Return ONLY via the function call.`;
       });
     }
 
-    const rows = leads.map((l: any) => ({
+    // Verify each lead by fetching its website. Mark as verified / invalid / unverified.
+    async function verifyWebsite(rawSite: string): Promise<{ status: string; notes: string }> {
+      const site = (rawSite || "").trim().replace(/^https?:\/\//i, "").replace(/\/$/, "");
+      if (!site || !/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(site)) {
+        return { status: "invalid", notes: "No valid domain provided" };
+      }
+      const tryUrls = [`https://${site}`, `https://www.${site}`];
+      for (const url of tryUrls) {
+        try {
+          const ctrl = new AbortController();
+          const t = setTimeout(() => ctrl.abort(), 6000);
+          const resp = await fetch(url, {
+            method: "GET",
+            redirect: "follow",
+            signal: ctrl.signal,
+            headers: { "User-Agent": "Mozilla/5.0 (HFAI lead verifier)" },
+          });
+          clearTimeout(t);
+          if (resp.status >= 200 && resp.status < 400) {
+            return { status: "verified", notes: `HTTP ${resp.status} from ${url}` };
+          }
+          if (resp.status === 403 || resp.status === 401 || resp.status === 429) {
+            // Likely a real site blocking bots
+            return { status: "verified", notes: `HTTP ${resp.status} (bot-blocked, site exists)` };
+          }
+        } catch (err) {
+          // try next
+        }
+      }
+      return { status: "invalid", notes: "Website unreachable — likely fabricated" };
+    }
+
+    const verifications = await Promise.all(
+      leads.map((l: any) => verifyWebsite(l.website || ""))
+    );
+
+    const rows = leads.map((l: any, i: number) => ({
       company_name: l.company_name,
       website: l.website || "",
       industry: l.industry || "",
@@ -182,14 +218,25 @@ Return ONLY via the function call.`;
       ai_use_case: l.ai_use_case || "",
       pain_points: l.pain_points || "",
       rationale: l.rationale || "",
-      status: "new",
+      status: verifications[i].status === "verified" ? "new" : "unverified",
+      verification_status: verifications[i].status,
+      verification_notes: verifications[i].notes,
+      verified_at: new Date().toISOString(),
       generated_by: userData.user.id,
     }));
+
+    const verifiedCount = verifications.filter((v) => v.status === "verified").length;
+    const invalidCount = verifications.length - verifiedCount;
 
     const { data: inserted, error: insErr } = await supabase.from("leads").insert(rows).select();
     if (insErr) throw insErr;
 
-    return new Response(JSON.stringify({ leads: inserted }), {
+    return new Response(JSON.stringify({
+      leads: inserted,
+      verified: verifiedCount,
+      invalid: invalidCount,
+      note: invalidCount > 0 ? `${invalidCount} of ${verifications.length} leads failed website verification and are marked 'unverified'.` : undefined,
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
