@@ -6,26 +6,38 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM = `You are a B2B lead-generation analyst for HFAI (Human-First AI), an AI governance platform that helps companies comply with the EU AI Act, NIST AI RMF, and ISO 42001. HFAI provides:
-- AI-SBOM (technical documentation, Article 11)
-- Tamper-evident human oversight audit trails (Article 14)
+const SYSTEM = `You are a senior B2B lead-generation analyst for HFAI (Human-First AI), an AI governance platform that helps companies comply with the EU AI Act, NIST AI RMF, and ISO 42001.
+
+HFAI's core wedge:
+- AI-SBOM: signed Article 11 technical documentation
+- Tamper-evident human oversight (Article 14) with SHA-256 hash chain
 - Pre-deployment readiness gating (Article 26)
-- Shadow AI discovery, rule enforcement, and dual-mode (monitor/block) interception
+- Shadow AI discovery + dual-mode enforcement (monitor or block)
 
-Your job: generate realistic prospect companies that would benefit from HFAI. For each company, provide:
-- company_name
-- website (best-guess domain)
-- industry
-- company_size (e.g. "200-1000", "1k-5k", "5k+")
-- region
-- contact_name (a plausible name for the role)
-- contact_title (e.g. Head of AI Governance, Chief Compliance Officer, VP Engineering, CISO)
-- contact_email (use the website domain — best guess, e.g. firstname.lastname@domain)
-- ai_use_case (specifically what AI they likely deploy)
-- pain_points (regulatory, audit, oversight gaps)
-- rationale (why HFAI is a strong fit, 1-2 sentences)
+YOUR JOB: produce HIGH-INTENT prospects — companies that have a real, dated regulatory obligation HFAI solves.
 
-Be realistic — pick companies that genuinely deploy high-risk AI in the requested industry/region. Prioritize EU-based or EU-exposed companies given the AI Act timeline. Do not fabricate famous brands as customers.`;
+QUALITY BAR (non-negotiable):
+1. **Real companies only.** Use companies that actually exist and visibly deploy AI. No invented brands, no "Acme Corp", no famous logos as fake customers (no OpenAI/Google/Microsoft/etc. as prospects).
+2. **EU-based or EU-exposed.** They must be subject to the EU AI Act (operate in EU, sell to EU customers, or process EU citizen data).
+3. **Mid-market sweet spot.** 200–5,000 employees. Big enough to have compliance budget, small enough to not have a 50-person internal GRC team.
+4. **High-risk AI use case.** Must map to EU AI Act Annex III (HR/recruiting, credit/insurance, education, healthcare, law enforcement, critical infra, biometrics) OR be a GPAI deployer with >10k EU users.
+5. **Buyer-grade contact.** Target ONE of: Head of AI Governance, Chief AI Officer, Chief Compliance Officer, DPO, CISO, Head of Risk, VP Legal/Regulatory. Never "VP Engineering" or "CTO" unless the company has no compliance function.
+6. **Plausible email.** Use the company's real domain, format firstname.lastname@domain or first@domain — whatever matches that company's known convention.
+
+For each prospect return:
+- company_name (real)
+- website (real domain, no https://)
+- industry (specific: "Insurance — health" not just "Insurance")
+- company_size ("200-1000", "1k-5k", "5k+")
+- region (country + EU/UK/US-EU)
+- contact_name (plausible name fitting region)
+- contact_title (from buyer list above)
+- contact_email (real-domain best guess)
+- ai_use_case (specific: "AI-driven CV screening for engineering roles" not "uses AI")
+- pain_points (the SPECIFIC regulatory gap — cite Article number)
+- rationale (1-2 sentences, why HFAI fits THIS company's deadline)
+
+DEDUPLICATION: You will be given a list of companies already in the pipeline. NEVER return any of those companies — pick fresh prospects.`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -51,7 +63,6 @@ serve(async (req) => {
       });
     }
 
-    // Verify admin
     const { data: roleData } = await supabase.rpc("has_role", { _user_id: userData.user.id, _role: "admin" });
     if (!roleData) {
       return new Response(JSON.stringify({ error: "Forbidden" }), {
@@ -62,11 +73,27 @@ serve(async (req) => {
     const { industry = "", region = "", company_size = "", count = 5, custom_brief = "" } = await req.json();
     const safeCount = Math.min(Math.max(parseInt(String(count)) || 5, 1), 10);
 
-    const userPrompt = `Generate ${safeCount} prospect companies for HFAI.
-Industry filter: ${industry || "any high-risk AI sector (finance, healthcare, HR/recruiting, education, law enforcement, critical infra)"}
-Region: ${region || "EU-focused, US-EU exposed"}
-Company size: ${company_size || "mid-to-large enterprise"}
+    // Pull existing companies to avoid duplicates
+    const { data: existingLeads } = await supabase
+      .from("leads")
+      .select("company_name")
+      .order("created_at", { ascending: false })
+      .limit(500);
+    const existingNames = (existingLeads || []).map((l: any) => l.company_name).filter(Boolean);
+    const dedupBlock = existingNames.length
+      ? `EXISTING COMPANIES IN PIPELINE — DO NOT RETURN ANY OF THESE:\n${existingNames.join(", ")}`
+      : "Pipeline is empty — pick the strongest fresh prospects.";
+
+    const userPrompt = `Generate ${safeCount} HIGH-INTENT prospect companies for HFAI.
+
+Industry filter: ${industry || "any high-risk AI sector under EU AI Act Annex III (HR/recruiting, credit/insurance, healthcare, education, biometrics, critical infra) OR GPAI deployers with EU exposure"}
+Region: ${region || "EU-based preferred (DE, FR, NL, IE, ES, IT, Nordics) or EU-exposed UK/US"}
+Company size: ${company_size || "mid-market: 200–5,000 employees"}
 Additional brief: ${custom_brief || "none"}
+
+${dedupBlock}
+
+Each prospect MUST have a clearly stated EU AI Act article (11, 14, 26, or Annex III) tied to its pain point. If you cannot tie a company to a real regulatory clock, do not include it.
 
 Return ONLY via the function call.`;
 
@@ -79,6 +106,7 @@ Return ONLY via the function call.`;
       body: JSON.stringify({
         model: "google/gemini-2.5-pro",
         messages: [{ role: "system", content: SYSTEM }, { role: "user", content: userPrompt }],
+        temperature: 0.8,
         tools: [{
           type: "function",
           function: {
@@ -130,9 +158,18 @@ Return ONLY via the function call.`;
     const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
     if (!toolCall) throw new Error("No tool call in response");
     const parsed = JSON.parse(toolCall.function.arguments);
-    const leads = parsed.leads || [];
+    let leads = parsed.leads || [];
 
-    // Insert into DB
+    // Server-side dedup safety net (case-insensitive)
+    const existingLower = new Set(existingNames.map((n: string) => n.toLowerCase().trim()));
+    leads = leads.filter((l: any) => l.company_name && !existingLower.has(l.company_name.toLowerCase().trim()));
+
+    if (leads.length === 0) {
+      return new Response(JSON.stringify({ leads: [], note: "All generated companies were duplicates. Try a different industry/region filter." }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const rows = leads.map((l: any) => ({
       company_name: l.company_name,
       website: l.website || "",
