@@ -231,7 +231,12 @@ Return ONLY via the function call.`;
     const { data: inserted, error: insErr } = await supabase.from("leads").insert(rows).select();
     if (insErr) throw insErr;
 
-    return new Response(JSON.stringify({ leads: inserted }), {
+    return new Response(JSON.stringify({
+      leads: inserted,
+      verified: verifiedCount,
+      invalid: invalidCount,
+      note: invalidCount > 0 ? `${invalidCount} of ${verifications.length} leads failed website verification and are marked 'unverified'.` : undefined,
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
