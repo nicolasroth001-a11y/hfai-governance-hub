@@ -130,23 +130,38 @@ serve(async (req) => {
         tls: true,
         auth: { username: fromEmail, password },
       },
+      pool: false,
     });
 
-    try {
-      await client.send({
-        from: `Nicolas Roth <${fromEmail}>`,
-        to,
-        subject,
-        content: fullText,
-        html: `<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:14px;line-height:1.6;color:#1a1a1a;">${htmlBody}${htmlFooter}</div>`,
-        headers: {
-          "List-Unsubscribe": `<${unsubUrl}>, <mailto:${fromEmail}?subject=unsubscribe>`,
-          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-        },
+    // Hard timeout so the function never burns its CPU budget on a stalled SMTP socket.
+    const sendWithTimeout = async (ms: number) => {
+      let timer: number | undefined;
+      const timeout = new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`SMTP send timed out after ${ms}ms`)), ms) as unknown as number;
       });
-    } finally {
-      client.close().catch((closeError) => console.error("send-cold-email close error:", closeError));
-    }
+      try {
+        await Promise.race([
+          client.send({
+            from: `Nicolas Roth <${fromEmail}>`,
+            to,
+            subject,
+            content: fullText,
+            html: `<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:14px;line-height:1.6;color:#1a1a1a;">${htmlBody}${htmlFooter}</div>`,
+            headers: {
+              "List-Unsubscribe": `<${unsubUrl}>, <mailto:${fromEmail}?subject=unsubscribe>`,
+              "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+            },
+          }),
+          timeout,
+        ]);
+      } finally {
+        if (timer) clearTimeout(timer);
+        // Fire-and-forget close; awaiting QUIT can stall and trip CPU limits.
+        client.close().catch((closeError) => console.error("send-cold-email close error:", closeError));
+      }
+    };
+
+    await sendWithTimeout(8000);
 
     if (is_test) {
       return new Response(
