@@ -931,6 +931,9 @@ export type Database = {
           sent_message_id: string | null
           status: string
           updated_at: string
+          verification_notes: string
+          verification_status: string
+          verified_at: string | null
           website: string | null
         }
         Insert: {
@@ -954,6 +957,9 @@ export type Database = {
           sent_message_id?: string | null
           status?: string
           updated_at?: string
+          verification_notes?: string
+          verification_status?: string
+          verified_at?: string | null
           website?: string | null
         }
         Update: {
@@ -977,6 +983,9 @@ export type Database = {
           sent_message_id?: string | null
           status?: string
           updated_at?: string
+          verification_notes?: string
+          verification_status?: string
+          verified_at?: string | null
           website?: string | null
         }
         Relationships: []
