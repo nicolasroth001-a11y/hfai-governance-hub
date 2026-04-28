@@ -53,6 +53,7 @@ export default function AdminLeads() {
   const [companySize, setCompanySize] = useState("");
   const [count, setCount] = useState(5);
   const [brief, setBrief] = useState("");
+  const [hideUnverified, setHideUnverified] = useState(true);
 
   const [activeLead, setActiveLead] = useState<Lead | null>(null);
   const [draftingId, setDraftingId] = useState<string | null>(null);
