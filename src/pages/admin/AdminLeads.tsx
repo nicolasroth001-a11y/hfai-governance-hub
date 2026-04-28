@@ -245,7 +245,13 @@ export default function AdminLeads() {
         </div>
       </ContentCard>
 
-      <ContentCard title={`Pipeline (${leads.length})`}>
+      <ContentCard title={`Pipeline (${leads.filter(l => !hideUnverified || l.verification_status !== 'invalid').length}${hideUnverified && leads.some(l => l.verification_status === 'invalid') ? ` · ${leads.filter(l => l.verification_status === 'invalid').length} hidden` : ''})`}>
+        <div className="mb-3 flex items-center gap-2">
+          <Button size="sm" variant={hideUnverified ? "default" : "outline"} onClick={() => setHideUnverified(v => !v)} className="gap-1 h-7 text-xs">
+            <ShieldCheck className="h-3 w-3" />
+            {hideUnverified ? "Hiding unverified" : "Showing all"}
+          </Button>
+        </div>
         {loading ? (
           <div className="space-y-2">
             {[1, 2, 3].map((i) => <div key={i} className="h-16 rounded bg-muted/50 animate-pulse" />)}
@@ -254,12 +260,23 @@ export default function AdminLeads() {
           <p className="text-sm text-muted-foreground py-8 text-center">No leads yet. Generate your first batch above.</p>
         ) : (
           <div className="space-y-2">
-            {leads.map((lead) => (
+            {leads.filter(l => !hideUnverified || l.verification_status !== 'invalid').map((lead) => {
+              const vStatus = lead.verification_status || 'unverified';
+              const VIcon = vStatus === 'verified' ? ShieldCheck : vStatus === 'invalid' ? ShieldX : ShieldAlert;
+              const vClass = vStatus === 'verified'
+                ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30'
+                : vStatus === 'invalid'
+                ? 'bg-destructive/10 text-destructive border-destructive/30'
+                : 'bg-amber-500/10 text-amber-500 border-amber-500/30';
+              return (
               <div key={lead.id} className="border border-border rounded-lg p-4 hover:border-primary/40 transition-colors">
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex-1 min-w-[250px]">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold text-foreground">{lead.company_name}</h3>
+                      <Badge variant="outline" className={vClass} title={lead.verification_notes || vStatus}>
+                        <VIcon className="h-3 w-3 mr-1" />{vStatus}
+                      </Badge>
                       <Badge variant="outline" className={STATUS_VARIANTS[lead.status] || ""}>{lead.status}</Badge>
                       {lead.industry && <Badge variant="outline" className="text-xs">{lead.industry}</Badge>}
                       {lead.region && <Badge variant="outline" className="text-xs">{lead.region}</Badge>}
@@ -268,6 +285,11 @@ export default function AdminLeads() {
                       {lead.contact_name || "(no contact)"} {lead.contact_title && `· ${lead.contact_title}`}
                     </p>
                     <p className="text-xs text-muted-foreground font-mono">{lead.contact_email || "—"}</p>
+                    {lead.website && (
+                      <a href={`https://${lead.website.replace(/^https?:\/\//,'')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
+                        {lead.website} ↗
+                      </a>
+                    )}
                     <p className="text-sm mt-2 text-foreground/80">{lead.rationale}</p>
                   </div>
                   <div className="flex flex-col gap-2 items-end">
