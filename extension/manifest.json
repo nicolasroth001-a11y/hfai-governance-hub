@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "HFAI LinkedIn Outreach",
+  "version": "1.0.0",
+  "description": "Personalized LinkedIn connection requests from your HFAI lead pipeline. Full-auto with safety caps.",
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "https://uomnlgpqundhlmqkuhog.supabase.co/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "HFAI Outreach"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

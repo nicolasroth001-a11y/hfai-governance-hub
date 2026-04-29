@@ -25,3 +25,5 @@ project_id = "uomnlgpqundhlmqkuhog"
     verify_jwt = false
   [functions.call-copilot]
     verify_jwt = false
+  [functions.linkedin-extension-api]
+    verify_jwt = false

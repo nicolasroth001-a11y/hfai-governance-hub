@@ -1,0 +1,21 @@
+#hfai-overlay {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 340px;
+  background: #0a0a0a;
+  color: #f5f5f5;
+  border: 1px solid #c4993a;
+  border-radius: 8px;
+  padding: 14px;
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 12px;
+  z-index: 999999;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+#hfai-overlay h3 { margin: 0 0 8px; font-size: 13px; color: #c4993a; }
+#hfai-overlay .lead { color: #ccc; margin-bottom: 8px; line-height: 1.4; }
+#hfai-overlay .msg { background: #1a1a1a; padding: 8px; border-radius: 4px; margin: 8px 0; font-size: 11px; line-height: 1.5; max-height: 120px; overflow-y: auto; }
+#hfai-overlay .step { color: #c4993a; font-weight: 600; }
+#hfai-overlay .err { color: #ef4444; }
+#hfai-overlay .ok { color: #10b981; }
