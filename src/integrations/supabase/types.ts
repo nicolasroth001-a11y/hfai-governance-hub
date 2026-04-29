@@ -923,6 +923,12 @@ export type Database = {
           generated_by: string | null
           id: string
           industry: string | null
+          linkedin_headline: string | null
+          linkedin_last_error: string | null
+          linkedin_message: string | null
+          linkedin_sent_at: string | null
+          linkedin_status: string
+          linkedin_url: string | null
           notes: string | null
           pain_points: string | null
           rationale: string | null
@@ -949,6 +955,12 @@ export type Database = {
           generated_by?: string | null
           id?: string
           industry?: string | null
+          linkedin_headline?: string | null
+          linkedin_last_error?: string | null
+          linkedin_message?: string | null
+          linkedin_sent_at?: string | null
+          linkedin_status?: string
+          linkedin_url?: string | null
           notes?: string | null
           pain_points?: string | null
           rationale?: string | null
@@ -975,6 +987,12 @@ export type Database = {
           generated_by?: string | null
           id?: string
           industry?: string | null
+          linkedin_headline?: string | null
+          linkedin_last_error?: string | null
+          linkedin_message?: string | null
+          linkedin_sent_at?: string | null
+          linkedin_status?: string
+          linkedin_url?: string | null
           notes?: string | null
           pain_points?: string | null
           rationale?: string | null
@@ -987,6 +1005,108 @@ export type Database = {
           verification_status?: string
           verified_at?: string | null
           website?: string | null
+        }
+        Relationships: []
+      }
+      linkedin_activity_log: {
+        Row: {
+          action: string
+          admin_id: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          lead_id: string | null
+          status: string
+        }
+        Insert: {
+          action: string
+          admin_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          lead_id?: string | null
+          status?: string
+        }
+        Update: {
+          action?: string
+          admin_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          lead_id?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      linkedin_session_state: {
+        Row: {
+          active: boolean
+          admin_id: string
+          created_at: string
+          daily_cap: number
+          extension_token: string
+          id: string
+          last_reset_date: string
+          max_delay_seconds: number
+          min_delay_seconds: number
+          sent_today: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          admin_id: string
+          created_at?: string
+          daily_cap?: number
+          extension_token?: string
+          id?: string
+          last_reset_date?: string
+          max_delay_seconds?: number
+          min_delay_seconds?: number
+          sent_today?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          admin_id?: string
+          created_at?: string
+          daily_cap?: number
+          extension_token?: string
+          id?: string
+          last_reset_date?: string
+          max_delay_seconds?: number
+          min_delay_seconds?: number
+          sent_today?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      linkedin_templates: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_default: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_default?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_default?: boolean
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }
