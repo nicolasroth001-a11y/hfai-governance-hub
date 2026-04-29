@@ -11,31 +11,39 @@ async function api(path, body) {
 }
 
 async function getLinkedInTab() {
+  // Prefer the active tab if it's on LinkedIn; otherwise any LinkedIn tab.
+  const [active] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (active && /linkedin\.com/.test(active.url || "")) return active;
   const tabs = await chrome.tabs.query({ url: "https://www.linkedin.com/*" });
   return tabs[0] || null;
 }
 
 async function processNext() {
   const { hfaiActive } = await chrome.storage.local.get(["hfaiActive"]);
-  if (!hfaiActive) return;
+  if (!hfaiActive) {
+    console.log("[HFAI bg] Not active, skipping");
+    return;
+  }
 
   const next = await api("next");
+  console.log("[HFAI bg] Next lead:", next);
+
   if (next.done) {
     await chrome.storage.local.set({ hfaiActive: false });
-    console.log("[HFAI] Session complete:", next.reason);
+    console.log("[HFAI bg] Session complete:", next.reason);
     return;
   }
 
   const tab = await getLinkedInTab();
+  await chrome.storage.local.set({ hfaiCurrentLead: next });
+
   if (!tab) {
-    // Open LinkedIn if not present
-    const created = await chrome.tabs.create({ url: next.lead.linkedin_url });
-    await chrome.storage.local.set({ hfaiCurrentLead: next });
+    // No LinkedIn tab open - create one
+    await chrome.tabs.create({ url: next.lead.linkedin_url });
     return;
   }
 
   // Navigate the existing tab to the prospect's profile
-  await chrome.storage.local.set({ hfaiCurrentLead: next });
   await chrome.tabs.update(tab.id, { url: next.lead.linkedin_url, active: true });
 }
 
@@ -44,15 +52,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     processNext();
   } else if (msg.type === "STOP") {
     chrome.alarms.clear("hfai-next");
+    chrome.storage.local.set({ hfaiActive: false });
   } else if (msg.type === "DONE_LEAD") {
-    // Content script reports completion; schedule next with delay
     (async () => {
       const heartbeat = await api("heartbeat");
       const min = heartbeat.min_delay_seconds || 45;
       const max = heartbeat.max_delay_seconds || 90;
       const delaySec = Math.floor(Math.random() * (max - min + 1)) + min;
-      console.log(`[HFAI] Next in ${delaySec}s`);
-      chrome.alarms.create("hfai-next", { delayInMinutes: delaySec / 60 });
+      console.log(`[HFAI bg] Next in ${delaySec}s`);
+      // chrome.alarms minimum is 0.5 min in production, but accepts smaller in dev
+      chrome.alarms.create("hfai-next", { delayInMinutes: Math.max(0.5, delaySec / 60) });
     })();
   } else if (msg.type === "API") {
     api(msg.path, msg.body).then(sendResponse);

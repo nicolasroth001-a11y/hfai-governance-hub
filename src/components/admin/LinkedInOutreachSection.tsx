@@ -216,6 +216,24 @@ export default function LinkedInOutreachSection() {
     await load();
   };
 
+  const resetLead = async (id: string) => {
+    await supabase.from("leads").update({ linkedin_status: "pending", linkedin_message: null, linkedin_sent_at: null }).eq("id", id);
+    toast({ title: "Lead reset to pending" });
+    await load();
+  };
+
+  const resetAll = async () => {
+    if (!confirm("Reset ALL leads to pending? (Includes sent ones — only do this for testing.)")) return;
+    await supabase.from("leads").update({ linkedin_status: "pending", linkedin_message: null, linkedin_sent_at: null }).neq("linkedin_url", "").not("linkedin_url", "is", null);
+    toast({ title: "All LinkedIn leads reset" });
+    await load();
+  };
+
+  const resetCounter = async () => {
+    await updateSession({ sent_today: 0 });
+    toast({ title: "Daily counter reset to 0" });
+  };
+
   return (
     <div className="space-y-6">
       <ContentCard title="🔗 Chrome extension setup">
@@ -376,14 +394,65 @@ export default function LinkedInOutreachSection() {
                 </div>
                 <div className="flex items-center gap-1">
                   <a href={l.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline px-2">↗</a>
-                  {l.linkedin_status === "pending" && (
+                  {l.linkedin_status === "pending" ? (
                     <Button size="sm" variant="ghost" onClick={() => skipLead(l.id)} className="h-7 text-xs">Skip</Button>
+                  ) : (
+                    <Button size="sm" variant="ghost" onClick={() => resetLead(l.id)} className="h-7 text-xs">Reset</Button>
                   )}
                 </div>
               </div>
             ))}
           </div>
         )}
+        <div className="flex gap-2 mt-4 pt-3 border-t border-border">
+          <Button size="sm" variant="outline" onClick={resetCounter}>Reset daily counter</Button>
+          <Button size="sm" variant="outline" onClick={resetAll}>Reset all leads to pending</Button>
+        </div>
+      </ContentCard>
+
+      <ContentCard title="🧪 Testing & troubleshooting">
+        <div className="space-y-3 text-sm">
+          <div className="p-3 rounded border border-emerald-500/30 bg-emerald-500/5">
+            <div className="flex items-center gap-2 mb-1">
+              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+              <strong>Recommended first test (zero risk):</strong>
+            </div>
+            <ol className="list-decimal ml-5 space-y-1 text-xs text-foreground/80">
+              <li>Import 1 LinkedIn URL above (use a 2nd-degree connection — someone you don't know yet)</li>
+              <li>Download & install the extension (chrome://extensions → Developer mode → Load unpacked)</li>
+              <li>Open the extension popup, paste your token, leave <strong>Dry Run ON</strong>, click <strong>Save & verify</strong> — should show ✓ Connected</li>
+              <li>Open linkedin.com in another tab, log in</li>
+              <li>Click <strong>Start session</strong> in the popup</li>
+              <li>Watch the gold overlay appear on the LinkedIn profile — it should read headline, AI-personalize, open Connect modal, fill the message — then STOP. Nothing is sent.</li>
+              <li>Close the modal manually, hit Reset on that lead, retry with Dry Run OFF when you're confident</li>
+            </ol>
+          </div>
+
+          <details className="text-xs">
+            <summary className="cursor-pointer hover:text-foreground py-1">❓ Nothing happens when I click Start</summary>
+            <ul className="list-disc ml-5 mt-2 space-y-1 text-muted-foreground">
+              <li>Open Chrome DevTools (F12) on the LinkedIn tab → Console — look for <code>[HFAI]</code> logs</li>
+              <li>At least one lead must have status <strong>pending</strong> + a valid <code>linkedin.com/in/...</code> URL</li>
+              <li>A default template must exist (gold "Default" badge above)</li>
+              <li>Daily counter must be below cap (Reset daily counter above)</li>
+              <li>In the extension popup, click <strong>Save & verify</strong>. If it doesn't show "✓ Connected", your token is wrong — copy a fresh one</li>
+            </ul>
+          </details>
+
+          <details className="text-xs">
+            <summary className="cursor-pointer hover:text-foreground py-1">❓ Overlay appears but says "Connect button not found"</summary>
+            <ul className="list-disc ml-5 mt-2 space-y-1 text-muted-foreground">
+              <li>You're already 1st-degree with this person — pick someone new</li>
+              <li>LinkedIn changed their UI — let me know to update selectors</li>
+              <li>You hit the LinkedIn weekly limit (~100 invites/week) — wait it out</li>
+            </ul>
+          </details>
+
+          <details className="text-xs">
+            <summary className="cursor-pointer hover:text-foreground py-1">❓ "Add note" button missing</summary>
+            <p className="mt-2 text-muted-foreground">LinkedIn limits free accounts to ~5 personalized invites/month. Either upgrade to Premium or send without notes (extension will skip and mark these).</p>
+          </details>
+        </div>
       </ContentCard>
     </div>
   );

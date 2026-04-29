@@ -174,6 +174,7 @@ Output ONLY the final message text. No preamble. Max 280 chars. Hard rule: must 
 
       await supabase.from("leads").update(update).eq("id", lead_id);
 
+      // Only count REAL sends against the daily cap (dry runs are marked status=skipped, error=dry_run_ok)
       if (status === "sent") {
         await supabase
           .from("linkedin_session_state")
