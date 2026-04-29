@@ -216,6 +216,24 @@ export default function LinkedInOutreachSection() {
     await load();
   };
 
+  const resetLead = async (id: string) => {
+    await supabase.from("leads").update({ linkedin_status: "pending", linkedin_message: null, linkedin_sent_at: null }).eq("id", id);
+    toast({ title: "Lead reset to pending" });
+    await load();
+  };
+
+  const resetAll = async () => {
+    if (!confirm("Reset ALL leads to pending? (Includes sent ones — only do this for testing.)")) return;
+    await supabase.from("leads").update({ linkedin_status: "pending", linkedin_message: null, linkedin_sent_at: null }).neq("linkedin_url", "").not("linkedin_url", "is", null);
+    toast({ title: "All LinkedIn leads reset" });
+    await load();
+  };
+
+  const resetCounter = async () => {
+    await updateSession({ sent_today: 0 });
+    toast({ title: "Daily counter reset to 0" });
+  };
+
   return (
     <div className="space-y-6">
       <ContentCard title="🔗 Chrome extension setup">
