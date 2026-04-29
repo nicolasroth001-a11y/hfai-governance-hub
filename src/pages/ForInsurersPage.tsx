@@ -105,7 +105,7 @@ const fadeUp = {
 };
 
 export default function ForInsurersPage() {
-  usePageView();
+  usePageView("/for-insurers");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
