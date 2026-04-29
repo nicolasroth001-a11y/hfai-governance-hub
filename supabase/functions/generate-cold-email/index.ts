@@ -8,24 +8,34 @@ const corsHeaders = {
 
 const DRAFT_MODEL = "google/gemini-2.5-flash";
 
-const SYSTEM = `You are Nicolas Roth, founder of HFAI (Human-First AI), writing a cold email to a prospect.
+const SYSTEM = `You are Nicolas Roth, founder of HFAI (Human-First AI), writing a cold email to a senior risk/compliance leader at a European INSURER.
 
-HFAI is a governance platform for companies deploying high-risk AI. Core differentiators:
-- AI-SBOM: signed technical documentation (EU AI Act Article 11)
-- Tamper-evident human oversight with SHA-256 hash chain (Article 14)
-- Pre-deployment readiness gating (Article 26)
-- Shadow AI discovery + dual-mode enforcement (monitor or block)
+You are NOT a generalist AI governance vendor. HFAI obsesses on one wedge: helping EU mid-market insurers prove their AI in claims, underwriting, fraud and pricing is compliant with the EU AI Act + EIOPA + Solvency II model-risk expectations.
+
+Insurer-specific value props (use ONE per email, never list them all):
+- AI-SBOM: signed Article 11 technical documentation per model (claims triage, fraud, pricing) — what their internal audit + a future EIOPA review will ask for
+- Tamper-evident human oversight log (Article 14, SHA-256 hash chain) — proves a human reviewed the AI-recommended denial. Defends against bad-faith and Annex III §5 high-risk classification scrutiny
+- Pre-deployment readiness gate (Article 26) — blocks an unvalidated pricing/UW model from going live; slots into existing SII model-validation workflow
+- Shadow AI discovery — finds the underwriter's Excel-with-GPT habit before a regulator or journalist does
+
+Reference points the buyer will recognize (use sparingly, only when relevant):
+- EU AI Act Annex III §5 (life & health insurance pricing/risk = high-risk)
+- Articles 11, 14, 26
+- EIOPA AI supervisory statement (2024)
+- Solvency II Pillar II model governance
+- CRO Forum AI position papers
 
 Tone:
-- Founder-personal, sharp, no fluff
-- Open with the SPECIFIC HOOK provided (a real observation about their site, recent news, or industry deadline) — never generic
-- One concrete value prop tied to that hook
-- One soft CTA (15-min call, not "let me know what you think")
-- No emoji, no exclamation marks, no "I hope this email finds you well", no "I came across your company"
+- Founder-personal, sharp, no fluff. You are talking peer-to-peer with a CRO or Head of Model Risk
+- Open with the SPECIFIC HOOK provided (a real observation about their site, an AI initiative they've announced, or the regulatory clock) — never generic
+- One concrete value prop tied to that hook (pick the one that matches their AI use case)
+- Quantify when possible ("12-week pilot, one model end-to-end, signed Article 11 dossier as the deliverable")
+- One soft CTA: "Worth 15 minutes next week to see the Article 14 evidence pack?" — never "let me know what you think"
+- No emoji, no exclamation marks, no "I hope this email finds you well", no "I came across your company", no "we're a leading platform"
 - Max 130 words body
-- Sign as "Nicolas Roth, Founder, HFAI — hfa-i.org"
+- Sign as "Nicolas Roth, Founder, HFAI — hfa-i.org/for-insurers"
 
-Subject lines: 4-7 words, regulatory or operational hook tied to the lead, no clickbait.
+Subject lines: 4-7 words, insurer-specific hook (e.g. "Article 14 evidence for claims AI", "Solvency II + AI Act overlap", "Your bodily-injury triage model"). No clickbait, no "Quick question".
 
 Return via function call only.`;
 
@@ -88,17 +98,17 @@ async function discoverHook(lead: any): Promise<string> {
   }
 
   if (!snippets.length) {
-    // Industry-level fallback hook (always specific to a regulatory clock)
-    const industry = (lead.industry || "").toLowerCase();
-    if (industry.includes("financ") || industry.includes("bank") || industry.includes("insur"))
-      return "EU AI Act Article 6 classifies AI used in credit scoring and insurance pricing as high-risk — Article 11 documentation deadline applies in 2026.";
-    if (industry.includes("health"))
-      return "MDR + EU AI Act overlap means health AI systems need both CE marking AND Article 11 technical documentation by 2026.";
-    if (industry.includes("hr") || industry.includes("recruit") || industry.includes("staff"))
-      return "AI used in hiring is explicitly named high-risk under Annex III — every screening or scoring model needs Article 14 human oversight evidence.";
-    if (industry.includes("educ"))
-      return "EU AI Act Annex III names AI in education (admissions, grading, proctoring) as high-risk — most edtech vendors haven't classified their stack.";
-    return "EU AI Act Article 11 + 14 + 26 obligations apply to companies deploying high-risk AI — first enforcement actions land in 2026.";
+    // Insurance-specific fallback hooks (wedge-locked)
+    const useCase = `${lead.ai_use_case || ""} ${lead.pain_points || ""}`.toLowerCase();
+    if (useCase.includes("claim") || useCase.includes("triage") || useCase.includes("bodily"))
+      return "AI-assisted claims triage is squarely inside EU AI Act Annex III §5 (insurance) — every denial recommendation now needs Article 14 human-oversight evidence the auditor can hold up. Most insurers have the workflow but not the signed log.";
+    if (useCase.includes("fraud"))
+      return "ML fraud-scoring models that flag claims for denial or SIU referral fall under Annex III §5 — and EIOPA's 2024 AI statement calls out exactly this scenario for human oversight + bias monitoring.";
+    if (useCase.includes("underwrit") || useCase.includes("uw") || useCase.includes("life") || useCase.includes("accelerat"))
+      return "Accelerated/AI underwriting in life and health is high-risk under Annex III §5. Solvency II already requires model governance — the gap is AI-specific Article 11 technical documentation, due 2026.";
+    if (useCase.includes("pric") || useCase.includes("glm") || useCase.includes("gbm") || useCase.includes("rat"))
+      return "GLM/GBM pricing models in motor and home are high-risk AI under Annex III §5. Your actuarial team validates, but the AI Act asks for a different artifact — Article 11 dossier with data lineage and bias testing.";
+    return "EU AI Act Annex III §5 classifies AI used in insurance pricing, underwriting and claims as high-risk. Articles 11 (technical docs), 14 (human oversight log), 26 (deployer obligations) apply — 2026 enforcement clock is running.";
   }
 
   return snippets.join("\n\n").slice(0, 6000);

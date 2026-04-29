@@ -6,23 +6,30 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM = `You are a senior B2B lead-generation analyst for HFAI (Human-First AI), an AI governance platform that helps companies comply with the EU AI Act, NIST AI RMF, and ISO 42001.
+const SYSTEM = `You are a senior B2B lead-generation analyst for HFAI (Human-First AI), an AI governance platform that is OBSESSING on a single wedge market: **EU mid-market insurers using AI in claims, underwriting, fraud detection, or pricing**.
 
-HFAI's core wedge:
-- AI-SBOM: signed Article 11 technical documentation
-- Tamper-evident human oversight (Article 14) with SHA-256 hash chain
-- Pre-deployment readiness gating (Article 26)
-- Shadow AI discovery + dual-mode enforcement (monitor or block)
+WHY INSURANCE / WHY NOW:
+- EU AI Act Annex III explicitly classifies AI used in life and health insurance pricing/risk and credit scoring as HIGH-RISK (Article 6 + Annex III §5).
+- AI-driven claims triage and fraud denial decisions affect consumers and trigger Article 14 (human oversight) + Article 26 (deployer obligations).
+- EIOPA published AI supervisory expectations in 2024; Solvency II already requires model governance — insurers have the muscle but not the AI-specific evidence.
+- Article 11 technical documentation obligations bite for high-risk AI in 2026.
+- These insurers ALREADY do model validation for actuarial models. They have a CRO and a model-risk team. They are the easiest "yes" in the entire EU AI Act target list.
 
-YOUR JOB: produce HIGH-INTENT prospects — companies that have a real, dated regulatory obligation HFAI solves.
+HFAI's core wedge maps directly to insurer pain:
+- AI-SBOM: signed Article 11 technical documentation per AI model (claims triage, fraud, pricing)
+- Tamper-evident human oversight (Article 14) with SHA-256 hash chain — proves a human reviewed the denial
+- Pre-deployment readiness gating (Article 26) — blocks an unvalidated model from going live
+- Shadow AI discovery — finds the underwriter's Excel-with-GPT habit before the regulator does
+
+YOUR JOB: produce HIGH-INTENT INSURANCE prospects — real EU insurers with a dated regulatory obligation HFAI solves.
 
 QUALITY BAR (non-negotiable):
-1. **Real companies only.** Use companies that actually exist and visibly deploy AI. No invented brands, no "Acme Corp", no famous logos as fake customers (no OpenAI/Google/Microsoft/etc. as prospects).
-2. **EU-based or EU-exposed.** They must be subject to the EU AI Act (operate in EU, sell to EU customers, or process EU citizen data).
-3. **Mid-market sweet spot.** 200–5,000 employees. Big enough to have compliance budget, small enough to not have a 50-person internal GRC team.
-4. **High-risk AI use case.** Must map to EU AI Act Annex III (HR/recruiting, credit/insurance, education, healthcare, law enforcement, critical infra, biometrics) OR be a GPAI deployer with >10k EU users.
-5. **Buyer-grade contact.** Target ONE of: Head of AI Governance, Chief AI Officer, Chief Compliance Officer, DPO, CISO, Head of Risk, VP Legal/Regulatory. Never "VP Engineering" or "CTO" unless the company has no compliance function.
-6. **Plausible email.** Use the company's real domain, format firstname.lastname@domain or first@domain — whatever matches that company's known convention.
+1. **Real EU insurers only.** Actual carriers, MGAs, or insurtechs operating in EU markets (DE, NL, FR, IE, ES, IT, Nordics, BE, AT, PL). UK insurers OK if they sell into EU. No invented brands. No reinsurers (Munich Re/Swiss Re tier — too slow). No mega-multinationals (Allianz/AXA/Generali group level — too long a sales cycle; subsidiaries OK).
+2. **Mid-market sweet spot.** €500M–€5B GWP, 200–3,000 employees. Big enough to have a CRO and compliance budget, small enough that a founder email gets read.
+3. **AI use case must be in claims, underwriting, fraud, or pricing.** Not "they have a chatbot." Specific: "AI-assisted bodily-injury claims triage", "ML fraud scoring for motor claims", "AI-driven life underwriting via accelerated UW platform", "GLM/GBM pricing model in motor".
+4. **Buyer-grade contact.** Target ONE of (in order of preference): Chief Risk Officer, Head of Model Risk Management, Head of Actuarial / Chief Actuary, Chief Compliance Officer, DPO, Head of Claims (only if AI-claims focus), Head of Underwriting (only if AI-UW focus), CISO. NEVER CTO/VP Engineering. NEVER generic "Head of Innovation".
+5. **Plausible email.** Use the insurer's real domain, format matching that company's known convention (firstname.lastname@, f.lastname@, first@).
+6. **Cite the regulatory clock.** Pain points MUST reference at least ONE of: EU AI Act Annex III §5, Article 11, Article 14, Article 26, EIOPA AI guidance, Solvency II model governance (CP14/SII Pillar II).
 
 For each prospect return:
 - company_name (real)
@@ -73,6 +80,11 @@ serve(async (req) => {
     const { industry = "", region = "", company_size = "", count = 5, custom_brief = "" } = await req.json();
     const safeCount = Math.min(Math.max(parseInt(String(count)) || 5, 1), 10);
 
+    // WEDGE LOCK: default everything to insurance unless admin overrides explicitly
+    const effectiveIndustry = industry || "Insurance — EU mid-market carriers using AI in claims, underwriting, fraud, or pricing (P&C and Life/Health)";
+    const effectiveRegion = region || "EU-based: DE, NL, FR, IE, ES, IT, Nordics, BE, AT, PL — or UK insurers selling into EU";
+    const effectiveSize = company_size || "Mid-market: €500M–€5B GWP, 200–3,000 employees";
+
     // Pull existing companies to avoid duplicates
     const { data: existingLeads } = await supabase
       .from("leads")
@@ -84,16 +96,22 @@ serve(async (req) => {
       ? `EXISTING COMPANIES IN PIPELINE — DO NOT RETURN ANY OF THESE:\n${existingNames.join(", ")}`
       : "Pipeline is empty — pick the strongest fresh prospects.";
 
-    const userPrompt = `Generate ${safeCount} HIGH-INTENT prospect companies for HFAI.
+    const userPrompt = `Generate ${safeCount} HIGH-INTENT INSURANCE prospects for HFAI.
 
-Industry filter: ${industry || "any high-risk AI sector under EU AI Act Annex III (HR/recruiting, credit/insurance, healthcare, education, biometrics, critical infra) OR GPAI deployers with EU exposure"}
-Region: ${region || "EU-based preferred (DE, FR, NL, IE, ES, IT, Nordics) or EU-exposed UK/US"}
-Company size: ${company_size || "mid-market: 200–5,000 employees"}
+Industry: ${effectiveIndustry}
+Region: ${effectiveRegion}
+Company size: ${effectiveSize}
 Additional brief: ${custom_brief || "none"}
 
 ${dedupBlock}
 
-Each prospect MUST have a clearly stated EU AI Act article (11, 14, 26, or Annex III) tied to its pain point. If you cannot tie a company to a real regulatory clock, do not include it.
+Each prospect MUST:
+- Be a REAL EU insurer (carrier, MGA, or scaled insurtech) currently using AI in claims, underwriting, fraud, or pricing
+- Have a clearly stated EU AI Act article (Annex III §5, Article 11, 14, or 26) OR EIOPA/Solvency II model governance hook tied to its pain point
+- Name a buyer-grade contact (CRO, Head of Model Risk, Chief Actuary, CCO, DPO, CISO) — never CTO/VP Eng
+- Have a plausible email at the insurer's actual domain
+
+If you cannot tie a company to a real insurance AI use case AND a real regulatory clock, do not include it. Quality > quantity.
 
 Return ONLY via the function call.`;
 
