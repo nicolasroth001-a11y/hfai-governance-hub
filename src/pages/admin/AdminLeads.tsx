@@ -9,7 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Sparkles, Mail, Send, Copy, Loader2, Trash2, RefreshCw, ShieldCheck, ShieldAlert, ShieldX } from "lucide-react";
+import { Sparkles, Mail, Send, Copy, Loader2, Trash2, RefreshCw, ShieldCheck, ShieldAlert, ShieldX, Linkedin } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import LinkedInOutreachSection from "@/components/admin/LinkedInOutreachSection";
 import { toast } from "@/hooks/use-toast";
 
 interface Lead {
