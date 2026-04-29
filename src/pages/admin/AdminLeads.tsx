@@ -208,7 +208,14 @@ export default function AdminLeads() {
         description="Generate prospect companies that need HFAI, draft personalized cold emails, and send from nicolasroth@hfa-i.org via Zoho."
       />
 
-      <ContentCard title="Generate prospects">
+      <Tabs defaultValue="email" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="email" className="gap-2"><Mail className="h-3.5 w-3.5" /> Cold email</TabsTrigger>
+          <TabsTrigger value="linkedin" className="gap-2"><Linkedin className="h-3.5 w-3.5" /> LinkedIn outreach</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="email" className="space-y-8">
+        <ContentCard title="Generate prospects">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>Industry (optional)</Label>
@@ -326,6 +333,12 @@ export default function AdminLeads() {
           </div>
         )}
       </ContentCard>
+        </TabsContent>
+
+        <TabsContent value="linkedin">
+          <LinkedInOutreachSection />
+        </TabsContent>
+      </Tabs>
 
       <Dialog open={!!activeLead} onOpenChange={(o) => !o && setActiveLead(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
