@@ -4,17 +4,23 @@ const $ = (id) => document.getElementById(id);
 const setStatus = (html, cls = "") => { $("status").innerHTML = `<span class="${cls}">${html}</span>`; };
 
 async function loadConfig() {
-  const { hfaiToken, hfaiCap } = await chrome.storage.local.get(["hfaiToken", "hfaiCap"]);
+  const { hfaiToken, hfaiCap, hfaiDryRun } = await chrome.storage.local.get(["hfaiToken", "hfaiCap", "hfaiDryRun"]);
   if (hfaiToken) $("token").value = hfaiToken;
   if (hfaiCap) $("cap").value = hfaiCap;
+  // Default dry run = true unless explicitly disabled
+  $("dryRun").checked = hfaiDryRun !== false;
 }
 loadConfig();
+
+$("dryRun").addEventListener("change", async () => {
+  await chrome.storage.local.set({ hfaiDryRun: $("dryRun").checked });
+});
 
 $("save").addEventListener("click", async () => {
   const token = $("token").value.trim();
   const cap = parseInt($("cap").value || "15", 10);
-  if (!token) return setStatus("Token required.", "danger");
-  await chrome.storage.local.set({ hfaiToken: token, hfaiCap: cap });
+  if (!token) return setStatus("⚠ Token required.", "danger");
+  await chrome.storage.local.set({ hfaiToken: token, hfaiCap: cap, hfaiDryRun: $("dryRun").checked });
   setStatus("Verifying...");
   try {
     const res = await fetch(`${API_BASE}/heartbeat`, {
@@ -22,24 +28,26 @@ $("save").addEventListener("click", async () => {
       headers: { "Content-Type": "application/json", "X-Extension-Token": token },
     });
     const data = await res.json();
-    if (!res.ok) return setStatus(`Failed: ${data.error || res.status}`, "danger");
+    if (!res.ok) return setStatus(`❌ Failed (${res.status}): ${data.error || "unknown"}`, "danger");
     setStatus(`
-      <div class="row"><span>Status</span><span class="ok">Connected</span></div>
+      <div class="row"><span>Status</span><span class="ok">✓ Connected</span></div>
       <div class="row"><span>Sent today</span><span>${data.sent_today} / ${data.daily_cap}</span></div>
       <div class="row"><span>Remaining</span><span>${data.remaining}</span></div>
       <div class="row"><span>Delay</span><span>${data.min_delay_seconds}-${data.max_delay_seconds}s</span></div>
+      <div class="row"><span>Mode</span><span>${$("dryRun").checked ? "🟡 DRY RUN" : "🔴 LIVE"}</span></div>
     `);
   } catch (e) {
-    setStatus(`Error: ${e.message}`, "danger");
+    setStatus(`❌ Network error: ${e.message}<br><br>Check that you saved your token from /admin/leads.`, "danger");
   }
 });
 
 $("start").addEventListener("click", async () => {
   const { hfaiToken } = await chrome.storage.local.get(["hfaiToken"]);
-  if (!hfaiToken) return setStatus("Save your token first.", "danger");
+  if (!hfaiToken) return setStatus("⚠ Save your token first.", "danger");
   await chrome.storage.local.set({ hfaiActive: true });
   await chrome.runtime.sendMessage({ type: "START" });
-  setStatus("✓ Auto-session started. Switch to a LinkedIn tab to begin.", "ok");
+  const mode = $("dryRun").checked ? "DRY RUN (no sends)" : "LIVE (will send!)";
+  setStatus(`✓ Session started in ${mode}.<br>Switch to your LinkedIn tab — extension will navigate to the next pending lead.`, "ok");
 });
 
 $("stop").addEventListener("click", async () => {
