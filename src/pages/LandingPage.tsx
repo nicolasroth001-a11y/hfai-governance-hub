@@ -135,6 +135,19 @@ export default function LandingPage() {
             </Button>
           </motion.div>
 
+          {/* Free AI compliance scanner — viral hook */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="pt-6"
+          >
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-3">
+              ⚡ Free tool — Scan any website for AI risk
+            </div>
+            <AIScannerWidget variant="compact" />
+          </motion.div>
+
           {/* Code snippet — infrastructure proof */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
