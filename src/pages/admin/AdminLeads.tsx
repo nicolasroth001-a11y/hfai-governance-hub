@@ -385,15 +385,48 @@ export default function AdminLeads() {
       <Dialog open={!!activeLead} onOpenChange={(o) => !o && setActiveLead(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Send to {activeLead?.contact_name || activeLead?.company_name}</DialogTitle>
+            <DialogTitle>Send to {editContactName || activeLead?.company_name}</DialogTitle>
           </DialogHeader>
           {activeLead && (
             <div className="space-y-4">
               <div className="text-xs text-muted-foreground space-y-1 border border-border rounded p-3 bg-muted/30">
                 <div><strong>From:</strong> Nicolas Roth &lt;nicolasroth@hfa-i.org&gt;</div>
-                <div><strong>To:</strong> {activeLead.contact_email}</div>
                 <div><strong>Company:</strong> {activeLead.company_name} · {activeLead.industry}</div>
+                {activeLead.website && (
+                  <div>
+                    <strong>LinkedIn search:</strong>{" "}
+                    <a
+                      className="text-primary hover:underline"
+                      target="_blank" rel="noopener noreferrer"
+                      href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(activeLead.company_name + " risk OR actuary OR compliance OR DPO")}&origin=GLOBAL_SEARCH_HEADER`}
+                    >Find a buyer at {activeLead.company_name} ↗</a>
+                  </div>
+                )}
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Recipient name</Label>
+                  <Input value={editContactName} onChange={(e) => setEditContactName(e.target.value)} placeholder="e.g. Anna Müller" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Recipient title</Label>
+                  <Input value={editContactTitle} onChange={(e) => setEditContactTitle(e.target.value)} placeholder="e.g. Head of Model Risk" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Recipient email <span className="text-destructive">*</span></Label>
+                <Input
+                  value={editContactEmail}
+                  onChange={(e) => setEditContactEmail(e.target.value)}
+                  placeholder="anna.mueller@insurer.com"
+                  className={!emailValid && editContactEmail ? "border-destructive" : ""}
+                />
+                {!emailValid && (
+                  <p className="text-xs text-amber-500/90">Paste the work email you found on LinkedIn. Required to send.</p>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <Label>Subject</Label>
                 <Input value={editSubject} onChange={(e) => setEditSubject(e.target.value)} />
@@ -401,6 +434,7 @@ export default function AdminLeads() {
               <div className="space-y-2">
                 <Label>Body</Label>
                 <Textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} rows={14} className="font-mono text-sm" />
+                <p className="text-xs text-muted-foreground">Tip: replace <code>{"{{first_name}}"}</code> with the recipient's first name before sending.</p>
               </div>
             </div>
           )}
