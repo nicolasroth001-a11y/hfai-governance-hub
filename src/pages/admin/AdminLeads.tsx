@@ -120,6 +120,9 @@ export default function AdminLeads() {
       setActiveLead(updated);
       setEditSubject(updated.email_subject);
       setEditBody(updated.email_body);
+      setEditContactName(updated.contact_name || "");
+      setEditContactEmail(updated.contact_email || "");
+      setEditContactTitle(updated.contact_title || "");
     } catch (e: any) {
       toast({ title: "Draft failed", description: e.message || String(e), variant: "destructive" });
     } finally {
