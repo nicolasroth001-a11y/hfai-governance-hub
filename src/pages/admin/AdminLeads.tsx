@@ -445,7 +445,7 @@ export default function AdminLeads() {
               Send test to me
             </Button>
             <Button variant="outline" onClick={() => setActiveLead(null)}>Cancel</Button>
-            <Button onClick={handleSend} disabled={sendingId === activeLead?.id} className="gap-2">
+            <Button onClick={handleSend} disabled={sendingId === activeLead?.id || !emailValid} className="gap-2" title={!emailValid ? "Add a valid recipient email first" : ""}>
               {sendingId === activeLead?.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               Send from Zoho
             </Button>
