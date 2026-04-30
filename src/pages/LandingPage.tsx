@@ -134,6 +134,50 @@ export default function LandingPage() {
             </Button>
           </motion.div>
 
+          {/* Code snippet — infrastructure proof */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="max-w-xl mx-auto pt-2"
+          >
+            <div className="rounded-xl border border-border/40 bg-secondary/30 backdrop-blur-sm overflow-hidden text-left">
+              <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/30 bg-background/40">
+                <div className="flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-destructive/60" />
+                  <span className="h-2 w-2 rounded-full bg-amber-500/60" />
+                  <span className="h-2 w-2 rounded-full bg-emerald-500/60" />
+                </div>
+                <span className="text-[10px] text-muted-foreground/60 font-mono">app.ts</span>
+              </div>
+              <pre className="px-4 py-3 text-[11px] sm:text-xs font-mono leading-relaxed text-foreground/90 overflow-x-auto">
+<span className="text-muted-foreground/60">{`// 3 lines. Every model call is now governed.`}</span>{"\n"}
+<span className="text-primary">import</span>{" "}<span>{`{ hfai }`}</span>{" "}<span className="text-primary">from</span>{" "}<span className="text-emerald-400">{`"@hfai/guard"`}</span>;{"\n"}
+<span className="text-primary">const</span>{" "}openai{" "}={" "}hfai.<span className="text-amber-400">wrap</span>(<span className="text-primary">new</span>{" "}<span className="text-amber-400">OpenAI</span>());
+              </pre>
+            </div>
+          </motion.div>
+
+          {/* Infra stat strip */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-1"
+          >
+            {[
+              { v: "<40ms", l: "p99 overhead" },
+              { v: "99.99%", l: "uptime SLA" },
+              { v: "12", l: "EU & US regions" },
+              { v: "SOC 2", l: "inherited" },
+            ].map((s) => (
+              <div key={s.l} className="flex items-baseline gap-1.5">
+                <span className="text-sm font-bold text-foreground tabular-nums">{s.v}</span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70">{s.l}</span>
+              </div>
+            ))}
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
