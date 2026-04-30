@@ -43,6 +43,7 @@ const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const ReadinessAssessment = lazy(() => import("./pages/ReadinessAssessment"));
 const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const ScottDeck = lazy(() => import("./pages/ScottDeck"));
+const AIScanPage = lazy(() => import("./pages/AIScanPage"));
 
 // Customer pages (lazy)
 const CustomerDashboard = lazy(() => import("./pages/customer/CustomerDashboard"));
