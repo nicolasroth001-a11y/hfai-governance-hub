@@ -167,6 +167,7 @@ const App = () => {
           <Route path="/readiness-assessment" element={<ReadinessAssessment />} />
           <Route path="/trust" element={<TrustCenter />} />
           <Route path="/scott" element={<ScottDeck />} />
+          <Route path="/scan" element={<AIScanPage />} />
           <Route path="/call-copilot" element={<AdminCallCopilot />} />
 
           {/* Login & Signup & Password Reset */}
