@@ -90,6 +90,7 @@ const CustomerIntegrations = lazy(() => import("./pages/customer/CustomerIntegra
 const CustomerIndustrialOnboarding = lazy(() => import("./pages/customer/CustomerIndustrialOnboarding"));
 const CustomerAISBOM = lazy(() => import("./pages/customer/CustomerAISBOM"));
 const CustomerGuard = lazy(() => import("./pages/customer/CustomerGuard"));
+const CustomerGuardClaim = lazy(() => import("./pages/customer/CustomerGuardClaim"));
 
 // Reviewer pages (lazy)
 const ReviewerDashboard = lazy(() => import("./pages/reviewer/ReviewerDashboard"));
