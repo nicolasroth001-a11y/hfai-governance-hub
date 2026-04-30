@@ -127,6 +127,96 @@ function getCategoryScore(answers: Record<string, number>, categoryQuestions: Qu
   return max > 0 ? Math.round((total / max) * 100) : 0;
 }
 
+// EU AI Act fine ceilings (Article 99): up to €35M or 7% of turnover for prohibited practices,
+// €15M or 3% for high-risk non-compliance, €7.5M or 1.5% for incorrect info to authorities.
+// We use a weighted exposure based on which gaps are present.
+function calculateFineExposure(answers: Record<string, number>): number {
+  let exposure = 0;
+  // High-risk classification + no audit trail = €15M exposure (Art 12 + Art 16)
+  if (answers.ai_decisions === 0 && answers.audit_trail === 0) exposure += 15_000_000;
+  else if (answers.ai_decisions === 0) exposure += 7_500_000;
+  // No human oversight on high-risk = €15M (Art 14)
+  if (answers.ai_decisions === 0 && answers.human_oversight === 0) exposure += 15_000_000;
+  // No risk management = €7.5M (Art 9)
+  if (answers.risk_management === 0) exposure += 3_500_000;
+  // No data governance = €7.5M (Art 10)
+  if (answers.data_governance === 0) exposure += 2_500_000;
+  // No transparency = €7.5M (Art 13)
+  if (answers.transparency === 0) exposure += 2_000_000;
+  // No incident reporting = €7.5M (Art 62)
+  if (answers.incident_reporting === 0) exposure += 1_500_000;
+  return exposure;
+}
+
+function formatEuro(n: number): string {
+  if (n >= 1_000_000) return `€${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
+  if (n >= 1_000) return `€${(n / 1_000).toFixed(0)}K`;
+  return `€${n}`;
+}
+
+interface Gap {
+  article: string;
+  title: string;
+  detail: string;
+  severity: "critical" | "high" | "medium";
+}
+
+function getCriticalGaps(answers: Record<string, number>): Gap[] {
+  const gaps: Gap[] = [];
+  if (answers.ai_decisions === 0 && answers.human_oversight === 0) {
+    gaps.push({
+      article: "Article 14",
+      title: "No human oversight on high-risk AI",
+      detail: "Your AI affects people but runs without mandatory human-in-the-loop review. Automatic non-compliance.",
+      severity: "critical",
+    });
+  }
+  if (answers.audit_trail === 0) {
+    gaps.push({
+      article: "Article 12",
+      title: "No audit trail of AI decisions",
+      detail: "You cannot prove what your AI did, when, or why. Regulators require complete logs of every decision.",
+      severity: "critical",
+    });
+  }
+  if (answers.risk_management === 0) {
+    gaps.push({
+      article: "Article 9",
+      title: "No documented risk management system",
+      detail: "Continuous, iterative risk management is required across the entire AI lifecycle. Yours isn't documented.",
+      severity: "high",
+    });
+  }
+  if (answers.data_governance === 0) {
+    gaps.push({
+      article: "Article 10",
+      title: "Training data not governed",
+      detail: "Origin, quality, and consent basis of training data must be documented. Yours isn't.",
+      severity: "high",
+    });
+  }
+  if (answers.transparency === 0) {
+    gaps.push({
+      article: "Article 13",
+      title: "Black-box decision making",
+      detail: "Users have a right to understand AI decisions affecting them. Your system can't explain itself.",
+      severity: "high",
+    });
+  }
+  if (answers.incident_reporting === 0) {
+    gaps.push({
+      article: "Article 62",
+      title: "No incident reporting process",
+      detail: "Serious AI incidents must be reported to authorities within strict timeframes. You have no process.",
+      severity: "medium",
+    });
+  }
+  return gaps.sort((a, b) => {
+    const order = { critical: 0, high: 1, medium: 2 };
+    return order[a.severity] - order[b.severity];
+  }).slice(0, 3);
+}
+
 export default function ReadinessAssessment() {
   const [step, setStep] = useState(0); // 0 = intro, 1-7 = questions, 8 = results
   const [answers, setAnswers] = useState<Record<string, number>>({});
