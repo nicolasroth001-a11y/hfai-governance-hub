@@ -43,12 +43,13 @@ For each prospect return:
 - industry (specific: "Insurance — health" not just "Insurance")
 - company_size ("200-1000", "1k-5k", "5k+")
 - region (country + EU/UK/US-EU)
-- contact_name (plausible name fitting region)
-- contact_title (from buyer list above)
-- contact_email (real-domain best guess)
 - ai_use_case (specific: "AI-driven CV screening for engineering roles" not "uses AI")
 - pain_points (the SPECIFIC regulatory gap — cite Article number)
 - rationale (1-2 sentences, why HFAI fits THIS company's deadline)
+- email_subject (a draft subject line addressed to a generic role like "Head of Model Risk" — NOT a person)
+- email_body (a draft 4-6 sentence cold email opening with "Hi {{first_name}}," — leave the placeholder literal so a human fills it in)
+
+DO NOT RETURN: contact_name, contact_title, contact_email. Those are filled in by a human after LinkedIn research.
 
 DEDUPLICATION: You will be given a list of companies already in the pipeline. NEVER return any of those companies — pick fresh prospects.`;
 
