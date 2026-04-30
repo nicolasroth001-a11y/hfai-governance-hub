@@ -63,6 +63,9 @@ export default function AdminLeads() {
   const [testingId, setTestingId] = useState<string | null>(null);
   const [editSubject, setEditSubject] = useState("");
   const [editBody, setEditBody] = useState("");
+  const [editContactName, setEditContactName] = useState("");
+  const [editContactEmail, setEditContactEmail] = useState("");
+  const [editContactTitle, setEditContactTitle] = useState("");
 
   const fetchLeads = async () => {
     setLoading(true);
