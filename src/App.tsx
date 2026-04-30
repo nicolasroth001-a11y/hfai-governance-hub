@@ -172,6 +172,7 @@ const App = () => {
           <Route path="/scott" element={<ScottDeck />} />
           <Route path="/scan" element={<AIScanPage />} />
           <Route path="/guard" element={<GuardLandingPage />} />
+          <Route path="/customer/guard/claim" element={<CustomerGuardClaim />} />
           <Route path="/call-copilot" element={<AdminCallCopilot />} />
 
           {/* Login & Signup & Password Reset */}
