@@ -8,7 +8,7 @@ import {
   Activity, UserCheck, Bell, ShieldCheck, Plug, Scale, PenSquare, Award, TrendingUp,
   Brain, Globe, ClipboardCheck, BarChart3, GitBranch, CalendarClock, Building2,
   Database, GraduationCap, ShieldAlert, FileArchive, FileWarning, Globe2,
-    Fingerprint, Target, FileSpreadsheet, Radar, FileOutput, Users, Factory, Package,
+    Fingerprint, Target, FileSpreadsheet, Radar, FileOutput, Users, Factory, Package, Shield,
 } from "lucide-react";
 
 export default function CustomerLayout() {
@@ -20,6 +20,7 @@ export default function CustomerLayout() {
       defaultOpen: true,
       items: [
         { title: t("sidebar.dashboard"), url: "/customer/dashboard", icon: LayoutDashboard },
+        { title: "Guard (Free)", url: "/customer/guard", icon: Shield },
         { title: t("sidebar.aiSystems"), url: "/customer/ai-systems", icon: Cpu },
         { title: t("sidebar.events"), url: "/customer/events", icon: Activity },
         { title: t("sidebar.violations"), url: "/customer/violations", icon: AlertTriangle },
