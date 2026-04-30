@@ -400,7 +400,6 @@ Deno.serve(async (req) => {
           route: "/scan",
           referrer: normalizedUrl,
           session_id: crypto.randomUUID(),
-          metadata: { score, detectedAI, findingsCount: findings.length },
         });
       }
     } catch (_e) {
