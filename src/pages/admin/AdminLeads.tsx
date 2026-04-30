@@ -134,11 +134,20 @@ export default function AdminLeads() {
     setActiveLead(lead);
     setEditSubject(lead.email_subject);
     setEditBody(lead.email_body);
+    setEditContactName(lead.contact_name || "");
+    setEditContactEmail(lead.contact_email || "");
+    setEditContactTitle(lead.contact_title || "");
   };
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editContactEmail.trim());
 
   const handleSend = async () => {
     if (!activeLead) return;
-    if (!confirm(`Send this email to ${activeLead.contact_email} from nicolasroth@hfa-i.org?`)) return;
+    if (!emailValid) {
+      toast({ title: "Add a real recipient email first", description: "Find the contact on LinkedIn and paste their work email below.", variant: "destructive" });
+      return;
+    }
+    if (!confirm(`Send this email to ${editContactEmail} from nicolasroth@hfa-i.org?`)) return;
     setSendingId(activeLead.id);
     try {
       const { data, error } = await supabase.functions.invoke("send-cold-email", {
