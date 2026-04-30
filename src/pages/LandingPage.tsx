@@ -12,6 +12,7 @@ import {
 import { usePageView } from "@/hooks/usePageView";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { RiskTicker } from "@/components/landing/RiskTicker";
+import { AIScannerWidget } from "@/components/scan/AIScannerWidget";
 import { AwsMarketplaceBadge } from "@/components/landing/AwsMarketplaceBadge";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 import industrialHero from "@/assets/industrial-ai-hero.jpg";
