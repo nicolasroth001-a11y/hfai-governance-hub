@@ -6,7 +6,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM = `You are a senior B2B lead-generation analyst for HFAI (Human-First AI), an AI governance platform that is OBSESSING on a single wedge market: **EU mid-market insurers using AI in claims, underwriting, fraud detection, or pricing**.
+const SYSTEM = `You are a senior B2B lead-research analyst for HFAI (Human-First AI), an AI governance platform OBSESSING on a single wedge market: **EU mid-market insurers using AI in claims, underwriting, fraud detection, or pricing**.
+
+CRITICAL ANTI-HALLUCINATION RULE:
+- You MUST NOT invent specific people. Do NOT return contact_name, contact_title, or contact_email — those fields will be filled in by a human researcher on LinkedIn after you return the company.
+- You ONLY return real, verifiable companies and a regulator-grade reason to talk to them.
+- If you are not confident a company actually exists with the AI use case described, DO NOT include it.
+
 
 WHY INSURANCE / WHY NOW:
 - EU AI Act Annex III explicitly classifies AI used in life and health insurance pricing/risk and credit scoring as HIGH-RISK (Article 6 + Annex III §5).
@@ -37,12 +43,13 @@ For each prospect return:
 - industry (specific: "Insurance — health" not just "Insurance")
 - company_size ("200-1000", "1k-5k", "5k+")
 - region (country + EU/UK/US-EU)
-- contact_name (plausible name fitting region)
-- contact_title (from buyer list above)
-- contact_email (real-domain best guess)
 - ai_use_case (specific: "AI-driven CV screening for engineering roles" not "uses AI")
 - pain_points (the SPECIFIC regulatory gap — cite Article number)
 - rationale (1-2 sentences, why HFAI fits THIS company's deadline)
+- email_subject (a draft subject line addressed to a generic role like "Head of Model Risk" — NOT a person)
+- email_body (a draft 4-6 sentence cold email opening with "Hi {{first_name}}," — leave the placeholder literal so a human fills it in)
+
+DO NOT RETURN: contact_name, contact_title, contact_email. Those are filled in by a human after LinkedIn research.
 
 DEDUPLICATION: You will be given a list of companies already in the pipeline. NEVER return any of those companies — pick fresh prospects.`;
 
@@ -108,8 +115,9 @@ ${dedupBlock}
 Each prospect MUST:
 - Be a REAL EU insurer (carrier, MGA, or scaled insurtech) currently using AI in claims, underwriting, fraud, or pricing
 - Have a clearly stated EU AI Act article (Annex III §5, Article 11, 14, or 26) OR EIOPA/Solvency II model governance hook tied to its pain point
-- Name a buyer-grade contact (CRO, Head of Model Risk, Chief Actuary, CCO, DPO, CISO) — never CTO/VP Eng
-- Have a plausible email at the insurer's actual domain
+- Use the company's REAL public website domain
+
+DO NOT invent contact people. Leave contact_name / contact_title / contact_email blank — a human will research them on LinkedIn.
 
 If you cannot tie a company to a real insurance AI use case AND a real regulatory clock, do not include it. Quality > quantity.
 
@@ -143,14 +151,13 @@ Return ONLY via the function call.`;
                       industry: { type: "string" },
                       company_size: { type: "string" },
                       region: { type: "string" },
-                      contact_name: { type: "string" },
-                      contact_title: { type: "string" },
-                      contact_email: { type: "string" },
                       ai_use_case: { type: "string" },
                       pain_points: { type: "string" },
                       rationale: { type: "string" },
+                      email_subject: { type: "string" },
+                      email_body: { type: "string" },
                     },
-                    required: ["company_name", "industry", "contact_email", "ai_use_case", "rationale"],
+                    required: ["company_name", "website", "industry", "ai_use_case", "rationale"],
                     additionalProperties: false,
                   },
                 },
@@ -252,12 +259,15 @@ Return ONLY via the function call.`;
       industry: l.industry || "",
       company_size: l.company_size || "",
       region: l.region || "",
-      contact_name: l.contact_name || "",
-      contact_title: l.contact_title || "",
-      contact_email: l.contact_email || "",
+      // Contact fields intentionally left blank — to be filled by human via LinkedIn research
+      contact_name: "",
+      contact_title: "",
+      contact_email: "",
       ai_use_case: l.ai_use_case || "",
       pain_points: l.pain_points || "",
       rationale: l.rationale || "",
+      email_subject: l.email_subject || "",
+      email_body: l.email_body || "",
       status: verifications[i].status === "verified" ? "new" : "unverified",
       verification_status: verifications[i].status,
       verification_notes: verifications[i].notes,

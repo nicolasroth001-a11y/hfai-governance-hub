@@ -63,6 +63,9 @@ export default function AdminLeads() {
   const [testingId, setTestingId] = useState<string | null>(null);
   const [editSubject, setEditSubject] = useState("");
   const [editBody, setEditBody] = useState("");
+  const [editContactName, setEditContactName] = useState("");
+  const [editContactEmail, setEditContactEmail] = useState("");
+  const [editContactTitle, setEditContactTitle] = useState("");
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -117,6 +120,9 @@ export default function AdminLeads() {
       setActiveLead(updated);
       setEditSubject(updated.email_subject);
       setEditBody(updated.email_body);
+      setEditContactName(updated.contact_name || "");
+      setEditContactEmail(updated.contact_email || "");
+      setEditContactTitle(updated.contact_title || "");
     } catch (e: any) {
       toast({ title: "Draft failed", description: e.message || String(e), variant: "destructive" });
     } finally {
@@ -128,19 +134,39 @@ export default function AdminLeads() {
     setActiveLead(lead);
     setEditSubject(lead.email_subject);
     setEditBody(lead.email_body);
+    setEditContactName(lead.contact_name || "");
+    setEditContactEmail(lead.contact_email || "");
+    setEditContactTitle(lead.contact_title || "");
   };
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editContactEmail.trim());
 
   const handleSend = async () => {
     if (!activeLead) return;
-    if (!confirm(`Send this email to ${activeLead.contact_email} from nicolasroth@hfa-i.org?`)) return;
+    if (!emailValid) {
+      toast({ title: "Add a real recipient email first", description: "Find the contact on LinkedIn and paste their work email below.", variant: "destructive" });
+      return;
+    }
+    if (!confirm(`Send this email to ${editContactEmail} from nicolasroth@hfa-i.org?`)) return;
     setSendingId(activeLead.id);
     try {
+      // Persist the human-researched contact fields onto the lead BEFORE sending
+      const { error: updErr } = await supabase
+        .from("leads")
+        .update({
+          contact_name: editContactName.trim(),
+          contact_email: editContactEmail.trim(),
+          contact_title: editContactTitle.trim(),
+        })
+        .eq("id", activeLead.id);
+      if (updErr) throw updErr;
+
       const { data, error } = await supabase.functions.invoke("send-cold-email", {
         body: { lead_id: activeLead.id, subject_override: editSubject, body_override: editBody },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-      toast({ title: "Email sent", description: `Delivered to ${activeLead.contact_email}` });
+      toast({ title: "Email sent", description: `Delivered to ${editContactEmail}` });
       const updated = data.lead as Lead;
       setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
       setActiveLead(null);
@@ -290,12 +316,28 @@ export default function AdminLeads() {
                       {lead.industry && <Badge variant="outline" className="text-xs">{lead.industry}</Badge>}
                       {lead.region && <Badge variant="outline" className="text-xs">{lead.region}</Badge>}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {lead.contact_name || "(no contact)"} {lead.contact_title && `· ${lead.contact_title}`}
-                    </p>
-                    <p className="text-xs text-muted-foreground font-mono">{lead.contact_email || "—"}</p>
+                    {lead.contact_name || lead.contact_email ? (
+                      <>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {lead.contact_name || "(no name)"} {lead.contact_title && `· ${lead.contact_title}`}
+                        </p>
+                        <p className="text-xs text-muted-foreground font-mono">{lead.contact_email || "—"}</p>
+                      </>
+                    ) : (
+                      <div className="mt-2 flex items-center gap-2 text-xs text-amber-500/90 bg-amber-500/5 border border-amber-500/20 rounded px-2 py-1.5">
+                        <Linkedin className="h-3.5 w-3.5" />
+                        <span>No contact yet — find one on LinkedIn, then click Review &amp; send to fill it in.</span>
+                        {lead.website && (
+                          <a
+                            href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(lead.company_name + " risk OR actuary OR compliance")}&origin=GLOBAL_SEARCH_HEADER`}
+                            target="_blank" rel="noopener noreferrer"
+                            className="underline ml-auto"
+                          >Search LinkedIn ↗</a>
+                        )}
+                      </div>
+                    )}
                     {lead.website && (
-                      <a href={`https://${lead.website.replace(/^https?:\/\//,'')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
+                      <a href={`https://${lead.website.replace(/^https?:\/\//,'')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline block mt-1">
                         {lead.website} ↗
                       </a>
                     )}
@@ -343,15 +385,48 @@ export default function AdminLeads() {
       <Dialog open={!!activeLead} onOpenChange={(o) => !o && setActiveLead(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Send to {activeLead?.contact_name || activeLead?.company_name}</DialogTitle>
+            <DialogTitle>Send to {editContactName || activeLead?.company_name}</DialogTitle>
           </DialogHeader>
           {activeLead && (
             <div className="space-y-4">
               <div className="text-xs text-muted-foreground space-y-1 border border-border rounded p-3 bg-muted/30">
                 <div><strong>From:</strong> Nicolas Roth &lt;nicolasroth@hfa-i.org&gt;</div>
-                <div><strong>To:</strong> {activeLead.contact_email}</div>
                 <div><strong>Company:</strong> {activeLead.company_name} · {activeLead.industry}</div>
+                {activeLead.website && (
+                  <div>
+                    <strong>LinkedIn search:</strong>{" "}
+                    <a
+                      className="text-primary hover:underline"
+                      target="_blank" rel="noopener noreferrer"
+                      href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(activeLead.company_name + " risk OR actuary OR compliance OR DPO")}&origin=GLOBAL_SEARCH_HEADER`}
+                    >Find a buyer at {activeLead.company_name} ↗</a>
+                  </div>
+                )}
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Recipient name</Label>
+                  <Input value={editContactName} onChange={(e) => setEditContactName(e.target.value)} placeholder="e.g. Anna Müller" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Recipient title</Label>
+                  <Input value={editContactTitle} onChange={(e) => setEditContactTitle(e.target.value)} placeholder="e.g. Head of Model Risk" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Recipient email <span className="text-destructive">*</span></Label>
+                <Input
+                  value={editContactEmail}
+                  onChange={(e) => setEditContactEmail(e.target.value)}
+                  placeholder="anna.mueller@insurer.com"
+                  className={!emailValid && editContactEmail ? "border-destructive" : ""}
+                />
+                {!emailValid && (
+                  <p className="text-xs text-amber-500/90">Paste the work email you found on LinkedIn. Required to send.</p>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <Label>Subject</Label>
                 <Input value={editSubject} onChange={(e) => setEditSubject(e.target.value)} />
@@ -359,6 +434,7 @@ export default function AdminLeads() {
               <div className="space-y-2">
                 <Label>Body</Label>
                 <Textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} rows={14} className="font-mono text-sm" />
+                <p className="text-xs text-muted-foreground">Tip: replace <code>{"{{first_name}}"}</code> with the recipient's first name before sending.</p>
               </div>
             </div>
           )}
@@ -369,7 +445,7 @@ export default function AdminLeads() {
               Send test to me
             </Button>
             <Button variant="outline" onClick={() => setActiveLead(null)}>Cancel</Button>
-            <Button onClick={handleSend} disabled={sendingId === activeLead?.id} className="gap-2">
+            <Button onClick={handleSend} disabled={sendingId === activeLead?.id || !emailValid} className="gap-2" title={!emailValid ? "Add a valid recipient email first" : ""}>
               {sendingId === activeLead?.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               Send from Zoho
             </Button>
