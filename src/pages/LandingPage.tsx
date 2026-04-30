@@ -146,6 +146,11 @@ export default function LandingPage() {
               ⚡ Free tool — Scan any website for AI risk
             </div>
             <AIScannerWidget variant="compact" />
+            <div className="mt-4 text-center">
+              <Link to="/guard" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
+                🛡 Or install <strong>HFAI Guard</strong> — free Chrome blocker for ChatGPT, Claude &amp; Gemini →
+              </Link>
+            </div>
           </motion.div>
 
           {/* Code snippet — infrastructure proof */}

@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "HFAI Guard — AI Compliance Blocker",
+  "version": "1.0.0",
+  "description": "Blocks EU AI Act Article 5 prohibited practices, COPPA violations, and unsafe AI prompts in real time on ChatGPT, Claude, and Gemini. Free.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://uomnlgpqundhlmqkuhog.supabase.co/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "HFAI Guard",
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*"
+      ],
+      "js": ["guard.js"],
+      "css": ["guard.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

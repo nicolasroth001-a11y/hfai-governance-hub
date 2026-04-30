@@ -127,6 +127,7 @@ export const FREE_TIER_LIMITS = {
 // Note: "free" tier no longer offered — represents unsubscribed state.
 // Core features now require Starter ($10/mo) at minimum.
 export const FEATURE_TIER: Record<string, TierKey> = {
+  "Guard": "free",
   "AI Systems": "starter",
   "Rules": "starter",
   "Violations": "starter",
