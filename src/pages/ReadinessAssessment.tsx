@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   Shield, ArrowRight, ArrowLeft, CheckCircle, AlertTriangle,
   XCircle, Mail, Loader2, Building2, Users, Globe, Cpu,
-  FileCheck, Scale, Eye, Lock, BarChart3,
+  FileCheck, Scale, Eye, Lock, BarChart3, Share2, Copy, Twitter, Linkedin,
+  TrendingDown, Gavel, Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
