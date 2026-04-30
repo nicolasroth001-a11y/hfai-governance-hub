@@ -8,7 +8,7 @@ import { usePageView } from "@/hooks/usePageView";
 export default function AIScanPage() {
   const [params] = useSearchParams();
   const initialUrl = params.get("url") || "";
-  usePageView();
+  usePageView("/scan");
 
   useEffect(() => {
     document.title = "Free AI Compliance Scanner — Is your website breaking the EU AI Act? | HFAI";
