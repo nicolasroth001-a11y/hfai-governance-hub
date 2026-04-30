@@ -802,6 +802,8 @@ export type Database = {
       guard_devices: {
         Row: {
           browser: string | null
+          claimed_at: string | null
+          claimed_by_user_id: string | null
           created_at: string
           device_token: string
           email: string | null
@@ -814,6 +816,8 @@ export type Database = {
         }
         Insert: {
           browser?: string | null
+          claimed_at?: string | null
+          claimed_by_user_id?: string | null
           created_at?: string
           device_token: string
           email?: string | null
@@ -826,6 +830,8 @@ export type Database = {
         }
         Update: {
           browser?: string | null
+          claimed_at?: string | null
+          claimed_by_user_id?: string | null
           created_at?: string
           device_token?: string
           email?: string | null
@@ -2180,6 +2186,7 @@ export type Database = {
       }
     }
     Functions: {
+      claim_guard_device: { Args: { _device_token: string }; Returns: Json }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean

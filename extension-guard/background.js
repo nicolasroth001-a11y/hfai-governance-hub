@@ -55,6 +55,11 @@ async function ensureRegistered() {
 async function reportBlock(text, matches) {
   const reg = await ensureRegistered();
   if (!reg) return;
+  // Bump local counter immediately for popup UX
+  try {
+    const cur = await chrome.storage.local.get(["hfaiBlockCount"]);
+    await chrome.storage.local.set({ hfaiBlockCount: (cur.hfaiBlockCount || 0) + 1 });
+  } catch (_) {}
   try {
     await fetch(`${HFAI_BASE}/ingest-event`, {
       method: "POST",
@@ -87,7 +92,17 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     return true;
   }
   if (msg?.type === "HFAI_GET_STATUS") {
-    chrome.storage.local.get(["hfaiOrgId", "hfaiDashboardUrl", "hfaiBlockCount"]).then(sendResponse);
+    chrome.storage.local.get([
+      "hfaiOrgId",
+      "hfaiDashboardUrl",
+      "hfaiBlockCount",
+      "hfaiDeviceToken",
+      "hfaiClaimedAt",
+    ]).then(sendResponse);
+    return true;
+  }
+  if (msg?.type === "HFAI_MARK_CLAIMED") {
+    chrome.storage.local.set({ hfaiClaimedAt: Date.now() }).then(() => sendResponse({ ok: true }));
     return true;
   }
 });

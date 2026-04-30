@@ -4,22 +4,28 @@
 <meta charset="utf-8" />
 <title>HFAI Guard</title>
 <style>
-  body { width: 280px; margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0f1218; color: #e8e9ec; }
+  body { width: 300px; margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0f1218; color: #e8e9ec; }
   h1 { font-size: 14px; margin: 0 0 4px; letter-spacing: -0.01em; }
   .sub { font-size: 11px; color: #9aa0aa; margin: 0 0 12px; }
   .row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.06); font-size: 12px; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; }
-  a.btn { display: block; text-align: center; background: #c4993a; color: #0f1218; padding: 8px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 600; margin-top: 12px; }
-  .foot { font-size: 10px; color: #6b7280; margin-top: 10px; text-align: center; }
+  .stat { margin-left: auto; font-family: monospace; font-size: 11px; color: #e8e9ec; }
+  a.btn { display: block; text-align: center; background: #c4993a; color: #0f1218; padding: 9px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 600; margin-top: 12px; }
+  a.btn.outline { background: transparent; color: #c4993a; border: 1px solid #c4993a; margin-top: 8px; }
+  .foot { font-size: 10px; color: #6b7280; margin-top: 10px; text-align: center; line-height: 1.4; }
 </style>
 </head>
 <body>
   <h1>🛡 HFAI Guard</h1>
   <p class="sub">Real-time AI compliance enforcement</p>
   <div class="row"><span class="dot"></span> <span>Active on ChatGPT, Claude, Gemini</span></div>
-  <div class="row"><span>Workspace</span> <span id="orgid" style="margin-left:auto; font-family: monospace; font-size: 10px; color:#9aa0aa;">—</span></div>
-  <a class="btn" id="dash" href="https://hfa-i.org/customer/guard" target="_blank">Open dashboard</a>
-  <p class="foot">Free · EU AI Act Art.5 · COPPA · Safety</p>
+  <div class="row"><span>Blocks (this session)</span> <span id="blocks" class="stat">0</span></div>
+  <div class="row"><span>Workspace</span> <span id="orgid" class="stat" style="color:#9aa0aa">—</span></div>
+
+  <a class="btn" id="claim" style="display:none" target="_blank">Claim your free dashboard →</a>
+  <a class="btn outline" id="dash" href="https://hfa-i.org/customer/guard" target="_blank">Open dashboard</a>
+
+  <p class="foot">Free · EU AI Act Art.5 · GDPR · COPPA · Safety<br/>We never see your prompt content on the free tier.</p>
 <script src="popup.js"></script>
 </body>
 </html>
