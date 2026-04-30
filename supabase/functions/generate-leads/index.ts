@@ -115,8 +115,9 @@ ${dedupBlock}
 Each prospect MUST:
 - Be a REAL EU insurer (carrier, MGA, or scaled insurtech) currently using AI in claims, underwriting, fraud, or pricing
 - Have a clearly stated EU AI Act article (Annex III §5, Article 11, 14, or 26) OR EIOPA/Solvency II model governance hook tied to its pain point
-- Name a buyer-grade contact (CRO, Head of Model Risk, Chief Actuary, CCO, DPO, CISO) — never CTO/VP Eng
-- Have a plausible email at the insurer's actual domain
+- Use the company's REAL public website domain
+
+DO NOT invent contact people. Leave contact_name / contact_title / contact_email blank — a human will research them on LinkedIn.
 
 If you cannot tie a company to a real insurance AI use case AND a real regulatory clock, do not include it. Quality > quantity.
 
