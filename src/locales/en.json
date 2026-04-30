@@ -1436,9 +1436,9 @@
     }
   },
   "landing": {
-    "heroTitle1": "The runtime firewall",
-    "heroTitle2": "for AI.",
-    "heroSubtitle": "Block AI policy violations at the API layer in real time. Prove EU AI Act &amp; ISO 42001 compliance with a tamper-evident audit chain. <strong>Fines up to $35M</strong> hit August 2026.",
+    "heroTitle1": "Policy enforcement and audit",
+    "heroTitle2": "for every AI call.",
+    "heroSubtitle": "Drop-in SDK that intercepts every model request, enforces your policies inline, and emits a tamper-evident audit log. <strong>&lt;40ms p99 overhead.</strong> Works with OpenAI, Anthropic, Gemini, and self-hosted models.",
     "heroCta": "Start Free 30-Day Pilot",
     "heroDemo": "See It in Action",
     "trustNoCc": "No credit card required",
