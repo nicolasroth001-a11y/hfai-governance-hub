@@ -290,12 +290,28 @@ export default function AdminLeads() {
                       {lead.industry && <Badge variant="outline" className="text-xs">{lead.industry}</Badge>}
                       {lead.region && <Badge variant="outline" className="text-xs">{lead.region}</Badge>}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {lead.contact_name || "(no contact)"} {lead.contact_title && `· ${lead.contact_title}`}
-                    </p>
-                    <p className="text-xs text-muted-foreground font-mono">{lead.contact_email || "—"}</p>
+                    {lead.contact_name || lead.contact_email ? (
+                      <>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {lead.contact_name || "(no name)"} {lead.contact_title && `· ${lead.contact_title}`}
+                        </p>
+                        <p className="text-xs text-muted-foreground font-mono">{lead.contact_email || "—"}</p>
+                      </>
+                    ) : (
+                      <div className="mt-2 flex items-center gap-2 text-xs text-amber-500/90 bg-amber-500/5 border border-amber-500/20 rounded px-2 py-1.5">
+                        <Linkedin className="h-3.5 w-3.5" />
+                        <span>No contact yet — find one on LinkedIn, then click Review &amp; send to fill it in.</span>
+                        {lead.website && (
+                          <a
+                            href={`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(lead.company_name + " risk OR actuary OR compliance")}&origin=GLOBAL_SEARCH_HEADER`}
+                            target="_blank" rel="noopener noreferrer"
+                            className="underline ml-auto"
+                          >Search LinkedIn ↗</a>
+                        )}
+                      </div>
+                    )}
                     {lead.website && (
-                      <a href={`https://${lead.website.replace(/^https?:\/\//,'')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
+                      <a href={`https://${lead.website.replace(/^https?:\/\//,'')}`} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline block mt-1">
                         {lead.website} ↗
                       </a>
                     )}
