@@ -4,12 +4,18 @@
 // the org's API key, which the extension uses for all future ingest-event calls.
 //
 // Public endpoint (no JWT required) — protected by:
-//   • input validation
+//   • Zod input validation (strict types, length limits)
 //   • per-device-token uniqueness (idempotent)
-//   • org is created with signup_via_guard=true so we can rate-limit / segment later
+//   • per-IP daily soft cap (anti-flood: max 20 fresh provisions / IP / day)
+//   • org tagged signup_via_guard=true for downstream segmentation
+//
+// NOTE: We deliberately do NOT do per-request rate limiting here — backend
+// rate-limit primitives are still maturing. The IP cap above + idempotency
+// is sufficient for v1.0.
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
+import { z } from "npm:zod@3.23.8";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -19,10 +25,19 @@ const corsHeaders = {
 };
 
 const log = (s: string, d?: unknown) =>
-  console.log(`[GUARD-REGISTER] ${s}${d ? ` – ${JSON.stringify(d)}` : ""}`);
+  console.log(JSON.stringify({ fn: "guard-register", msg: s, ...(d ? { data: d } : {}) }));
+
+const RegisterSchema = z.object({
+  device_token: z.string().trim().min(16).max(128),
+  email: z.string().trim().toLowerCase().email().max(255).optional().nullable(),
+  user_agent: z.string().max(500).optional(),
+  browser: z.string().max(32).optional(),
+  install_source: z.string().max(64).optional(),
+});
+
+const IP_DAILY_CAP = 20;
 
 function generateApiKey(): string {
-  // 32 random bytes, base32-ish, prefixed so it's identifiable
   const bytes = new Uint8Array(24);
   crypto.getRandomValues(bytes);
   const b64 = btoa(String.fromCharCode(...bytes))
@@ -30,6 +45,11 @@ function generateApiKey(): string {
     .replace(/\//g, "")
     .replace(/=/g, "");
   return `hfai_guard_${b64}`;
+}
+
+function getClientIp(req: Request): string {
+  const fwd = req.headers.get("x-forwarded-for") || req.headers.get("cf-connecting-ip") || "";
+  return fwd.split(",")[0].trim() || "unknown";
 }
 
 serve(async (req) => {
@@ -43,19 +63,18 @@ serve(async (req) => {
   }
 
   try {
-    const body = await req.json().catch(() => ({}));
-    const deviceToken: string = String(body.device_token || "").trim();
-    const email: string | null = body.email ? String(body.email).trim().toLowerCase() : null;
-    const userAgent: string = String(body.user_agent || req.headers.get("user-agent") || "").slice(0, 500);
-    const browser: string = String(body.browser || "chrome").slice(0, 32);
-    const installSource: string = String(body.install_source || "extension").slice(0, 64);
-
-    if (!deviceToken || deviceToken.length < 16 || deviceToken.length > 128) {
-      return new Response(JSON.stringify({ error: "Invalid device_token" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    const raw = await req.json().catch(() => ({}));
+    const parsed = RegisterSchema.safeParse(raw);
+    if (!parsed.success) {
+      log("Invalid input", { errors: parsed.error.flatten().fieldErrors });
+      return new Response(
+        JSON.stringify({ error: "Invalid input", details: parsed.error.flatten().fieldErrors }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
     }
+    const { device_token: deviceToken, email, user_agent, browser, install_source } = parsed.data;
+    const userAgent = user_agent || req.headers.get("user-agent") || "";
+    const ip = getClientIp(req);
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -77,7 +96,6 @@ serve(async (req) => {
         .eq("id", existingDevice.org_id)
         .single();
 
-      // Touch last_seen
       await supabase
         .from("guard_devices")
         .update({ last_seen_at: new Date().toISOString() })
@@ -92,6 +110,24 @@ serve(async (req) => {
         }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
+    }
+
+    // Anti-flood: cap fresh org creations from a single IP in last 24h
+    if (ip !== "unknown") {
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const { count } = await supabase
+        .from("guard_devices")
+        .select("id", { count: "exact", head: true })
+        .gte("created_at", since)
+        .eq("install_source", `extension|ip:${ip}`);
+
+      if ((count ?? 0) >= IP_DAILY_CAP) {
+        log("IP daily cap exceeded", { ip, count });
+        return new Response(
+          JSON.stringify({ error: "Too many provisions from this network. Try again tomorrow." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
     }
 
     // Fresh install — create a brand-new anonymous organization
@@ -117,20 +153,23 @@ serve(async (req) => {
       });
     }
 
+    // Stamp install_source with IP marker so the daily cap query above works
+    const taggedSource = ip !== "unknown" ? `extension|ip:${ip}` : (install_source || "extension");
+
     const { error: devErr } = await supabase.from("guard_devices").insert({
       org_id: newOrg.id,
       device_token: deviceToken,
       email,
       user_agent: userAgent,
-      browser,
-      install_source: installSource,
+      browser: browser || "chrome",
+      install_source: taggedSource,
     });
 
     if (devErr) {
       log("Device insert failed (non-fatal)", { error: devErr.message });
     }
 
-    log("Provisioned new Guard org", { orgId: newOrg.id });
+    log("Provisioned new Guard org", { orgId: newOrg.id, ip });
 
     return new Response(
       JSON.stringify({

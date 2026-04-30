@@ -29,6 +29,16 @@ jobs:
           cache: npm
 
       - run: npm install
+
+      # Repackage the HFAI Guard Chrome extension fresh from source
+      # so public/hfai-guard.zip is never stale.
+      - name: Package HFAI Guard extension
+        run: |
+          sudo apt-get update && sudo apt-get install -y zip
+          rm -f public/hfai-guard.zip
+          cd extension-guard && zip -r ../public/hfai-guard.zip . && cd ..
+          ls -la public/hfai-guard.zip
+
       - run: npm run build
       - run: node scripts/generate-static-shells.js
 
