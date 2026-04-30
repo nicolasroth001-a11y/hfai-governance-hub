@@ -12,6 +12,7 @@ import {
 import { usePageView } from "@/hooks/usePageView";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { RiskTicker } from "@/components/landing/RiskTicker";
+import { AIScannerWidget } from "@/components/scan/AIScannerWidget";
 import { AwsMarketplaceBadge } from "@/components/landing/AwsMarketplaceBadge";
 import dashboardPreview from "@/assets/dashboard-preview.png";
 import industrialHero from "@/assets/industrial-ai-hero.jpg";
@@ -132,6 +133,19 @@ export default function LandingPage() {
             <Button size="lg" variant="outline" className="text-base px-8 h-12 gap-2" onClick={() => navigate("/readiness-assessment")}>
               <BarChart3 className="h-4 w-4" /> Am I Required to Comply?
             </Button>
+          </motion.div>
+
+          {/* Free AI compliance scanner — viral hook */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="pt-6"
+          >
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-3">
+              ⚡ Free tool — Scan any website for AI risk
+            </div>
+            <AIScannerWidget variant="compact" />
           </motion.div>
 
           {/* Code snippet — infrastructure proof */}
