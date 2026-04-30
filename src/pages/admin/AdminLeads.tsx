@@ -150,12 +150,23 @@ export default function AdminLeads() {
     if (!confirm(`Send this email to ${editContactEmail} from nicolasroth@hfa-i.org?`)) return;
     setSendingId(activeLead.id);
     try {
+      // Persist the human-researched contact fields onto the lead BEFORE sending
+      const { error: updErr } = await supabase
+        .from("leads")
+        .update({
+          contact_name: editContactName.trim(),
+          contact_email: editContactEmail.trim(),
+          contact_title: editContactTitle.trim(),
+        })
+        .eq("id", activeLead.id);
+      if (updErr) throw updErr;
+
       const { data, error } = await supabase.functions.invoke("send-cold-email", {
         body: { lead_id: activeLead.id, subject_override: editSubject, body_override: editBody },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-      toast({ title: "Email sent", description: `Delivered to ${activeLead.contact_email}` });
+      toast({ title: "Email sent", description: `Delivered to ${editContactEmail}` });
       const updated = data.lead as Lead;
       setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
       setActiveLead(null);
