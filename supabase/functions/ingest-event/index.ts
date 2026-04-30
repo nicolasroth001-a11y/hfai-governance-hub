@@ -299,6 +299,25 @@ serve(async (req) => {
     if (blockedRules.length > 0) {
       log("Response BLOCKED", { blockedRules: blockedRules.map(r => r.ruleName) });
 
+      // Tally blocks per category for the free Guard dashboard.
+      // Categories are derived from the rule label so the bare-minimum
+      // dashboard can show "X EU AI Act · Y GDPR · Z COPPA · N Safety".
+      const categorize = (name: string): string => {
+        const n = name.toLowerCase();
+        if (n.includes("art.5") || n.includes("eu ai act")) return "eu_ai_act";
+        if (n.includes("gdpr") || n.includes("personal data") || n.includes("pii")) return "gdpr";
+        if (n.includes("coppa") || n.includes("minor") || n.includes("child")) return "coppa";
+        if (n.includes("self-harm") || n.includes("csam") || n.includes("safety")) return "safety";
+        return "internal";
+      };
+      const seenCats = new Set<string>();
+      for (const r of blockedRules) seenCats.add(categorize(r.ruleName));
+      for (const cat of seenCats) {
+        try {
+          await supabase.rpc("increment_guard_block_stat", { _org_id: orgId, _category: cat });
+        } catch (e) { log("stat increment failed (non-fatal)", { error: String(e) }); }
+      }
+
       const explanations = blockedRules.map(r =>
         `• ${r.ruleName}: ${r.description}`
       ).join("\n");
