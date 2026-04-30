@@ -761,6 +761,91 @@ export type Database = {
         }
         Relationships: []
       }
+      guard_block_stats: {
+        Row: {
+          block_count: number
+          category: string
+          created_at: string
+          id: string
+          org_id: string
+          stat_date: string
+          updated_at: string
+        }
+        Insert: {
+          block_count?: number
+          category: string
+          created_at?: string
+          id?: string
+          org_id: string
+          stat_date: string
+          updated_at?: string
+        }
+        Update: {
+          block_count?: number
+          category?: string
+          created_at?: string
+          id?: string
+          org_id?: string
+          stat_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guard_block_stats_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guard_devices: {
+        Row: {
+          browser: string | null
+          created_at: string
+          device_token: string
+          email: string | null
+          id: string
+          install_source: string | null
+          installed_at: string
+          last_seen_at: string
+          org_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          browser?: string | null
+          created_at?: string
+          device_token: string
+          email?: string | null
+          id?: string
+          install_source?: string | null
+          installed_at?: string
+          last_seen_at?: string
+          org_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          browser?: string | null
+          created_at?: string
+          device_token?: string
+          email?: string | null
+          id?: string
+          install_source?: string | null
+          installed_at?: string
+          last_seen_at?: string
+          org_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guard_devices_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       human_reviews: {
         Row: {
           comments: string | null
@@ -1280,6 +1365,7 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          signup_via_guard: boolean
         }
         Insert: {
           api_key?: string | null
@@ -1287,6 +1373,7 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          signup_via_guard?: boolean
         }
         Update: {
           api_key?: string | null
@@ -1294,6 +1381,7 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          signup_via_guard?: boolean
         }
         Relationships: []
       }
@@ -2121,6 +2209,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_guard_block_stat: {
+        Args: { _category: string; _org_id: string }
+        Returns: undefined
       }
       move_to_dlq: {
         Args: {
