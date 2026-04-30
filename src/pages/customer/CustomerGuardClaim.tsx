@@ -12,7 +12,7 @@ type State = "idle" | "claiming" | "success" | "error" | "needs_auth";
 export default function CustomerGuardClaim() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const [state, setState] = useState<State>("idle");
   const [message, setMessage] = useState<string>("");
   const token = params.get("token") || "";
