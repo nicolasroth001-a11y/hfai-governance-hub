@@ -44,6 +44,7 @@ const ReadinessAssessment = lazy(() => import("./pages/ReadinessAssessment"));
 const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const ScottDeck = lazy(() => import("./pages/ScottDeck"));
 const AIScanPage = lazy(() => import("./pages/AIScanPage"));
+const GuardLandingPage = lazy(() => import("./pages/GuardLandingPage"));
 
 // Customer pages (lazy)
 const CustomerDashboard = lazy(() => import("./pages/customer/CustomerDashboard"));
@@ -88,6 +89,7 @@ const CustomerReviewerSettings = lazy(() => import("./pages/customer/CustomerRev
 const CustomerIntegrations = lazy(() => import("./pages/customer/CustomerIntegrations"));
 const CustomerIndustrialOnboarding = lazy(() => import("./pages/customer/CustomerIndustrialOnboarding"));
 const CustomerAISBOM = lazy(() => import("./pages/customer/CustomerAISBOM"));
+const CustomerGuard = lazy(() => import("./pages/customer/CustomerGuard"));
 
 // Reviewer pages (lazy)
 const ReviewerDashboard = lazy(() => import("./pages/reviewer/ReviewerDashboard"));
@@ -168,6 +170,7 @@ const App = () => {
           <Route path="/trust" element={<TrustCenter />} />
           <Route path="/scott" element={<ScottDeck />} />
           <Route path="/scan" element={<AIScanPage />} />
+          <Route path="/guard" element={<GuardLandingPage />} />
           <Route path="/call-copilot" element={<AdminCallCopilot />} />
 
           {/* Login & Signup & Password Reset */}
@@ -183,6 +186,7 @@ const App = () => {
           <Route path="/customer" element={<ProtectedRoute requiredRole="customer"><CustomerLayout /></ProtectedRoute>}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<CustomerDashboard />} />
+            <Route path="guard" element={<CustomerGuard />} />
             <Route path="violations" element={<CustomerViolations />} />
             <Route path="violations/:id" element={<CustomerViolationDetail />} />
             <Route path="rules" element={<CustomerRules />} />
