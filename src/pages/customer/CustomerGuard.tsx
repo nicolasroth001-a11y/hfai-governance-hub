@@ -96,20 +96,50 @@ export default function CustomerGuard() {
             <Shield className="h-5 w-5 text-primary" />
             <span className="text-xs uppercase tracking-wider text-muted-foreground">Blocks this week</span>
           </div>
-          <motion.div
-            key={totalBlocks}
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="text-6xl font-bold tracking-tight"
-          >
-            {loading ? "—" : totalBlocks}
-          </motion.div>
-          <p className="text-sm text-muted-foreground mt-3">
-            {deviceCount} device{deviceCount === 1 ? "" : "s"} reporting · 30-day rolling window
-          </p>
-        </CardContent>
-      </Card>
+      {/* Hero counters: Blocks + Overrides */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="rounded-[20px] overflow-hidden">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Shield className="h-5 w-5 text-primary" />
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Blocks this week</span>
+            </div>
+            <motion.div
+              key={totalBlocks}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="text-6xl font-bold tracking-tight"
+            >
+              {loading ? "—" : totalBlocks}
+            </motion.div>
+            <p className="text-sm text-muted-foreground mt-3">
+              {deviceCount} device{deviceCount === 1 ? "" : "s"} reporting · 7-day window
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-[20px] overflow-hidden border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-transparent">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Overrides this week</span>
+            </div>
+            <motion.div
+              key={overrideCount}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="text-6xl font-bold tracking-tight text-amber-500"
+            >
+              {loading ? "—" : overrideCount}
+            </motion.div>
+            <p className="text-sm text-muted-foreground mt-3">
+              User acknowledged the warning and sent anyway · logged to audit trail
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Regulation breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
