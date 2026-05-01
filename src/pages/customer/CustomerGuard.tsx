@@ -27,6 +27,7 @@ export default function CustomerGuard() {
   const { profile } = useAuth();
   const [stats, setStats] = useState<Stat[]>([]);
   const [deviceCount, setDeviceCount] = useState(0);
+  const [overrideCount, setOverrideCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +36,8 @@ export default function CustomerGuard() {
       try {
         if (!profile?.org_id) return;
         const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-        const [statsRes, devRes] = await Promise.all([
+        const sinceIso = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+        const [statsRes, devRes, overRes] = await Promise.all([
           supabase
             .from("guard_block_stats")
             .select("category, block_count, stat_date")
@@ -45,10 +47,17 @@ export default function CustomerGuard() {
             .from("guard_devices")
             .select("id", { count: "exact", head: true })
             .eq("org_id", profile.org_id),
+          supabase
+            .from("ai_events")
+            .select("id", { count: "exact", head: true })
+            .eq("org_id", profile.org_id)
+            .eq("event_type", "user_override")
+            .gte("created_at", sinceIso),
         ]);
         if (cancelled) return;
         setStats((statsRes.data as Stat[]) || []);
         setDeviceCount(devRes.count || 0);
+        setOverrideCount(overRes.count || 0);
       } catch (e) {
         console.error("Guard dashboard fetch failed:", e);
       } finally {
