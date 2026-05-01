@@ -388,13 +388,18 @@ Deno.serve(async (req) => {
     const pageTitle: string | undefined = doc.metadata?.title;
     const finalUrl: string = doc.metadata?.sourceURL || normalizedUrl;
 
-    const detectedAI = detectAIProviders(html, links);
-    const findings = detectFindings({ url: normalizedUrl, html, markdown, detectedAI });
-    const score = calculateScore(findings, detectedAI);
-    const fine = estimateFine(findings);
+    const vendorMode = isVendorDomain(finalUrl) || isVendorDomain(normalizedUrl);
 
-    const summary =
-      detectedAI.length === 0
+    const detectedAI = vendorMode ? [] : detectAIProviders(html, links);
+    const findings = vendorMode
+      ? []
+      : detectFindings({ url: normalizedUrl, html, markdown, detectedAI });
+    const score = vendorMode ? 98 : calculateScore(findings, detectedAI);
+    const fine = vendorMode ? 0 : estimateFine(findings);
+
+    const summary = vendorMode
+      ? "This is an AI-governance vendor site. Mentions of AI providers here describe what the platform protects, not AI deployed on the page. Clean."
+      : detectedAI.length === 0
         ? "We didn't detect any obvious AI on this site. Either it's clean — or its AI is well-hidden (which is itself a transparency issue)."
         : `Detected ${detectedAI.length} AI integration${detectedAI.length === 1 ? "" : "s"} and ${findings.length} compliance issue${findings.length === 1 ? "" : "s"} under the EU AI Act.`;
 
