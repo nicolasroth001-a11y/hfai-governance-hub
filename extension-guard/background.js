@@ -83,6 +83,37 @@ async function reportBlock(text, matches) {
   }
 }
 
+async function reportOverride(text, matches) {
+  const reg = await ensureRegistered();
+  if (!reg) return;
+  try {
+    const cur = await chrome.storage.local.get(["hfaiOverrideCount"]);
+    await chrome.storage.local.set({ hfaiOverrideCount: (cur.hfaiOverrideCount || 0) + 1 });
+  } catch (_) {}
+  try {
+    await fetch(`${HFAI_BASE}/ingest-event`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: ANON_KEY,
+        "x-api-key": reg.apiKey,
+      },
+      body: JSON.stringify({
+        event_type: "user_override",
+        input_text: String(text || "").slice(0, 4000),
+        payload: {
+          source: "hfai-guard-extension",
+          matches: matches?.slice(0, 5) || [],
+          override: true,
+          ts: new Date().toISOString(),
+        },
+      }),
+    });
+  } catch (e) {
+    console.warn("[HFAI Guard] Override report failed:", e);
+  }
+}
+
 chrome.runtime.onInstalled.addListener(() => { ensureRegistered(); });
 chrome.runtime.onStartup.addListener(() => { ensureRegistered(); });
 
@@ -91,11 +122,16 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     reportBlock(msg.text, msg.matches).finally(() => sendResponse({ ok: true }));
     return true;
   }
+  if (msg?.type === "HFAI_REPORT_OVERRIDE") {
+    reportOverride(msg.text, msg.matches).finally(() => sendResponse({ ok: true }));
+    return true;
+  }
   if (msg?.type === "HFAI_GET_STATUS") {
     chrome.storage.local.get([
       "hfaiOrgId",
       "hfaiDashboardUrl",
       "hfaiBlockCount",
+      "hfaiOverrideCount",
       "hfaiDeviceToken",
       "hfaiClaimedAt",
     ]).then(sendResponse);

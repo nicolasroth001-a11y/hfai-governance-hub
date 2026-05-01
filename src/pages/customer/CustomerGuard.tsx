@@ -27,6 +27,7 @@ export default function CustomerGuard() {
   const { profile } = useAuth();
   const [stats, setStats] = useState<Stat[]>([]);
   const [deviceCount, setDeviceCount] = useState(0);
+  const [overrideCount, setOverrideCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +36,8 @@ export default function CustomerGuard() {
       try {
         if (!profile?.org_id) return;
         const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-        const [statsRes, devRes] = await Promise.all([
+        const sinceIso = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+        const [statsRes, devRes, overRes] = await Promise.all([
           supabase
             .from("guard_block_stats")
             .select("category, block_count, stat_date")
@@ -45,10 +47,17 @@ export default function CustomerGuard() {
             .from("guard_devices")
             .select("id", { count: "exact", head: true })
             .eq("org_id", profile.org_id),
+          supabase
+            .from("ai_events")
+            .select("id", { count: "exact", head: true })
+            .eq("org_id", profile.org_id)
+            .eq("event_type", "user_override")
+            .gte("created_at", sinceIso),
         ]);
         if (cancelled) return;
         setStats((statsRes.data as Stat[]) || []);
         setDeviceCount(devRes.count || 0);
+        setOverrideCount(overRes.count || 0);
       } catch (e) {
         console.error("Guard dashboard fetch failed:", e);
       } finally {
@@ -80,27 +89,50 @@ export default function CustomerGuard() {
         description="Free real-time AI compliance enforcement. Last 7 days."
       />
 
-      {/* Hero counter */}
-      <Card className="rounded-[20px] overflow-hidden">
-        <CardContent className="p-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Shield className="h-5 w-5 text-primary" />
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">Blocks this week</span>
-          </div>
-          <motion.div
-            key={totalBlocks}
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, type: "spring" }}
-            className="text-6xl font-bold tracking-tight"
-          >
-            {loading ? "—" : totalBlocks}
-          </motion.div>
-          <p className="text-sm text-muted-foreground mt-3">
-            {deviceCount} device{deviceCount === 1 ? "" : "s"} reporting · 30-day rolling window
-          </p>
-        </CardContent>
-      </Card>
+      {/* Hero counters: Blocks + Overrides */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="rounded-[20px] overflow-hidden">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Shield className="h-5 w-5 text-primary" />
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Blocks this week</span>
+            </div>
+            <motion.div
+              key={totalBlocks}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="text-6xl font-bold tracking-tight"
+            >
+              {loading ? "—" : totalBlocks}
+            </motion.div>
+            <p className="text-sm text-muted-foreground mt-3">
+              {deviceCount} device{deviceCount === 1 ? "" : "s"} reporting · 7-day window
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-[20px] overflow-hidden border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-transparent">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Overrides this week</span>
+            </div>
+            <motion.div
+              key={overrideCount}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="text-6xl font-bold tracking-tight text-amber-500"
+            >
+              {loading ? "—" : overrideCount}
+            </motion.div>
+            <p className="text-sm text-muted-foreground mt-3">
+              User acknowledged the warning and sent anyway · logged to audit trail
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Regulation breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

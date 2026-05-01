@@ -11,6 +11,9 @@ chrome.runtime.sendMessage({ type: "HFAI_GET_STATUS" }, (status) => {
   const blocksEl = document.getElementById("blocks");
   if (blocksEl) blocksEl.textContent = String(status.hfaiBlockCount ?? 0);
 
+  const overridesEl = document.getElementById("overrides");
+  if (overridesEl) overridesEl.textContent = String(status.hfaiOverrideCount ?? 0);
+
   const claim = document.getElementById("claim");
   const dash = document.getElementById("dash");
   if (status.hfaiClaimedAt) {
