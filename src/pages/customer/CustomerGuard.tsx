@@ -89,13 +89,6 @@ export default function CustomerGuard() {
         description="Free real-time AI compliance enforcement. Last 7 days."
       />
 
-      {/* Hero counter */}
-      <Card className="rounded-[20px] overflow-hidden">
-        <CardContent className="p-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Shield className="h-5 w-5 text-primary" />
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">Blocks this week</span>
-          </div>
       {/* Hero counters: Blocks + Overrides */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="rounded-[20px] overflow-hidden">
