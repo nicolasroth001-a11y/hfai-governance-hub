@@ -118,6 +118,7 @@
 
   // Capture-phase Enter listener: stops the keystroke before any framework handler runs.
   document.addEventListener("keydown", (e) => {
+    if (e.__hfaiOverride) return; // user-confirmed override re-fire
     if (e.key !== "Enter" || e.shiftKey || e.isComposing) return;
     const target = e.target;
     if (!target || !(target instanceof HTMLElement)) return;
@@ -130,11 +131,12 @@
 
     e.preventDefault();
     e.stopImmediatePropagation();
-    showBlocker(matches, text);
+    showBlocker(matches, text, target);
   }, true);
 
   // Also intercept clicks on send buttons (covers paste-and-click flows).
   document.addEventListener("click", (e) => {
+    if (e.__hfaiOverride) return;
     const target = e.target;
     if (!(target instanceof HTMLElement)) return;
     const btn = target.closest('button[data-testid*="send"], button[aria-label*="Send" i], button[aria-label*="submit" i]');
@@ -145,6 +147,6 @@
     if (matches.length === 0) return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    showBlocker(matches, text);
+    showBlocker(matches, text, composer);
   }, true);
 })();
