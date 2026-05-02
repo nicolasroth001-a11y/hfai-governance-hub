@@ -28,6 +28,13 @@
   line-height: 1;
   margin-bottom: 12px;
   color: #c4993a;
+  display: flex;
+  justify-content: center;
+}
+.hfai-guard-shield img {
+  width: 56px;
+  height: 56px;
+  filter: drop-shadow(0 4px 12px rgba(196, 153, 58, 0.45));
 }
 .hfai-guard-modal h2 {
   margin: 0 0 6px;
