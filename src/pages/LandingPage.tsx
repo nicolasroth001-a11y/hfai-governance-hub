@@ -290,6 +290,7 @@ export default function LandingPage() {
           </p>
         </motion.div>
         <Suspense fallback={<SectionFallback />}><ExposureCheck /></Suspense>
+        <Suspense fallback={null}><PublicScanStats /></Suspense>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
