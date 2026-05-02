@@ -38,7 +38,7 @@
 
     // Art.5(1)(f) — Emotion recognition in workplace / school
     { pattern: /emotion.?recogni|emotion.?detect|sentiment.{0,20}(?:workplace|school|employee|worker|student|classroom)/i, label: "EU AI Act Art.5(1)(f) — Emotion Recognition" },
-    { pattern: /detect.{0,30}(?:emotion|mood|feeling|stress|engagement|attention)\s+(?:of|in|from|among)\s+(?:employee|worker|student|classroom|workplace|staff|pupil)/i, label: "EU AI Act Art.5(1)(f) — Emotion Recognition (paraphrase)" },
+    { pattern: /(?:detect|recogni[sz]e|identify|read|monitor|analy[sz]e|track|measure|infer)\s+\w*\s*(?:emotion|mood|feeling|stress|engagement|attention|sentiment)s?\s+(?:of|in|from|among|on)\s+\w*\s*(?:employee|worker|student|classroom|workplace|staff|pupil|kid|child|teacher)/i, label: "EU AI Act Art.5(1)(f) — Emotion Recognition (paraphrase)" },
 
     // Art.5(1)(g) — Biometric categorisation by sensitive traits
     { pattern: /biometric.?categori|race.?detect|biometric.?classif/i, label: "EU AI Act Art.5(1)(g) — Biometric Categorisation" },
