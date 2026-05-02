@@ -23,6 +23,7 @@ const SocialProof = lazy(() => import("@/components/landing/SocialProof").then(m
 const CredibilitySignals = lazy(() => import("@/components/landing/CredibilitySignals").then(m => ({ default: m.CredibilitySignals })));
 const CountdownTimer = lazy(() => import("@/components/landing/CountdownTimer").then(m => ({ default: m.CountdownTimer })));
 const ExposureCheck = lazy(() => import("@/components/landing/ExposureCheck").then(m => ({ default: m.ExposureCheck })));
+const PublicScanStats = lazy(() => import("@/components/landing/PublicScanStats").then(m => ({ default: m.PublicScanStats })));
 const TimeToValue = lazy(() => import("@/components/landing/TimeToValue").then(m => ({ default: m.TimeToValue })));
 const ROICalculator = lazy(() => import("@/components/landing/ROICalculator").then(m => ({ default: m.ROICalculator })));
 const InteractiveDemo = lazy(() => import("@/components/landing/InteractiveDemo").then(m => ({ default: m.InteractiveDemo })));
