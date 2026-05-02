@@ -62,9 +62,12 @@
   function showBlocker(matches, text, originalTarget) {
     const overlay = document.createElement("div");
     overlay.className = "hfai-guard-overlay";
+    const shieldUrl = (typeof chrome !== "undefined" && chrome.runtime?.getURL)
+      ? chrome.runtime.getURL("shield.png")
+      : "";
     overlay.innerHTML = `
       <div class="hfai-guard-modal" role="dialog" aria-labelledby="hfai-guard-title">
-        <div class="hfai-guard-shield">🛡</div>
+        <div class="hfai-guard-shield">${shieldUrl ? `<img src="${shieldUrl}" alt="HFAI Guard" />` : "🛡"}</div>
         <h2 id="hfai-guard-title">Blocked by HFAI Guard</h2>
         <p class="hfai-guard-sub">This prompt matches a regulated or unsafe pattern. Review before sending.</p>
         <ul class="hfai-guard-matches">
