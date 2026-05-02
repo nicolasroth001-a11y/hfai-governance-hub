@@ -425,7 +425,7 @@ Deno.serve(async (req) => {
     const findings = vendorMode
       ? []
       : detectFindings({ url: normalizedUrl, html, markdown, detectedAI });
-    const score = vendorMode ? 98 : calculateScore(findings, detectedAI);
+    const score = vendorMode ? 98 : calculateScore(findings, detectedAI, `${markdown}\n${html}`);
     const fine = vendorMode ? 0 : estimateFine(findings);
 
     const summary = vendorMode
