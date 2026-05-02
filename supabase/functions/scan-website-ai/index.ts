@@ -270,21 +270,52 @@ function detectFindings(args: {
   return findings;
 }
 
-function calculateScore(findings: Finding[], detectedAI: string[]): number {
-  if (detectedAI.length === 0) return 95; // No AI detected → mostly clean
-  let score = 100;
+function calculateScore(
+  findings: Finding[],
+  detectedAI: string[],
+  text: string
+): number {
+  // Baseline 50 — "unknown governance posture." Sites earn points by showing
+  // transparency signals and lose points for findings. We can never see backend
+  // AI, training data, or vendor pipelines from outside, so a perfect score
+  // is impossible without verified governance evidence.
+  let score = 50;
+
+  // ── Transparency / governance bonuses (max +40) ──
+  const lower = (text || "").toLowerCase();
+  if (/\bai (policy|principles|governance|ethics|usage policy)\b/.test(lower)) score += 10;
+  if (/\b(privacy policy|data protection)\b/.test(lower) && /\bai\b/.test(lower)) score += 6;
+  if (/\bdpa\b|data processing (agreement|addendum)/.test(lower)) score += 4;
+  if (/model card|system card|transparency report/.test(lower)) score += 6;
+  if (/human (review|oversight|in.the.loop)/.test(lower)) score += 6;
+  if (/ai literacy|staff training|trained.*staff/.test(lower)) score += 4;
+  if (/(opt.out|do not (sell|share)|user controls?)/.test(lower)) score += 4;
+
+  // ── Penalties from findings ──
   for (const f of findings) {
     score -=
       f.severity === "critical"
-        ? 25
+        ? 30
         : f.severity === "high"
-        ? 15
+        ? 18
         : f.severity === "medium"
-        ? 8
+        ? 10
         : f.severity === "low"
-        ? 3
+        ? 4
         : 0;
   }
+
+  // ── Extra penalty: AI is deployed but no transparency signals at all ──
+  if (detectedAI.length > 0 && !/ai (policy|principles|governance)/.test(lower)) {
+    score -= 8;
+  }
+
+  // ── Cap: if no AI detected, we genuinely can't see backend exposure.
+  // Don't reward with a perfect score — cap at 75 with note in findings.
+  if (detectedAI.length === 0) {
+    score = Math.min(score, 75);
+  }
+
   return Math.max(5, Math.min(100, score));
 }
 
