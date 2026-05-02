@@ -447,12 +447,26 @@ Deno.serve(async (req) => {
       pageTitle,
     };
 
-    // Best-effort: log scan as a lead-gen signal (anonymous, public table not required)
+    // Best-effort: log scan as anonymized social-proof signal
     try {
       const supabaseUrl = Deno.env.get("SUPABASE_URL");
       const serviceRole = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-      if (supabaseUrl && serviceRole) {
+      if (supabaseUrl && serviceRole && !vendorMode) {
         const sb = createClient(supabaseUrl, serviceRole);
+        // Extract eTLD+1-style domain (e.g. "acme.com" from "https://www.acme.com/x")
+        let domain = "unknown";
+        try {
+          const host = new URL(finalUrl).hostname.replace(/^www\./, "");
+          domain = host;
+        } catch { /* ignore */ }
+        await sb.from("public_scans").insert({
+          domain,
+          score,
+          risk_label: result.riskLabel,
+          detected_ai_count: detectedAI.length,
+          findings_count: findings.length,
+          has_critical: findings.some((f) => f.severity === "critical"),
+        });
         await sb.from("analytics").insert({
           route: "/scan",
           referrer: normalizedUrl,

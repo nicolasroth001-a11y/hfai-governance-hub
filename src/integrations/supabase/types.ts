@@ -1450,6 +1450,39 @@ export type Database = {
           },
         ]
       }
+      public_scans: {
+        Row: {
+          created_at: string
+          detected_ai_count: number
+          domain: string
+          findings_count: number
+          has_critical: boolean
+          id: string
+          risk_label: string
+          score: number
+        }
+        Insert: {
+          created_at?: string
+          detected_ai_count?: number
+          domain: string
+          findings_count?: number
+          has_critical?: boolean
+          id?: string
+          risk_label: string
+          score: number
+        }
+        Update: {
+          created_at?: string
+          detected_ai_count?: number
+          domain?: string
+          findings_count?: number
+          has_critical?: boolean
+          id?: string
+          risk_label?: string
+          score?: number
+        }
+        Relationships: []
+      }
       remediation_actions: {
         Row: {
           assigned_to: string | null
@@ -2210,6 +2243,7 @@ export type Database = {
         Args: { _provider_id: string }
         Returns: string
       }
+      get_public_scan_stats: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
