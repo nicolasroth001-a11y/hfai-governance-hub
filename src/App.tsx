@@ -45,6 +45,7 @@ const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const ScottDeck = lazy(() => import("./pages/ScottDeck"));
 const AIScanPage = lazy(() => import("./pages/AIScanPage"));
 const GuardLandingPage = lazy(() => import("./pages/GuardLandingPage"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 
 // Customer pages (lazy)
 const CustomerDashboard = lazy(() => import("./pages/customer/CustomerDashboard"));
@@ -172,6 +173,8 @@ const App = () => {
           <Route path="/scott" element={<ScottDeck />} />
           <Route path="/scan" element={<AIScanPage />} />
           <Route path="/guard" element={<GuardLandingPage />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
           <Route path="/customer/guard/claim" element={<CustomerGuardClaim />} />
           <Route path="/call-copilot" element={<AdminCallCopilot />} />
 
