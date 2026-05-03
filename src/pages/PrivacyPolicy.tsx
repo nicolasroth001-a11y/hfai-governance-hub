@@ -1,20 +1,20 @@
-import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Shield, ArrowLeft } from "lucide-react";
 
 const PrivacyPolicy = () => {
   const lastUpdated = "May 3, 2026";
 
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = "Privacy Policy | HFAI Guard & Platform";
+    return () => {
+      document.title = prevTitle;
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Helmet>
-        <title>Privacy Policy | HFAI Guard & Platform</title>
-        <meta
-          name="description"
-          content="HFAI privacy policy covering the HFAI Guard browser extension, scanner, and governance platform. What we collect, how we use it, and your rights."
-        />
-        <link rel="canonical" href="https://hfa-i.org/privacy" />
-      </Helmet>
 
       <header className="border-b border-border/50">
         <div className="container max-w-4xl py-6 flex items-center justify-between">
