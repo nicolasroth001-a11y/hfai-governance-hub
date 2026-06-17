@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -123,11 +123,34 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
-const RouteFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-  </div>
-);
+const RouteFallback = () => {
+  const [isStalled, setIsStalled] = useState(false);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setIsStalled(true), 8000);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      {isStalled && (
+        <div className="max-w-sm space-y-3">
+          <p className="text-sm text-muted-foreground">
+            This page is taking longer than expected to connect.
+          </p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            Reload page
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const App = () => {
   useEffect(() => {
